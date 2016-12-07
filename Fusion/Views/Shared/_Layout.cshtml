@@ -53,6 +53,15 @@
                         <img src="~/Content/Vega_48.png" style="float:left" />
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">БК старый<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("БК", "Index", "BC")</li>
+                                    <li>@Html.ActionLink("Участники БК", "Persons", "BC")</li>
+                                    <li>@Html.ActionLink("Карты БК", "Cards", "BC")</li>
+                                    <li>@Html.ActionLink("Список всех чеков", "Transactions", "BC")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Бонусный клуб<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Общая информация", "Index", "CRM")</li>
