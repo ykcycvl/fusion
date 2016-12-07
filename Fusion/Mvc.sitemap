@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Главная" controller="Home" action="Index">
+    <mvcSiteMapNode title="Море плюсов" controller="CRM" action="Index">
+      <mvcSiteMapNode title="Владельцы карт" controller="CRM" action="Persons">
+        <mvcSiteMapNode title="Редактирование владельца" controller="CRM" action="EditPerson"/>
+        <mvcSiteMapNode title="Новый владелец" controller="CRM" action="CreatePerson" />
+      </mvcSiteMapNode>
+        <mvcSiteMapNode title="Отчеты" controller="CRM" action="Reports">
+        <mvcSiteMapNode title="Список операций" controller="CRM" action="Transactions" />
+        <mvcSiteMapNode title="OPD" controller="CRM" action="OPD" />
+        <mvcSiteMapNode title="FPD" controller="CRM" action="FPD" />
+        <mvcSiteMapNode title="FPM" controller="CRM" action="FPM" />
+        <mvcSiteMapNode title="SPM" controller="CRM" action="SPM" />
+        <mvcSiteMapNode title="ASIOD" controller="CRM" action="ASIOD" />
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Отчетность КЦ" controller="CallCenter" action="Index">
+      <mvcSiteMapNode title="Отчет по операторам" controller="CallCenter" action="OperatorsReport"/>
+      <mvcSiteMapNode title="Список для прозвона" controller="CallCenter" action="CallingList" />
+      <mvcSiteMapNode title="CDR отчеты" controller="CDR" action="Index">
+        <mvcSiteMapNode title="Обзор" controller="CDR" action="Overall" />
+        <mvcSiteMapNode title="Детализация уровня обслуживания" controller="CDR" action="ServiceLevelDetail" />
+        <mvcSiteMapNode title="Детализация пропущенных звонков" controller="CDR" action="MissedCallsDetail" />
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>

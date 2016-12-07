@@ -1,0 +1,37 @@
+﻿@model Fusion.Models.BC.BCViewModels.TableReportViewModel
+@{
+    ViewBag.Title = "Начисления и потраты по дням";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Начисления и потраты баллов по дням</h2>
+<div style="margin: 10px 0; border:none;">
+    @using (Html.BeginForm("DailyBPReport", "BC", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+@if (@Model.viewData != null)
+{
+    <table class="table table-bordered">
+        @foreach (List<string> rr in @Model.viewData)
+        {
+            <tr>
+                @for (int i = 0; i < rr.Count; i++)
+                {
+                    <td>@rr[i]</td>
+                }
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <text>Нет данных</text>
+}

@@ -1,0 +1,142 @@
+﻿@model Fusion.Models.CRMViewModels.PersonsViewModel
+
+@{
+    ViewBag.Title = "Участники БК";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#bpsort").click(function () {
+            $("#order").val("BALANCE");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+        $("#accruedsort").click(function () {
+            $("#order").val("accrued");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+        $("#spentbpsort").click(function () {
+            $("#order").val("spented");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+    });
+</script>
+
+<h2>Участники БК</h2>
+<div class="alert alert-info" style="overflow:hidden">
+    @Html.ActionLink("OPD (операции в день)", "OPD", "CRM", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important;color:#ff0000" })
+    @Html.ActionLink("Список чеков", "Transactions", "CRM", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important" })
+    @Html.ActionLink("FPD (движение баллов по дням)", "FPD", "CRM", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important" })
+    @Html.ActionLink("FPM (движение баллов по мес.)", "FPD", "CRM", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important" })
+</div>
+
+@Html.ActionLink("Cоздать", "CreatePerson", null, new { @class = "btn btn-default" })
+
+@using (Html.BeginForm("Persons", "CRM", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+{
+    @Html.HiddenFor(m => m.order)
+    @Html.HiddenFor(m => m.OrderDirection)
+    <hr />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Список гостей
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped" style="font-size:11px!important">
+                <tr>
+                    <th>
+                        Ф.И.О.
+                        <br />
+                        @Html.TextBoxFor(m => m.FULL_NAME, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 3px" })
+                    </th>
+                    <th style="width:70px">
+                        <a href="#" id="bpsort">Остаток</a>
+                        <br />
+                        @Html.TextBoxFor(m => m.BALANCE, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 3px; width:55px" })
+                    </th>
+                    <th style="width:60px"><a href="#" id="accruedsort">Начисл.</a></th>
+                    <th style="width:60px"><a href="#" id="spentbpsort">Потр.</a></th>
+                    <th style="width:100px">
+                        Карты
+                        <br />
+                        @Html.TextBoxFor(m => m.CardCode, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 3px;width:85px", @maxlength = "10" })
+                    </th>
+                    <th style="width:100px">Д.р.</th>
+                    <th>
+                        Телефоны
+                        <br />
+                        @Html.TextBoxFor(m => m.phone, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 3px; width:100px", @maxlength = "12" })
+                    </th>
+                    <th>
+                        Эл. почта
+                        <br />
+                        @Html.TextBoxFor(m => m.email, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 3px;width:150px" })
+                    </th>
+                    <th>
+                        Город
+                        <br />
+                        @Html.TextBoxFor(m => m.CityAttr, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 5px;width:130px" })
+                    </th>
+                    <th style="width:100px">&nbsp;<br /><input type="submit" value="Найти" style="font-size: 12px;height: 24px;padding: 0 5px" /></th>
+                </tr>
+                @if (Model.persons.Count > 0)
+                {
+                    foreach (var person in Model.persons)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(@person.FULL_NAME, "EditPerson", new { @people_id = @person.PEOPLE_ID, @returnUrl = @ViewBag.returnUrl })
+                            </td>
+                            <td style="text-align:right">@person.BALANCE</td>
+                            <td style="text-align:right">@person.accrued</td>
+                            <td style="text-align:right">@(person.spented * -1)</td>
+                            <td>@person.CARD_CODE</td>
+                            <td>
+                                @String.Format("{0:dd.MM.yyyy}", person.BIRTHDAY)
+                            </td>
+                            <td>@person.phone</td>
+                            <td>@person.email</td>
+                            <td>@person.CityAttr</td>
+                            <td>
+                                @Html.ActionLink("Операции", "Transactions", new { @people_id = @person.PEOPLE_ID, @returnUrl = @ViewBag.returnUrl }, new { @class = "button" })
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="9" style="text-align:center;color:#f00">
+                            Не найдено ни одного участника, удовлетворяющего условиям поиска
+                        </td>
+                    </tr>
+                }
+            </table>
+            <input type="submit" style="display: none" />
+        </div>
+    </div>
+}

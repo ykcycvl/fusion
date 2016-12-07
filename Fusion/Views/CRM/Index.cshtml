@@ -1,0 +1,111 @@
+﻿@model Fusion.Models.CRMViewModels.OverallViewModel
+@{
+    ViewBag.Title = "Главная: Море плюсов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Менеджер бонусного клуба</h2>
+<div class="row">
+    <div class="col-lg-4 col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@Model.TotalBP</div>
+                        <div>Баллов в обороте</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/CRM/Transactions">
+                <div class="panel-footer">
+                    <span class="pull-left">Список транзакций</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@Model.TotalPersons</div>
+                        <div>Участников «Море Плюсов»</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/CRM/Persons">
+                <div class="panel-footer">
+                    <span class="pull-left">Список участников</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-4x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">@Model.VacantCardsAmount</div>
+                        <div>«Свободных» карт</div>
+                    </div>
+                </div>
+            </div>
+            <a href="/CRM/Cards">
+                <div class="panel-footer">
+                    <span class="pull-left">Список карт</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <h4>Сводная информация по картам</h4>
+    @foreach (var info in Model.CardsInfo)
+    {
+        <div class="col-lg-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    @info.CardsGroup
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed table-striped" style="margin-bottom:0">
+                        <tr>
+                            <td>Активных:</td>
+                            <td style="text-align: right">@info.ActiveCardsCount шт.</td>
+                        </tr>
+                        <tr>
+                            <td>Привязанных:</td>
+                            <td style="text-align: right">@info.LinkedCardsAmount шт.</td>
+                        </tr>
+                        <tr>
+                            <td>Свободных:</td>
+                            <td style="text-align: right">@info.VacantCardsAmount шт.</td>
+                        </tr>
+                        <tr>
+                            <td>Заблокированных:</td>
+                            <td style="text-align: right">@info.BlockedCardsAmount шт.</td>
+                        </tr>
+                    </table> 
+                </div>
+                <div class="panel-footer">
+                    <b>Всего: @info.TotalCardsCount шт.</b>
+                </div>
+            </div>
+        </div>
+    }
+</div>

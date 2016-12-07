@@ -1,0 +1,53 @@
+﻿@model Fusion.Models.ReportViewModels.FPMViewModel
+@{
+    ViewBag.Title = "Начисления и списания по дням";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Начисления и списания по дням</h2>
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("FPM", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+<table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
+    <tr>
+        <th style="text-align:right">
+            Начислено
+        </th>
+        <th style="text-align:right">
+            Списано
+        </th>
+        <th>
+            Месяц
+        </th>
+        <th>
+            Год
+        </th>
+    </tr>
+    @if (Model.FPMList != null && Model.FPMList.Count > 0)
+    {
+        foreach (var fpm in Model.FPMList)
+        {
+            <tr>
+                <td style="text-align:right">@fpm.accrued</td>
+                <td style="text-align:right">@fpm.spented</td>
+                <td>@fpm.month</td>
+                <td>@fpm.year</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4" style="text-align:center;color:#f00">Нет результатов, удовлетворяющих условиям фильтра</td>
+        </tr>
+    }
+</table>

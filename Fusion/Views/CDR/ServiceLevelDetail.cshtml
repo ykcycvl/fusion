@@ -1,0 +1,285 @@
+﻿@model Fusion.Models.CallCenter.CDRViewModels.CDRInfo
+@{
+    ViewBag.Title = "Уровень обслуживания (детализация) - CDR";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:['corechart']});
+    </script>
+
+    int i = 0;
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#tabs").tabs();
+            //Код первой вкладки (стандартное использование)
+            $("#tab1").tabs();
+            //Код второй вкладки (удаленные вкладки)
+            $("#tab2").tabs({show:function(e,ui){if (ui.index!=0){ $(ui.panel).html("<img id='load' src='tab-load1.gif' />")}}});
+            //Код третьей вкладки (сворачивание активной вкладки)
+            $("#tab3").tabs({collapsible:true,selected:-1});
+            //Код четвертой вкладки (открытие при наведении)
+            $("#tab4").tabs({event:"mouseover"});
+        });
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div style="margin: 10px 0; border:none;">
+        @using (Html.BeginForm("Overall", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div style="display:none">
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedQueues)
+                        @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedAgents)
+                        @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.start_dt)
+                        @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.end_dt)
+                        @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input type="submit" value="Общая информация" class="btn btn-default" />
+            </div>
+        }
+    </div>
+    <div style="margin: 10px 0; border:none;">
+        @using (Html.BeginForm("MissedCallsDetail", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div style="display:none">
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedQueues)
+                        @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedAgents)
+                        @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.start_dt)
+                        @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.end_dt)
+                        @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input type="submit" value="Непринятые" class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>
+<div style="margin: 10px 0; border:none;display:none">
+    @using (Html.BeginForm("Overall", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.SelectedQueues)
+                @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+            </div>
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.SelectedAgents)
+                @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.start_dt)
+                @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.end_dt)
+                @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" />
+        </div>
+    }
+</div>
+<div id="tabs">
+    <ul>
+        <li><a href="#tab1">Получасовки</a></li>
+        <li><a href="#tab2">По дням</a></li>
+        <li><a href="#tab3">По месяцам</a></li>
+    </ul>
+    <div id="tab1">
+        @foreach (var ServiceLevel in Model.cdrinfo.SLPHH)
+        {
+            i++;
+            string period;
+
+            if (ServiceLevel.fpoh)
+            {
+                period = @ServiceLevel.hour.ToString() + ":00 - " + @ServiceLevel.hour.ToString() + ":30";
+            }
+            else
+            {
+                period = @ServiceLevel.hour.ToString() + ":30 - " + (@ServiceLevel.hour + 1).ToString() + ":00";
+            }
+
+            int other = ServiceLevel.Sec20;
+
+            <script type="text/javascript">
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                     ['Время', 'Количество', { role: 'style' }],
+                     ['10 с.', @ServiceLevel.Sec10, '#0b0'],
+                     ['10+ с.', @other, '#f00'],
+                    ]);
+
+                    var options = {
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('piechart_' + @i.ToString()));
+
+                    chart.draw(data, options);
+                }
+            </script>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <h5>@ServiceLevel.dt.ToShortDateString() @period</h5>
+                    <table class="table table-bordered" style="font-size:11px !important">
+                        <tr>
+                            <th>Ответ</th>
+                            <th>Количество</th>
+                            <td rowspan="3">
+                                <div id="piechart_@i" style="width: 300px; height: 150px;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10 секунд</td>
+                            <td>@ServiceLevel.Sec10</td>
+                        </tr>
+                        <tr>
+                            <td>Более 10 сек.</td>
+                            <td>@other</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="tab2">
+        @foreach (var ServiceLevel in Model.cdrinfo.SLPD)
+        {
+            i++;
+            int other = ServiceLevel.Sec20;
+
+            <script type="text/javascript">
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                     ['Время', 'Количество', { role: 'style' }],
+                     ['10 с.', @ServiceLevel.Sec10, '#0b0'],
+                     ['10+ с.', @other, '#f00'],
+                    ]);
+
+                    var options = {
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('daychart_' + @i.ToString()));
+
+                    chart.draw(data, options);
+                }
+            </script>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <h5>@ServiceLevel.dt.ToShortDateString()</h5>
+                    <table class="table table-bordered" style="font-size:11px !important">
+                        <tr>
+                            <th>Ответ</th>
+                            <th>Количество</th>
+                            <td rowspan="3">
+                                <div id="daychart_@i"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10 секунд</td>
+                            <td>@ServiceLevel.Sec10</td>
+                        </tr>
+                        <tr>
+                            <td>Более 10 сек.</td>
+                            <td>@other</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="tab3">
+        @foreach (var ServiceLevel in Model.cdrinfo.SLPM)
+        {
+            i++;
+            int other = ServiceLevel.Sec20;
+
+            <script type="text/javascript">
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                     ['Время', 'Количество', { role: 'style' }],
+                     ['10 с.', @ServiceLevel.Sec10, '#0b0'],
+                     ['10+ с.', @other, '#f00'],
+                    ]);
+
+                    var options = {
+                    };
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('monchart_' + @i.ToString()));
+
+                    chart.draw(data, options);
+                }
+            </script>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <h5>@ServiceLevel.dt.ToString("MM")</h5>
+                    <table class="table table-bordered" style="font-size:11px !important">
+                        <tr>
+                            <th>Ответ</th>
+                            <th>Количество</th>
+                            <td rowspan="3">
+                                <div id="monchart_@i"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10 секунд</td>
+                            <td>@ServiceLevel.Sec10</td>
+                        </tr>
+                        <tr>
+                            <td>Более 10 сек.</td>
+                            <td>@other</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,371 @@
+﻿@model Fusion.Models.Callback.UniformModel
+
+@{
+    ViewBag.Title = "Форма просмотра/редактирования";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE HTML>
+<html>
+<head lang="ru">
+    <meta charset="utf-8">
+    <title>Форма просмотра/редактирования</title>
+    <link rel="stylesheet" href="~/Content/style_list_uni.css">
+    <script type="text/javascript">
+        function showForm1() {
+            document.getElementById("otlichno").hidden = false;
+            document.getElementById("horosho").hidden = false;
+            document.getElementById("srednie").hidden = true;
+            document.getElementById("plocho").hidden = true;
+            document.getElementById("ocenka").hidden = false;
+        }
+        function showForm2() {
+            document.getElementById("srednie").hidden = false;
+            document.getElementById("plocho").hidden = false;
+            document.getElementById("otlichno").hidden = true;
+            document.getElementById("horosho").hidden = true;
+            document.getElementById("ocenka").hidden = false;
+        }
+        function showForm3() {
+            document.getElementById("ocenka").hidden = true;
+        }
+        function Change_Select() {
+            //подразделение
+            if (document.getElementById("restind").value == 'Доставка') {
+                document.getElementById("gotoid").selected = true;               
+            }
+            else {
+                switch (document.getElementById("unitind").value) 
+                {
+                    case null:
+                        document.getElementById("unitid").selected = true;
+                        break
+                    case 'Ресторан':
+                        document.getElementById("restid").selected = true;
+                        break
+                    case 'Вынос':
+                        document.getElementById("outid").selected = true;
+                        break
+                    case 'Доставка':
+                        document.getElementById("gotoid").selected = true;
+                        break
+                    case 'КЦ':
+                        document.getElementById("ccid").selected = true;
+                        break
+                    case 'БК':
+                        document.getElementById("bcid").selected = true;
+                        break
+                }
+            }         
+            //ресторан
+            switch (document.getElementById("restind").value)
+            {
+                case null:
+                    document.getElementById("restoranid").selected = true;
+                    break
+                case 'Гайдос':
+                    document.getElementById("gaidid").selected = true;
+                    break
+                case 'Киото':
+                    document.getElementById("kiotoid").selected = true;
+                    break
+                case 'Мауро':
+                    document.getElementById("mauroid").selected = true;
+                    break
+                case 'Хоум':
+                    document.getElementById("homeid").selected = true;
+                    break
+                case 'Каваи':
+                    document.getElementById("kawaiid").selected = true;
+                    break
+                case 'Уссурийск':
+                    document.getElementById("ussurid").selected = true;
+                    break
+                case 'Находка':
+                    document.getElementById("hakhid").selected = true;
+                    break
+            }
+            //источник
+            switch (document.getElementById("sourseind").value)
+            {
+                case null:
+                    document.getElementById("sourceid").selected = true;
+                    break
+                case 'Сайт':
+                    document.getElementById("saitid").selected = true;
+                    break
+                case 'Инста':
+                    document.getElementById("instgrmid").selected = true;
+                    break
+                case 'Соцсети':
+                    document.getElementById("socid").selected = true;
+                    break
+                case 'Чек-телефон':
+                    document.getElementById("checkid").selected = true;
+                    break
+                case 'Лично/Жалобная книга':
+                    document.getElementById("bookid").selected = true;
+                    break
+                case 'КЦ':
+                    document.getElementById("sccid").selected = true;
+                    break
+                case 'БК':
+                    document.getElementById("sbcid").selected = true;
+                    break
+            }
+
+            //рейтинг
+            switch (document.getElementById("ratind").value)
+            {
+                case 'Положительный':
+                    //document.getElementById("pologhid").click();
+                    showForm1();
+                    //document.getElementById("pologhid").selected = true;
+                    break
+                case 'Отрицательный':
+                    //document.getElementById("otricid").click();
+                    showForm2();
+                    //document.getElementById("otricid").selected = true;
+                    break
+                case 'Критичный':
+                    //document.getElementById("kriticid").click();
+                    showForm3();
+                    //document.getElementById("kriticid").selected = true;
+                    break
+                case 'ОТРАВЛЕНИЕ':
+                    //document.getElementById("kriticid").click();
+                    showForm3();
+                    //document.getElementById("kriticid").selected = true;
+                    break
+                    
+
+            }
+            //рейтинг 2
+            switch (document.getElementById("rat2ind").value)
+            {
+                case null:
+                    document.getElementById("41").selected = true;
+                    break
+                case 'Отлично':
+                    document.getElementById("otlichno").selected = true;
+                    break
+                case 'Хорошо':
+                    document.getElementById("horosho").selected = true;
+                    break
+                case 'Средне':
+                    document.getElementById("srednie").selected = true;
+                    break
+                case 'Плохо':
+                    document.getElementById("plocho").selected = true;
+                    break     
+            }
+            //тип причины
+            switch (document.getElementById("typeind").value) {
+                case null:
+                    document.getElementById("typeid").selected = true;
+                    break
+                case 'Качество':
+                    document.getElementById("qualityid").selected = true;
+                    break
+                case 'Сервис':
+                    document.getElementById("serviceid").selected = true;
+                    break
+                case 'Скорость':
+                    document.getElementById("speedid").selected = true;
+                    break
+                case 'Прочее':
+                    document.getElementById("otherid").selected = true;
+                    break
+            }
+
+            //кто оплатил
+            switch (document.getElementById("payerind").value) {
+                case null:
+                    document.getElementById("nol").selected = true;
+                    break
+                case 'Cотрудник':
+                    document.getElementById("staffpay").selected = true;
+                    break
+                case 'Компания':
+                    document.getElementById("companypay").selected = true;
+                    break
+                case 'Cотрудник/Компания':
+                    document.getElementById("stcompay").selected = true;
+                    break
+
+            }
+        }
+    </script>
+
+</head>
+
+    <body onload="Element.valueOf()">
+        <div id="wrapper">
+
+            @using (Html.BeginForm("uniform", "uniform", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
+            { 
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                
+                @*@Html.HiddenFor(m => m.id, new {@value = Model.id, @name = "idhidden" })*@
+                @Html.HiddenFor(m => m.id, new {@value = Model.id })
+                
+                @Html.HiddenFor(m => m.Unit, new { @value = Model.Unit, @id = "unitind" })
+                @Html.HiddenFor(m => m.Rest, new { @value = Model.Rest, @id = "restind" })
+                @Html.HiddenFor(m => m.Source, new { @value = Model.Source, @id="sourseind" })               
+                @Html.HiddenFor(m => m.Rating1, new { @value = Model.Rating1, @id = "ratind" })
+                @Html.HiddenFor(m => m.Rating2, new { @value = Model.Rating2, @id = "rat2ind" })
+                @Html.HiddenFor(m => m.Type, new { @value = Model.Type, @id = "typeind" })
+                @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" })
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @ID = "UserName", @class = "contact_form", @value = Model.UserName})
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber })
+                @Html.ValidationMessageFor(m => m.phnumber)
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.email, new { placeholder = "Введите email гостя", @class = "contact_form", @value = Model.email })
+                @Html.ValidationMessageFor(m => m.email)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Подразделение:</span>                
+                <select name="unitt" size="1">
+                    <option selected disabled value="Подразделение" id="unitid">Подразделение</option>
+                    <option value="Ресторан" id="restid">Ресторан</option>
+                    <option value="Вынос" id="outid">Вынос</option>
+                    <option value="Доставка" id="gotoid">Доставка</option>
+                    <option value="КЦ" id="ccid">КЦ</option>
+                    <option value="БК" id="bcid">БК</option>
+                </select>
+
+                @*@Html.DropDownListFor(m => m.SelectedUnit, new SelectList(Model.Unit, "Value", "Text", "Подразделение"), new { disabled = "Подразделение" })
+                    @Html.ValidationMessageFor(m => m.SelectedUnit)*@
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Problem, new { placeholder = "Подробности проблемы", @required = true, @class = "contact_form", @value = Model.Problem })
+                @Html.ValidationMessageFor(m => m.Problem)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Тип причины:</span>
+                <select name="types" size="1">
+                    <option selected disabled value="Тип" id="typeid">Тип</option>
+                    <option value="Качество" id="qualityid">Качество</option>
+                    <option value="Сервис" id="serviceid">Сервис</option>
+                    <option value="Скорость" id="speedid">Скорость</option>
+                    <option value="Прочее" id="otherid">Прочее</option>
+                </select>
+            </li>
+            <li>
+                <select name="restt" size="1">
+                    <option selected disabled value="Ресторан" id="restoranid">Ресторан</option>
+                    <option value="Гайдос" id="gaidid">Гайдос</option>
+                    <option value="Киото" id="kiotoid">Киото</option>
+                    <option value="Мауро" id="mauroid">Мауро</option>
+                    <option value="Хоум" id="homeid">Хоум</option>
+                    <option value="Каваи" id="kawaiid">Каваи</option>
+                    <option value="Уссурийск" id="ussurid">Уссурийск</option>
+                    <option value="Находка" id="hakhid">Находка</option>
+                </select>
+                @*@Html.DropDownListFor(m => m.SelectedRest, new SelectList(Model.Rest, "Value", "Text", "Ресторан"), new { disabled = "Ресторан", @class = "contact_form" })
+                    @Html.ValidationMessageFor(m => m.SelectedRest)*@
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Guilty, new { placeholder = "Виновный", @class = "contact_form", @value = Model.Guilty })
+                @Html.ValidationMessageFor(m => m.Guilty)
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Staff, new { placeholder = "Ответственный", @class = "contact_form", @value = Model.Staff })
+                @Html.ValidationMessageFor(m => m.Staff)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Источник отзыва:</span>
+                <select name="sourcee" size="1">
+                    <option selected disabled value="Источник" id="sourceid">Источник отзыва</option>
+                    <option value="Сайт" id="saitid">Сайт</option>
+                    <option value="Инста" id="instgrmid">Инста</option>
+                    <option value="Соцсети" id="socid">Соцсети</option>
+                    <option value="Чек-телефон" id="checkid">Чек-телефон</option>
+                    <option value="Лично/Жалобная книга" id="bookid">Лично/Жалобная книга</option>
+                    <option value="КЦ" id="sccid">КЦ</option>
+                    <option value="БК" id="sbcid">БК</option>
+                </select>
+                @*@Html.DropDownListFor(m => m.SelectedSource, new SelectList(Model.Source, "Value", "Text", "Источник отзыва"), new { disabled = "Источник отзыва", @class = "contact_form" })
+                    @Html.ValidationMessageFor(m => m.SelectedSource)*@
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Дата создания отзыва:</span>
+                @Html.ValidationMessageFor(m => m.NewDate)
+                @Html.EditorFor(m => m.NewDate, new { placeholder = "Введите дату поступления отзыва", @required = true, @type = "date", @value = Model.NewDate })
+                
+                @*<span style="margin-left: 40px;">Время создания отзыва:</span>
+                @Html.EditorFor(m => m.NewTime, new {@type = "time", @class = "contact_form" })*@
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Дата закрытия отзыва:</span>
+                @Html.ValidationMessageFor(m => m.OldDate)
+                @Html.EditorFor(m => m.OldDate, new { placeholder = "Введите дату решения проблемы", @type = "date", @class = "contact_form", @value = Model.OldDate })
+
+                @*<span style="margin-left: 40px;">Время закрытия отзыва:</span>
+                @Html.EditorFor(m => m.OldTime, new { placeholder = "Введите время решения проблемы", @type = "time", @class = "contact_form" })*@
+                @*, @value = Model.OldTime*@
+            </li>
+            <li>
+                <p>@Html.RadioButtonFor(m => m.Rating1, "Положительный", new { onclick = "showForm1()", @id="pologhid" })Положительный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "Отрицательный", new { onclick = "showForm2()", @id = "otricid" })Отрицательный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "Критичный", new { onclick = "showForm3()", @id = "kriticid" })Критичный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "ОТРАВЛЕНИЕ", new { onclick = "showForm3()", @id = "otravid" })ОТРАВЛЕНИЕ</p>
+            </li>
+            <li>
+                <select name="reitingg" size="1" id="ocenka">
+                    <option selected disabled value="Допоценка" id="41">Выберите оценку</option>
+                    <option value="Отлично" id="otlichno" hidden>Отлично</option>
+                    <option value="Хорошо" id="horosho" hidden>Хорошо</option>
+                    <option value="Средне" id="srednie" hidden>Средне</option>
+                    <option value="Плохо" id="plocho" hidden>Плохо</option>
+                </select>
+                @*@Html.DropDownListFor(m => m.SelectedRating2, new SelectList(Model.Rating2, "Value", "Text", "Выберите оценку"), new { @class = "contact_form" })
+                    @Html.ValidationMessageFor(m => m.SelectedRating2)*@
+            </li>
+            <li>
+                @Html.ValidationMessageFor(m => m.textkomm)
+                @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm })
+            </li>
+            <li>
+                @Html.ValidationMessageFor(m => m.mera)
+                @Html.TextAreaFor(m => m.mera, new { placeholder = "Опишите принятые меры", @class = "contact_form", @value = Model.mera })
+            </li>
+            <li>
+                @*<textarea placeholder="Решение для гостя"></textarea>*@
+                @Html.ValidationMessageFor(m => m.answer)
+                @Html.TextAreaFor(m => m.answer, new { placeholder = "Опишите решение для гостя", @class = "contact_form", @value = Model.answer })
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost })
+                @Html.ValidationMessageFor(m => m.Cost)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Кто оплатил:</span>
+                <select name="payerr" size="1">
+                    <option selected disabled value="---" id="nol">---</option>
+                    <option value="Cотрудник" id="staffpay">Cотрудник</option>
+                    <option value="Компания" id="companypay">Компания</option>
+                    <option value="Cотрудник/Компания" id="stcompay">Cотрудник/Компания</option>
+                </select>
+            </li>
+            <li>
+                @*<input id="Submit1" type="submit" value="submit" />*@
+                <button type="submit" class="submit">Отправить</button>
+                @*<div id="divResultText"></div>*@
+            </li>
+        </ul>
+            }
+        </div>
+        <script type="text/javascript">
+            Change_Select();
+        </script>
+    </body>
+</html>
+

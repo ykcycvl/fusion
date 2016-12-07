@@ -1,0 +1,86 @@
+﻿@if (Model.paginator != null)
+{
+    string ActionName = Model.paginator.ActionName;
+    
+    <ul class="pagination">
+        @if (Model.paginator.totalpages <= 10)
+        {
+            for (int i = 1; i <= Model.paginator.totalpages; i++)
+            {
+                string pp = (i).ToString();
+                string c = "";
+
+                if (i == Model.paginator.currentPage)
+                {
+                    c = "active";
+                }
+
+                <li class="@c pagerlink"><input type="submit" name="page" value="@pp"/></li>
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= 3; i++)
+            {
+                string pp = (i).ToString();
+                string s = "";
+
+                if (i == Model.paginator.currentPage)
+                {
+                    s = "active";
+                }
+
+                <li class="@s pagerlink"><input type="submit" name="page" value="@pp" /></li>
+            }
+
+            for (int i = Model.paginator.currentPage - 3; i <= Model.paginator.currentPage; i++)
+            {
+                string pp = (i).ToString();
+                string s = "";
+
+                if (i == Model.paginator.currentPage)
+                {
+                    s = "active";
+                }
+                if (i > 3 && i == Model.paginator.currentPage - 3)
+                {
+                    <li class="disabled">...</li>
+                }
+                else
+                {
+                    if (i > 3 && i < Model.paginator.totalpages - 3)
+                    {
+                        <li class="@s pagerlink"><input type="submit" name="page" value="@pp" /></li>
+                    }
+                }
+            }
+
+            for (int i = Model.paginator.currentPage + 1; i > 3 && i < Model.paginator.totalpages - 3 && i < Model.paginator.currentPage + 4; i++)
+            {
+                string pp = (i).ToString();
+
+                if (i < Model.paginator.currentPage + 3)
+                {
+                    <li class="pagerlink"><input type="submit" name="page" value="@pp" /></li>
+                }
+                else
+                {
+                    <li class="disabled">...</li>
+                }
+            }
+
+            for (int i = Model.paginator.totalpages - 3; i <= Model.paginator.totalpages; i++)
+            {
+                string pp = (i).ToString();
+                string s = "";
+
+                if (i == Model.paginator.currentPage)
+                {
+                    s = "active";
+                }
+
+                <li class="@s pagerlink"><input type="submit" name="page" value="@pp" /></li>
+            }
+        }
+    </ul>
+}

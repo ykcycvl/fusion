@@ -1,0 +1,56 @@
+﻿@model Fusion.Models.CallCenter.CallCenterModels.Order
+@{
+    ViewBag.Title = "Список для прозвона";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Список для прозвона</h2>
+<div style="margin: 10px 0; border:none;">
+    @using (Html.BeginForm("CallingList", "CallCenter", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="col-xs-2">
+            С
+            @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <div class="col-xs-2">
+            по
+            @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <br />
+        <input type="submit" value="Показать" class="btn btn-default" />
+    }
+</div>
+<div class="row">
+    <div class="col-md-13">
+        <table class="table table-striped table-bordered table-hover" style="font-size:10px!important">
+            <tr>
+                <th>№ заказа</th>
+                <th>Имя гостя</th>
+                <th>Ресторан</th>
+                <th>Адрес</th>
+                <th>Время выполнения</th>
+                <th>Состояние</th>
+                <th>Тип доставки</th>
+                <th>Телефон</th>
+                <th>Доп. инфо</th>
+            </tr>
+            @if (Model != null)
+            {
+                foreach (var o in Model.Orders)
+                {
+                    <tr>
+                        <td>@o.order_num</td>
+                        <td>@o.full_name</td>
+                        <td>@o.restaurant</td>
+                        <td>@o.address</td>
+                        <td>@o.work_time</td>
+                        <td>@o.status</td>
+                        <td>@o.dlv_type</td>
+                        <td>@o.phone</td>
+                        <td>@o.adv_info</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+</div>

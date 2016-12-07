@@ -1,0 +1,1033 @@
+﻿@model Fusion.Models.CallCenter.CDRViewModels.CDRInfo
+@{
+    ViewBag.Title = "CDR";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $("#tabs").tabs();
+        //Код первой вкладки (стандартное использование)
+        $("#tab1").tabs();
+        //Код второй вкладки (удаленные вкладки)
+        $("#tab2").tabs({ show: function (e, ui) { if (ui.index != 0) { $(ui.panel).html("<img id='load' src='tab-load1.gif' />") } } });
+        //Код третьей вкладки (сворачивание активной вкладки)
+        $("#tab3").tabs({ collapsible: true, selected: -1 });
+        //Код четвертой вкладки (открытие при наведении)
+        $("#tab4").tabs({ event: "mouseover" });
+    });
+</script>
+<h2>CDR: Общая информация</h2>
+<div style="margin: 10px 0; border:none;display:none">
+    @using (Html.BeginForm("Overall", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.SelectedQueues)
+                @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+            </div>
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.SelectedAgents)
+                @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.start_dt)
+                @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.end_dt)
+                @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" />
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Информация об отчете</h3>
+        <table class="table table-bordered">
+            <tr>
+                <td>Очередь</td>
+                <td>
+                    @foreach (var queue in Model.SelectedQueues)
+                    {
+                        @queue
+                        <br />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>Начальная дата</td>
+                <td>@Model.start_dt.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <td>Конечная дата</td>
+                <td>@Model.end_dt.ToShortDateString()</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-xs-6">
+        <h3>Общая статистика</h3>
+        @{
+            
+        }
+    </div>
+</div>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tab1">По отделу</a></li>
+        <li><a href="#tab2">По операторам</a></li>
+        <li><a href="#tab3">Пропущенные звонки</a></li>
+    </ul>
+    <div id="tab1">
+        <div class="row">
+            <h4>@Model.start_dt.ToString() - @Model.end_dt.ToString()</h4>
+            <h4>Общий отчет с разбивкой по получасам</h4>
+            <table class="table_empty" style="font-size: 11px !important;text-align:center !important">
+                <tr style="text-align:center !important; background: #eee">
+                    <th style="text-align:center !important">Время</th>
+                    <th style="text-align:center !important">Прин.</th>
+                    <th style="text-align:center !important">Гостей на линии (MAX)</th>
+                    <th style="text-align:center !important">Время ож. (MAX)</th>
+                    <th style="text-align:center !important">Время ож. (AVG)</th>
+                    <th style="text-align:center !important">Время отв. (MAX)</th>
+                    <th style="text-align:center !important">Время отв. (AVG)</th>
+                    <th style="text-align:center !important">Пот</th>
+                    <th style="text-align:center !important">После 20 сек.</th>
+                    <th style="text-align:center !important">Время пот (AVG)</th>
+                    <th style="text-align:center !important">Время пот (MAX)</th>
+                    <th style="text-align:center !important">Ср. число опер.</th>
+                    <th style="text-align:center !important">Ср. число опер без пер.</th>
+                    <th style="text-align:center !important">% прин.</th>
+                    <th style="width:50px">% SL</th>
+                    <th style="text-align:center !important">Прин. в теч. 20 сек.</th>
+                    <th style="text-align:center !important">Исх</th>
+                    <th style="text-align:center !important">Время вх. разг (AVG)</th>
+                    <th style="text-align:center !important">Время исх. разг (AVG)</th>
+                    <th style="text-align:center !important">Всего (вх + исх)</th>
+                </tr>
+                <tr style="background: #ff0 !important;font-weight:bold">
+                    <td>
+                        ИТОГО:
+                    </td>
+                    <td>
+                        @Model.cdrinfo.Answered
+                    </td>
+                    <td>
+                        @Model.cdrinfo.MAX_QUEUED
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.MaxAnswerTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.MaxAnswerTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.MaxAnswerTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.MaxAnswerTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.MaxAnswerTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AvgAnswerTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AvgAnswerTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AvgAnswerTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AvgAnswerTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AvgAnswerTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.MaxAnswerTimeOperator.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.MaxAnswerTimeOperator.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.MaxAnswerTimeOperator.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.MaxAnswerTimeOperator.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.MaxAnswerTimeOperator.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AvgAnswerTimeOperator.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AvgAnswerTimeOperator.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AvgAnswerTimeOperator.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AvgAnswerTimeOperator.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AvgAnswerTimeOperator.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:center !important">
+                        @Model.cdrinfo.AbandonTotal
+                    </td>
+                    <td>
+                        @Model.cdrinfo.Abandonafter10
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AbandonAvgWaitTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AbandonAvgWaitTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AbandonAvgWaitTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AbandonAvgWaitTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AbandonAvgWaitTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AbandonMaxWaitTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AbandonMaxWaitTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AbandonMaxWaitTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AbandonMaxWaitTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AbandonMaxWaitTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td>@Model.cdrinfo.AvgOperatorsCount</td>
+                    <td>@Model.cdrinfo.AvgOnlineOperatorsCount</td>
+                    <td style="text-align:right !important">@Model.cdrinfo.AnsweredPrc.ToString("0.00")</td>
+                    <td style="text-align:right !important">@Model.cdrinfo.SL.ToString("0.00")</td>
+                    <td>@Model.cdrinfo.AnsweredFor10Sec</td>
+                    <td>@Model.cdrinfo.OutgoingTotal</td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AvgIncomingTalkTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AvgIncomingTalkTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AvgIncomingTalkTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AvgIncomingTalkTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AvgIncomingTalkTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td style="text-align:right !important">
+                        @if (Model.cdrinfo.AvgOutgoingTalkTime.TotalSeconds < 60)
+                        {
+                            @Model.cdrinfo.AvgOutgoingTalkTime.ToString(@"\:ss")
+                        }
+                        else
+                        {
+                            if (Model.cdrinfo.AvgOutgoingTalkTime.TotalSeconds < 3600)
+                            {
+                                @Model.cdrinfo.AvgOutgoingTalkTime.ToString(@"\:mm\:ss")
+                            }
+                            else
+                            {
+                                @Model.cdrinfo.AvgOutgoingTalkTime.ToString(@"\.hh\:mm\:ss")
+                            }
+                        }
+                    </td>
+                    <td>@Model.cdrinfo.Total</td>
+                </tr>
+                @foreach (var ohhp in @Model.cdrinfo._overallHHPStat)
+                {
+
+                    <tr>
+                        <td>@ohhp.TimePeriod.ToShortTimeString() - </td>
+                        <td>@ohhp.Answered</td>
+                        <td>@ohhp.MAX_QUEUED</td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.MaxAnswerTime.TotalSeconds < 60)
+                            {
+                                @ohhp.MaxAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.MaxAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.MaxAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.MaxAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AvgAnswerTime.TotalSeconds < 60)
+                            {
+                                @ohhp.AvgAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AvgAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AvgAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AvgAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.MaxAnswerTimeOperator.TotalSeconds < 60)
+                            {
+                                @ohhp.MaxAnswerTimeOperator.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.MaxAnswerTimeOperator.TotalSeconds < 3600)
+                                {
+                                    @ohhp.MaxAnswerTimeOperator.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.MaxAnswerTimeOperator.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AvgAnswerTimeOperator.TotalSeconds < 60)
+                            {
+                                @ohhp.AvgAnswerTimeOperator.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AvgAnswerTimeOperator.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AvgAnswerTimeOperator.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AvgAnswerTimeOperator.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>@ohhp.AbandonTotal</td>
+                        <td>@ohhp.Abandonafter10</td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AbandonAvgWaitTime.TotalSeconds < 60)
+                            {
+                                @ohhp.AbandonAvgWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AbandonAvgWaitTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AbandonAvgWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AbandonAvgWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AbandonMaxWaitTime.TotalSeconds < 60)
+                            {
+                                @ohhp.AbandonMaxWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AbandonMaxWaitTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AbandonMaxWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AbandonMaxWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>@ohhp.AvgOperatorsCount</td>
+                        <td>@ohhp.AvgOnlineOperatorsCount</td>
+                        <td style="text-align:right !important">@ohhp.AnsweredPrc.ToString("0.00")</td>
+                        <td style="text-align:right !important">@ohhp.SL.ToString("0.00")</td>
+                        <td>@ohhp.AnsweredFor10Sec</td>
+                        <td>@ohhp.OutgoingTotal</td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AvgIncomingTalkTime.TotalSeconds < 60)
+                            {
+                                @ohhp.AvgIncomingTalkTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AvgIncomingTalkTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AvgIncomingTalkTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AvgIncomingTalkTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (ohhp.AvgOutgoingTalkTime.TotalSeconds < 60)
+                            {
+                                @ohhp.AvgOutgoingTalkTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (ohhp.AvgOutgoingTalkTime.TotalSeconds < 3600)
+                                {
+                                    @ohhp.AvgOutgoingTalkTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @ohhp.AvgOutgoingTalkTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>@ohhp.Total</td>
+                    </tr>
+                }
+            </table>
+            <h4>Общий отчет с разбивкой по операторам</h4>
+            <table class="table_empty" style="font-size: 11px !important;text-align:center !important">
+                <tr style="text-align:center !important">
+                    <th>Оператор</th>
+                    <th>Время ответа (AVG)</th>
+                    <th>Время ответа (MAX)</th>
+                    <th>Пот</th>
+                    <th>Пот после 20 сек.</th>
+                    <th>Время пот (AVG)</th>
+                    <th>Время пот (MAX)</th>
+                    <th>Принятые</th>
+                    <th>Исх.</th>
+                    <th>Время вх. разг (AVG)</th>
+                    <th>Время исх. разг (AVG)</th>
+                    <th>Время в системе</th>
+                    <th>Время разг</th>
+                    <th>Время пер</th>
+                    <th>Своб. время на линии</th>
+                    <th>Время обр. Интернет-заказов</th>
+                </tr>
+                @foreach (var acdri in @Model.cdrinfo.AgentsCDR)
+                {
+                    if (acdri.AnsweredTotal == 0 && acdri.OutgoingTotal == 0 && acdri.AbandonTotal == 0)
+                    {
+                        continue;
+                    }
+                    <tr>
+                        <td>@acdri.AgentName</td>
+                        <td style="text-align:right !important">
+                            @if (acdri.AvgAnswerTime.TotalSeconds < 60)
+                            {
+                                @acdri.AvgAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.AvgAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.AvgAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.AvgAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (acdri.MaxAnswerTime.TotalSeconds < 60)
+                            {
+                                @acdri.MaxAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.MaxAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.MaxAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.MaxAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>@acdri.AbandonTotal</td>
+                        <td>@acdri.Abandonafter10</td>
+                        <td style="text-align:right !important">
+                            @if (acdri.AbandonAvgWaitTime.TotalSeconds < 60)
+                            {
+                                @acdri.AbandonAvgWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.AbandonAvgWaitTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.AbandonAvgWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.AbandonAvgWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (acdri.AbandonMaxWaitTime.TotalSeconds < 60)
+                            {
+                                @acdri.AbandonMaxWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.AbandonMaxWaitTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.AbandonMaxWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.AbandonMaxWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>@acdri.AnsweredTotal</td>
+                        <td>@acdri.OutgoingTotal</td>
+                        <td style="text-align:right !important">
+                            @if (acdri.AvgIncomingTalk.TotalSeconds < 60)
+                            {
+                                @acdri.AvgIncomingTalk.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.AvgIncomingTalk.TotalSeconds < 3600)
+                                {
+                                    @acdri.AvgIncomingTalk.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.AvgIncomingTalk.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (acdri.AvgOutgoingTalk.TotalSeconds < 60)
+                            {
+                                @acdri.AvgOutgoingTalk.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.AvgOutgoingTalk.TotalSeconds < 3600)
+                                {
+                                    @acdri.AvgOutgoingTalk.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.AvgOutgoingTalk.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (acdri.RegisteredTime.TotalSeconds < 60)
+                            {
+                                @acdri.RegisteredTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.RegisteredTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.RegisteredTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.RegisteredTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (acdri.TotalTalkTime.TotalSeconds < 60)
+                            {
+                                @acdri.TotalTalkTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.TotalTalkTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.TotalTalkTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.TotalTalkTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (acdri.RestTime.TotalSeconds < 60)
+                            {
+                                @acdri.RestTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.RestTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.RestTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.RestTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (acdri.FreeTime.TotalSeconds < 60)
+                            {
+                                @acdri.FreeTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.FreeTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.FreeTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.FreeTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td>
+                            @if (acdri.InternetTime.TotalSeconds < 60)
+                            {
+                                @acdri.InternetTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (acdri.InternetTime.TotalSeconds < 3600)
+                                {
+                                    @acdri.InternetTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @acdri.InternetTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="row alert alert-info">
+            <div style="margin: 10px 0; border:none">
+                @using (Html.BeginForm("MissedCallsDetail", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div style="display:none">
+                        <div class="form-group">
+                            <div class="col-xs-2">
+                                @Html.LabelFor(m => m.SelectedQueues)
+                                @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+                            </div>
+                            <div class="col-xs-2">
+                                @Html.LabelFor(m => m.SelectedAgents)
+                                @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-2">
+                                @Html.LabelFor(m => m.start_dt)
+                                @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                            </div>
+                            <div class="col-xs-2">
+                                @Html.LabelFor(m => m.end_dt)
+                                @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-2">
+                            <input type="submit" value="Подробнее" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            </div>
+            @{
+                <div class="col-xs-6">
+                    <h3>Непринятые звонки</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Причина</th>
+                            <th>Количество</th>
+                        </tr>
+                        <tr>
+                            <td>Гость покинул очередь</td>
+                            <td>@Model.cdrinfo.ABANDON</td>
+                        </tr>
+                        <tr>
+                            <td>Вышло время ожидания</td>
+                            <td>@Model.cdrinfo.EXITWITHTIMEOUT</td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>Причина разъединения</h3>
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Причина</th>
+                        <th>Количество</th>
+                    </tr>
+                    <tr>
+                        <td>Оператор отключился</td>
+                        <td>@Model.cdrinfo.COMPLETEAGENT</td>
+                    </tr>
+                    <tr>
+                        <td>Гость отключился</td>
+                        <td>@Model.cdrinfo.COMPLETECALLER</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="tab2">
+        <div class="row">
+            @foreach (var a in Model.cdrinfo.AgentsCDR)
+            {
+                if (a.AnsweredTotal == 0 && a.OutgoingTotal == 0 && a.AbandonTotal == 0)
+                {
+                    continue;
+                }
+                <h5>@a.AgentName (@a.AgentNumber)</h5>
+                <table class="table_empty" style="font-size:11px !important">
+                    <tr>
+                        <th style="width: 50px">Время</th>
+                        <th style="text-align:center !important">Принято</th>
+                        <th style="text-align:center !important">Время ответа (AVG)</th>
+                        <th style="text-align:center !important">Время ответа (MAX)</th>
+                        <th style="text-align:center !important">Время вх. разг (AVG)</th>
+                        <th style="text-align:center !important">Пот. всего</th>
+                        <th style="text-align:center !important">Пот. после 20 сек.</th>
+                        <th style="text-align:center !important">Время пот (AVG)</th>
+                        <th style="text-align:center !important">Время пот (MAX)</th>
+                        <th style="text-align:center !important">Исх.</th>
+                        <th style="text-align:center !important">Время исх. разг (AVG)</th>
+                        <th style="text-align:center !important">Время разг. на линии</th>
+                        <th style="text-align:center !important">Время перерывов</th>
+                        <th style="text-align:center !important">Время обработки Интернет-заказов</th>
+                        <th style="text-align:center !important">Своб. время на линии</th>
+                    </tr>
+                    <tr style="background: #ff0 !important;font-weight:bold">
+                        <td>Итого:</td>
+                        <td style="text-align:right !important">@a.AnsweredTotal</td>
+                        <td style="text-align:right !important">
+                            @if (a.AvgAnswerTime.TotalSeconds < 60)
+                            {
+                                @a.AvgAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.AvgAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @a.AvgAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.AvgAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (a.MaxAnswerTime.TotalSeconds < 60)
+                            {
+                                @a.MaxAnswerTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.MaxAnswerTime.TotalSeconds < 3600)
+                                {
+                                    @a.MaxAnswerTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.MaxAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (a.AvgIncomingTalk.TotalSeconds < 60)
+                            {
+                                @a.AvgIncomingTalk.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.AvgIncomingTalk.TotalSeconds < 3600)
+                                {
+                                    @a.AvgIncomingTalk.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.AvgIncomingTalk.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">@a.AbandonTotal</td>
+                        <td style="text-align:right !important">@a.Abandonafter10</td>
+                        <td style="text-align:right !important">
+                            @if (a.AbandonAvgWaitTime.TotalSeconds < 60)
+                            {
+                                @a.AbandonAvgWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.AbandonAvgWaitTime.TotalSeconds < 3600)
+                                {
+                                    @a.AbandonAvgWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.AbandonAvgWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right !important">
+                            @if (a.AbandonMaxWaitTime.TotalSeconds < 60)
+                            {
+                                @a.AbandonMaxWaitTime.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.AbandonMaxWaitTime.TotalSeconds < 3600)
+                                {
+                                    @a.AbandonMaxWaitTime.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.AbandonMaxWaitTime.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right">@a.OutgoingTotal</td>
+                        <td style="text-align:right !important">
+                            @if (a.AvgOutgoingTalk.TotalSeconds < 60)
+                            {
+                                @a.AvgOutgoingTalk.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (a.AvgOutgoingTalk.TotalSeconds < 3600)
+                                {
+                                    @a.AvgOutgoingTalk.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @a.AvgOutgoingTalk.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0</td>
+                        <td style="text-align:right">0</td>
+                    </tr>
+                    @foreach (var tp in a._HHPStat)
+                    {
+                        <tr>
+                            <td style="text-align: right !important">@tp.TimePeriod.ToShortTimeString()-</td>
+                            <td style="text-align:right">@tp.Answered</td>
+                            <td style="text-align:right !important">
+                                @if (tp.AvgAnswerTime.TotalSeconds < 60)
+                                {
+                                    @tp.AvgAnswerTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.AvgAnswerTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.AvgAnswerTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.AvgAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right !important">
+                                @if (tp.MaxAnswerTime.TotalSeconds < 60)
+                                {
+                                    @tp.MaxAnswerTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.MaxAnswerTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.MaxAnswerTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.MaxAnswerTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right !important">
+                                @if (tp.AvgIncomingTalkTime.TotalSeconds < 60)
+                                {
+                                    @tp.AvgIncomingTalkTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.AvgIncomingTalkTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.AvgIncomingTalkTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.AvgIncomingTalkTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right">@tp.AbandonTotal</td>
+                            <td style="text-align:right !important">@tp.Abandonafter10</td>
+                            <td style="text-align:right !important">
+                                @if (tp.AbandonAvgWaitTime.TotalSeconds < 60)
+                                {
+                                    @tp.AbandonAvgWaitTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.AbandonAvgWaitTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.AbandonAvgWaitTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.AbandonAvgWaitTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right !important">
+                                @if (tp.AbandonMaxWaitTime.TotalSeconds < 60)
+                                {
+                                    @tp.AbandonMaxWaitTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.AbandonMaxWaitTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.AbandonMaxWaitTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.AbandonMaxWaitTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right">@tp.OutgoingTotal</td>
+                            <td style="text-align:right !important">
+                                @if (tp.AvgOutgoingTalkTime.TotalSeconds < 60)
+                                {
+                                    @tp.AvgOutgoingTalkTime.ToString(@"\:ss")
+                                }
+                                else
+                                {
+                                    if (tp.AvgOutgoingTalkTime.TotalSeconds < 3600)
+                                    {
+                                        @tp.AvgOutgoingTalkTime.ToString(@"\:mm\:ss")
+                                    }
+                                    else
+                                    {
+                                        @tp.AvgOutgoingTalkTime.ToString(@"\.hh\:mm\:ss")
+                                    }
+                                }
+                            </td>
+                            <td style="text-align:right">0</td>
+                            <td style="text-align:right">0</td>
+                            <td style="text-align:right">0</td>
+                            <td style="text-align:right">0</td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+    <div id="tab3">
+        <div class="row">
+            <table class="table table-bordered table-hover table-striped" style="font-size:11px !important">
+                <tr>
+                    <th>Номер звонящего</th>
+                    <th>Постановка в очередь (время)</th>
+                    <th>Покидание очереди (время)</th>
+                    <th>Длительность ожидания</th>
+                    <th>Нач. позиция</th>
+                    <th>Кон. позиция</th>
+                    <th>Очередь</th>
+                    <th>Оператор</th>
+                    <th>Время у оператора</th>
+                </tr>
+                @foreach (var MissedCall in Model.cdrinfo.MissedCalls)
+                {
+                    TimeSpan ts = new TimeSpan(0, 0, MissedCall.WaitTime);
+
+                    <tr>
+                        <td>@MissedCall.phonenumber</td>
+                        <td>@MissedCall.EnterQueueDt.ToString()</td>
+                        <td>@MissedCall.AbandonDt.ToString()</td>
+                        <td>@ts.ToString()</td>
+                        <td>@MissedCall.start_pos.ToString()</td>
+                        <td>@MissedCall.end_pos.ToString()</td>
+                        <td>@MissedCall.Queue</td>
+                        <td>@MissedCall.agent</td>
+                        <td style="text-align:right !important">
+                            @if (MissedCall.WaitTimeForOperator.TotalSeconds < 60)
+                            {
+                                @MissedCall.WaitTimeForOperator.ToString(@"\:ss")
+                            }
+                            else
+                            {
+                                if (MissedCall.WaitTimeForOperator.TotalSeconds < 3600)
+                                {
+                                    @MissedCall.WaitTimeForOperator.ToString(@"\:mm\:ss")
+                                }
+                                else
+                                {
+                                    @MissedCall.WaitTimeForOperator.ToString(@"\.hh\:mm\:ss")
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

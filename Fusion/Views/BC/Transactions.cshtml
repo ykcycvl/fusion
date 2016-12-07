@@ -1,0 +1,99 @@
+﻿@model Fusion.Models.BC.BCViewModels.ReceiptListViewModel
+@{
+    ViewBag.Title = "История операций";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>История операций</h2>
+<h3>@ViewBag.PersonName</h3>
+<div style="margin: 10px 0; border:none;">
+    @using (Html.BeginForm("Transactions", "BC", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.party_id)
+        <div class="col-xs-2">
+            <text>Начальная дата</text>
+            @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style="width: 150px"})
+        </div>
+        <div class="col-xs-2">
+            <text>Конечная дата</text>
+            @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" style="height:25px;margin-top:19px;padding:0 20px;"/>
+    }
+</div>
+<table class="table table-bordered table-hover table-striped" style="font-size:12px !important">
+    <tr>
+        <th>Номер чека</th>
+        <th>Тип</th>
+        <th>Дата</th>
+        <th style="text-align:center">Сумма</th>
+        <th>Начислено бал.</th>
+        <th>Оплачено бал.</th>
+        <th>Оплачено нал.</th>
+        <th>Доступно бал.</th>
+        <th>Номер карты</th>
+        <th>Статус</th>
+    </tr>
+    @foreach (var r in Model)
+    {
+        string style = "color: #468847 !important";
+        string optype = "Нач.";
+        string optypestyle = "font-weight: bold;";
+
+        if (r.status == "Новый")
+        {
+            style = "color: #000000 !important";
+        }
+
+        if (r.total_paid_bp > 0)
+        {
+            optype = "Потр.";
+            optypestyle = "font-weight: bold; color: #ff0000";
+        }
+        if (r.pos_id == 157)
+        {
+            optype = "Ручн.";
+            style = "color: #D94FA8 !important;background: #FFE000;";
+        }
+
+        if (r.act_no != null && r.act_no != "")
+        {
+            style = "color: #FF0000 !important;font-style:italic";
+            optype = "Отменен";
+        }
+        
+
+        <tr style="@style">
+            <td>
+                @Html.ActionLink(@r.receipt_no, "ViewCheck", new { id = @r.id, @returnUrl = @ViewBag.returnUrl })
+            </td>
+            <td>
+                <span style="@optypestyle">@optype</span>
+            </td>
+            <td>
+                @r.creation_date.AddHours(10).ToString()
+            </td>
+            <td style="text-align:right">
+                @r.sub_total
+            </td>
+            <td style="text-align:right">
+                @r.total_accrued_bp
+            </td>
+            <td style="text-align:right">
+                @r.total_paid_bp
+            </td>
+            <td style="text-align:right">
+                @r.total
+            </td>
+            <td style="text-align:right">
+                @r.available_bp
+            </td>
+            <td>
+                @r.dc_card_no
+            </td>
+            <td>
+                @r.status
+            </td>
+        </tr>
+    }
+</table>

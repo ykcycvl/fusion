@@ -1,0 +1,343 @@
+﻿@model Fusion.Models.Callback.TblViewModel.TblsModelDown
+
+@{
+    ViewBag.Title = "Обратная связь";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Content/tbl_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/tabsort0.css">
+<script type="text/javascript" src="~/Content/tabsort0.js"></script> @*скрипт для сортировки*@
+<script type="text/javascript" src="~/Content/filterTable.v1.0.min.js"></script> @*скрипт для фильтрации*@
+
+
+@* кнопка отчёта *@
+<script>
+    $(function () {
+        $("#AddTransactionDialog").dialog({
+            buttons: {
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { },
+            modal: true,
+            width: 450,
+            height: 350,
+            autoOpen: false,
+            draggable: true,
+            closeText: '',
+            resizable: true
+        });
+    });
+</script>
+
+<h1>Обратная связь</h1>
+<div id="wrapper">
+    @using (Html.BeginForm("viewtable", "callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
+    {
+        //кнопка добавления
+        <div id="datefilter"> 
+            <a href="~/uniform/uniform?updorins=-1" class="btn btn-success">Добавить отзыв</a> 
+            @Html.EditorFor(m => m.DateNEW1, new { @required = true, @type = "date", @ID = "daten1", @value = Model.DateNEW1 })
+            @Html.EditorFor(m => m.DateNEW2, new { @required = true, @type = "date", @ID = "daten2", @value = Model.DateNEW2 })
+            <button type="submit" class="btn btn-primary" id="">Вывести отзывы</button> 
+        </div>
+
+        <div id="filters">
+            @*фильтры*@
+            <input id="namef" placeholder="Имя гостя" />
+
+            <select id="reitf">
+                <option value="">---</option>
+                <option value="Положительный">Полож</option>
+                <option value="Отрицательный">Отриц</option>
+                <option value="Критичный">Крит</option>
+            </select>
+
+            <input id="numf" placeholder="Номер телефона" />
+
+            <input onkeyup="datenew1()" id="datenew1" @*type="date"*@ />
+            <input onkeyup="datenew2()" id="datenew2" @*type="date"*@ />
+
+            <input id="dateclose" @*type="date"*@ />
+
+            <select id="unitf">
+                <option value="">---</option>
+                <option value="Ресторан">Ресторан</option>
+                <option value="Вынос">Вынос</option>
+                <option value="Доставка">Доставка</option>
+                <option value="КЦ">КЦ</option>
+                <option value="БК">БК</option>
+            </select>
+
+            <select id="digits">
+                <option value="">---</option>
+                <option value="Гайдос">Гайдос</option>
+                <option value="Киото">Киото</option>
+                <option value="Мауро">Мауро</option>
+                <option value="Хоум">Хоум</option>
+                <option value="Каваи">Каваи</option>
+                <option value="Уссурийск">Уссурийск</option>
+                <option value="Находка">Находка</option>
+            </select>
+
+            <select id="typef">
+                <option value="">---</option>
+                <option value="Качество">Качество</option>
+                <option value="Сервис">Сервис</option>
+                <option value="Скорость">Скорость</option>
+                <option value="Прочее">Прочее</option>
+            </select>
+
+            <select id="sourcef">
+                <option value="">---</option>
+                <option value="Сайт">Сайт</option>
+                <option value="Инста">Инста</option>
+                <option value="Соцсети">Соцсети</option>
+                <option value="Чек-телефон">Чек-телефон</option>
+                <option value="Лично/Жалобная книга">Лично/Ж. книга</option>
+                <option value="КЦ">КЦ</option>
+                <option value="БК">БК</option>
+            </select>
+            @* кнопка для отчёта *@
+            <button type="button" class="btn btn-danger" id="AddTransactionBtn">Отчет</button>
+            <script>
+                $(function () {
+                    $("#AddTransactionBtn").click(function () {
+                        $("#AddTransactionDialog").dialog("open");
+                        return false;
+                    });
+                });
+            </script>
+        </div>
+            
+
+        //отзывы
+        <table class="sortable table table-bordered table-hover" id="t">
+            <thead>
+                <tr>
+                    <th class="name">Имя гостя</th>
+                    <th>Оценка</th>
+                    <th class="numb">Номер телефона</th>
+                    <th>Дата появления</th>
+                    <th>Дата закрытия</th>
+                    <th class="unit">Подразделение</th>
+                    <th>Ресторан</th>
+                    <th>Тип</th>
+                    <th>Источник</th>
+                </tr>
+            </thead>
+            <tbody id="target">
+                @foreach (var attribute in Model.persons)
+                {
+                    string rowColor = "";
+                    string textColor = "";
+
+                    if (@attribute.DateClose != null)
+                    {
+                        textColor = "#ffffff";
+
+                        switch (attribute.Rating)
+                        {
+                            case "Положительный":
+                                rowColor = "#669966";
+                                break;
+                            case "Отрицательный":
+                                rowColor = "#ec971f";
+                                break;
+                            case "Критичный":
+                                rowColor = "#c9302c";
+                                break;
+                            case "ОТРАВЛЕНИЕ":
+                                rowColor = "#000000";
+                                break;
+                            default:
+                                textColor = "#000";
+                                break;
+                        }
+                    }
+
+                    if (attribute.Rating == null || attribute.Rating == String.Empty)
+                    {
+                        attribute.Rating = "-"; 
+                    }
+                    if (attribute.DateClose == null || attribute.DateClose == String.Empty)
+                    {
+                        attribute.DateClose = "-";
+                    }
+                    if (attribute.Unit == null || attribute.Unit == String.Empty)
+                    {
+                        attribute.Unit = "-";
+                    }
+                    if (attribute.Rest == null || attribute.Rest == String.Empty)
+                    {
+                        attribute.Rest = "-";
+                    }
+                    if (attribute.Phone == null || attribute.Phone == String.Empty)
+                    {
+                        attribute.Phone = "-";
+                    }
+                    if (attribute.Type == null || attribute.Type == String.Empty)
+                    {
+                        attribute.Type = "-";
+                    }
+                    if (attribute.Source == null || attribute.Source == String.Empty)
+                    {
+                        attribute.Source = "-";
+                    }
+                        
+                    <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/callback/uniform?updorins=@attribute.id'">
+                        <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Rating, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Phone, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td class="datenew3">@Html.ActionLink(attribute.Data, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.DateClose, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Unit, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Rest, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Type, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td>@Html.ActionLink(attribute.Source, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
+                        <td hidden id="cldate">@attribute.DateClose</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    <script>
+        filterTable(document.getElementById("target"), {
+            0: new filterTable.Filter(document.getElementById("namef"),
+            /* Коллбэк ф-ция валидации */
+            function (value, filters, i) {
+                var c_value = value.toLowerCase(),
+                    f_value = filters[i].value.toLowerCase();
+                return c_value.indexOf(f_value) === 0;
+            },
+            /* Будем вызывать валидацию по событию onkeyup фильтра */
+            "onkeyup"
+        ),
+            1: document.getElementById("reitf"),
+            2: new filterTable.Filter(document.getElementById("numf"),
+            /* Коллбэк ф-ция валидации */
+            function (value, filters, i) {
+                return value.indexOf(filters[i].value) === 0;
+            },
+            /* Будем вызывать валидацию по событию onkeyup фильтра */
+            "onkeyup"
+        ),
+            3: new filterTable.Filter(document.getElementById("datenew2"),
+            /* Коллбэк ф-ция валидации */
+            function (value, filters, i) {
+                return value.indexOf(filters[i].value) === 0;
+            },
+            /* Будем вызывать валидацию по событию onkeyup фильтра */
+            "onkeyup"
+        ),
+            //document.getElementById("datenew2"),
+            4: new filterTable.Filter(document.getElementById("dateclose"),
+            /* Коллбэк ф-ция валидации */
+            function (value, filters, i) {
+                return value.indexOf(filters[i].value) === 0;
+            },
+            /* Будем вызывать валидацию по событию onkeyup фильтра */
+            "onkeyup"
+        ),
+            //document.getElementById("dateclose"),
+            5: document.getElementById("unitf"),
+            6: document.getElementById("digits"),
+            7: document.getElementById("typef"),
+            8: document.getElementById("sourcef")
+        }
+    );
+
+    </script>
+
+    <script>
+
+        function datenew1() {
+            var date1 = document.getElementById("datenew1").value;
+            var date2 = document.getElementById("datenew2").value;
+            var day1 = date1.substring(0, 2);
+            var month1 = date1.substring(3, 5);
+            var year1 = date1.substring(6, 10);
+
+            var regul = /\d{2}.{1}\d{2}.{1}\d{4}/;
+            if (regul.test(date1) && regul.test(date2)) {
+                //ф-я сортировки и обновления отчёта
+            }
+
+        }
+
+        function datenew2() {
+            var date2 = document.getElementById("datenew2").value;
+            var date1 = document.getElementById("datenew1").value;
+            var day2 = date2.substring(0, 2);
+            var month2 = date2.substring(3, 5);
+            var year2 = date2.substring(6, 10);
+
+            var regul = /\d{2}.{1}\d{2}.{1}\d{4}/;
+            if (regul.test(date1) && regul.test(date2)) {
+                //ф-я сортировки и обновления отчёта
+            }
+
+        }
+    </script>
+</div>
+
+
+<div id="AddTransactionDialog" title="Отчет по отзывам">
+    <span>Всего пришло отзывов: @Model.persons.Count</span>
+    @{
+        int sum = 0;
+    }
+    @foreach (var attribute in Model.persons)
+    {
+        sum = sum + Convert.ToInt32(attribute.Cost);
+    }
+    <br />
+    <span>Все расходы: @sum рублей</span>
+    <br />
+
+    @{
+        int sum1 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "Положительный"))
+    {
+        sum1 = sum1 + 1;
+    }
+
+    @{
+        int sum2 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "Отрицательный"))
+    {
+        sum2 = sum2 + 1;
+    }
+
+    @{
+        int sum3 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "Критичный"))
+    {
+        sum3 = sum3 + 1;
+    }
+
+    @{
+        int sum5 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "ОТРАВЛЕНИЕ"))
+    {
+        sum5 = sum5 + 1;
+    }
+    @{
+        int sum4 = Model.persons.Count - sum1 - sum2 - sum3;
+    }
+
+    <span>
+        Всего положительных отзывов: @sum1 <br />
+        Всего отрицательных отзывов: @sum2 <br />
+        Всего критичных отзывов: @sum3 <br />
+        Всего ОТРАВЛЕНИЙ: @sum5 <br />
+        Отзывов не обработано: @sum4
+    </span>
+    <span></span>
+</div>

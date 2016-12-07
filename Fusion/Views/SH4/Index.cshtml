@@ -1,0 +1,38 @@
+﻿@model Fusion.Models.SH4.SH4
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Наименование
+        </th>
+        <th>
+            Группа
+        </th>
+        <th>
+            Остаток
+        </th>
+        <th>
+            Ед. изм.
+        </th>
+        @foreach(var gb in Model.GoodsBalances)
+        {
+            <tr>
+                <td>@gb.good.id</td>
+                <td>@gb.good.Name</td>
+                <td>@gb.good.ComplectName</td>
+                <td style="text-align:right">@gb.balance.ToString("0.000")</td>
+                <td>@gb.good.Unit</td>
+            </tr>
+        }
+    </tr>
+</table>

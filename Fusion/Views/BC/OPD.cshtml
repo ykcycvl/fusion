@@ -1,0 +1,51 @@
+﻿@model Fusion.Models.BC.BCViewModels.OPDData
+@{
+    ViewBag.Title = "OPD";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OPD</h2>
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("OPD", "BC", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-1">
+            <text>OPD</text>
+            @Html.TextBoxFor(m => m.opd, new { @class = "form-control date", @style = "width: 50px" })
+        </div>
+        <div class="col-xs-2">
+            <text>Начальная дата</text>
+            @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            <text>Конечная дата</text>
+            @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" style="height:25px;margin-top:19px;padding:0 20px;" />
+    }
+</div>
+<table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
+    <tr>
+        <th>
+            OPD
+        </th>
+        <th>
+            Владелец
+        </th>
+        <th>
+            Карта
+        </th>
+        <th>
+            Дата
+        </th>
+    </tr>
+
+    @foreach (var opd in Model.OPDDataList)
+    {
+        <tr>
+            <td>@opd.count</td>
+            <td>@Html.ActionLink(@opd.fullname, "EditPerson", new { id = @opd.party_id })</td>
+            <td>@opd.card_no</td>
+            <td>@opd.dt</td>
+        </tr>
+    }
+</table>

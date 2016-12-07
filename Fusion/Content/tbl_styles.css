@@ -1,0 +1,160 @@
+﻿#wrapper {
+	width:1200px;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:80px;
+	padding:5px;
+}
+
+
+table {
+	border-spacing: 7px;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	text-align: center;
+	border-radius: 10px;
+	width: auto; /*1150px*/
+	margin-left:auto;
+	margin-right:auto;
+	font-size: 15px;
+	padding: 10px;
+	color: #825B0C;
+}
+td {
+    border-bottom: 2px solid white;
+    border-top: 2px solid white;
+}
+td:nth-of-type(2) {
+    width:180px;
+    height:29px;
+}
+tr:nth-of-type(1) > th {
+    background-color: white;
+}
+tr>th.unit {
+    width:122px;
+}
+tr>th.name {
+    width:122px;
+}
+tr>th.numb {
+    width:100px;
+}
+
+tr:nth-of-type(2n+1) {
+    /*background-color: #91908D;*/
+}
+tr:nth-of-type(2n+1) > td > a {
+   /*color:white;*/
+}
+th {
+    text-align: center;
+    padding-right:10px;
+    padding-left:5px;
+}
+a {
+	color: #825B0C;
+}
+a:hover{
+    text-decoration:none;
+    /*color:whitesmoke;*/
+}
+tr:hover {
+	opacity: 0.9;
+	background-color: #F56433;
+    cursor:pointer;
+}
+tr:hover > td > a { 
+    /*color: white; */
+} 
+#submit2 {
+	width: 47px;
+}
+
+table.butt {
+    margin-bottom:10px;
+}
+
+#kolvo {
+    
+}
+#sum {
+    color:#b97a04;
+    margin-left: 10px;
+}
+
+table.filtrtbl {
+    margin-left:50px;
+	margin-right:50px;
+    height:100px;
+}
+tr.filters {
+	opacity: 1;
+	background-color: white;
+    cursor:auto;
+}
+td.reittd {
+    width:auto;
+    height:auto;    
+}
+#namef {
+    width:145px;
+   margin-left: 25px;
+}
+#reitf {
+    height:26px;
+}
+#numf {
+    width: 115px;
+}
+#datenew1 {
+    width: 120px;
+    height:26px;
+   display: none;
+}
+#datenew2 {
+    width: 108px;
+    height:26px;
+}
+#dateclose {
+    width: 108px;
+    height:26px;
+} 
+#unitf {
+   
+    height:26px;
+}
+#sourcef {
+   
+    height:26px;
+}
+#digits {
+   
+    width:85px;
+    height:26px;
+}
+#typef {
+   
+    width:75px;
+    height:26px;
+}
+tr.filters:hover {
+	opacity: 1;
+	background-color: white;
+    cursor:auto;
+}
+#filters {
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+    width: 1058px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+#AddTransactionBtn {
+    width: 80px;
+}
+#datefilter {
+    width: 680px;
+    margin: 0 auto;
+}

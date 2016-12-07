@@ -1,0 +1,159 @@
+﻿@model Fusion.Models.CRMViewModels.TransactionsViewModel
+
+@{
+    ViewBag.Title = "Список операций";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $("#ShowTransactionDialog").dialog({
+            buttons: {
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { },
+            modal: true,
+            width: 400,
+            height: 250,
+            autoOpen: false,
+            draggable: true,
+            closeText: '',
+            resizable: true
+        });
+    });
+
+
+</script>
+
+@if (Model.person != null)
+{
+    <h3>@Model.person.FULL_NAME</h3>
+}
+
+<h4>Список операций с @Model.StartDateTime.ToShortDateString() по @Model.EndDateTime.ToShortDateString()</h4>
+
+<div class="alert alert-info" style="overflow:hidden">
+    <p>Транзакции, выполненные вручную (например ручное пополнение либо списание) недоступны для просмотра, так как не имеют чека Rkeeper</p>
+</div>
+
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("Transactions", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.people_id)
+
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+<table class="table table-bordered" style="font-size:12px !important">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Дата и время
+        </th>
+        <th>
+            Карта
+        </th>
+        <th>
+            Сумма
+        </th>
+        <th>
+            Тип операции
+        </th>
+        <th>
+            Статус
+        </th>
+        <th>
+            Тип счета
+        </th>
+        <th>
+            &nbsp;
+        </th>
+        <th style="width: 100px">
+            Комментарий
+        </th>
+    </tr>
+    @{
+        var ab = 0;
+    }
+    @foreach (var t in Model.Transactions)
+    {
+        string style = "";
+        string style1 = "";
+
+        if (t.Operation == "Пополнение")
+        {
+            style = "color:#282";
+        }
+        else
+        {
+            style = "color:#b00";
+        }
+
+        if (t.state == "Отменен")
+        {
+            style1 += "text-decoration:line-through";
+        }
+
+        <tr style="@style">
+            <td>
+                @if (t.dop_info != null && t.dop_info != "")
+                {
+                    @Html.ActionLink(t.transaction_id.ToString(), "ViewCheck", new { @TransactionGuid = t.TransactionGuid.ToString() })
+                }
+                else
+                {
+                    @t.transaction_id
+                }
+            </td>
+            <td>
+                @t.transaction_time.ToString("dd.MM.yyyy hh:mm:ss")
+            </td>
+            <td>
+                @t.card_code
+            </td>
+            <td style="@style1;text-align:right">
+                @t.summ
+            </td>
+            <td style="@style1">
+                @t.Operation
+            </td>
+            <td>
+                @t.state
+            </td>
+            <td>
+                @t.account_name
+            </td>
+            <td>
+                @t.REASON
+            </td>
+            <td>
+                @{ab++; }
+                @if (t.NOTES != null && t.NOTES != "")
+                {
+                    <script>
+                       function ShowDialog(v) {
+                           $("#ShowTransactionDialog").dialog("open");
+                           var r = document.getElementById("Show["+v+"]").title;
+                           document.getElementById("span1").innerHTML = r;
+                        return false;
+                       }
+                    </script>
+                    <abbr id="Show[@ab]" onclick="ShowDialog(@ab)" title="@t.NOTES">Комментарий</abbr>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<div id="ShowTransactionDialog" title="Комментарий по транзакции">
+
+    <span id="span1"></span>
+</div>

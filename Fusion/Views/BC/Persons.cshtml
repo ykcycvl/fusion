@@ -1,0 +1,172 @@
+﻿@model Fusion.Models.BC.BCViewModels.PersonListViewModel
+@{
+    ViewBag.Title = "Участники БК";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#bpsort").click(function () {
+            $("#order").val("bp");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+        $("#accruedsort").click(function () {
+            $("#order").val("accrued");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+        $("#spentbpsort").click(function () {
+            $("#order").val("spent");
+
+            if ($("#OrderDirection").val() == "ASC")
+                $("#OrderDirection").val("DESC");
+            else
+                $("#OrderDirection").val("ASC");
+
+            $("form").submit();
+
+            return false;
+        });
+    });
+</script>
+
+<h2>Участники бонусного клуба</h2>
+<div class="alert alert-info" style="overflow:hidden">
+    @Html.ActionLink("OPD (операции в день)", "OPD", "BC", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important;color:#ff0000" })
+    @Html.ActionLink("Список чеков", "Transactions", "BC", new object { }, new { @class = "btn btn-default", @style="font-size:12px !important" })
+    @Html.ActionLink("FPD (движение баллов по дням)", "DailyBPReport", "BC", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important" })
+    @Html.ActionLink("FPM (движение баллов по мес.)", "MonthlyBPReport", "BC", new object { }, new { @class = "btn btn-default", @style = "font-size:12px !important" })
+</div>
+@if (Model.misc.WithoutSavingAccountTotal > 0)
+{
+    <div class="alert alert-danger">
+        Владельцев без счетов: @Model.misc.WithoutSavingAccountTotal
+        <br/>
+        @Html.ActionLink("Добавить счета всем", "CreateSavingAccountsForEmpty", "BC", new object { }, new { @class = "btn btn-default" })
+        <br />
+        <span style="color: #f00;font-size:11px">При создании и привязке счета владельцу происходит начисление "Welcome-баллов" в соответствии с настройкой домена</span>
+    </div>
+}
+
+@Html.ActionLink("Cоздать", "CreatePerson", null, new { @class="btn btn-default" })
+
+@using (Html.BeginForm("Persons", "BC", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(m => m.order)
+    @Html.HiddenFor(m => m.OrderDirection)
+    //@Html.HiddenFor(m => m.page)
+    <hr />
+    <table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
+        <tr>
+            <th>Ф.И.О.</th>
+            <th style="width:90px"><a href="#" id="bpsort">Остаток</a></th>
+            <th style="width:90px"><a href="#" id="accruedsort">Начислено</a></th>
+            <th style="width:90px"><a href="#" id="spentbpsort">Потрачено</a></th>
+            <th style="width:100px">Карты</th>
+            <th style="width:100px">Д.р.</th>
+            <th>Телефоны</th>
+            <th>Эл. почта</th>
+            <th style="width:100px">&nbsp;</th>
+        </tr>
+        <tr>
+            <td>
+                @Html.TextBoxFor(m => m.FIO, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 10px" })
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.bplimit, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 10px; width:100px" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.card_no, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 10px" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.phone, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 10px" })
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                &nbsp;
+            </td>
+        </tr>
+        @foreach (var person in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(@person.Party.name, "EditPerson", new { id = @person.Party.id, @returnUrl = @ViewBag.returnUrl })
+                </td>
+                <td style="text-align:right">
+                    @if (person.PersonSavingAccounts != null && person.PersonSavingAccounts.Count > 0)
+                    {
+                        foreach (var sa in person.PersonSavingAccounts)
+                        {
+                            @sa.bp<br />
+                        }
+                    }
+                    else
+                    {
+                        @Html.ActionLink("+", "LinkSavingAccount", new { @id = @person.Party.id })
+                    }
+                </td>
+                <td>@person.TotalAccruedBP</td>
+                <td>@person.TotalSpentBP</td>
+                <td>
+                    @foreach (var dc in person.PersonDiscountCards)
+                    {
+                        if (dc.status == "revoked")
+                        {
+                            <span style="color: #fb9f9f">@dc.card_no</span><br />
+                        }
+                        else
+                        {
+                            <span>@dc.card_no</span><br />
+                        }
+                    }
+                </td>
+                <td>
+                    @String.Format("{0:dd.MM.yyyy}", person.Party.birthday)
+                </td>
+                <td>
+                    @foreach (var phone in person.PersonPhones)
+                    {
+                        @phone<br />
+                    }
+                </td>
+                <td>
+                    @foreach (var email in person.PersonEmails)
+                    {
+                        @email<br />
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Операции", "Transactions", new { @party_id = @person.Party.id, @returnUrl = @ViewBag.returnUrl }, new { @class = "button" })
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="submit" style="display: none"/>
+    @Html.Partial("_PagerPartial")
+}

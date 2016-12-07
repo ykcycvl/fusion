@@ -280,6 +280,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Config files
+# =========================
+Web.config
+
 # Windows
 # =========================
 
@@ -301,3 +305,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+Fusion/Web.Debug.config
+Fusion/Web.Release.config

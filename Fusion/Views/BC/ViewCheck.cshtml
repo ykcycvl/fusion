@@ -1,0 +1,109 @@
+﻿@model Fusion.Models.BC.BCViewModels.ReceiptViewModel
+@{
+    ViewBag.Title = "Просмотр чека";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null)
+{
+    <h2>Просмотр чека @Model.receipt_no</h2>
+
+    <div class="row">
+        <div class="col-md-6" style="border: 1px solid #eee">
+            <h4>Чек БК</h4>
+            <table class="table" style="font-size:11px">
+                <tr>
+                    <td>Доступно баллов</td>
+                    <td><b>@Model.available_bp</b></td>
+                </tr>
+                <tr>
+                    <td>Номер карты</td>
+                    <td><b>@Model.dc_card_no</b></td>
+                </tr>
+                <tr>
+                    <td>Создан</td>
+                    <td><b>@Model.creation_date.AddHours(10)</b></td>
+                </tr>
+                <tr>
+                    <td>Станция</td>
+                    <td><b>@Model.pos.name</b></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6" style="border: 1px solid #eee;background:#fed">
+            <h4>Чек Rkeeper</h4>
+            <p>
+                <table class="table" style="font-size:11px">
+                    <tr>
+                        <td>Номер чека</td>
+                        <td><b>@Model.check.CheckNum</b></td>
+                        <td>Номер стола</td>
+                        <td><b>@Model.check.tableName</b></td>
+                    </tr>
+                    <tr>
+                        <td>Официант</td>
+                        <td><b>@Model.check.Waiter</b></td>
+                        <td>Кассир</td>
+                        <td><b>@Model.check.Cashier</b></td>
+                    </tr>
+                    <tr>
+                        <td>Открыт</td>
+                        <td><b>@Model.check.Open</b></td>
+                        <td>Закрыт</td>
+                        <td><b>@Model.check.Close</b></td>
+                    </tr>
+                    <tr>
+                        <td>Сумма</td>
+                        <td><b>@Model.check.NationalSum</b></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </p>
+        </div>
+    </div>
+
+    
+    <br />
+    <br />
+
+    <table class="table">
+        <tr>
+            <th>Блюдо</th>
+            <th style="text-align:right">Цена</th>
+            <th style="text-align:right">Кол-во</th>
+            <th style="text-align:right">Сумма</th>
+            <th style="text-align:right">Начисленно баллов</th>
+            <th style="text-align:right">Оплаченно баллами</th>
+            <th style="text-align:right">Оплаченно налом</th>
+        </tr>
+        @if (Model.receiptRows != null)
+        {
+            foreach (var rr in Model.receiptRows)
+            { 
+                <tr>
+                    <td>@rr.product_name</td>
+                    <td style="text-align:right">@rr.retail_cost</td>
+                    <td style="text-align:right">@rr.quantity</td>
+                    <td style="text-align:right">@(rr.retail_cost * @rr.quantity)</td>
+                    <td style="text-align:right">@rr.accrued_bp</td>
+                    <td style="text-align:right">@rr.paid_bp</td>
+                    <td style="text-align:right">@rr.total_cost</td>
+                </tr>
+            }
+        }
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td style="text-align:right"><b>@Model.sub_total</b></td>
+            <td style="text-align:right"><b>@Model.total_accrued_bp</b></td>
+            <td style="text-align:right"><b>@Model.total_paid_bp</b></td>
+            <td style="text-align:right"><b>@Model.total</b></td>
+        </tr>
+    </table>
+}
+else
+{
+    <text>Почему-то чек не найден О_о</text>
+}

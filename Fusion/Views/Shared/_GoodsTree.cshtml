@@ -1,0 +1,37 @@
+﻿@model Fusion.Models.SH4.SH4
+
+<ul>
+    <li id="All">
+        Все
+        <ul>
+            @foreach (var gti in Model.GoodsTree.Where(p => p.ParentID == null))
+            {
+                <li id="@gti.ID">
+                    @gti.Name
+                    @if (Model.GoodsTree.Count(p => p.ParentID == gti.ID) > 0)
+                    {
+                        <ul>
+                            @RenderMenuItem(Model.GoodsTree, gti)
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </li>
+
+    @helper RenderMenuItem(List<Fusion.Models.SH4.SH4.GoodsTreeItem> items, Fusion.Models.SH4.SH4.GoodsTreeItem item)
+    {
+        foreach (var gti in items.Where(p => p.ParentID == item.ID))
+        {
+            <li id="@gti.ID">
+                @gti.Name
+                @if (items.Count(p => p.ParentID == item.ID) > 0)
+                {
+                    <ul>
+                        @RenderMenuItem(items, gti)
+                    </ul>
+                }
+            </li>
+        }
+    }
+</ul>

@@ -1,0 +1,25 @@
+﻿@model Fusion.Models.Bringo.Bringo
+
+@{
+    ViewBag.Title = "Отправка заказа";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Отправка заказа</h2>
+
+<div>
+    @if (Model.Orders != null)
+    {
+        foreach (var o in Model.Orders)
+        {
+            if (o.Response.errors != null)
+            {
+                <p>@o.Response.errors.message</p>
+            }
+            else
+            {
+                <p>Заказ успешно создан. ID заказа в Brigo: @o.Response.success.id</p>
+            }
+        }
+    }
+</div>

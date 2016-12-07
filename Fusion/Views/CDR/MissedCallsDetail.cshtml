@@ -1,0 +1,124 @@
+﻿@model Fusion.Models.CallCenter.CDRViewModels.CDRInfo
+@{
+    ViewBag.Title = "Потерянные звонки (детализация) - CDR";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#tabs").tabs();
+            //Код первой вкладки (стандартное использование)
+            $("#tab1").tabs();
+            //Код второй вкладки (удаленные вкладки)
+            $("#tab2").tabs({show:function(e,ui){if (ui.index!=0){ $(ui.panel).html("<img id='load' src='tab-load1.gif' />")}}});
+            //Код третьей вкладки (сворачивание активной вкладки)
+            $("#tab3").tabs({collapsible:true,selected:-1});
+            //Код четвертой вкладки (открытие при наведении)
+            $("#tab4").tabs({event:"mouseover"});
+        });
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div style="margin: 10px 0; border:none;">
+        @using (Html.BeginForm("Overall", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div style="display:none">
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedQueues)
+                        @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedAgents)
+                        @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.start_dt)
+                        @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.end_dt)
+                        @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input type="submit" value="Общая информация" class="btn btn-default" />
+            </div>
+        }
+    </div>
+    <div style="margin: 10px 0; border:none;">
+        @using (Html.BeginForm("ServiceLevelDetail", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div style="display:none">
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedQueues)
+                        @Html.ListBoxFor(m => m.SelectedQueues, Model.Queues, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.SelectedAgents)
+                        @Html.ListBoxFor(m => m.SelectedAgents, Model.Agents, new { @class = "form-control", @style = "height: 200px !important" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.start_dt)
+                        @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                    <div class="col-xs-2">
+                        @Html.LabelFor(m => m.end_dt)
+                        @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <input type="submit" value="Уровень обслуживания" class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>
+<div id="tabs">
+    <ul>
+        <li><a href="#tab1">Обзор</a></li>
+        <li><a href="#tab2">По дням</a></li>
+        <li><a href="#tab3">По месяцам</a></li>
+    </ul>
+    <div id="tab1">
+        <div class="row">
+            <table class="table table-bordered table-hover table-striped" style="font-size:11px !important">
+                <tr>
+                    <th>Постановка в очередь (время)</th>
+                    <th>Позиция</th>
+                    <th>Покидание очереди (время)</th>
+                    <th>Позиция</th>
+                    <th>Очередь</th>
+                    <th>Номер звонящего</th>
+                    <th>Длительность ожидания</th>
+                </tr>
+                @foreach (var MissedCall in Model.cdrinfo.MissedCalls)
+                {
+                    <tr>
+                        <td>@MissedCall.EnterQueueDt.ToString()</td>
+                        <td>@MissedCall.start_pos.ToString()</td>
+                        <td>@MissedCall.AbandonDt.ToString()</td>
+                        <td>@MissedCall.end_pos.ToString()</td>
+                        <td>@MissedCall.Queue</td>
+                        <td>@MissedCall.phonenumber</td>
+                        <td>@MissedCall.WaitTime.ToString() сек.</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+    <div id="tab2">
+        
+    </div>
+    <div id="tab3">
+    </div>
+</div>

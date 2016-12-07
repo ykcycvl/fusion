@@ -1,0 +1,74 @@
+﻿@model Fusion.Models.BC.BCViewModels.ReceiptListViewModel
+@{
+    ViewBag.Title = "Список чеков";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Список чеков</h2>
+<div style="margin: 10px 0; border:none;">
+    @using (Html.BeginForm("Transactions", "BC", FormMethod.Get, new { @class = "form-inline", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.party_id)
+        <div class="col-xs-2">
+            Начальная дата
+            @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <div class="col-xs-2">
+            Конечная дата
+            @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+        <br />
+        <input type="submit" value="Применить" class="btn btn-default" />
+    }
+</div>
+
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th>Номер чека</th>
+        <th>Дата</th>
+        <th>Сумма</th>
+        <th>Начислено баллов</th>
+        <th>Оплачено баллами</th>
+        <th>Оплачено наличными</th>
+        <th>Доступно баллов</th>
+        <th>Номер карты</th>
+        <th>Статус</th>
+        <th>&nbsp;</th>
+    </tr>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(@r.receipt_no, "ViewCheck", new { id = @r.id, @returnUrl = @ViewBag.returnUrl })
+            </td>
+            <td>
+                @r.creation_date.AddHours(10).ToString()
+            </td>
+            <td>
+                @r.sub_total
+            </td>
+            <td>
+                @r.total_accrued_bp
+            </td>
+            <td>
+                @r.total_paid_bp
+            </td>
+            <td>
+                @r.total
+            </td>
+            <td>
+                @r.available_bp
+            </td>
+            <td>
+                @r.dc_card_no
+            </td>
+            <td>
+                @r.status
+            </td>
+            <td>
+                @r.reason
+            </td>
+        </tr>
+    }
+</table>
+@Html.Partial("PagerPartial")

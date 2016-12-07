@@ -1,0 +1,53 @@
+﻿@model Fusion.Models.CallCenter.CDRViewModels.CDRInfo
+@{
+    ViewBag.Title = "Записи разговоров";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Записи разговоров</h2>
+<div style="margin: 10px 0; border:none;">
+    @using (Html.BeginForm("Records", "CDR", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div class="form-group">
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.start_dt)
+                @Html.TextBoxFor(m => m.start_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+            <div class="col-xs-2">
+                @Html.LabelFor(m => m.end_dt)
+                @Html.TextBoxFor(m => m.end_dt, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+        </div>
+        <div class="col-xs-2">
+            <input type="submit" value="Искать" class="btn btn-default" />
+        </div>
+    }
+</div>
+<div class="row">
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var r in Model.cdrinfo.RecordsList)
+        { 
+            <tr>
+                <td>
+                    @r.calldate
+                </td>
+                <td>
+                    @r.src
+                </td>
+                <td>
+                    @r.dst
+                </td>
+                <td>
+                    <audio src="http://10.1.0.43/admin/config.php?display=cdr&action=download_audio&cdr_file=1454223795.186762"></audio>
+                    <audio src="@r.recordingfile"></audio>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

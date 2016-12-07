@@ -1,0 +1,42 @@
+﻿@model Fusion.Models.ReportViewModels.MiscReports
+@{
+    ViewBag.Title = "Отчеты Море Плюсов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Отчетность Море Плюсов</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Название отчета</th>
+        <th>Описание</th>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("Список чеков", "Transactions", "CRM", null, null)</td>
+        <td>Список всех транзакций (чеков) за выбранный период, с комментариями и дополнительный информацией</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("FPD", "FPD", "CRM", null, null)</td>
+        <td>Отчет по общему начислению и списанию бонусных баллов в разбивке по дням</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("FPM", "FPM", "CRM", null, null)</td>
+        <td>Отчет по общему начислению и списанию бонусных баллов в разбивке по месяцам</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("OPD", "OPD", "CRM", null, null)</td>
+        <td>Отчет по количеству операций в день по каждому участнику бонусной программы "Море Плюсов" за выбранный период и с количеством операций в день больше или равное указанному количеству.</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("SPM", "SPM", "CRM", null, null)</td>
+        <td>Список участников, траты которых превысили указанное значение в месяц за выбранный период</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("ASIOD", "ASIOD", "CRM", null, null)</td>
+        <td>Отчет по наличию начислений и потрат за один день (календарный день)</td>
+    </tr>
+    <tr>
+        <td>@Html.ActionLink("CAO", "CAO", "CRM", null, null)</td>
+        <td>Отчет по картам, которые проводятся только на суммы свыше определенной</td>
+    </tr>
+</table>

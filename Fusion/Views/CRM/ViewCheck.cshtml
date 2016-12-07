@@ -1,0 +1,169 @@
+﻿@model Fusion.Models.CRMViewModels.CheckInfo
+@{
+    ViewBag.Title = "Просмотр чека";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Просмотр чека</h2>
+
+@if (Model != null)
+{
+    <div style="font-family: Consolas; font-size: 12px; width:390px; border:1px solid #bbb" class="curved-vt-2">
+        <table class="table-condensed">
+            <tr>
+                <td style="width: 180px">
+                    Дата @DateTime.Parse(@Model.generateddatetime).ToShortDateString()
+                </td>
+                <td style="width: 120px"></td>
+                <td style="width: 80px;text-align:right">Стол @Model.CheckData.tablename</td>
+            </tr>
+            <tr>
+                <td>
+                    Чек @Model.CheckData.checknum
+                </td>
+                <td style="text-align:left">
+                    Заказ @Model.CheckData.ordernum
+                </td>
+                <td style="text-align:right">
+                    Гостей @Model.CheckData.guests
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    Открыт @DateTime.Parse(Model.CheckData.startservice).ToString()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    Закрыт @DateTime.Parse(Model.CheckData.closedatetime).ToString()
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    Сотрудники
+                    <br />
+                    @foreach (var e in Model.CheckData.Checkpersons)
+                    {
+                        <i>&nbsp;&nbsp;&nbsp;</i>@e.Name<br />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @if (Model.Extinfo != null)
+                    {
+                        foreach (var e in Model.Extinfo.Interfaces)
+                        {
+                            foreach (var i in e.Items)
+                            {
+                                <b style="color:#f00">Карта @i.cardcode.Substring(2)</b>
+                            }
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Наименование
+                </td>
+                <td style="text-align:right">
+                    Кол-во
+                </td>
+                <td style="text-align:right">
+                    Сумма
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div style="width:100%; border-bottom: 1px dashed #000"></div>
+                </td>
+            </tr>
+            @foreach (var cl in Model.CheckData.Checklines)
+            {
+                <tr>
+                    <td>
+                        @if (cl.type == "dish")
+                        {
+                            @cl.name
+                        }
+                        else
+                        {
+                            <i>&nbsp;&nbsp;&nbsp;</i>@cl.name
+                        }
+                    </td>
+                    <td style="text-align:right">
+                        @cl.quantity.ToString("0.00")
+                    </td>
+                    <td style="text-align:right">
+                        @cl.sum.ToString("0.00")
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="3">
+                    <div style="width:100%; border-bottom: 1px dashed #000"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    @foreach (var d in @Model.CheckData.Discounts)
+                    {
+                        string s = d.name + "[" + d.cardcode.Substring(2) + "]";
+                        @s
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div style="width:100%; border-bottom: 1px dashed #000"></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Всего
+                </td>
+                <td style="text-align:right">
+                    @{
+                    Decimal itog = 0;
+
+                    foreach (var p in Model.CheckData.Payments)
+                    {
+                        itog += p.sum;
+                    }
+
+                    @itog.ToString("0.00")
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div style="width:100%; border-bottom: 1px dashed #000"></div>
+                </td>
+            </tr>
+            @foreach (var p in Model.CheckData.Payments)
+            {
+                <tr>
+                    <td colspan="2">
+                        @p.name 
+                        @if (p.cardcode != null && p.cardcode != "")
+                        {
+                            <content>[@p.cardcode.Substring(2)]</content>
+                        }
+                    </td>
+                    <td style="text-align:right">
+                        @p.sum.ToString("0.00")
+                    </td>
+                </tr>
+                
+                if(p.ownerinfo != null)
+                {
+                    <tr style="font-size:11px">
+                        <td colspan="3">
+                            @p.ownerinfo
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+}

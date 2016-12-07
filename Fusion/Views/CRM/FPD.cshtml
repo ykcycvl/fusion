@@ -1,0 +1,49 @@
+﻿@model Fusion.Models.ReportViewModels.FPDViewModel
+@{
+    ViewBag.Title = "Начисления и списания по дням";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Начисления и списания по дням</h2>
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("FPD", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+<table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
+    <tr>
+        <th style="text-align:right">
+            Начислено
+        </th>
+        <th style="text-align:right">
+            Списано
+        </th>
+        <th>
+            Дата
+        </th>
+    </tr>
+    @if (Model.FPDList != null && Model.FPDList.Count > 0)
+    {
+        foreach (var fpd in Model.FPDList)
+        {
+            <tr>
+                <td style="text-align:right">@fpd.accrued</td>
+                <td style="text-align:right">@fpd.spented</td>
+                <td>@fpd.DT.ToString("dd.MM.yyyy")</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4" style="text-align:center;color:#f00">Нет результатов, удовлетворяющих условиям фильтра</td>
+        </tr>
+    }
+</table>

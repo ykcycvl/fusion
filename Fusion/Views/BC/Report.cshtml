@@ -1,0 +1,26 @@
+﻿@model Fusion.Models.BC.BCViewModels.TableReportViewModel
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Отчет</h2>
+
+@if(@Model.viewData != null)
+{ 
+<table class="table table-bordered">
+    @foreach (List<string> rr in @Model.viewData)
+    {
+        <tr>
+            @for (int i = 0; i < rr.Count; i++)
+            {
+                <td>@rr[i]</td>
+            }
+        </tr>
+    }
+</table>
+}
+else
+{
+    <text>Нет данных</text>
+}

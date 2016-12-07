@@ -1,0 +1,31 @@
+﻿@model Fusion.Models.ReportViewModels.MiscReports
+@{
+    ViewBag.Title = "Наличие начислений и потрат в один день";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Наличие начислений и потрат в один день</h2>
+
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("ASIOD", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+<table class="table table-bordered table-striped">
+    @foreach (var s in Model.Data)
+    {
+        <tr>
+            @foreach (var s1 in s)
+            {
+                <td>@s1</td>
+            }
+        </tr>
+    }
+</table>

@@ -1,0 +1,22 @@
+﻿@model Fusion.Models.BC.BCViewModels.DiscountCardListViewModel
+@{
+    ViewBag.Title = "Бонусные карты";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Бонусные карты</h2>
+
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Номер карты</th>
+        <th>Статус</th>
+    </tr>
+    @foreach (var card in Model)
+    {
+        <tr>
+            <td>@card.card_no</td>
+            <td>@card.status</td>
+        </tr>
+    }
+</table>
+@Html.Partial("PagerPartial")

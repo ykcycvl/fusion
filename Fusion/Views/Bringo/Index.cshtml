@@ -1,0 +1,74 @@
+﻿@model Fusion.Models.Bringo.Bringo
+@{
+    ViewBag.Title = "Bringo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    DateTime localDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+}
+
+<h2>Bringo</h2>
+<div class="alert alert-info" style="overflow:hidden">
+    <p>Заказы, которые можно отправить в Bringo</p>
+</div>
+<table class="table table-bordered" style="font-size:11px !important">
+    <tr>
+        <th>
+            Ресторан
+        </th>
+        <th>
+            Название
+        </th>
+        <th>
+            Сумма
+        </th>
+        <th>
+            Адрес
+        </th>
+        <th>
+            Имя гостя
+        </th>
+        <th>
+            Телефон
+        </th>
+        <th>
+            Ожидаемое время доставки
+        </th>
+        <th>
+            Комментарий
+        </th>
+        <th>
+            &nbsp;
+        </th>
+    </tr>
+    @foreach (var o in Model.Orders)
+    { 
+        <tr>
+            <td>
+                @o.Order.points[0].name
+            </td>
+            <td>
+                @o.Order.delivery.title
+            </td>
+            <td>
+                @(o.Order.delivery.value)руб.
+            </td>
+            <td>
+                @o.Order.points[1].address.address_string
+            </td>
+            <td>
+                @o.Order.points[1].name
+            </td>
+            <td>
+                @o.Order.points[1].phone_number
+            </td>
+            <td>
+                @localDateTime.AddSeconds(o.Order.points[1].time.end_utc).ToLocalTime()
+            </td>
+            <td>
+                @o.Order.points[1].description
+            </td>
+            <td>
+                @Html.ActionLink("Отправить", "SendOrder", new { @id = o.Order.delivery.order_id })
+            </td>
+        </tr>
+    }
+</table>

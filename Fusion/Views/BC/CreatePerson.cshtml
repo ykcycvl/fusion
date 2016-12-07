@@ -1,0 +1,76 @@
+﻿@model Fusion.Models.BC.BCViewModels.PersonViewModel
+@{
+    ViewBag.Title = "Создание нового участника БК";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    $(function () {
+        $('#Party_last_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+        $('#Party_first_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+        $('#Party_middle_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+    });
+</script>
+
+<h2>Новый участник БК</h2>
+@using (Html.BeginForm("CreatePerson", "BC", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.HiddenFor(m => m.Party.id)
+    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.last_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.last_name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.first_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.first_name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.middle_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.middle_name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.birthday, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.birthday, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.gender, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Party.gender, Model.GenderSelectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.marital_status, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Party.marital_status, Model.MaritalStatusSelectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" class="btn btn-success" value="Сохранить" name="save" />
+        </div>
+    </div>
+}

@@ -1,0 +1,41 @@
+﻿@model Fusion.Models.ReportViewModels.MiscReports
+@{
+    ViewBag.Title = "SPM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Потрачено за месяц</h2>
+
+<div class="alert alert-info" style="overflow:hidden">
+    <p>Не учитываются списания (потраты), выполненные вручную администратором либо менеджером "Море плюсов"</p>
+</div>
+
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("SPM", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-2">
+            <text>Сумма</text>
+            @Html.TextBoxFor(m => m.Summ, new { @class = "form-control", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            <text>Начальная дата</text>
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            <text>Конечная дата</text>
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" style="height:25px;margin-top:19px;padding:0 20px;" />
+    }
+</div>
+<table class="table table-bordered table-striped">
+    @foreach (var s in Model.Data)
+    { 
+        <tr>
+            @foreach (var s1 in s)
+            { 
+                <td>@s1</td>
+            }
+        </tr>
+    }
+</table>

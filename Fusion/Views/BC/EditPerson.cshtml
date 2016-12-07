@@ -1,0 +1,401 @@
+﻿@model Fusion.Models.BC.BCViewModels.PersonViewModel
+@{
+    ViewBag.Title = @Model.Party.name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $('#Party_last_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+        $('#Party_first_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+        $('#Party_middle_name').keyup(function () {
+            $('#Party_name').val($('#Party_last_name').val().trim() + " " + $('#Party_first_name').val().trim() + " " + $('#Party_middle_name').val().trim());
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#LinkCard").click(function () {
+            $("#add_card_result_dlg").dialog("open");
+            return false;
+        });
+        $("#AddLinkChannel").click(function () {
+            $("#phone_add_dlg").dialog("open");
+            return false;
+        });
+        $("#phone_add_dlg").dialog({
+            buttons: {
+                "Добавить": function () {
+                    $("#phone_add_result").load("/BC/AddLinkChannel", "party_id=@Model.Party.id&lc_name=" + $("#lcname").val() + "&lc_value=" + $("#lcvalue").val());
+                },
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { location.reload(); },
+            modal: true,
+            width: 400,
+            height: 300,
+            autoOpen: false,
+            draggable: false,
+            closeText: '',
+            resizable: false
+        });
+        $("#add_card_result_dlg").dialog({
+            buttons: {
+                "ОК": function () {
+                    $("#LinkCardResult").load("/BC/LinkCard", "party_id=@Model.Party.id&card_no=" + $("#add_card_no").val());
+                },
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { location.reload(); },
+            modal: true,
+            width: 400,
+            height: 300,
+            autoOpen: false,
+            draggable: false,
+            closeText: '',
+            resizable: false
+        });
+        $("#addBPdlg").dialog({
+            buttons: {
+                "ОК": function () {
+                    $("#addBPdlgResult").load("/BC/AddBP", "card_id=" + $("#addBPdlg_card_id").val() + "&bp=" + $("#addbpamt").val());
+                    $(".ui-dialog-buttonpane button:contains('ОК')").button("disable");
+                },
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { location.reload(); },
+            modal: true,
+            width: 400,
+            height: 250,
+            autoOpen: false,
+            draggable: false,
+            closeText: '',
+            resizable: false
+        });
+        $("#subBPdlg").dialog({
+            buttons: {
+                "ОК": function () {
+                    $("#subBPdlgResult").load("/BC/SubBP", "card_id=" + $("#subBPdlg_card_id").val() + "&bp=" + $("#subbpamt").val());
+                    $(".ui-dialog-buttonpane button:contains('ОК')").button("disable");
+                },
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { location.reload(); },
+            modal: true,
+            width: 400,
+            height: 250,
+            autoOpen: false,
+            draggable: false,
+            closeText: '',
+            resizable: false
+        });
+        $("#unlinkSavingAccount").dialog({
+            buttons: {
+                "Да, удалить счет!": function () {
+                    $("#unlinkSavingAccountResult").load("/BC/UnlinkSavingAccount", "id=" + $("#usaid").val());
+                },
+                "НЕТ!!!": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { location.reload(); },
+            modal: true,
+            width: 400,
+            height: 180,
+            autoOpen: false,
+            draggable: false,
+            closeText: '',
+            resizable: false
+        });
+    });
+</script>
+<div id="empty"></div>
+<h2>@Model.Party.name</h2>
+@Html.ActionLink("История операций", "Transactions", new {@party_id = @Model.Party.id, @returnUrl = @ViewBag.returnUrl}, new { @class = "button" })
+@using (Html.BeginForm("EditPerson", "BC", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    @Html.HiddenFor(m => m.Party.id)
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.last_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.last_name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.first_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.first_name, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.middle_name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.middle_name, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.birthday, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Party.birthday, "{0:dd.MM.yyyy}", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.gender, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Party.gender, Model.GenderSelectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Party.marital_status, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.Party.marital_status, Model.MaritalStatusSelectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div id="phone_add_dlg" title="Канал связи">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.DropDownList("lcname", Model.LinkChannelsSelectList, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.TextBox("lcvalue", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <p id="phone_add_result"></p>
+    </div>
+
+    <div class="row">
+        <h4>Контактная информация</h4>
+        <a href="#" id="AddLinkChannel">Добавить</a>
+        @if (Model.LinkChannels != null)
+        {
+            for (int i = 0; i < Model.LinkChannels.Count; i++)
+            {
+            <div class="form-group">
+                <label class="col-md-2 control-label">@Model.LinkChannels[i].DisplayName</label>
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.LinkChannels[i].value, new { @class = "form-control" })
+                </div>
+            </div>
+            }
+        }
+    </div>
+
+    <div id="addBPdlg" title="Начисление баллов">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Label("Счет", null, new { @class = "form-control", @id = "addBPdlg_card_no" })
+                <input type="hidden" value="" id="addBPdlg_card_id" name="addBPdlg_card_id" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.TextBox("addbpamt", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <p id="addBPdlgResult"></p>
+        </div>
+    </div>
+    <div id="subBPdlg" title="Списание баллов">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Label("Счет", null, new { @class = "form-control", @id = "subBPdlg_card_no" })
+                <input type="hidden" value="" id="subBPdlg_card_id" name="subBPdlg_card_id" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.TextBox("subbpamt", null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <p id="subBPdlgResult"></p>
+        </div>
+    </div>
+    <div id="unlinkSavingAccount" title="Удалить счет?">
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.Label("Счет", null, new { @class = "form-control", @id = "usa" })
+                <input type="hidden" value="" id="usaid" name="usaid" />
+            </div>
+        </div>
+        <p id="unlinkSavingAccountResult"></p>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.LabelFor(m => m.PersonSavingAccounts, new { @class = "control-label" })
+            @if (Model.PersonSavingAccounts != null)
+            {
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Номер счета</th>
+                        <th>Баллы</th>
+                        <th>Создан</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @for (int i = 0; i < Model.PersonSavingAccounts.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(m => m.PersonSavingAccounts[i].id)
+                                @Html.HiddenFor(m => m.PersonSavingAccounts[i].domain_id)
+                                @Html.HiddenFor(m => m.PersonSavingAccounts[i].owner_id)
+                                @Html.TextBoxFor(m => m.PersonSavingAccounts[i].account_no, new { @style = "border:none", @readonly = "true" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.PersonSavingAccounts[i].bp, new { @class = "form-control", @style = "height: 24px;padding: 0 10px", @autocomplete = "off", @readonly = "true" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.PersonSavingAccounts[i].creation_date, new { @style = "border:none", @readonly = "true" })
+                            </td>
+                            <td>
+                                <a href="#" id="DeleteSA_@i" class="btn btn-danger" style="height:23px !important; font-size: 12px !important;padding: 3px">Удалить счет</a>
+                                <script>
+                                    $("#DeleteSA_@i").click(function () {
+                                        $("#usa").text("@Model.PersonSavingAccounts[i].account_no");
+                                        $("#usaid").val(@Model.PersonSavingAccounts[i].id);
+                                        $("#unlinkSavingAccount").dialog("open");
+                                        return false;
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </div>
+    </div>
+    <div id="add_card_result_dlg" title="Привязка карты">
+        Номер карты
+        @Html.TextBox("add_card_no", null, new { @name = "add_card_no", @class = "form-control", @placeholder = "Номер карты" })
+        <p id="LinkCardResult"></p>
+    </div>
+    <div class="form-group">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.PersonDiscountCards, new { @class = "control-label" })
+            @if (Model.PersonDiscountCards != null)
+            {
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Номер карты</th>
+                        <th>PIN</th>
+                        <th>Статус</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    @for (int i = 0; i < Model.PersonDiscountCards.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(m => m.PersonDiscountCards[i].id)
+                                @Html.HiddenFor(m => m.PersonDiscountCards[i].owner_id)
+                                @Html.HiddenFor(m => m.PersonDiscountCards[i].is_synchronized)
+                                @Html.TextBoxFor(m => m.PersonDiscountCards[i].card_no, new { @style = "border:none", @readonly = "true" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.PersonDiscountCards[i].pin, new { @style = "border:none", @readonly = "true" })
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(m => m.PersonDiscountCards[i].status, Model.PersonDiscountCards[i].CardStatusSelectList, new { @class = "form-control", @style = "padding: 0 10px; height: 24px" })
+                            </td>
+                            <td>
+                                @if (Model.PersonDiscountCards[i].status == "active")
+                                {
+                                    <a href="#" id="AddBP_@i" class="btn btn-success" style="height:23px !important; font-size: 12px !important;padding: 3px">Пополнение</a>
+                                }
+                                else
+                                {
+                                    <text> - </text>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.PersonDiscountCards[i].status == "active")
+                                {
+                                    <a href="#" id="SubBP_@i" class="btn btn-default" style="height:23px !important; font-size: 12px !important;padding: 3px">Списание</a>
+                                }
+                                else
+                                {
+                                    <text> - </text>
+                                }
+
+                                <script>
+                                    $("#AddBP_@i").click(function () {
+                                        $("#addBPdlg_card_no").text("@Model.PersonDiscountCards[i].card_no");
+                                        $("#addBPdlg_card_id").val(@Model.PersonDiscountCards[i].id);
+                                        $("#addBPdlg").dialog("open");
+                                        return false;
+                                    });
+                                    $("#SubBP_@i").click(function () {
+                                        $("#subBPdlg_card_no").text("@Model.PersonDiscountCards[i].card_no");
+                                        $("#subBPdlg_card_id").val(@Model.PersonDiscountCards[i].id);
+                                        $("#subBPdlg").dialog("open");
+                                        return false;
+                                    });
+                                </script>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            <a href="#" id="LinkCard">Привязать карту</a>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.PersonAddresses, new { @class = "control-label" })
+                @if (@Model.PersonAddresses != null)
+                {
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Страна</th>
+                            <th>Почтовый индекс</th>
+                            <th>Город</th>
+                            <th>Район</th>
+                            <th>Улица</th>
+                            <th>Дом</th>
+                            <th>Квартира</th>
+                        </tr>
+                        @foreach (var a in @Model.PersonAddresses)
+                        {
+                            <tr>
+                                <td>Россия</td>
+                                <td>@a.postal_index</td>
+                                <td>@a.city</td>
+                                <td>@a.district</td>
+                                <td>@a.street</td>
+                                <td>@a.house</td>
+                                <td>@a.flat</td>
+                            </tr>
+                        }
+                    </table>
+                }
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" class="btn btn-success" value="Сохранить" name="save"/>
+        </div>
+    </div>
+}
