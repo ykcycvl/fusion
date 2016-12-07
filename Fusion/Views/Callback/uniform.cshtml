@@ -345,6 +345,12 @@
             <li>
                 @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost })
                 @Html.ValidationMessageFor(m => m.Cost)
+                
+                @Html.TextBoxFor(m => m.CostPoint, new { placeholder = "Цена решения (баллы)", @required = true, @class = "contact_form", @value = Model.CostPoint })
+                @Html.ValidationMessageFor(m => m.CostPoint)
+                                
+                @Html.TextBoxFor(m => m.CostSert, new { placeholder = "Цена решения (сертификаты)", @required = true, @class = "contact_form", @value = Model.CostSert })
+                @Html.ValidationMessageFor(m => m.CostSert)    
             </li>
             <li>
                 <span style="margin-left: 40px;">Кто оплатил:</span>
