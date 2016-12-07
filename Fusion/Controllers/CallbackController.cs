@@ -316,7 +316,7 @@ namespace Fusion.Controllers
                 dbSTR = @"INSERT tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
 
             }
-            MySqlScript cmd = new MySqlScript(conn, dbSTR);
+            MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
 
             if (!ModelState.IsValid)
             {

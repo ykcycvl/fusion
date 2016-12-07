@@ -397,59 +397,7 @@ namespace Fusion.Models.Callback
                             p.Source = Convert.ToString(record["Source"]);
                             
                         persons.Add(p);
-                MySqlDataReader rdr = command.ExecuteReader();
-
-                if (rdr.HasRows)
-                {
-                    foreach (DbDataRecord record in rdr)
-                    {
-                        TblViewM p = new TblViewM();
-
-                        if (record["id"] != null)
-                            p.id = Convert.ToInt32(record["id"]);
-                        if (record["FIO"] != null)
-                            p.FIO = Convert.ToString(record["FIO"]);
-                        if (record["Data"] != null)
-                        {
-                            string Date = Convert.ToString(record["Data"]);
-                            string year = Date.Substring(0, 4);
-                            string month = Date.Substring(5, 2);
-                            string day = Date.Substring(8, 2);
-                            Date = day + "." + month + "." + year;
-                            //p.Data = Convert.ToDateTime(record["Data"]);
-                            p.Data = Date;
-                        }
-
-                        if (record["Phone"] != null)
-                            p.Phone = Convert.ToString(record["Phone"]);
-                        if (record["Unit"] != null)
-                            p.Unit = Convert.ToString(record["Unit"]);
-                        if (record["Rest"] != null)
-                            p.Rest = Convert.ToString(record["Rest"]);
-                        if (record["Rating"] != null)
-                            p.Rating = Convert.ToString(record["Rating"]);
-
-                        if (Convert.ToString(record["DateClose"]) != "")
-                        {
-                            string DateClose = Convert.ToString(record["DateClose"]);
-                            string year = DateClose.Substring(0, 4);
-                            string month = DateClose.Substring(5, 2);
-                            string day = DateClose.Substring(8, 2);
-                            DateClose = day + "." + month + "." + year;
-                            //p.DateClose = Convert.ToString(record["DateClose"]);
-                            p.DateClose = DateClose;
-                        }
-
-                        if (Convert.ToString(record["Cost"]) != "")
-                            p.Cost = Convert.ToString(record["Cost"]);
-                        if (Convert.ToString(record["Type"]) != "")
-                            p.Type = Convert.ToString(record["Type"]);
-
-                        if (Convert.ToString(record["Source"]) != "")
-                            p.Source = Convert.ToString(record["Source"]);
-
-                        persons.Add(p);
-
+               
                     }
                     persons.Reverse();
                 }
