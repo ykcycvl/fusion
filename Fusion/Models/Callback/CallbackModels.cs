@@ -282,6 +282,8 @@ namespace Fusion.Models.Callback
 
             public string DateClose { get; set; }
             public string Cost { get; set; }
+            public string CostPoint { get; set; }
+            public string CostSert { get; set; }
             public string Type { get; set; }
 
             public string Source { get; set; }
@@ -299,7 +301,7 @@ namespace Fusion.Models.Callback
 
             private static MySqlConnection GetConnect()
             {
-                string connPRTS = @"server=192.168.0.102;user Id=feedback;database=feedback;port=3306;password=73915;";
+                string connPRTS = @"server=192.168.0.102;user=feedback;database=feedback;port=3306;password=73915;";
                 MySqlConnection conn = new MySqlConnection(connPRTS);
                 conn.Open();
                 return conn;
@@ -309,28 +311,92 @@ namespace Fusion.Models.Callback
 
             public void Search() /*++++++++++++++++++++++++++++++++++++++++++++++++++*/
             {
-
+                
                 string time = " 23:59:59";
                 MySqlConnection con = GetConnect();
                 MySqlCommand command;
                 if (DateNEW1 == null && DateNEW2 == null)
-                {
+                {                    
                     DateTime now = DateTime.Now;
                     //DateTime.TryParseExact(now, "YY-mm-dd", null,DateTimeStyles.NoCurrentDateDefault, now);
                     DateTime yesterday = DateTime.Now.Subtract(new TimeSpan(10, 0, 0, 0));
                     DateNEW1 = Convert.ToString(yesterday);
-                    DateNEW1 = (DateNEW1.Substring(6, 4)) + "-" + (DateNEW1.Substring(3, 2)) + "-" + (DateNEW1.Substring(0, 2));
+                    DateNEW1 = (DateNEW1.Substring(6, 4))+"-" + (DateNEW1.Substring(3, 2))+ "-" + (DateNEW1.Substring(0, 2));
                     DateNEW2 = Convert.ToString(now);
-                    string DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " " + (DateNEW2.Substring(11, 8));
+                    string DateNEW2tosql;
+                    if(DateNEW2.Count()>=19)
+                    {
+                        DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " " + (DateNEW2.Substring(11, 8));
+                    }
+                    else
+                    {
+                        DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " 0" + (DateNEW2.Substring(11, 7));
+                    }
                     DateNEW2 = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2));
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
                 }
                 else
                 {
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
                 }
                 //command.Parameters.AddWithValue("id", );
 
+                MySqlDataReader rdr = command.ExecuteReader();
+                
+                if (rdr.HasRows)
+                {
+                    foreach (DbDataRecord record in rdr)
+                    {
+                        TblViewM p = new TblViewM();
+
+                        if (record["id"] != null)
+                            p.id = Convert.ToInt32(record["id"]);
+                        if (record["FIO"] != null)
+                            p.FIO = Convert.ToString(record["FIO"]);
+                        if (record["Data"] != null)
+                        {
+                            string Date = Convert.ToString(record["Data"]);
+                            string year = Date.Substring(0,4);
+                            string month = Date.Substring(5,2);
+                            string day = Date.Substring(8,2);
+                            Date = day + "." + month + "." + year;
+                            p.Data = Date;
+                        }
+                           
+                        if (record["Phone"] != null)
+                            p.Phone = Convert.ToString(record["Phone"]);
+                        if (record["Unit"] != null)
+                            p.Unit = Convert.ToString(record["Unit"]);
+                        if (record["Rest"] != null)
+                            p.Rest = Convert.ToString(record["Rest"]);
+                        if (record["Rating"] != null)
+                            p.Rating = Convert.ToString(record["Rating"]);
+
+                        if (Convert.ToString(record["DateClose"]) != "")
+                        {
+                            string DateClose = Convert.ToString(record["DateClose"]);
+                            string year = DateClose.Substring(0, 4);
+                            string month = DateClose.Substring(5, 2);
+                            string day = DateClose.Substring(8, 2);
+                            DateClose = day + "." + month + "." + year;
+                            //p.DateClose = Convert.ToString(record["DateClose"]);
+                            p.DateClose = DateClose;
+                        }
+
+                        if (Convert.ToString(record["Cost"]) != "")
+                            p.Cost = Convert.ToString(record["Cost"]);
+                        if (Convert.ToString(record["CostPoint"]) != "")
+                            p.CostPoint = Convert.ToString(record["CostPoint"]);
+                        if (Convert.ToString(record["CostSert"]) != "")
+                            p.CostSert = Convert.ToString(record["CostSert"]);
+
+                        if (Convert.ToString(record["Type"]) != "")
+                            p.Type = Convert.ToString(record["Type"]);
+
+                        if (Convert.ToString(record["Source"]) != "")
+                            p.Source = Convert.ToString(record["Source"]);
+                            
+                        persons.Add(p);
                 MySqlDataReader rdr = command.ExecuteReader();
 
                 if (rdr.HasRows)
@@ -577,12 +643,14 @@ namespace Fusion.Models.Callback
         [StringLength(15, MinimumLength = 1, ErrorMessage = "Введите цену решения проблемы")]
         [Display(Name = "Cost")]
         public string Cost { get; set; }
+        public string CostPoint { get; set; }
+        public string CostSert { get; set; }
 
         public string Type { get; set; }
 
         public string Payer { get; set; }
 
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Пожалуйста введите ФИО ответственного")]
+        [StringLength(50, MinimumLength = 0, ErrorMessage = "Слишком длинные ФИО")]
         [Display(Name = "Guilty")]
         public string Guilty { get; set; }
 
