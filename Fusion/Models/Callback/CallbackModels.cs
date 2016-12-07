@@ -516,7 +516,7 @@ namespace Fusion.Models.Callback
 
         //детали проблемы
         [Required(ErrorMessage = "Введите детали проблемы")]
-        [StringLength(50, MinimumLength = 0, ErrorMessage = "Введите детали проблемы")]
+        [StringLength(254, MinimumLength = 0, ErrorMessage = "Введите детали проблемы")]
         [Display(Name = "Problem")]
         public string Problem { get; set; }
 
