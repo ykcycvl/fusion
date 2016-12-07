@@ -78,11 +78,12 @@ namespace Fusion.Controllers
                 string Mera = @"SELECT Mera FROM tblfeedback WHERE id='" + id + "'";
                 string AnswerForGuest = @"SELECT AnswerForGuest FROM tblfeedback WHERE id='" + id + "'";
                 string Cost = @"SELECT Cost FROM tblfeedback WHERE id='" + id + "'";
+                string CostPoint = @"SELECT CostPoint FROM tblfeedback WHERE id='" + id + "'";
+                string CostSert = @"SELECT CostSert FROM tblfeedback WHERE id='" + id + "'";
                 string DateClose = @"SELECT DateClose FROM tblfeedback WHERE id='" + id + "'";
                 string Type = @"SELECT Type FROM tblfeedback WHERE id='" + id + "'";
                 string Guilty = @"SELECT Guilty FROM tblfeedback WHERE id='" + id + "'";
                 string Payer = @"SELECT Payer FROM tblfeedback WHERE id='" + id + "'";
-
 
                 MySqlCommand cmdFIO = new MySqlCommand(FIO, conn);
                 MySqlCommand cmdPhone = new MySqlCommand(Phone, conn);
@@ -99,10 +100,12 @@ namespace Fusion.Controllers
                 MySqlCommand cmdMera = new MySqlCommand(Mera, conn);
                 MySqlCommand cmdAnswerForGuest = new MySqlCommand(AnswerForGuest, conn);
                 MySqlCommand cmdCost = new MySqlCommand(Cost, conn);
+                MySqlCommand cmdCostPoint = new MySqlCommand(CostPoint, conn);
+                MySqlCommand cmdCostSert = new MySqlCommand(CostSert, conn);
                 MySqlCommand cmdDateClose = new MySqlCommand(DateClose, conn);
                 MySqlCommand cmdType = new MySqlCommand(Type, conn);
                 MySqlCommand cmdGuilty = new MySqlCommand(Guilty, conn);
-                MySqlCommand cmdPayer = new MySqlCommand(Payer, conn);
+                MySqlCommand cmdPayer = new MySqlCommand(Payer, conn);           
 
                 string resFIO = cmdFIO.ExecuteScalar().ToString();
                 model.UserName = resFIO;
@@ -113,8 +116,7 @@ namespace Fusion.Controllers
                 string resText = cmdText.ExecuteScalar().ToString();
                 model.textkomm = resText;
                 string resData = cmdData.ExecuteScalar().ToString();
-                model.NewDate = resData.Substring(0, 10);
-
+                model.NewDate = resData.Substring(0, 10);                
                 string resSource = cmdSource.ExecuteScalar().ToString();
                 model.Source = resSource;//----------------------------источник
                 string resUnit = cmdUnit.ExecuteScalar().ToString();
@@ -135,6 +137,10 @@ namespace Fusion.Controllers
                 model.answer = resAnswerForGuest;
                 string resCost = cmdCost.ExecuteScalar().ToString();
                 model.Cost = resCost;
+                string resCostPoint = cmdCostPoint.ExecuteScalar().ToString();
+                model.CostPoint = resCostPoint;
+                string resCostSert = cmdCostSert.ExecuteScalar().ToString();
+                model.CostSert = resCostSert;
                 string resDateClose = cmdDateClose.ExecuteScalar().ToString();
                 model.OldDate = resDateClose;
                 string resType = cmdType.ExecuteScalar().ToString();
@@ -172,11 +178,11 @@ namespace Fusion.Controllers
             int id;
             //id = model.id;
             id = Convert.ToInt32(Request.Form["id"]);
-            if (id == 0)
+            if(id==0)
             {
                 id = model.id;
             }
-
+            
             string UserName;
             UserName = model.UserName;
 
@@ -188,7 +194,7 @@ namespace Fusion.Controllers
 
             string SelectedUnit;
             SelectedUnit = Request.Form["unitt"];
-
+            
             //string SelectedUnit; test
             //SelectedUnit = model.SelectedUnit;unit
 
@@ -213,8 +219,8 @@ namespace Fusion.Controllers
 
             string NewTime;
             NewTime = model.NewTime;
-            NewDate = NewDate + " " + NewTime;
-
+            NewDate = NewDate +" "+ NewTime;
+            
             //string RegDateNew = Regex.Replace(test, patternDate, test);
 
             string OldDate;
@@ -222,7 +228,7 @@ namespace Fusion.Controllers
 
             //string OldDate;
             //OldDate = OldDate + " " + OldTime;
-
+            
             string Guilty;
             Guilty = model.Guilty;
 
@@ -237,7 +243,7 @@ namespace Fusion.Controllers
             Rating = Regex.Replace(Rating, pattern, regular);
 
 
-            switch (Rating)
+            switch(Rating)
             {
                 case ",Положительный":
                     Rating = "Положительный";
@@ -270,16 +276,22 @@ namespace Fusion.Controllers
             string Cost;
             Cost = model.Cost;
 
+            string CostPoint;
+            CostPoint = model.CostPoint;
+
+            string CostSert;
+            CostSert = model.CostSert;
+
             string Type;
             Type = Request.Form["types"];
 
             string Theme; //разобарться зачем заводил
-
+            
 
             #endregion
 
             #region dbConn
-            string connPRTS = @"server=192.168.0.102;user Id=feedback;database=feedback;port=3306;password=73915;";
+            string connPRTS = @"server=192.168.0.102;user=feedback;database=feedback;port=3306;password=73915;";
             MySqlConnection conn = new MySqlConnection(connPRTS);
             bool testCon = true;
             try
@@ -294,17 +306,17 @@ namespace Fusion.Controllers
             string dbSTR;
             //проверяем id отзыва
             //idbridge
-            if (id >= 0)
+            if (id>=0)
             {
-                dbSTR = @"UPDATE tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
+                dbSTR = @"UPDATE tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
 
             }
             else
             {
-                dbSTR = @"INSERT tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
+                dbSTR = @"INSERT tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
 
             }
-            MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
+            MySqlScript cmd = new MySqlScript(conn, dbSTR);
 
             if (!ModelState.IsValid)
             {
