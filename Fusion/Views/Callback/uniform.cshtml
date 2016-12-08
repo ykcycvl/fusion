@@ -49,6 +49,9 @@
                 case 'БК':
                     document.getElementById("bcid").selected = true;
                     break
+                case 'Маркетинг/сайт':
+                    document.getElementById("markid").selected = true;
+                    break
             }
         }
         //ресторан
@@ -236,6 +239,7 @@
                     <option value="Доставка" id="gotoid">Доставка</option>
                     <option value="КЦ" id="ccid">КЦ</option>
                     <option value="БК" id="bcid">БК</option>
+                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>
                 </select>
                 @*@Html.DropDownListFor(m => m.SelectedUnit, new SelectList(Model.Unit, "Value", "Text", "Подразделение"), new { disabled = "Подразделение" })
                     @Html.ValidationMessageFor(m => m.SelectedUnit)*@
