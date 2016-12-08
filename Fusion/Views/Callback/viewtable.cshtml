@@ -36,11 +36,11 @@
     @using (Html.BeginForm("viewtable", "callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
     {
         //кнопка добавления
-        <div id="datefilter"> 
-            <a href="~/uniform/uniform?updorins=-1" class="btn btn-success">Добавить отзыв</a> 
+        <div id="datefilter">
+            <a href="~/uniform/uniform?updorins=-1" class="btn btn-success">Добавить отзыв</a>
             @Html.EditorFor(m => m.DateNEW1, new { @required = true, @type = "date", @ID = "daten1", @value = Model.DateNEW1 })
             @Html.EditorFor(m => m.DateNEW2, new { @required = true, @type = "date", @ID = "daten2", @value = Model.DateNEW2 })
-            <button type="submit" class="btn btn-primary" id="">Вывести отзывы</button> 
+            <button type="submit" class="btn btn-primary" id="">Вывести отзывы</button>
         </div>
 
         <div id="filters">
@@ -113,7 +113,7 @@
             <input type="checkbox" id="bonusid" value="0" />Бонусы
             <input type="checkbox" id="sertid" value="0" />Сертификат
         </div>
-            
+
 
         //отзывы
         <table class="sortable table table-bordered table-hover" id="t">
@@ -138,28 +138,28 @@
 
                     if (@attribute.DateClose != null)
                     {
-                         textColor = "#ffffff";
-                         rowColor = "#669966";
-                         switch (attribute.Rating)
-                         {
+                        textColor = "#ffffff";
+                        rowColor = "#669966";
+                        switch (attribute.Rating)
+                        {
                             case "Положительный":
-                            rowColor = "#019801";
-                            break;
+                                rowColor = "#019801";
+                                break;
                             case "Отрицательный":
-                            rowColor = "#ec971f";
-                            break;
+                                rowColor = "#ec971f";
+                                break;
                             case "Критичный":
-                            rowColor = "#c9302c";
-                            break;
+                                rowColor = "#c9302c";
+                                break;
                             case "ОТРАВЛЕНИЕ":
-                            rowColor = "#000000";
-                            break;
+                                rowColor = "#000000";
+                                break;
                         }
                     }
 
                     if (attribute.Rating == null || attribute.Rating == String.Empty)
                     {
-                        attribute.Rating = "-"; 
+                        attribute.Rating = "-";
                     }
                     if (attribute.DateClose == null || attribute.DateClose == String.Empty)
                     {
@@ -185,7 +185,7 @@
                     {
                         attribute.Source = "-";
                     }
-                   
+
                     int cost;
                     int costpoint;
                     int costsert;
@@ -202,7 +202,7 @@
                         <td>@Html.ActionLink(attribute.Rest, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Type, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Source, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
-                        
+
                         <td hidden id="costid">@cost</td>
                         <td hidden id="costpointid">@costpoint</td>
                         <td hidden id="costsertid">@costsert</td>
@@ -258,20 +258,20 @@
             8: document.getElementById("sourcef"),
             9: new filterTable.Filter([document.getElementById("nalid")],
             function (value, filters, i) {
-            if (false === filters[i].checked) return true;                    
-            return filters[0].checked && filters[0].value !== value;
+                if (false === filters[i].checked) return true;
+                return filters[0].checked && filters[0].value !== value;
             }
             ),
             10: new filterTable.Filter([document.getElementById("bonusid")],
             function (value, filters, i) {
-            if (false === filters[i].checked) return true;
-            return filters[0].checked && filters[0].value !== value;
+                if (false === filters[i].checked) return true;
+                return filters[0].checked && filters[0].value !== value;
             }
             ),
             11: new filterTable.Filter([document.getElementById("sertid")],
             function (value, filters, i) {
-            if (false === filters[i].checked) return true;
-            return filters[0].checked && filters[0].value !== value;
+                if (false === filters[i].checked) return true;
+                return filters[0].checked && filters[0].value !== value;
             }
             )
         }
@@ -327,9 +327,9 @@
     }
     <br />
     <span>
-        Все расходы(наличные): @sum руб.<br/>
-        Все расходы(баллы): @sumb б.<br/>
-        Все расходы(сертификаты): @sums руб.<br/>
+        Все расходы(наличные): @sum руб.<br />
+        Все расходы(баллы): @sumb б.<br />
+        Все расходы(сертификаты): @sums руб.<br />
     </span>
     <br />
 
