@@ -187,7 +187,7 @@
         }
     </script>
     <div id="wrapper">
-        @using (Html.BeginForm("uniform", "uniform", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
+        @using (Html.BeginForm("uniform", "Callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
