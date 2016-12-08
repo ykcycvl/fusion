@@ -301,7 +301,7 @@ namespace Fusion.Models.Callback
 
             private static MySqlConnection GetConnect()
             {
-                string connPRTS = @"server=192.168.0.102;user=feedback;database=feedback;port=3306;password=73915;";
+                string connPRTS = @"server=192.168.0.102;User Id=feedback;database=feedback;port=3306;password=73915;";
                 MySqlConnection conn = new MySqlConnection(connPRTS);
                 conn.Open();
                 return conn;
