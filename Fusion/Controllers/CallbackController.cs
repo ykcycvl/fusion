@@ -291,7 +291,7 @@ namespace Fusion.Controllers
             #endregion
 
             #region dbConn
-            string connPRTS = @"server=192.168.0.102;user=feedback;database=feedback;port=3306;password=73915;";
+            string connPRTS = @"server=192.168.0.102;user Id=feedback;database=feedback;port=3306;password=73915;";
             MySqlConnection conn = new MySqlConnection(connPRTS);
             bool testCon = true;
             try
