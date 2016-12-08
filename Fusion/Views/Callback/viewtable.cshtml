@@ -136,14 +136,13 @@
                     string rowColor = "";
                     string textColor = "";
 
-                    if (@attribute.DateClose != null)
+                    if (@attribute.DateClose != null && @attribute.Rating != null)
                     {
                         textColor = "#ffffff";
-                        rowColor = "#669966";
                         switch (attribute.Rating)
                         {
                             case "Положительный":
-                                rowColor = "#019801";
+                                rowColor = "#669966";
                                 break;
                             case "Отрицательный":
                                 rowColor = "#ec971f";
