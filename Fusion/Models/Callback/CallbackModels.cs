@@ -601,7 +601,5 @@ namespace Fusion.Models.Callback
         [StringLength(50, MinimumLength = 0, ErrorMessage = "Слишком длинные ФИО")]
         [Display(Name = "Guilty")]
         public string Guilty { get; set; }
-
-
     }
 }
