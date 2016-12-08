@@ -293,8 +293,11 @@
             </li>
             <li>
                 <span style="margin-left: 40px;">Дата создания:</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.EditorFor(m => m.NewDate, new { placeholder = "Введите дату поступления отзыва", @required = true, @type = "date", @value = Model.NewDate })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                </div>
                 @Html.ValidationMessageFor(m => m.NewDate)
-                @Html.EditorFor(m => m.NewDate, new { placeholder = "Введите дату поступления отзыва", @required = true, @type = "date", @value = Model.NewDate })
 
                 @*<span >Время создания отзыва:</span>
                     @Html.EditorFor(m => m.NewTime, new {@type = "time", @class = "contact_form" })*@
