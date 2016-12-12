@@ -7,6 +7,19 @@
 
 <link rel="stylesheet" href="~/Content/style_list_uni.css">
 <script type="text/javascript">
+    function exclamationSign() {
+        var i;
+        for (i = 1; i <= 7; i++) {
+            var a = document.getElementById("oplata" + i).value
+            if (!a || a == " ") {
+                document.getElementById("oplata_" + i).className = "glyphicon glyphicon-exclamation-sign form-control-feedback";
+            }
+            else {
+                document.getElementById("oplata_" + i).className = "";
+            }
+        }
+    }
+    
     function showForm1() {
         document.getElementById("otlichno").hidden = false;
         document.getElementById("horosho").hidden = false;
@@ -107,29 +120,23 @@
             case 'БК':
                 document.getElementById("sbcid").selected = true;
                 break
+            
         }
 
         //рейтинг
         switch (document.getElementById("ratind").value) {
             case 'Положительный':
-                //document.getElementById("pologhid").click();
                 showForm1();
-                //document.getElementById("pologhid").selected = true;
                 break
             case 'Отрицательный':
-                //document.getElementById("otricid").click();
-                showForm2();
-                //document.getElementById("otricid").selected = true;
+                
+                showForm2();    
                 break
             case 'Критичный':
-                //document.getElementById("kriticid").click();
                 showForm3();
-                //document.getElementById("kriticid").selected = true;
                 break
             case 'ОТРАВЛЕНИЕ':
-                //document.getElementById("kriticid").click();
                 showForm3();
-                //document.getElementById("kriticid").selected = true;
                 break
 
 
@@ -189,13 +196,13 @@
         }
     }
 </script>
-<div id="wrapper">
+
+<div id="wrapper" oninput="exclamationSign()">
     @using (Html.BeginForm("uniform", "Callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
 
-        @*@Html.HiddenFor(m => m.id, new {@value = Model.id, @name = "idhidden" })*@
         @Html.HiddenFor(m => m.id, new { @value = Model.id })
 
         @Html.HiddenFor(m => m.Unit, new { @value = Model.Unit, @id = "unitind" })
@@ -207,23 +214,20 @@
         @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" })
         <ul>
             <li>
-                @*<span style="margin-left: 40px;"></span>*@
-                <label style="margin-left: 40px; float: left" for="UserName">Фио гостя:</label>
+                <label style="margin-left: 40px; float: left" for="">Фио гостя:</label>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @ID = "UserName", @class = "contact_form", @value = Model.UserName })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @class = "contact_form", @value = Model.UserName, id="oplata1" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_1"></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.UserName)
             </li>
             <li>
                 <span style="margin-left: 40px;">Телефон гостя:</span>
                 <div class="input-group has-error">
-                    
-                        <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
-                    
-                    @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber })
-                    @Html.ValidationMessageFor(m => m.phnumber)
+                    @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber, @id="oplata2" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_2"></span>
                     </div>
+                @Html.ValidationMessageFor(m => m.phnumber)
 </li>
             <li>
                 <span style="margin-left: 40px;">E-mail гостя:</span>
@@ -241,8 +245,6 @@
                     <option value="БК" id="bcid">БК</option>
                     <option value="Маркетинг/сайт" id="markid">Маркет.</option>
                 </select>
-                @*@Html.DropDownListFor(m => m.SelectedUnit, new SelectList(Model.Unit, "Value", "Text", "Подразделение"), new { disabled = "Подразделение" })
-                    @Html.ValidationMessageFor(m => m.SelectedUnit)*@
             </li>
 
             <li>
@@ -267,8 +269,6 @@
                     <option value="Уссурийск" id="ussurid">Уссурийск</option>
                     <option value="Находка" id="hakhid">Находка</option>
                 </select>
-                @*@Html.DropDownListFor(m => m.SelectedRest, new SelectList(Model.Rest, "Value", "Text", "Ресторан"), new { disabled = "Ресторан", @class = "contact_form" })
-                    @Html.ValidationMessageFor(m => m.SelectedRest)*@
             </li>
             <li>
                 <span style="margin-left: 40px;">Виновный</span>
@@ -292,8 +292,6 @@
                     <option value="КЦ" id="sccid">КЦ</option>
                     <option value="БК" id="sbcid">БК</option>
                 </select>
-                @*@Html.DropDownListFor(m => m.SelectedSource, new SelectList(Model.Source, "Value", "Text", "Источник отзыва"), new { disabled = "Источник отзыва", @class = "contact_form" })
-                    @Html.ValidationMessageFor(m => m.SelectedSource)*@
             </li>
             <li>
                 <span style="margin-left: 40px;">Дата создания:</span>
@@ -302,17 +300,11 @@
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.NewDate)
-
-                @*<span >Время создания отзыва:</span>
-                    @Html.EditorFor(m => m.NewTime, new {@type = "time", @class = "contact_form" })*@
             </li>
             <li>
                 <span style="margin-left: 40px;">Дата закрытия:</span>
                 @Html.ValidationMessageFor(m => m.OldDate)
                 @Html.EditorFor(m => m.OldDate, new { placeholder = "Введите дату решения проблемы", @type = "date", @class = "contact_form", @value = Model.OldDate })
-                @*<span >Время закрытия отзыва:</span>
-                    @Html.EditorFor(m => m.OldTime, new { placeholder = "Введите время решения проблемы", @type = "time", @class = "contact_form" })*@
-                @*, @value = Model.OldTime*@
             </li>
             <li>
                 <p>@Html.RadioButtonFor(m => m.Rating1, "Положительный", new { onclick = "showForm1()", @id = "pologhid" })Положительный</p>
@@ -328,66 +320,54 @@
                     <option value="Средне" id="srednie" hidden>Средне</option>
                     <option value="Плохо" id="plocho" hidden>Плохо</option>
                 </select>
-                @*@Html.DropDownListFor(m => m.SelectedRating2, new SelectList(Model.Rating2, "Value", "Text", "Выберите оценку"), new { @class = "contact_form" })
-                    @Html.ValidationMessageFor(m => m.SelectedRating2)*@
             </li>
             <li>
                 <span style="margin-left: 40px;">Текст отзыва:</span>
                 @Html.ValidationMessageFor(m => m.textkomm)
                 <div class="input-group has-error has-feedback">
-                    @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm, @id = "oplata3"})
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id = "oplata_3"></span>
                     </div>
 </li>
             <li>
                 <span style="margin-left: 40px;">Подробности проблемы:</span>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextAreaFor(m => m.Problem, new { placeholder = "Подробности проблемы", @required = true, @class = "contact_form", @value = Model.Problem })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextAreaFor(m => m.Problem, new { placeholder = "Подробности проблемы", @required = true, @class = "contact_form", @value = Model.Problem, @id = "oplata4" })
+                    <span id="oplata_4" class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.Problem)
             </li>
             <li>
                 <span style="margin-left: 40px;">Принятые меры:</span>
-                <div class="input-group has-error has-feedback">
                     @Html.TextAreaFor(m => m.mera, new { placeholder = "Опишите принятые меры", @class = "contact_form", @value = Model.mera })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
-                </div>
                 @Html.ValidationMessageFor(m => m.mera)
             </li>
             <li>
                 <span style="margin-left: 40px;">Решение для гостя:</span>
-                <div class="input-group has-error has-feedback">
                     @Html.TextAreaFor(m => m.answer, new { placeholder = "Опишите решение для гостя", @class = "contact_form", @value = Model.answer })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
-                </div>
                 @Html.ValidationMessageFor(m => m.answer)
             </li>
-            @*<li>
-                    @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost })
-                    @Html.ValidationMessageFor(m => m.Cost)
-                </li>*@
             <li>
                 <span style="margin-left: 40px;">Цена решения:</span>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost, @id = "oplata5" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" id="oplata_5" aria-hidden="true"></span>
                 </div>
                 
                 @Html.ValidationMessageFor(m => m.Cost)
                 <br />
                 <span style="margin-left: 40px;">Цена решения (баллы):</span>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextBoxFor(m => m.CostPoint, new { placeholder = "Цена решения (баллы)", @required = true, @class = "contact_form", @value = Model.CostPoint })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.CostPoint, new { placeholder = "Цена решения (баллы)", @required = true, @class = "contact_form", @id = "oplata6", @value = Model.CostPoint })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_6"></span>
                 </div>
-               
+
                 @Html.ValidationMessageFor(m => m.CostPoint)
                 <br />
                 <span style="margin-left: 40px;">Цена решения (сертификат):</span>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextBoxFor(m => m.CostSert, new { placeholder = "Цена решения (сертификат)", @required = true, @class = "contact_form", @value = Model.CostSert })
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                    @Html.TextBoxFor(m => m.CostSert, new { placeholder = "Цена решения (сертификат)", @required = true, @id = "oplata7", @class = "contact_form", @value = Model.CostSert })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_7"></span>
                 </div>
       
                 @Html.ValidationMessageFor(m => m.CostSert)
@@ -402,10 +382,9 @@
                     <option value="Cотрудник/Компания" id="stcompay">Cотрудник/Компания</option>
                 </select>
             </li>
+
             <li>
-                @*<input id="Submit1" type="submit" value="submit" />*@
                 <button type="submit" class="submit">Отправить</button>
-                @*<div id="divResultText"></div>*@
             </li>
         </ul>
     }
