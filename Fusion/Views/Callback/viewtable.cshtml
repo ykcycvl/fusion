@@ -193,7 +193,7 @@
                     cost = Convert.ToInt32(@attribute.Cost);
                     costpoint = Convert.ToInt32(@attribute.CostPoint);
                     costsert = Convert.ToInt32(@attribute.CostSert);
-                    <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/callback/uniform?updorins=@attribute.id'">
+                    <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/Callback/uniform?updorins=@attribute.id'">
                         <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Rating, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Phone, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
