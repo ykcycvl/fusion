@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ using System.Data.SqlClient;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
+
 
 namespace Fusion.Controllers
 {
@@ -105,7 +107,7 @@ namespace Fusion.Controllers
                 MySqlCommand cmdDateClose = new MySqlCommand(DateClose, conn);
                 MySqlCommand cmdType = new MySqlCommand(Type, conn);
                 MySqlCommand cmdGuilty = new MySqlCommand(Guilty, conn);
-                MySqlCommand cmdPayer = new MySqlCommand(Payer, conn);           
+                MySqlCommand cmdPayer = new MySqlCommand(Payer, conn);
 
                 string resFIO = cmdFIO.ExecuteScalar().ToString();
                 model.UserName = resFIO;
@@ -116,7 +118,7 @@ namespace Fusion.Controllers
                 string resText = cmdText.ExecuteScalar().ToString();
                 model.textkomm = resText;
                 string resData = cmdData.ExecuteScalar().ToString();
-                model.NewDate = resData.Substring(0, 10);                
+                model.NewDate = resData.Substring(0, 10);
                 string resSource = cmdSource.ExecuteScalar().ToString();
                 model.Source = resSource;//----------------------------источник
                 string resUnit = cmdUnit.ExecuteScalar().ToString();
@@ -178,11 +180,11 @@ namespace Fusion.Controllers
             int id;
             //id = model.id;
             id = Convert.ToInt32(Request.Form["id"]);
-            if(id==0)
+            if (id == 0)
             {
                 id = model.id;
             }
-            
+
             string UserName;
             UserName = model.UserName;
 
@@ -194,7 +196,7 @@ namespace Fusion.Controllers
 
             string SelectedUnit;
             SelectedUnit = Request.Form["unitt"];
-            
+
             //string SelectedUnit; test
             //SelectedUnit = model.SelectedUnit;unit
 
@@ -219,8 +221,8 @@ namespace Fusion.Controllers
 
             string NewTime;
             NewTime = model.NewTime;
-            NewDate = NewDate +" "+ NewTime;
-            
+            NewDate = NewDate + " " + NewTime;
+
             //string RegDateNew = Regex.Replace(test, patternDate, test);
 
             string OldDate;
@@ -228,7 +230,7 @@ namespace Fusion.Controllers
 
             //string OldDate;
             //OldDate = OldDate + " " + OldTime;
-            
+
             string Guilty;
             Guilty = model.Guilty;
 
@@ -243,7 +245,7 @@ namespace Fusion.Controllers
             Rating = Regex.Replace(Rating, pattern, regular);
 
 
-            switch(Rating)
+            switch (Rating)
             {
                 case ",Положительный":
                     Rating = "Положительный";
@@ -286,7 +288,7 @@ namespace Fusion.Controllers
             Type = Request.Form["types"];
 
             string Theme; //разобарться зачем заводил
-            
+
 
             #endregion
 
@@ -302,11 +304,14 @@ namespace Fusion.Controllers
             {
                 testCon = false;
             }
-
+            string UserLog; 
+            UserLog = User.Identity.GetUserName();
             string dbSTR;
+            string dbSTR2;
+            dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + NewDate + "',Ident='" + id +"'";
             //проверяем id отзыва
             //idbridge
-            if (id>=0)
+            if (id >= 0)
             {
                 dbSTR = @"UPDATE tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
 
@@ -317,6 +322,7 @@ namespace Fusion.Controllers
 
             }
             MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
+            MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);
 
             if (!ModelState.IsValid)
             {
@@ -325,6 +331,7 @@ namespace Fusion.Controllers
             else
             {
                 int count = cmd.ExecuteNonQuery();
+                int count2 = cmd2.ExecuteNonQuery();
             }
 
             if (testCon)
@@ -337,5 +344,5 @@ namespace Fusion.Controllers
 
             return Redirect("~/Callback/viewtable");
         }
-	}
+    }
 }
