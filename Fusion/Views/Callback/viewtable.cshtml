@@ -33,7 +33,7 @@
 
 <h1>Обратная связь</h1>
 <div id="wrapper">
-    @using (Html.BeginForm("viewtable", "callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
+    @using (Html.BeginForm("viewtable", "Callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
     {
         //кнопка добавления
         <div id="datefilter">
