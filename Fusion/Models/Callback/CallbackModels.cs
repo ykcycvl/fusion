@@ -28,11 +28,6 @@ namespace Fusion.Models.Callback
         public string UserName { get; set; }
 
         //№ телефона гостя
-        //[Required]
-        //[DataType(DataType.PhoneNumber)]
-        //public string phnumber2 { get; set; }
-
-        //№ телефона гостя
         [Required(ErrorMessage = "Введите № телефона")]
         [RegularExpression(@"89[0-9]{2}[0-9]{3}[0-9]{2}[0-9]{2}", ErrorMessage = "Введите № телефона в виде 89001110011")]
         [StringLength(11, MinimumLength = 5, ErrorMessage = "Номер должен содержать 11 цифр")]
@@ -45,11 +40,6 @@ namespace Fusion.Models.Callback
         [StringLength(300, MinimumLength = 5, ErrorMessage = "Пожалуйста напишите ваш отзыв")]
         [DataType(DataType.MultilineText)]
         public string textkomm { get; set; }
-
-        //дата
-        //[Required]
-        //[Display(Name = "MyDate")]
-        //public string MyDate { get; set; }
 
         //дата
         [Required(ErrorMessage = "Введите дату визита")]
@@ -141,11 +131,6 @@ namespace Fusion.Models.Callback
         [StringLength(35, MinimumLength = 3, ErrorMessage = "Введите ФИО гостя")]
         [Display(Name = "UserName")]
         public string UserName { get; set; }
-
-        //№ телефона гостя
-        //[Required]
-        //[Display(Name = "phnumber")]
-        //public string phnumber { get; set; }
 
         //№ телефона гостя
         [Required(ErrorMessage = "Введите № телефона")]
@@ -444,23 +429,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для подразделений
         public string Unit { get; set; }
-        //private List<SelectListItem> _unit = new List<SelectListItem>();
-        //[Required(ErrorMessage = "Пожалуйста выберите категорию")]
-        //public string SelectedUnit { get; set; }
-
-        //public List<SelectListItem> Unit
-        //{
-        //    get
-        //    {
-        //        _unit.Add(new SelectListItem() { Text = "Подразделение", Value = "Подразделение" });
-        //        _unit.Add(new SelectListItem() { Text = "Ресторан", Value = "Ресторан" });
-        //        _unit.Add(new SelectListItem() { Text = "Вынос", Value = "Вынос" });
-        //        _unit.Add(new SelectListItem() { Text = "Доставка", Value = "Доставка" });
-        //        _unit.Add(new SelectListItem() { Text = "КЦ", Value = "КЦ" });
-        //        _unit.Add(new SelectListItem() { Text = "БК", Value = "БК" });
-        //        return _unit;
-        //    }
-        //}
+       
 
         //детали проблемы
         [Required(ErrorMessage = "Введите детали проблемы")]
@@ -470,26 +439,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для ресторанов
         public string Rest { get; set; }
-        //private List<SelectListItem> _rest = new List<SelectListItem>();
-        //[Required(ErrorMessage = "Пожалуйста выберите ресторан")]
-        //public string SelectedRest { get; set; }
-
-        //public List<SelectListItem> Rest
-        //{
-        //    get
-        //    {
-        //        _rest.Add(new SelectListItem() { Text = "Ресторан", Value = "Ресторан" });
-        //        _rest.Add(new SelectListItem() { Text = "Светланская 183 В", Value = "Светланская 183 В" });
-        //        _rest.Add(new SelectListItem() { Text = "Пр-т Острякова, 8", Value = "Пр-т Острякова, 8" });
-        //        _rest.Add(new SelectListItem() { Text = "Светланская, 121", Value = "Светланская, 121" });
-        //        _rest.Add(new SelectListItem() { Text = "Пр-т 100 лет Владивостоку, 50А", Value = "Пр-т 100 лет Владивостоку, 50А" });
-        //        _rest.Add(new SelectListItem() { Text = "Семеновская, 7В", Value = "Семеновская, 7В" });
-        //        _rest.Add(new SelectListItem() { Text = "Уссурийск", Value = "Уссурийск" });
-        //        _rest.Add(new SelectListItem() { Text = "Находка", Value = "Находка" });
-        //        return _rest;
-        //    }
-        //}
-
+        
         //фио сотрудника
         //[Required(ErrorMessage = "Пожалуйста введите ФИО")]
         //[RegularExpression(@"([а-яА-Я]+\s[а-яА-Я]+\s[а-яА-Я]+)|([а-яА-Я]+\s[а-яА-Я]+)|([а-яА-Я]+)|([а-яА-Я]+-*[а-яА-Я]+)", ErrorMessage = "Введите ФИО ответственного")]
@@ -499,25 +449,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для источника отзывов
         public string Source { get; set; }
-        //private List<SelectListItem> _source = new List<SelectListItem>();
-        //[Required(ErrorMessage = "Пожалуйста выберите источник")]
-        //public string SelectedSource { get; set; }
-
-        //public List<SelectListItem> Source
-        //{
-        //    get
-        //    {
-        //        _rating2.Add(new SelectListItem() { Text = "Источник отзыва", Value = "Источник отзыва" });
-        //        _rating2.Add(new SelectListItem() { Text = "Сайт", Value = "Сайт" });
-        //        _rating2.Add(new SelectListItem() { Text = "Инста", Value = "Инста" });
-        //        _rating2.Add(new SelectListItem() { Text = "Соцсети", Value = "Соцсети" });
-        //        _rating2.Add(new SelectListItem() { Text = "Телефон с чека", Value = "Телефон с чека" });
-        //        _rating2.Add(new SelectListItem() { Text = "Лично/книга жалоб", Value = "Лично/книга жалоб" });
-        //        _rating2.Add(new SelectListItem() { Text = "КЦ", Value = "КЦ" });
-        //        _rating2.Add(new SelectListItem() { Text = "БК", Value = "БК" });
-        //        return _rating2;
-        //    }
-        //}
+      
 
         //дата создания отзыва
         [Required(ErrorMessage = "Введите дату визита гостя")]
@@ -528,44 +460,17 @@ namespace Fusion.Models.Callback
         [DataType(DataType.Time)]
         public string NewTime { get; set; }
 
-        //[Required(ErrorMessage = "Введите дату визита")]
-        //[DataType(DataType.Date)]
-        //public string MyDate { get; set; }
-
-        //дата закрытия отзыва
-        //[Required(ErrorMessage = "Введите дату визита гостя")]
+      
         [DataType(DataType.Date)]
-        //[DisplayFormat(DataFormatString = "{0:dd'.'MM'.'yyyy}", ApplyFormatInEditMode = true)]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.MM.yyyy}")]
+        
         public string OldDate { get; set; }
 
         //выбор оценки отзыва
-        //[Required]
-        //[Display(Name = "Rating")]
+     
         public string Rating1 { get; set; }
-
-        //выбор оценки отзыва 2
-        //public string Method {get; set; }
-        //public string[] GetMethods(){return new [] {"Value1","Value2" };}
 
         //выпадаюий список для подробной оценки
         public string Rating2 { get; set; }
-        //private List<SelectListItem> _rating2 = new List<SelectListItem>();
-        //[Required(ErrorMessage = "Пожалуйста выберите источник")]
-        //public string SelectedRating2 { get; set; }
-
-        //public List<SelectListItem> Rating2
-        //{
-        //    get
-        //    {
-        //        _rating2.Add(new SelectListItem() { Text = "Выберите оценку", Value = "Выберите оценку"});
-        //        _rating2.Add(new SelectListItem() { Text = "Отлично", Value = "Отлично" });
-        //        _rating2.Add(new SelectListItem() { Text = "Хорошо", Value = "Хорошо" });
-        //        _rating2.Add(new SelectListItem() { Text = "Средне", Value = "Средне" });
-        //        _rating2.Add(new SelectListItem() { Text = "Плохо", Value = "Плохо" });
-        //        return _rating2;
-        //    }
-        //}
 
         //сам отзыв
         [Required(ErrorMessage = "Текст отзыва")]
