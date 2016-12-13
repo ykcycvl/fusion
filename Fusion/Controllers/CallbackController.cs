@@ -177,17 +177,16 @@ namespace Fusion.Controllers
         {
             #region UserData
 
-            //переменная для записи изменённых полей
-            string Matching=""; 
+            string Matching = "";
 
             int id;
             //id = model.id;
             id = Convert.ToInt32(Request.Form["id"]);
-            if(id==0)
+            if (id == 0)
             {
                 id = model.id;
             }
-            
+
             string UserName;
             UserName = model.UserName;
             //%%%%%%%
@@ -195,7 +194,7 @@ namespace Fusion.Controllers
             string UserNamematching;
             UserNamematching = Request.Form["hidname"];
             //проверяем, было ли поле изменено
-            if(UserName!=UserNamematching)
+            if (UserName != UserNamematching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
                 Matching = Matching + "Имя гостя, ";
@@ -236,14 +235,18 @@ namespace Fusion.Controllers
             //переменная для начального значения поля
             string SelectedUnitmatching;
             SelectedUnitmatching = Request.Form["hidunit"];
+            if (SelectedUnitmatching == "")
+            {
+                SelectedUnitmatching = null;
+            }
             //проверяем, было ли поле изменено
             if (SelectedUnit != SelectedUnitmatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
-                Matching = Matching + "Источник, ";
+                Matching = Matching + "Подразделение, ";
             }
             //%%%%%%%
-            
+
             //string SelectedUnit; test
             //SelectedUnit = model.SelectedUnit;unit
 
@@ -268,6 +271,10 @@ namespace Fusion.Controllers
             string SelectedRestmatching;
             SelectedRestmatching = Request.Form["hidrest"];
             //проверяем, было ли поле изменено
+            if (SelectedRestmatching == "")
+            {
+                SelectedRestmatching = null;
+            }
             if (SelectedRest != SelectedRestmatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -284,6 +291,10 @@ namespace Fusion.Controllers
             string Staffmatching;
             Staffmatching = Request.Form["hidstaff"];
             //проверяем, было ли поле изменено
+            if (Staffmatching == "")
+            {
+                Staffmatching = null;
+            }
             if (Staff != Staffmatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -298,6 +309,10 @@ namespace Fusion.Controllers
             string SelectedSourcematching;
             SelectedSourcematching = Request.Form["hidsourse"];
             //проверяем, было ли поле изменено
+            if (SelectedSourcematching == "")
+            {
+                SelectedSourcematching = null;
+            }
             if (SelectedSource != SelectedSourcematching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -323,8 +338,8 @@ namespace Fusion.Controllers
 
             string NewTime;
             NewTime = model.NewTime;
-            NewDate = NewDate +" "+ NewTime;
-            
+            NewDate = NewDate + " " + NewTime;
+
             //string RegDateNew = Regex.Replace(test, patternDate, test);
 
             string OldDate;
@@ -334,6 +349,10 @@ namespace Fusion.Controllers
             string OldDatematching;
             OldDatematching = Request.Form["hiddateold"];
             //проверяем, было ли поле изменено
+            if (OldDatematching == "")
+            {
+                OldDatematching = null;
+            }
             if (OldDate != OldDatematching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -343,7 +362,7 @@ namespace Fusion.Controllers
 
             //string OldDate;
             //OldDate = OldDate + " " + OldTime;
-            
+
             string Guilty;
             Guilty = model.Guilty;
             //%%%%%%%
@@ -351,6 +370,10 @@ namespace Fusion.Controllers
             string Guiltymatching;
             Guiltymatching = Request.Form["hidguilty"];
             //проверяем, было ли поле изменено
+            if (Guiltymatching == "")
+            {
+                Guiltymatching = null;
+            }
             if (Guilty != Guiltymatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -365,6 +388,10 @@ namespace Fusion.Controllers
             string SelectedPayermatching;
             SelectedPayermatching = Request.Form["hidpayer"];
             //проверяем, было ли поле изменено
+            if (SelectedPayermatching == "")
+            {
+                SelectedPayermatching = null;
+            }
             if (SelectedPayer != SelectedPayermatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -380,7 +407,7 @@ namespace Fusion.Controllers
             Rating = Regex.Replace(Rating, pattern, regular);
 
 
-            switch(Rating)
+            switch (Rating)
             {
                 case ",Положительный":
                     Rating = "Положительный";
@@ -414,6 +441,10 @@ namespace Fusion.Controllers
             string SelectedRating2matching;
             SelectedRating2matching = Request.Form["hidrating2"];
             //проверяем, было ли поле изменено
+            if (SelectedRating2matching == "")
+            {
+                SelectedRating2matching = null;
+            }
             if (SelectedRating2 != SelectedRating2matching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -444,6 +475,10 @@ namespace Fusion.Controllers
             string meramatching;
             meramatching = Request.Form["hidmera"];
             //проверяем, было ли поле изменено
+            if (meramatching == "")
+            {
+                meramatching = null;
+            }
             if (mera != meramatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -458,6 +493,10 @@ namespace Fusion.Controllers
             string answermatching;
             answermatching = Request.Form["hidanswer"];
             //проверяем, было ли поле изменено
+            if (answermatching == "")
+            {
+                answermatching = null;
+            }
             if (answer != answermatching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
@@ -514,13 +553,17 @@ namespace Fusion.Controllers
             string Typematching;
             Typematching = Request.Form["hidtype"];
             //проверяем, было ли поле изменено
+            if (Typematching == "")
+            {
+                Typematching = null;
+            }
             if (Type != Typematching)
             {
                 //если изменено - записываем в переменную какое поле было изменено
                 Matching = Matching + "Тип причины, ";
             }
             //%%%%%%%
-            
+
             string Theme; //разобарться зачем заводил
 
 
