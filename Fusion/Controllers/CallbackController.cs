@@ -542,7 +542,7 @@ namespace Fusion.Controllers
             UserLog = User.Identity.GetUserName();
             string dbSTR;
             string dbSTR2;
-            dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id +"'";
+            dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id +"',Fields='" + Matching + "'";
             //проверяем id отзыва
             //idbridge
             if (id >= 0)
