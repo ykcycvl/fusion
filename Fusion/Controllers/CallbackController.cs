@@ -520,52 +520,7 @@ namespace Fusion.Controllers
                 Matching = Matching + "Тип причины, ";
             }
             //%%%%%%%
-            string regular = "";
-            Rating = Regex.Replace(Rating, pattern, regular);
-
-
-            switch (Rating)
-            {
-                case ",Положительный":
-                    Rating = "Положительный";
-                    break;
-                case ",Отрицательный":
-                    Rating = "Отрицательный";
-                    break;
-                case ",Критичный":
-                    Rating = "Критичный";
-                    break;
-                case ",ОТРАВЛЕНИЕ":
-                    Rating = "ОТРАВЛЕНИЕ";
-                    break;
-            }
-
-            string SelectedRating2;
-            SelectedRating2 = Request.Form["reitingg"];
-            //string SelectedRating2;
-            //SelectedRating2 = model.SelectedRating2;
-
-            string textkomm;
-            textkomm = model.textkomm;
-
-            string mera;
-            mera = model.mera;
-
-            string answer;
-            answer = model.answer;
-
-            string Cost;
-            Cost = model.Cost;
-
-            string CostPoint;
-            CostPoint = model.CostPoint;
-
-            string CostSert;
-            CostSert = model.CostSert;
-
-            string Type;
-            Type = Request.Form["types"];
-
+            
             string Theme; //разобарться зачем заводил
 
 
