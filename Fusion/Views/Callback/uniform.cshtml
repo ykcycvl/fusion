@@ -212,6 +212,29 @@
         @Html.HiddenFor(m => m.Rating2, new { @value = Model.Rating2, @id = "rat2ind" })
         @Html.HiddenFor(m => m.Type, new { @value = Model.Type, @id = "typeind" })
         @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" })
+            
+        <input hidden name="hidname" value="@Model.UserName" />
+        <input hidden name="hidphone" value="@Model.phnumber" />
+        <input hidden name="hidmail" value="@Model.email" />
+        <input hidden name="hidunit" value="@Model.Unit" />
+        <input hidden name="hidtype" value="@Model.Type" />
+        <input hidden name="hidrest" value="@Model.Rest" />
+        <input hidden name="hidguilty" value="@Model.Guilty" />
+        <input hidden name="hidstaff" value="@Model.Staff" />
+        <input hidden name="hidsourse" value="@Model.Source" />
+        <input hidden name="hiddatenew" value="@Model.NewDate" />
+        <input hidden name="hiddateold" value="@Model.OldDate" />
+        <input hidden name="hidrating1" value="@Model.Rating1" />
+        <input hidden name="hidrating2" value="@Model.Rating2" />
+        <input hidden name="hidtext" value="@Model.textkomm" />
+        <input hidden name="hidproblem" value="@Model.Problem" />
+        <input hidden name="hidmera" value="@Model.mera" />
+        <input hidden name="hidanswer" value="@Model.answer" />                
+        <input hidden name="hidcost1" value="@Model.Cost" />
+        <input hidden name="hidcost2" value="@Model.CostPoint" />
+        <input hidden name="hidcost3" value="@Model.CostSert" />
+        <input hidden name="hidpayer" value="@Model.Payer" />
+            
         <ul>
             <li>
                 <label style="margin-left: 40px; float: left" for="">Фио гостя:</label>
