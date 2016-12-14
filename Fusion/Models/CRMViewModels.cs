@@ -486,7 +486,7 @@ namespace Fusion.Models
                 SqlConnection con = new SqlConnection(connectionstring);
                 con.Open();
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.CommandTimeout = 6000;
+                cmd.CommandTimeout = 120000;
                 SqlDataReader rdr = cmd.ExecuteReader();
 
                 foreach (DbDataRecord record in rdr)
