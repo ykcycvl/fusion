@@ -211,10 +211,46 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ACTIVITYLIST.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ALIASES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ALIASLANGUAGES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AVAILABILITYSCHEDULES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AWARDSPENALTIESDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AWARDSPENALTIESGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AWARDSPENALTIESTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BANDEDPROPSRIGHTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BASEDIALECT.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BC\BCModels.cs" />
     <Compile Include="Models\BC\BCViewModels.cs" />
     <Compile Include="Models\BonusClub\ElasticModels.cs" />
+    <Compile Include="Models\BONUSTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BRIGADES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Bringo.cs" />
+    <Compile Include="Models\BUSINESSPERIODS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CallCenter\CallCenterModels.cs" />
     <Compile Include="Models\CallCenter\CallCenterViewModels.cs" />
     <Compile Include="Models\CallCenter\CDR.cs" />
@@ -432,6 +468,99 @@
     <Compile Include="Models\CARD_UNPAY_TYPES.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CASHES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHINOUT.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRFIELDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRFIELDSETS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANCORRTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANDEFAULTCORR.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANDOCINFO.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANDOCS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANREPORTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANSETTINGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANZREPORTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHMANZREPORTTAXES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHREPORTDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CASHSERVDATASTATUSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CATEGLIST.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHANGEABLEORDERTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CHECKTABLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLASSIFICATORGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLASSINFOGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLASSINFOLOGPROPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLASSINFOS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CLOCKRECS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COLORMAPPINGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COLORSCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\COMMENTPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CONSUMATORS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CONSUMTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CRM.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -449,22 +578,364 @@
     </Compile>
     <Compile Include="Models\CRMModels.cs" />
     <Compile Include="Models\CRMViewModels.cs" />
+    <Compile Include="Models\CUBEDIALECTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CURRENCIES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CURRENCYFACEVALUES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CURRENCYTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CURRLINES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_CatFoodCost.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cm.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cmprotocol.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cm_atributes.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cm_detail.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cm_tech.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_cm_version.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_CorrFullList.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_CorrTree.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_doc.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_docprotocol.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_doc_attrs.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_doc_lines.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_expdoc.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_expdocprotocol.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_expdoc_lines.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_expdoc_lines_details.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_Goods.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseAttrs.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseCompl.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseMain.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseMeasures.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseStore.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsBaseWrite_Off.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsCtg.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsCtg2.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_GoodsTree.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_idoc.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_idocprotocol.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_idoc_lines.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_Messages.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_MGroups.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_MUnits.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_OwnAttrs.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_PLDoc.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_PLDoc_details.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_ReplaceGoods.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_ReplaceGrp.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_settings.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_StoreMapping.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_TDoc.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\data_shcr_TDoc_details.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEFAULTERTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DELIVERYDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEPOSITCOLLECTREASONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEVICEDATALOOKUPITEMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DEVICES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISCOUNTCOMPOSITIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISCOUNTDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISCOUNTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISCOUNTTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISCPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHCONSUMATORS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHDISCOUNTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHMODIFIERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHRESTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISHVOIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DISPLAYRESOLUTIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DOCUMENTMAKETSCHEMELINKS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DOCUMENTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DOSINGDEVICES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DRAWERLOG.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EMPLOYEEGROUPDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EMPLOYEEGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EMPLOYEEROLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EMPLOYEES.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Callback\CallbackModels.cs" />
+    <Compile Include="Models\ENTRANCECARDTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ENUMSTYPESDATAS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ENUMSTYPESINFOS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EXTBASECONFIGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EXTERNALIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EXTRATABLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\FIAS_ADDRESS_OBJECTS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FIAS_ADDRESS_OBJECTS_V.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FILTERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FISCDEVPARAMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FISCDEVZRKEYS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FORMDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FORMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FORMSCHEMECHILDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FORMSCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FUNCTIONKEYGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FUNCTIONKEYS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FUNDSACCOUNTINGPLACES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GENERATEDPROPDATAS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GENERATEDPROPGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GENERATEDPROPTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GENERATORS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GLOBALSHIFTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GLOBALSHIFTSTATS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GroupFilters.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GUESTREPLIES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GUESTTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HALLPLANS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HARDWAREINFO.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HOURLIST.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IMAGELIST.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IMAGENODES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\INPDEVTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\INTFTRANSACTIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\INVOICES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_DATASETFIELDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_DATASETPARAMETERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_DATASETS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_DATASETSGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_LASTPARAMETERSVALSBYUSER.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IR_LASTPARAMETERSVALSBYUSERS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IR_LINKCONFIG.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_LINKCONFIGDETAIL.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_REPORTDATASETS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IR_REPORTGROUPS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IR_REPORTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IR_SCHEDULEREPORTS_EVENTS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
@@ -487,6 +958,36 @@
     <Compile Include="Models\IR_SETTINGS_MAILING.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IR_USEPARAMETERSBYDATASET.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ITEMSSALED.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KBDLAYOUTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KBDTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KDSDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KURSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LINKEDSYSTEMSCONFS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LINKEDSYSTEMSTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LOGBOOK.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LOGVERSION.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LOG_OPERATIONS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -497,12 +998,120 @@
     <Compile Include="Models\MAILING_AUTORIZATION_Result.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MAKETS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MAKETSCHEMEDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MAKETSCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MCRALGORITHMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MENUITEMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODIFIERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODIGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODISCHEMEDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODISCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MSG_OUTGOINGS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MSG_SENTS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPCUBEEXTENDEDFIELDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPCUBEFIELDSDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPCUBES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPCUBESCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPCUBESTATUSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPREPORTGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPREPORTRIGHTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OLAPREPORTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OPERATIONCLASSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OPERATIONLOG.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OPERATIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OPERATIONSUSERDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ORDERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ORDERSESSIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ORDERVOIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ORDERWAITERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ORDER_MAP.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PARAMETEREXCEPTIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PARAMETERHIERARHIES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PARAMETERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PAYBINDINGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PAYMENTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PAYMENTSEXTRA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PDSCARDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PERIODDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PERIODGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PERIODS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_ACC_ACCOUNTS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
@@ -612,9 +1221,102 @@
     <Compile Include="Models\PLG_USE_OBJECT_BY_DB.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PRICECONSTANTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRICECONSTANTTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRICEFORMULAS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRICES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRICETYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRICEVALUES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRINTCHECKS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRINTERPURPOSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRIVILEGEGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PRIVILEGES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RATECLASSES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REFLINKS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REFRESOURCES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REFTABLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REF_STAT_SP.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REGISTRATIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REPORTINGSERVERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReportModels.cs" />
+    <Compile Include="Models\REPORTSERVERGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\REPORTSERVERSYNCITEMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RESTAURANTCONCEPTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RESTAURANTFRANCHISES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RESTAURANTREGIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RESTAURANTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RIGHTGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RIGHTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RK7\RK7APIModels.cs" />
     <Compile Include="Models\RK7\RK7HybridModels.cs" />
+    <Compile Include="Models\Rkeeper.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rkeeper.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rkeeper.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Rkeeper.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rkeeper.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ROLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\RPL8_TRANSACT.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -663,7 +1365,100 @@
     <Compile Include="Models\RPT_TEMPLATES.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SALEDATAS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SCHEDULEDREPORTRECIPIENT.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SCHEDULEDREPORTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\scheduler.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SCRIPTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SCRIPTTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORHIERARHIES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SELECTORTYPEVSTRADEOBJ.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SERVICECHECKS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SERVICESCHEMES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SERVINGPOSITIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SESSIONDISHES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SH4\SH4Models.cs" />
+    <Compile Include="Models\SHIFTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SQLCONSTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\statistics.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_CHARGES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_COMPARISON.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_DELIVERY.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_MODIFIERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_PARAMS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_REFERENCES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_REVENUE.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_TAXES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STAT_RK7_SHIFTS_VOIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STOREHOUSECONFIGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SYNCDATAS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagrams.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SYS_GENERATORS.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
@@ -697,11 +1492,203 @@
     <Compile Include="Models\SYS_VERSION_INFO.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TABLEATTRIBUTES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TABLEGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TABLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Table_1.cs">
+      <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TARIFFDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TARIFFDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TARIFFICATIONTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXDISHRULES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXDISHTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXPAYRULES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXPAYTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TAXRATES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPACTIVITYLIST.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPAWARDSPENALTIESDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPCASHINOUT.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPCLOCKRECS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPCURRLINES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDELIVERYDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISCPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISHCONSUMATORS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISHDISCOUNTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISHMODIFIERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISHRESTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDISHVOIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPDRAWERLOG.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPEXTERNALIDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPEXTRATABLES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPGLOBALSHIFTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPGUESTREPLIES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPHARDWAREINFO.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPINTFTRANSACTIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPINVOICES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPITEMSSALED.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPKDSDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPOPERATIONLOG.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPORDERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPORDERSESSIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPORDERWAITERS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPPAYBINDINGS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPPAYMENTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPPAYMENTSEXTRA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPPDSCARDS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPPRINTCHECKS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPREGISTRATIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPSESSIONDISHES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPSHIFTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPTARIFFDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPTAXPARTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPVISITGUESTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPVISITS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPZREPORTDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TEMPZREPORTVALUES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TEMP_TASK.cs">
       <DependentUpon>CRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TMP_USERS_SESSION.cs">
       <DependentUpon>CRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRADEGROUPAFFDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRADEGROUPDETAILS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRADEGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TRANSACTIONS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UNCHANGEABLEORDERTYPES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VISITGUESTS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VISITS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WARNGROUPS.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ZREPORTDATA.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ZREPORTVALUES.cs">
+      <DependentUpon>Rkeeper.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -844,6 +1831,23 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\FontAwesome.otf" />
+    <EntityDeploy Include="Models\Rkeeper.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Rkeeper.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Rkeeper.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Rkeeper.edmx</DependentUpon>
+      <LastGenOutput>Rkeeper.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Rkeeper.edmx.diagram">
+      <DependentUpon>Rkeeper.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Rkeeper.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Rkeeper.edmx</DependentUpon>
+      <LastGenOutput>Rkeeper.cs</LastGenOutput>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

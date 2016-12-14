@@ -179,6 +179,7 @@ namespace Fusion.Models
         public virtual DbSet<FIAS_ADDRESS_OBJECTS_V> FIAS_ADDRESS_OBJECTS_V { get; set; }
         public virtual DbSet<PLG_EMPLOYEES_ALL> PLG_EMPLOYEES_ALL { get; set; }
         public virtual DbSet<PLG_OBJECTS> PLG_OBJECTS { get; set; }
+        public virtual DbSet<Table_1> Table_1 { get; set; }
     
         public virtual int AddCoupon(Nullable<long> peopleID, Nullable<int> couponDelay, Nullable<int> couponDelta, Nullable<int> couponTypeID, string couponNotes, Nullable<int> couponStatus, Nullable<int> divisionID, Nullable<int> actionID, Nullable<int> actionType, Nullable<long> clientID, Nullable<byte> notime)
         {

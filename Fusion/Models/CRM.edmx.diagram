@@ -160,6 +160,7 @@
         <AssociationConnector Association="CARD_SYSTEMModel.FK_CARD_PEOPLE_ACCOUNTS_A" ManuallyRouted="false" />
         <AssociationConnector Association="CARD_SYSTEMModel.FK_CARD_TRANSACTION_NOTES_A" ManuallyRouted="false" />
         <AssociationConnector Association="CARD_SYSTEMModel.FK_RPT_REPORT_PARAMS_RPT_FILTER_DICTS" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CARD_SYSTEMModel.Table_1" Width="1.5" PointX="35.375" PointY="37.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

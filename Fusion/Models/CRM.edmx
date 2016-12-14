@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CARD_SYSTEMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CARD_SYSTEMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CARD_ACCOUNT_LEVELS">
           <Key>
             <PropertyRef Name="ACCOUNT_LEVEL_ID" />
@@ -2407,6 +2407,13 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.SYS_VERSION_INFO' does not have a 
           <Property Name="GUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TRANSACT_GUID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="Table_1">
+          <Key>
+            <PropertyRef Name="PEOPLE_ID" />
+          </Key>
+          <Property Name="PEOPLE_ID" Type="bigint" Nullable="false" />
+          <Property Name="GROUP_ID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="TEMP_TASK">
           <Key>
             <PropertyRef Name="GUIDSTRING" />
@@ -2487,13 +2494,6 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.FIAS_ADDRESS_OBJECTS_V' does not h
           <Property Name="NAME_DOWN" Type="varchar" MaxLength="780" />
           <Property Name="NAME_UP" Type="varchar" MaxLength="780" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'CARD_SYSTEM.dbo.PLG_EMPLOYEEROLES' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="PLG_EMPLOYEEROLES">
-          <Property Name="SIFR" Type="int" />
-          <Property Name="ROLES" Type="nvarchar" MaxLength="38" />
-          <Property Name="EMPLOYEES" Type="nvarchar" MaxLength="38" />
-        </EntityType>-->
         <!--Errors Found During Generation:
 warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_EMPLOYEES_ALL' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PLG_EMPLOYEES_ALL">
@@ -2810,6 +2810,7 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
           <EntitySet Name="SYS_USER_RIGHTS" EntityType="Self.SYS_USER_RIGHTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SYS_USER_ROLES" EntityType="Self.SYS_USER_ROLES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SYS_USERS" EntityType="Self.SYS_USERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Table_1" EntityType="Self.Table_1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEMP_TASK" EntityType="Self.TEMP_TASK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TMP_USERS_SESSION" EntityType="Self.TMP_USERS_SESSION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CARD_ACCOUNT_TYPE_OPERATIONS" EntityType="Self.CARD_ACCOUNT_TYPE_OPERATIONS" store:Type="Tables" store:Schema="dbo">
@@ -3347,8 +3348,7 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
             <End Role="RPT_REPORT_PARAMS" EntitySet="RPT_REPORT_PARAMS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CARD_SYSTEMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5956,7 +5956,7 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
             <Parameter Name="notime" Mode="In" Type="Byte" />
           </FunctionImport>
           <FunctionImport Name="CARD_TEMP_FROM_SCRIPT">
-            <Parameter Name="NAME" Mode="In" Type="String" />
+          <Parameter Name="NAME" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="CARD_TEMP_FROM_SCRIPT_TR">
             <Parameter Name="INDEX" Mode="InOut" Type="Int32" />
@@ -6031,13 +6031,13 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
             <Parameter Name="PARAMGUID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="RPL8_GET_CURRENT_DATABASE_GUID">
-            <Parameter Name="SRVGUID" Mode="InOut" Type="Guid" />
+          <Parameter Name="SRVGUID" Mode="InOut" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="RPT_Report_CsDel">
-            <Parameter Name="Report_ID" Mode="In" Type="Int32" />
+          <Parameter Name="Report_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SET_TASK_MAILING">
-            <Parameter Name="cnt" Mode="InOut" Type="Int32" />
+          <Parameter Name="cnt" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SET_TASK_MAILING_NOW">
             <Parameter Name="cnt" Mode="InOut" Type="Int32" />
@@ -6053,30 +6053,38 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
             <Parameter Name="Right_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SYS_Drop_Generator">
-            <Parameter Name="Gen_Name" Mode="In" Type="String" />
+          <Parameter Name="Gen_Name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SYS_Generator_CurrVal">
-            <Parameter Name="Gen_Name" Mode="In" Type="String" />
+          <Parameter Name="Gen_Name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SYS_Generator_NextVal">
-            <Parameter Name="Gen_Name" Mode="In" Type="String" />
+          <Parameter Name="Gen_Name" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="SYS_Set_Generator">
             <Parameter Name="Gen_Name" Mode="In" Type="String" />
             <Parameter Name="Gen_Value" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SYS_User_CsDel">
-            <Parameter Name="User_ID" Mode="In" Type="Int32" />
+          <Parameter Name="User_ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SYS_User_Right_CsDel">
-            <Parameter Name="Right_ID" Mode="In" Type="Int32" />
+          <Parameter Name="Right_ID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Table_1" EntityType="CARD_SYSTEMModel.Table_1" />
         </EntityContainer>
         <ComplexType Name="MAILING_AUTORIZATION_Result">
           <Property Type="String" Name="sesionguid" Nullable="true" MaxLength="38" />
           <Property Type="String" Name="guidstring" Nullable="true" MaxLength="38" />
           <Property Type="Int32" Name="use_alt_lang" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Table_1">
+          <Key>
+            <PropertyRef Name="PEOPLE_ID" />
+          </Key>
+          <Property Name="PEOPLE_ID" Type="Int64" Nullable="false" />
+          <Property Name="GROUP_ID" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -8586,6 +8594,14 @@ warning 6002: The table/view 'CARD_SYSTEM.dbo.PLG_OBJECTS' does not have a prima
           <FunctionImportMapping FunctionImportName="SYS_Set_Generator" FunctionName="CARD_SYSTEMModel.Store.SYS_Set_Generator" />
           <FunctionImportMapping FunctionImportName="SYS_User_CsDel" FunctionName="CARD_SYSTEMModel.Store.SYS_User_CsDel" />
           <FunctionImportMapping FunctionImportName="SYS_User_Right_CsDel" FunctionName="CARD_SYSTEMModel.Store.SYS_User_Right_CsDel" />
+          <EntitySetMapping Name="Table_1">
+            <EntityTypeMapping TypeName="CARD_SYSTEMModel.Table_1">
+              <MappingFragment StoreEntitySet="Table_1">
+                <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+                <ScalarProperty Name="PEOPLE_ID" ColumnName="PEOPLE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

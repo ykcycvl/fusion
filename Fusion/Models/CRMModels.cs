@@ -42,6 +42,9 @@ namespace Fusion.Models
                         ", query.Length, query);
 
             TcpClient client = new TcpClient();
+            client.SendTimeout = 60000;
+            client.ReceiveTimeout = 60000;
+            client.ReceiveBufferSize = 1048576;
 
             client.Connect(ip, 9191);
             NetworkStream tcpStream = client.GetStream();
@@ -550,7 +553,11 @@ namespace Fusion.Models
 
                     if (Holders.Count > 0)
                     {
-                        Holders[0].L_Name = Holder.L_Name;
+                        ///
+                        /// Вот тут я решил закоментить, потому что не помню, что делал до этого и это, что закоменчено, может быть пригодится мне в будущем. Хотя очень надеюсь что нет ¯\_(ツ)_/¯
+                        /// В общем, если через месяц мне эта херь не понадобится, я ее удалю :) Сегодня 14/12/2016))
+
+                        /*Holders[0].L_Name = Holder.L_Name;
                         Holders[0].F_Name = Holder.F_Name;
                         Holders[0].M_Name = Holder.M_Name;
                         Holders[0].Full_Name = null;
@@ -621,7 +628,7 @@ namespace Fusion.Models
                         Holder.Holders_Contacts = null;
                         Holder.Holders_Properties = null;
 
-                        Action = "Edit holders";
+                        Action = "Edit holders";*/
                     }
 
                     string s = Serialize();

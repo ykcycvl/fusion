@@ -21,7 +21,7 @@ namespace Fusion.Controllers
         {
             CRMViewModels.TransactionsViewModel model = new CRMViewModels.TransactionsViewModel();
             model.people_id = people_id;
-            model.StartDateTime = DateTime.Today.AddMonths(-1);
+            model.StartDateTime = DateTime.Today.AddDays(-7);
             model.EndDateTime = DateTime.Today.AddDays(1);
             model.Search();
             return View(model);

@@ -116,15 +116,18 @@
                     <div style="width:100%; border-bottom: 1px dashed #000"></div>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3">
-                    @foreach (var d in @Model.CheckData.Discounts)
-                    {
-                        string s = d.name + "[" + d.cardcode.Substring(2) + "]";
-                        @s
-                    }
-                </td>
-            </tr>
+            @foreach (var d in @Model.CheckData.Discounts)
+            {
+                <tr>
+                    <td colspan="2">
+                        @d.name [@d.cardcode.Substring(2)]
+                    </td>
+                    <td style="text-align:right">
+                        <b>@Model.bp_plus.ToString("0.00")</b><br />
+                        <b>@Model.bp_minus.ToString("0.00")</b>
+                    </td>
+                </tr>
+            }
             <tr>
                 <td colspan="3">
                     <div style="width:100%; border-bottom: 1px dashed #000"></div>
@@ -156,25 +159,26 @@
             {
                 <tr>
                     <td colspan="2">
+                        @if(p.sum < 0)
+                        {
+                            <content>Сдача: </content>
+                        }
+                        
                         @p.name 
                         @if (p.cardcode != null && p.cardcode != "")
                         {
                             <content>[@p.cardcode.Substring(2)]</content>
+
+                            if (p.ownerinfo != null)
+                            {
+                                <br/>@p.ownerinfo
+                            }
                         }
                     </td>
                     <td style="text-align:right">
                         @p.sum.ToString("0.00")
                     </td>
                 </tr>
-                
-                if(p.ownerinfo != null)
-                {
-                    <tr style="font-size:11px">
-                        <td colspan="3">
-                            @p.ownerinfo
-                        </td>
-                    </tr>
-                }
             }
         </table>
     </div>
