@@ -176,7 +176,7 @@ namespace Fusion.Controllers
         public ActionResult uniform(UniformModel model)
         {
             #region UserData
-
+            //переменная для записи изменённых полей
             string Matching = "";
 
             int id;
