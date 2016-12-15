@@ -37,7 +37,7 @@
     {
         //кнопка добавления
         <div id="datefilter">
-            <a href="~/uniform/uniform?updorins=-1" class="btn btn-success">Добавить отзыв</a>
+            <a href="~/callback/uniform?updorins=-1" class="btn btn-success">Добавить отзыв</a>
             @Html.EditorFor(m => m.DateNEW1, new { @required = true, @type = "date", @ID = "daten1", @value = Model.DateNEW1 })
             @Html.EditorFor(m => m.DateNEW2, new { @required = true, @type = "date", @ID = "daten2", @value = Model.DateNEW2 })
             <button type="submit" class="btn btn-primary" id="">Вывести отзывы</button>
