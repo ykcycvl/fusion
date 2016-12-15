@@ -6,6 +6,9 @@ using System.Data.SqlClient;
 using System.Data.Common;
 using Npgsql;
 using System.Web.Configuration;
+using System.Xml;
+using System.ServiceModel.Syndication;
+using System.Text.RegularExpressions;
 
 namespace Fusion.Models
 {
@@ -64,6 +67,69 @@ namespace Fusion.Models
                 rdr.Close();
                 con.Close();
             }
+        }
+    }
+    public class RSS
+    {
+        public string uri { get; set; }
+        public string rssTitle = "";
+        public class rssNewsItem
+        {
+            public string newsLink { get; set; }
+            public string newsTitle { get; set; }
+            public string newsPhoto { get; set; }
+            public string newsDescription { get; set; }
+            public string pubDate { get; set; }
+            public string category { get; set; }
+        }
+        public List<rssNewsItem> rssNews = new List<rssNewsItem>();
+        public List<RSS> channels = new List<RSS>();
+        public void getRss(string url)
+        {
+            XmlReader rdr = XmlReader.Create(url);
+            SyndicationFeed news = SyndicationFeed.Load(rdr);
+            rdr.Close();
+
+            RSS channel = channels.FirstOrDefault(p => p.uri == url);
+
+            if (channel == null)
+            {
+                channel = new RSS();
+                channel.uri = url;
+                channel.rssTitle = news.Title.Text;
+
+                foreach (SyndicationItem newsItem in news.Items)
+                {
+                    rssNewsItem n = new rssNewsItem();
+                    n.newsLink = newsItem.Links[0].Uri.ToString();
+                    n.newsTitle = newsItem.Title.Text;
+                    n.newsDescription = Regex.Replace(newsItem.Summary.Text, @"<div>.*?</div>", "", RegexOptions.Singleline);
+                    n.newsDescription = Regex.Replace(n.newsDescription, @"<.*?>", "", RegexOptions.IgnoreCase | RegexOptions.Singleline).Trim();
+                    n.pubDate = newsItem.PublishDate.ToString("dd.MM.yyyy");
+                    n.category = "";
+
+                    channel.rssNews.Add(n);
+                }
+
+                channels.Add(channel);
+            }
+            else
+            {
+                foreach (SyndicationItem newsItem in news.Items)
+                {
+                    rssNewsItem n = new rssNewsItem();
+                    n.newsLink = newsItem.Links[0].Uri.ToString();
+                    n.newsTitle = newsItem.Title.Text;
+                    n.newsPhoto = newsItem.Links[1].Uri.ToString();
+                    n.newsDescription = Regex.Replace(newsItem.Summary.Text, @"<div>.*?</div>", "", RegexOptions.Singleline);
+                    n.newsDescription = Regex.Replace(n.newsDescription, @"<.*?>", "", RegexOptions.IgnoreCase | RegexOptions.Singleline).Trim();
+                    n.pubDate = newsItem.PublishDate.ToString("dd.MM.yyyy");
+                    n.category = "";
+
+                    channel.rssNews.Add(n);
+                }
+            }
+
         }
     }
 }
