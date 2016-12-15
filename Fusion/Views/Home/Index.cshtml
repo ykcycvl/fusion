@@ -1,37 +1,43 @@
-﻿@{
+﻿@model Fusion.Models.RSS
+
+@{
     ViewBag.Title = "Единый портал БК, КЦ и отчетности";
 }
+<h2>Vega</h2>
+
 <div class="jumbotron">
-    <h2>Vega</h2>
     <p>
         Для работы в системе необходимо быть авторизованным пользователем домена fg.local
         <br />
         Для получения доступа обратитесь к администратору домена
     </p>
 </div>
-<div class="row">
-    <div class="alert alert-info">
-        <ul>
-            <li>
-                Добавлен поиск по номеру телефона
-            </li>
-            <li>
-                Добавлена сортировка по баллам
-            </li>
-        </ul>
+
+@foreach (var rc in Model.channels)
+{
+    <div class="col-lg-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                @rc.rssTitle
+            </div>
+            <div class="panel-body">
+                @foreach (var r in rc.rssNews)
+                {
+                    <div style="padding: 10px 0pt 20px 0pt;">
+                        <table style="width:100%">
+                            <tr>
+                                <td>
+                                    @r.pubDate
+                                    <h5><a href="@r.newsLink">@r.newsTitle</a></h5>
+                                    <div style="padding: 0pt 0pt 0pt 0pt;">
+                                        @r.newsDescription
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div class="alert alert-info">
-        Исправлено закрытие заказа/начисление баллов для заказов, выбитых из КЦ
-    </div>
-    <div class="alert alert-info">
-        Добавлено определение имени владельца карты
-    </div>
-    <div class="alert alert-warning">
-        В разработке:
-        <ul>
-            <li>Блок отчетности КЦ</li>
-            <li>Возможность выбора нескольких (неограниченно) участников программы путем выделения "галочкой" </li>
-            <li>Возможность показывать всех выбранных участников программы на одной странице</li>
-        </ul>
-    </div>
-</div>
+}
