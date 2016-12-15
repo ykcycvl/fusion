@@ -14,7 +14,16 @@ namespace Fusion.Controllers
         public ActionResult Index()
         {
             CRMViewModels.OverallViewModel model = new CRMViewModels.OverallViewModel();
+            model.IHA = new CRMViewModels.OverallViewModel.InvalidHoldersAccounts();
+            model.IHA.GetIHA();
             return View(model);
+        }
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult CreateAccounts()
+        {
+            CRMViewModels.OverallViewModel.InvalidHoldersAccounts model = new CRMViewModels.OverallViewModel.InvalidHoldersAccounts();
+            model.AddAccounts();
+            return RedirectToAction("Index");
         }
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
         public ActionResult Transactions(long? people_id)

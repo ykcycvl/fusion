@@ -268,6 +268,88 @@ namespace Fusion.Models
         public class OverallViewModel
         {
             private CARD_SYSTEMEntities db = new CARD_SYSTEMEntities();
+
+            public class InvalidHoldersAccounts
+            {
+                private static SqlConnection GetConnection()
+                {
+                    string connectionString = WebConfigurationManager.ConnectionStrings["crmConnectionString"].ConnectionString;
+                    SqlConnection dbConnection = new SqlConnection(connectionString);
+                    dbConnection.Open();
+                    return dbConnection;
+                }
+
+                public int count { get; set; }
+                public void GetIHA()
+                {
+                    SqlConnection con = GetConnection();
+                    SqlCommand command = new SqlCommand("SELECT COUNT(t1.PEOPLE_ID) FROM (select cp.PEOPLE_ID, COUNT(cpa.PEOPLE_ACCOUNT_ID) as accountcount from CARD_PEOPLES cp INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON cp.PEOPLE_ID = cpa.PEOPLE_ID where cp.GROUP_ID = 45 and cp.DELETED = 0 and cpa.DELETED = 0 GROUP BY cp.PEOPLE_ID HAVING COUNT(cpa.PEOPLE_ACCOUNT_ID) <= 2) t1", con);
+
+                    SqlDataReader rdr = command.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        foreach (DbDataRecord record in rdr)
+                        {
+                            count = Convert.ToInt32(record[0]);
+                        }
+                    }
+
+                    rdr.Close();
+                    con.Close();
+                }
+
+                public void AddAccounts()
+                {
+                    List<long> people_ids = new List<long>();
+
+                    SqlConnection con = GetConnection();
+                    SqlCommand command = new SqlCommand("select cp.PEOPLE_ID, COUNT(cpa.PEOPLE_ACCOUNT_ID) as accountcount from CARD_PEOPLES cp INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON cp.PEOPLE_ID = cpa.PEOPLE_ID where cp.GROUP_ID = 45 and cp.DELETED = 0 and cpa.DELETED = 0 GROUP BY cp.PEOPLE_ID HAVING COUNT(cpa.PEOPLE_ACCOUNT_ID) <= 2", con);
+
+                    SqlDataReader rdr = command.ExecuteReader();
+
+                    if (rdr.HasRows)
+                    {
+                        foreach (DbDataRecord record in rdr)
+                        {
+                            people_ids.Add(Convert.ToInt64(record["PEOPLE_ID"]));
+                        }
+                    }
+
+                    rdr.Close();
+                    con.Close();
+
+                    for (int i = 0; i < people_ids.Count; i++)
+                    {
+                        string query = String.Format(@"<?xml version=""1.0"" encoding=""Windows-1251"" standalone=""yes"" ?>
+							<Message Action=""Edit holders"" Terminal_Type=""15"" Global_Type=""kN3uF2TTVtmpp1Gb25Mj"">
+								<Holder_ID>{0}</Holder_ID>
+								<Include></Include>
+								<Holder>
+									<Holder_ID>{0}</Holder_ID>
+									<Group_ID>45</Group_ID>
+									<Accounts>
+										<Account>
+											<Account_Type_ID>16</Account_Type_ID>
+											<Auto_Change_Levels>false</Auto_Change_Levels>
+											<Account_Level_ID>15</Account_Level_ID>
+										</Account>
+										<Account>
+											<Account_Type_ID>18</Account_Type_ID>
+											<Auto_Change_Levels>false</Auto_Change_Levels>
+											<Account_Level_ID>22</Account_Level_ID>
+										</Account>
+									</Accounts>
+									<Addresses>
+									</Addresses>
+								</Holder>
+							</Message>", people_ids[i]);
+                        RKCRM.Query(query);
+                    }
+                }
+            }
+
+            public InvalidHoldersAccounts IHA;
             public class OverallCardInfo
             {
                 private CARD_SYSTEMEntities db = new CARD_SYSTEMEntities();
