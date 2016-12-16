@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @model Fusion.Models.Callback.UniformModel
 
 @{
@@ -416,3 +417,422 @@
 <script type="text/javascript">
     Change_Select();
 </script>
+=======
+﻿@model Fusion.Models.Callback.UniformModel
+
+@{
+    ViewBag.Title = "Форма просмотра/редактирования";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/style_list_uni.css">
+<script type="text/javascript">
+    function exclamationSign() {
+        var i;
+        for (i = 1; i <= 7; i++) {
+            var a = document.getElementById("oplata" + i).value
+            if (!a || a == " ") {
+                document.getElementById("oplata_" + i).className = "glyphicon glyphicon-exclamation-sign form-control-feedback";
+            }
+            else {
+                document.getElementById("oplata_" + i).className = "";
+            }
+        }
+    }
+    
+    function showForm1() {
+        document.getElementById("otlichno").hidden = false;
+        document.getElementById("horosho").hidden = false;
+        document.getElementById("srednie").hidden = true;
+        document.getElementById("plocho").hidden = true;
+        document.getElementById("ocenka").hidden = false;
+    }
+    function showForm2() {
+        document.getElementById("srednie").hidden = false;
+        document.getElementById("plocho").hidden = false;
+        document.getElementById("otlichno").hidden = true;
+        document.getElementById("horosho").hidden = true;
+        document.getElementById("ocenka").hidden = false;
+    }
+    function showForm3() {
+        document.getElementById("ocenka").hidden = true;
+    }
+    function Change_Select() {
+        //подразделение
+        if (document.getElementById("restind").value == 'Доставка') {
+            document.getElementById("gotoid").selected = true;
+        }
+        else {
+            switch (document.getElementById("unitind").value) {
+                case null:
+                    document.getElementById("unitid").selected = true;
+                    break
+                case 'Ресторан':
+                    document.getElementById("restid").selected = true;
+                    break
+                case 'Вынос':
+                    document.getElementById("outid").selected = true;
+                    break
+                case 'Доставка':
+                    document.getElementById("gotoid").selected = true;
+                    break
+                case 'КЦ':
+                    document.getElementById("ccid").selected = true;
+                    break
+                case 'БК':
+                    document.getElementById("bcid").selected = true;
+                    break
+                case 'Маркетинг/сайт':
+                    document.getElementById("markid").selected = true;
+                    break
+            }
+        }
+        //ресторан
+        switch (document.getElementById("restind").value) {
+            case null:
+                document.getElementById("restoranid").selected = true;
+                break
+            case 'Гайдос':
+                document.getElementById("gaidid").selected = true;
+                break
+            case 'Киото':
+                document.getElementById("kiotoid").selected = true;
+                break
+            case 'Мауро':
+                document.getElementById("mauroid").selected = true;
+                break
+            case 'Хоум':
+                document.getElementById("homeid").selected = true;
+                break
+            case 'Каваи':
+                document.getElementById("kawaiid").selected = true;
+                break
+            case 'Уссурийск':
+                document.getElementById("ussurid").selected = true;
+                break
+            case 'Находка':
+                document.getElementById("hakhid").selected = true;
+                break
+        }
+        //источник
+        switch (document.getElementById("sourseind").value) {
+            case null:
+                document.getElementById("sourceid").selected = true;
+                break
+            case 'Сайт':
+                document.getElementById("saitid").selected = true;
+                break
+            case 'Инста':
+                document.getElementById("instgrmid").selected = true;
+                break
+            case 'Соцсети':
+                document.getElementById("socid").selected = true;
+                break
+            case 'Чек-телефон':
+                document.getElementById("checkid").selected = true;
+                break
+            case 'Лично/Жалобная книга':
+                document.getElementById("bookid").selected = true;
+                break
+            case 'КЦ':
+                document.getElementById("sccid").selected = true;
+                break
+            case 'БК':
+                document.getElementById("sbcid").selected = true;
+                break
+            
+        }
+
+        //рейтинг
+        switch (document.getElementById("ratind").value) {
+            case 'Положительный':
+                showForm1();
+                break
+            case 'Отрицательный':
+                
+                showForm2();    
+                break
+            case 'Критичный':
+                showForm3();
+                break
+            case 'ОТРАВЛЕНИЕ':
+                showForm3();
+                break
+
+
+        }
+        //рейтинг 2
+        switch (document.getElementById("rat2ind").value) {
+            case null:
+                document.getElementById("41").selected = true;
+                break
+            case 'Отлично':
+                document.getElementById("otlichno").selected = true;
+                break
+            case 'Хорошо':
+                document.getElementById("horosho").selected = true;
+                break
+            case 'Средне':
+                document.getElementById("srednie").selected = true;
+                break
+            case 'Плохо':
+                document.getElementById("plocho").selected = true;
+                break
+        }
+        //тип причины
+        switch (document.getElementById("typeind").value) {
+            case null:
+                document.getElementById("typeid").selected = true;
+                break
+            case 'Качество':
+                document.getElementById("qualityid").selected = true;
+                break
+            case 'Сервис':
+                document.getElementById("serviceid").selected = true;
+                break
+            case 'Скорость':
+                document.getElementById("speedid").selected = true;
+                break
+            case 'Прочее':
+                document.getElementById("otherid").selected = true;
+                break
+        }
+
+        //кто оплатил
+        switch (document.getElementById("payerind").value) {
+            case null:
+                document.getElementById("nol").selected = true;
+                break
+            case 'Cотрудник':
+                document.getElementById("staffpay").selected = true;
+                break
+            case 'Компания':
+                document.getElementById("companypay").selected = true;
+                break
+            case 'Cотрудник/Компания':
+                document.getElementById("stcompay").selected = true;
+                break
+
+        }
+    }
+</script>
+
+<div id="wrapper" oninput="exclamationSign()">
+    @using (Html.BeginForm("uniform", "Callback", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "contact_form", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(m => m.id, new { @value = Model.id })
+
+        @Html.HiddenFor(m => m.Unit, new { @value = Model.Unit, @id = "unitind" })
+        @Html.HiddenFor(m => m.Rest, new { @value = Model.Rest, @id = "restind" })
+        @Html.HiddenFor(m => m.Source, new { @value = Model.Source, @id = "sourseind" })
+        @Html.HiddenFor(m => m.Rating1, new { @value = Model.Rating1, @id = "ratind" })
+        @Html.HiddenFor(m => m.Rating2, new { @value = Model.Rating2, @id = "rat2ind" })
+        @Html.HiddenFor(m => m.Type, new { @value = Model.Type, @id = "typeind" })
+        @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" })
+            
+        <input hidden name="hidname" value="@Model.UserName" />
+        <input hidden name="hidphone" value="@Model.phnumber" />
+        <input hidden name="hidmail" value="@Model.email" />
+        <input hidden name="hidunit" value="@Model.Unit" />
+        <input hidden name="hidtype" value="@Model.Type" />
+        <input hidden name="hidrest" value="@Model.Rest" />
+        <input hidden name="hidguilty" value="@Model.Guilty" />
+        <input hidden name="hidstaff" value="@Model.Staff" />
+        <input hidden name="hidsourse" value="@Model.Source" />
+        <input hidden name="hiddatenew" value="@Model.NewDate" />
+        <input hidden name="hiddateold" value="@Model.OldDate" />
+        <input hidden name="hidrating1" value="@Model.Rating1" />
+        <input hidden name="hidrating2" value="@Model.Rating2" />
+        <input hidden name="hidtext" value="@Model.textkomm" />
+        <input hidden name="hidproblem" value="@Model.Problem" />
+        <input hidden name="hidmera" value="@Model.mera" />
+        <input hidden name="hidanswer" value="@Model.answer" />                
+        <input hidden name="hidcost1" value="@Model.Cost" />
+        <input hidden name="hidcost2" value="@Model.CostPoint" />
+        <input hidden name="hidcost3" value="@Model.CostSert" />
+        <input hidden name="hidpayer" value="@Model.Payer" />
+            
+        <ul>
+            <li>
+                <label style="margin-left: 40px; float: left" for="">Фио гостя:</label>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @class = "contact_form", @value = Model.UserName, id="oplata1" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_1"></span>
+                </div>
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Телефон гостя:</span>
+                <div class="input-group has-error">
+                    @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber, @id="oplata2" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_2"></span>
+                    </div>
+                @Html.ValidationMessageFor(m => m.phnumber)
+</li>
+            <li>
+                <span style="margin-left: 40px;">E-mail гостя:</span>
+                @Html.TextBoxFor(m => m.email, new { placeholder = "Введите email гостя", @class = "contact_form", @value = Model.email })
+                @Html.ValidationMessageFor(m => m.email)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Подразделение:</span>
+                <select name="unitt" size="1">
+                    <option selected disabled value="Подразделение" id="unitid">Подразделение</option>
+                    <option value="Ресторан" id="restid">Ресторан</option>
+                    <option value="Вынос" id="outid">Вынос</option>
+                    <option value="Доставка" id="gotoid">Доставка</option>
+                    <option value="КЦ" id="ccid">КЦ</option>
+                    <option value="БК" id="bcid">БК</option>
+                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>
+                </select>
+            </li>
+
+            <li>
+                <span style="margin-left: 40px;">Тип причины:</span>
+                <select name="types" size="1">
+                    <option selected disabled value="Тип" id="typeid">Тип</option>
+                    <option value="Качество" id="qualityid">Качество</option>
+                    <option value="Сервис" id="serviceid">Сервис</option>
+                    <option value="Скорость" id="speedid">Скорость</option>
+                    <option value="Прочее" id="otherid">Прочее</option>
+                </select>
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Ресторан</span>
+                <select name="restt" size="1">
+                    <option selected disabled value="Ресторан" id="restoranid">Ресторан</option>
+                    <option value="Гайдос" id="gaidid">Гайдос</option>
+                    <option value="Киото" id="kiotoid">Киото</option>
+                    <option value="Мауро" id="mauroid">Мауро</option>
+                    <option value="Хоум" id="homeid">Хоум</option>
+                    <option value="Каваи" id="kawaiid">Каваи</option>
+                    <option value="Уссурийск" id="ussurid">Уссурийск</option>
+                    <option value="Находка" id="hakhid">Находка</option>
+                </select>
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Виновный</span>
+                @Html.TextBoxFor(m => m.Guilty, new { placeholder = "Виновный", @class = "contact_form", @value = Model.Guilty })
+                @Html.ValidationMessageFor(m => m.Guilty)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Ответственный:</span>
+                @Html.TextBoxFor(m => m.Staff, new { placeholder = "Ответственный", @class = "contact_form", @value = Model.Staff })
+                @Html.ValidationMessageFor(m => m.Staff)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Источник отзыва:</span>
+                <select name="sourcee" size="1">
+                    <option selected disabled value="Источник" id="sourceid">Источник отзыва</option>
+                    <option value="Сайт" id="saitid">Сайт</option>
+                    <option value="Инста" id="instgrmid">Инста</option>
+                    <option value="Соцсети" id="socid">Соцсети</option>
+                    <option value="Чек-телефон" id="checkid">Чек-телефон</option>
+                    <option value="Лично/Жалобная книга" id="bookid">Лично/Жалобная книга</option>
+                    <option value="КЦ" id="sccid">КЦ</option>
+                    <option value="БК" id="sbcid">БК</option>
+                </select>
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Дата создания:</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.EditorFor(m => m.NewDate, new { placeholder = "Введите дату поступления отзыва", @required = true, @type = "date", @value = Model.NewDate })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                </div>
+                @Html.ValidationMessageFor(m => m.NewDate)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Дата закрытия:</span>
+                @Html.ValidationMessageFor(m => m.OldDate)
+                @Html.EditorFor(m => m.OldDate, new { placeholder = "Введите дату решения проблемы", @type = "date", @class = "contact_form", @value = Model.OldDate })
+            </li>
+            <li>
+                <p>@Html.RadioButtonFor(m => m.Rating1, "Положительный", new { onclick = "showForm1()", @id = "pologhid" })Положительный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "Отрицательный", new { onclick = "showForm2()", @id = "otricid" })Отрицательный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "Критичный", new { onclick = "showForm3()", @id = "kriticid" })Критичный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "ОТРАВЛЕНИЕ", new { onclick = "showForm3()", @id = "otravid" })ОТРАВЛЕНИЕ</p>
+            </li>
+            <li>
+                <select name="reitingg" size="1" id="ocenka">
+                    <option selected disabled value="Допоценка" id="41">Выберите оценку</option>
+                    <option value="Отлично" id="otlichno" hidden>Отлично</option>
+                    <option value="Хорошо" id="horosho" hidden>Хорошо</option>
+                    <option value="Средне" id="srednie" hidden>Средне</option>
+                    <option value="Плохо" id="plocho" hidden>Плохо</option>
+                </select>
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Текст отзыва:</span>
+                @Html.ValidationMessageFor(m => m.textkomm)
+                <div class="input-group has-error has-feedback">
+                    @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm, @id = "oplata3"})
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id = "oplata_3"></span>
+                    </div>
+</li>
+            <li>
+                <span style="margin-left: 40px;">Подробности проблемы:</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextAreaFor(m => m.Problem, new { placeholder = "Подробности проблемы", @required = true, @class = "contact_form", @value = Model.Problem, @id = "oplata4" })
+                    <span id="oplata_4" class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
+                </div>
+                @Html.ValidationMessageFor(m => m.Problem)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Принятые меры:</span>
+                    @Html.TextAreaFor(m => m.mera, new { placeholder = "Опишите принятые меры", @class = "contact_form", @value = Model.mera })
+                @Html.ValidationMessageFor(m => m.mera)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Решение для гостя:</span>
+                    @Html.TextAreaFor(m => m.answer, new { placeholder = "Опишите решение для гостя", @class = "contact_form", @value = Model.answer })
+                @Html.ValidationMessageFor(m => m.answer)
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Цена решения:</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextBoxFor(m => m.Cost, new { placeholder = "Цена решения", @required = true, @class = "contact_form", @value = Model.Cost, @id = "oplata5" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" id="oplata_5" aria-hidden="true"></span>
+                </div>
+                
+                @Html.ValidationMessageFor(m => m.Cost)
+                <br />
+                <span style="margin-left: 40px;">Цена решения (баллы):</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextBoxFor(m => m.CostPoint, new { placeholder = "Цена решения (баллы)", @required = true, @class = "contact_form", @id = "oplata6", @value = Model.CostPoint })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_6"></span>
+                </div>
+
+                @Html.ValidationMessageFor(m => m.CostPoint)
+                <br />
+                <span style="margin-left: 40px;">Цена решения (сертификат):</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextBoxFor(m => m.CostSert, new { placeholder = "Цена решения (сертификат)", @required = true, @id = "oplata7", @class = "contact_form", @value = Model.CostSert })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_7"></span>
+                </div>
+      
+                @Html.ValidationMessageFor(m => m.CostSert)
+                <br />
+            </li>
+            <li>
+                <span style="margin-left: 40px;">Кто оплатил:</span>
+                <select name="payerr" size="1">
+                    <option selected disabled value="---" id="nol">---</option>
+                    <option value="Cотрудник" id="staffpay">Cотрудник</option>
+                    <option value="Компания" id="companypay">Компания</option>
+                    <option value="Cотрудник/Компания" id="stcompay">Cотрудник/Компания</option>
+                </select>
+            </li>
+
+            <li>
+                <button type="submit" class="submit">Отправить</button>
+            </li>
+        </ul>
+    }
+</div>
+<script type="text/javascript">
+    Change_Select();
+</script>
+>>>>>>> origin/master
