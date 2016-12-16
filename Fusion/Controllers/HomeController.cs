@@ -18,9 +18,9 @@ namespace Fusion.Controllers
             RSS model = new RSS();
             model.getRss("http://www.horeca.ru/kernel/rss/news.restaurant.xml");
             model.getRss("http://www.carbis.ru/forum/external.php?type=RSS2&forumids=112");
-            model.channels[model.channels.Count - 1].rssTitle = "Форум Cardbis: R-Keeper 7";
+            model.channels[model.channels.Count - 1].rssTitle = "Форум Carbis: R-Keeper 7";
             model.getRss("http://www.carbis.ru/forum/external.php?type=RSS2&forumids=11");
-            model.channels[model.channels.Count - 1].rssTitle = "Форум Cardbis: StoreHouse";
+            model.channels[model.channels.Count - 1].rssTitle = "Форум Carbis: StoreHouse";
             return View(model);
         }
     }
