@@ -204,7 +204,18 @@ namespace Fusion.Controllers
             if (model.LastResult == "")
                 return RedirectToAction("EditPerson", new { people_id = model.Holder.Holder_ID });
             else
+            {
+                if (model.Holder.Cards == null)
+                    model.Holder.Cards = new List<RKCRM.Holder.CardInfo>();
+
+                if (model.Holder.Accounts == null)
+                    model.Holder.Accounts = new List<RKCRM.Holder.AccountInfo>();
+
+                if (model.Holder.Contacts == null)
+                    model.Holder.Contacts = new List<RKCRM.Holder.ContactInfo>();
+
                 return View(model);
+            }
         }
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
         public ActionResult AddTransaction(string CardCode, Decimal bp)

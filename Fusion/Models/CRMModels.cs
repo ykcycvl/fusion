@@ -42,9 +42,9 @@ namespace Fusion.Models
                         ", query.Length, query);
 
             TcpClient client = new TcpClient();
-            client.SendTimeout = 60000;
-            client.ReceiveTimeout = 60000;
-            client.ReceiveBufferSize = 1048576;
+            client.SendTimeout = 120000;
+            client.ReceiveTimeout = 120000;
+            client.ReceiveBufferSize = 5242880;
 
             client.Connect(ip, 9191);
             NetworkStream tcpStream = client.GetStream();

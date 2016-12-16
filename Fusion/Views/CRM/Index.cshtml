@@ -10,7 +10,7 @@
         <div class="alert alert-success">
             @Model.IHA.count владельцев Море Плюсов без необходимых счетов
             <br />
-            @Html.ActionLink("Добавить недостающие счета всем", "CreateAccounts", "CRM", new object { }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Добавить счета", "CreateAccounts", "CRM", new object { }, new { @class = "btn btn-primary" })
         </div>
     </div>
 }
