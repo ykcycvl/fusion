@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Sh4Ole;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace Fusion.Models.SH4
 {
@@ -72,7 +73,11 @@ namespace Fusion.Models.SH4
                     if (sh4.ValByName(res, "1.209.2.0").GetType() != typeof(DBNull))
                         gti.ParentID = sh4.ValByName(res, "1.209.2.0");
 
-                    gti.Name = sh4.ValByName(res, "1.209.3.0").ToString();
+                    Encoding srcEncodingFormat = Encoding.GetEncoding(1252);
+                    Encoding dstEncodingFormat = Encoding.UTF8;
+                    byte[] originalByteString = srcEncodingFormat.GetBytes(sh4.ValByName(res, "1.209.3.0").ToString());
+                    byte[] convertedByteString = Encoding.Convert(srcEncodingFormat, dstEncodingFormat, originalByteString);
+                    gti.Name = dstEncodingFormat.GetString(convertedByteString);
                     gti.Code = sh4.ValByName(res, "1.209.4.0").ToString();
                     gti.ExternalCode = sh4.ValByName(res, "1.209.5.0").ToString();
 

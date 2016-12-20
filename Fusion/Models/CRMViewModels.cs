@@ -678,7 +678,7 @@ namespace Fusion.Models
                 return dbConnection;
             }
 
-            private string searchString = "WHERE cp.GROUP_ID = 45";
+            private string searchString = "WHERE cp.DELETED = 0";
             private string orderString = " ORDER BY FULL_NAME ASC";
             private string _order = "";
             public string order
