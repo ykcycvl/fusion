@@ -3,6 +3,25 @@
 @{
     ViewBag.Title = "Редактирование владельца";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int cc = 0;
+    int ccontc = 0;
+    int ac = 0;
+    
+    if (Model.Holder.Cards != null)
+    {
+        cc = @Model.Holder.Cards.Count;
+    }
+
+    if (Model.Holder.Contacts != null)
+    {
+         ccontc = @Model.Holder.Contacts.Count;
+    }
+
+    if (Model.Holder.Accounts != null)
+    {
+        ac = @Model.Holder.Accounts.Count;
+    }
 }
 
 <script>
@@ -32,9 +51,9 @@
     /*Здесь заканчивается код Андрея Головчака*/
 
     $(function () {
-        var cc = @Model.Holder.Cards.Count;
-        var ccontc = @Model.Holder.Contacts.Count;
-        var ac = @Model.Holder.Accounts.Count;
+        var cc = @cc;
+        var ccontc = @ccontc;
+        var ac = @ac;
 
         $("#AddCardBtn").click(function () {
             $('#cardstable > tbody:last').append('<tr><input id="Holder_Cards_' + cc + '__Group_ID" name="Holder.Cards[' + cc + '].Group_ID" type="hidden" value="44"><input id="Holder_Cards_' + cc + '__Status" name="Holder.Cards[' + cc + '].Status" type="hidden" value="Active"><td><input class="form-control" id="Holder_Cards_' + cc + '__Card_Code" name="Holder.Cards[' + cc + '].Card_Code" type="text" style="width:130px"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>');
@@ -154,31 +173,34 @@
                                 <th>Примечание</th>
                                 <th>&nbsp;</th>
                             </tr>
-                            @for (int i = 0; i < Model.Holder.Contacts.Count; i++)
+                            @if (Model.Holder.Contacts != null)
                             {
-                                <tr>
-                                    @Html.HiddenFor(m => Model.Holder.Contacts[i].Contact_ID)
-                                    @Html.HiddenFor(m => Model.Holder.Contacts[i].Deleted)
-                                    @Html.HiddenFor(m => Model.Holder.Contacts[i].Dispatch)
-                                    @Html.HiddenFor(m => Model.Holder.Contacts[i].Type_ID)
-                                    @Html.HiddenFor(m => Model.Holder.Contacts[i].Type_Name)
+                                for (int i = 0; i < Model.Holder.Contacts.Count; i++)
+                                {
+                                    <tr>
+                                        @Html.HiddenFor(m => Model.Holder.Contacts[i].Contact_ID)
+                                        @Html.HiddenFor(m => Model.Holder.Contacts[i].Deleted)
+                                        @Html.HiddenFor(m => Model.Holder.Contacts[i].Dispatch)
+                                        @Html.HiddenFor(m => Model.Holder.Contacts[i].Type_ID)
+                                        @Html.HiddenFor(m => Model.Holder.Contacts[i].Type_Name)
 
-                                    <td>
-                                        @Model.Holder.Contacts[i].Type_Name
-                                    </td>
+                                        <td>
+                                            @Model.Holder.Contacts[i].Type_Name
+                                        </td>
 
-                                    <td>
-                                        @Html.EditorFor(m => Model.Holder.Contacts[i].Value, new { htmlAttributes = new { @class = "form-control" } })
-                                    </td>
+                                        <td>
+                                            @Html.EditorFor(m => Model.Holder.Contacts[i].Value, new { htmlAttributes = new { @class = "form-control" } })
+                                        </td>
 
-                                    <td>
-                                        @Html.EditorFor(m => Model.Holder.Contacts[i].Notes, new { htmlAttributes = new { @class = "form-control" } })
-                                    </td>
+                                        <td>
+                                            @Html.EditorFor(m => Model.Holder.Contacts[i].Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                        </td>
 
-                                    <td style="border-bottom: 0px; border-right: 0px; border-top: 0px;">
-                                        <button type="button" id="deleteButton" class="btn btn-danger" onclick="deleteContact(this)">-</button>
-                                    </td>
-                                </tr>
+                                        <td style="border-bottom: 0px; border-right: 0px; border-top: 0px;">
+                                            <button type="button" id="deleteButton" class="btn btn-danger" onclick="deleteContact(this)">-</button>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </table>
                     }
@@ -197,34 +219,37 @@
                                 <th>Истекает</th>
                                 <th>Группа</th>
                             </tr>
-                            @for (int i = 0; i < Model.Holder.Cards.Count; i++)
-                            {                                
-                                <tr>
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Card_Code)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Group_ID)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Group_Name)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Holder_ID)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Is_Confirm_Manager)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Offered)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].OfferedD)
-                                    @Html.HiddenFor(m => Model.Holder.Cards[i].Owner_ID)
+                            @if (Model.Holder.Cards != null)
+                            {
+                                for (int i = 0; i < Model.Holder.Cards.Count; i++)
+                                {
+                                    <tr>
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Card_Code)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Group_ID)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Group_Name)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Holder_ID)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Is_Confirm_Manager)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Offered)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].OfferedD)
+                                        @Html.HiddenFor(m => Model.Holder.Cards[i].Owner_ID)
 
-                                    <td>
-                                        @Model.Holder.Cards[i].Card_Code
-                                    </td>
-                                    <td>
-                                        @Html.DropDownListFor(m => Model.Holder.Cards[i].Status, Model.Holder.Cards[i].StatusSelectList, new { @class = "form-control" })
-                                    </td>
-                                    <td>
-                                        @Model.Holder.Cards[i].OfferedD.ToString("dd.MM.yyyy")
-                                    </td>
-                                    <td>
-                                        @Html.TextBoxFor(m => Model.Holder.Cards[i].ExpiredD, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width:110px" })
-                                    </td>
-                                    <td>
-                                        @Model.Holder.Cards[i].Group_Name
-                                    </td>
-                                </tr>
+                                        <td>
+                                            @Model.Holder.Cards[i].Card_Code
+                                        </td>
+                                        <td>
+                                            @Html.DropDownListFor(m => Model.Holder.Cards[i].Status, Model.Holder.Cards[i].StatusSelectList, new { @class = "form-control" })
+                                        </td>
+                                        <td>
+                                            @Model.Holder.Cards[i].OfferedD.ToString("dd.MM.yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(m => Model.Holder.Cards[i].ExpiredD, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width:110px" })
+                                        </td>
+                                        <td>
+                                            @Model.Holder.Cards[i].Group_Name
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </table>
                     }
@@ -247,54 +272,57 @@
                                 <th>Баланс</th>
                                 <th>&nbsp;</th>
                             </tr>
-                            @for (int i = 0; i < Model.Holder.Accounts.Count; i++)
+                            @if (Model.Holder.Accounts != null)
                             {
-                                string bgcolorattr = "style=background:#86d086";
-
-                                if (Model.Holder.Accounts[i].Status == "Blocked")
+                                @for (int i = 0; i < Model.Holder.Accounts.Count; i++)
                                 {
-                                    bgcolorattr = "style=background:#f99";
-                                }
+                                    string bgcolorattr = "style=background:#86d086";
 
-                                <tr @bgcolorattr>
-                                    <td>
-                                        @Html.HiddenFor(m => Model.Holder.Accounts[i].Account_Number)
-                                        @Html.HiddenFor(m => Model.Holder.Accounts[i].Account_Level_ID)
-                                        @Html.HiddenFor(m => Model.Holder.Accounts[i].Status)
-                                        @Model.Holder.Accounts[i].Account_Number
-                                    </td>
-                                    <td>
-                                        @Model.Holder.Accounts[i].Account_Type_Name
-                                    </td>
-                                    <td>
-                                        @DateTime.Parse(Model.Holder.Accounts[i].Create).ToString("dd.MM.yyyy")
-                                    </td>
-                                    <td>
-                                        @Model.Holder.Accounts[i].Status
-                                    </td>
-                                    <td>
-                                        @Model.Holder.Accounts[i].Balance
-                                    </td>
-                                    <td>
-                                        @if (@Model.Holder.Accounts[i].Account_Type_ID == "16")
-                                        {
-                                            <a href="#" id="AddTransactionBtn">Пополнение/Списание</a>
+                                    if (Model.Holder.Accounts[i].Status == "Blocked")
+                                    {
+                                        bgcolorattr = "style=background:#f99";
+                                    }
 
-                                            <script>
-                                                $(function () {
-                                                    $("#AddTransactionBtn").click(function () {
-                                                        $("#AddTransactionDialog").dialog("open");
-                                                        return false;
+                                    <tr @bgcolorattr>
+                                        <td>
+                                            @Html.HiddenFor(m => Model.Holder.Accounts[i].Account_Number)
+                                            @Html.HiddenFor(m => Model.Holder.Accounts[i].Account_Level_ID)
+                                            @Html.HiddenFor(m => Model.Holder.Accounts[i].Status)
+                                            @Model.Holder.Accounts[i].Account_Number
+                                        </td>
+                                        <td>
+                                            @Model.Holder.Accounts[i].Account_Type_Name
+                                        </td>
+                                        <td>
+                                            @DateTime.Parse(Model.Holder.Accounts[i].Create).ToString("dd.MM.yyyy")
+                                        </td>
+                                        <td>
+                                            @Model.Holder.Accounts[i].Status
+                                        </td>
+                                        <td>
+                                            @Model.Holder.Accounts[i].Balance
+                                        </td>
+                                        <td>
+                                            @if (@Model.Holder.Accounts[i].Account_Type_ID == "16")
+                                            {
+                                                <a href="#" id="AddTransactionBtn">Пополнение/Списание</a>
+
+                                                <script>
+                                                    $(function () {
+                                                        $("#AddTransactionBtn").click(function () {
+                                                            $("#AddTransactionDialog").dialog("open");
+                                                            return false;
+                                                        });
                                                     });
-                                                });
-                                            </script>
-                                        }
-                                        else
-                                        {
-                                            <b>&nbsp;</b>
-                                        }
-                                    </td>
-                                </tr>
+                                                </script>
+                                            }
+                                            else
+                                            {
+                                                <b>&nbsp;</b>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </table>
                     }
