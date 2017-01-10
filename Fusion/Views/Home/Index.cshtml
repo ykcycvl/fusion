@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿@model Fusion.Models.RSS
 
 @{
@@ -53,48 +52,4 @@
             </div>
         </div>
     </div>
-=======
-﻿@model Fusion.Models.RSS
-
-@{
-    ViewBag.Title = "Единый портал БК, КЦ и отчетности";
-}
-<h2>Vega</h2>
-
-<div class="jumbotron">
-    <p>
-        Для работы в системе необходимо быть авторизованным пользователем домена fg.local
-        <br />
-        Для получения доступа обратитесь к администратору домена
-    </p>
-</div>
-
-@foreach (var rc in Model.channels)
-{
-    <div class="col-lg-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                @rc.rssTitle
-            </div>
-            <div class="panel-body">
-                @foreach (var r in rc.rssNews)
-                {
-                    <div style="padding: 10px 0pt 20px 0pt;">
-                        <table style="width:100%">
-                            <tr>
-                                <td>
-                                    @r.pubDate
-                                    <h5><a href="@r.newsLink">@r.newsTitle</a></h5>
-                                    <div style="padding: 0pt 0pt 0pt 0pt;">
-                                        @r.newsDescription
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
->>>>>>> origin/master
 }
