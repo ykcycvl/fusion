@@ -141,7 +141,7 @@ namespace Fusion.Models.Callback
 
         //сам отзыв
         [Required(ErrorMessage = "Напишите отзыв")]
-        [StringLength(300, MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
+        [StringLength(18000,MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
         [DataType(DataType.MultilineText)]
         public string textkomm { get; set; }
 
