@@ -339,6 +339,10 @@ namespace Fusion.Models
 											<Auto_Change_Levels>false</Auto_Change_Levels>
 											<Account_Level_ID>22</Account_Level_ID>
 										</Account>
+                                        <Account>
+											<Account_Type_ID>11</Account_Type_ID>
+											<Auto_Change_Levels>false</Auto_Change_Levels>
+										</Account>
 									</Accounts>
 									<Addresses>
 									</Addresses>
