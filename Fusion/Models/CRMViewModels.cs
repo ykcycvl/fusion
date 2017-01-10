@@ -826,7 +826,11 @@ namespace Fusion.Models
                 }
                 set
                 {
-                    searchString += string.Format(" AND cpa.BALANCE >= {0}", value);
+                    if (value > 0)
+                    {
+                        searchString += string.Format(" AND cpa.BALANCE >= {0}", value);
+                    }
+
                     _BALANCE = value;
                 }
             }

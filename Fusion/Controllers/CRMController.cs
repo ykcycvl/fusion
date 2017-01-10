@@ -173,7 +173,7 @@ namespace Fusion.Controllers
             RKCRM.AddHoldersModel model = new RKCRM.AddHoldersModel();
             model.Holder = new RKCRM.Holder();
             model.Holder.Group_ID = "45";
-            model.Holder.Birth = "01.01.1990";
+            model.Holder.Birth = "01.12.1900";
             model.Holder.Contacts = new List<RKCRM.Holder.ContactInfo>();
             model.Holder.Contacts.Add(new RKCRM.Holder.ContactInfo() { Type_ID = "254", Dispatch = "True", Value = "" });
             return View(model);

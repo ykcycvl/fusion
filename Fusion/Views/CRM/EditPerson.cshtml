@@ -274,7 +274,7 @@
                             </tr>
                             @if (Model.Holder.Accounts != null)
                             {
-                                @for (int i = 0; i < Model.Holder.Accounts.Count; i++)
+                                for (int i = 0; i < Model.Holder.Accounts.Count; i++)
                                 {
                                     string bgcolorattr = "style=background:#86d086";
 
@@ -339,11 +339,14 @@
                 <div class="col-md-10">
                     <label>Выберите карту</label>
                     <select id="CardCode">
-                        @foreach (var c in Model.Holder.Cards)
+                        @if (Model.Holder.Cards != null)
                         {
-                            if (c.Status == "Active")
+                            foreach (var c in Model.Holder.Cards)
                             {
-                                <option value="@c.Card_Code">@c.Card_Code</option>
+                                if (c.Status == "Active")
+                                {
+                                    <option value="@c.Card_Code">@c.Card_Code</option>
+                                }
                             }
                         }
                     </select>

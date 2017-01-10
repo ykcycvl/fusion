@@ -641,7 +641,7 @@ namespace Fusion.Models
                     }
                     else
                     {
-                        //Holder = Holder.Deserialize(r.Message);
+                        Holder = Holder.Deserialize(r.Message);
                         return true;
                     }
                 }
