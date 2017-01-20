@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Vega</title>
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("/scripts/jqueryui/themes/base/jquery-ui.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("/scripts/jqueryui/ui/jquery-ui.js")
+    @Scripts.Render("/scripts/jquery.maskedinput.min.js")
+    @RenderSection("scripts", required: false)
+    <script>
+        $(function () {
+            $("#start_dt").datepicker({
+                monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay: 1,
+                dateFormat: "dd.mm.yy"
+            });
+            $("#end_dt").datepicker({
+                monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay: 1,
+                dateFormat: "dd.mm.yy"
+            });
+            $(".date").datepicker({
+                monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                firstDay: 1,
+                dateFormat: "dd.mm.yy"
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <div class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("Vega", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <img src="~/Content/Vega_48.png" style="float:left" />
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">БК старый<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("БК", "Index", "BC")</li>
+                                    <li>@Html.ActionLink("Участники БК", "Persons", "BC")</li>
+                                    <li>@Html.ActionLink("Карты БК", "Cards", "BC")</li>
+                                    <li>@Html.ActionLink("Список всех чеков", "Transactions", "BC")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Бонусный клуб<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Общая информация", "Index", "CRM")</li>
+                                    <li>@Html.ActionLink("Участники Море Плюсов", "Persons", "CRM")</li>
+                                    <li>@Html.ActionLink("Отчеты", "Reports", "CRM")</li>
+                                </ul>
+                            </li>
+                            <li>@Html.ActionLink("Call-Center", "Index", "CallCenter")</li>
+                            <li>@Html.ActionLink("Bringo", "Index", "Bringo")</li>
+                            <li>
+                                @Html.ActionLink("Обратная связь", "viewtable", "Callback")
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-top-links navbar-right">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-alerts">
+                                    <li>
+                                        <a href="#">
+                                            <div>
+                                                <i class="fa fa-circle-o fa-fw"></i> Нет новых уведомлений
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <!-- /.dropdown-alerts -->
+                            </li>
+                            <!-- /.dropdown -->
+                            <li>
+                                @Html.Partial("_LoginPartial")
+                            </li>
+                            <!-- /.dropdown -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="=">
+                <ul class="breadcrumb">@Html.MvcSiteMap().SiteMapPath()</ul>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</body>
+</html>

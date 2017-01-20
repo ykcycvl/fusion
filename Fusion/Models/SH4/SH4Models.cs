@@ -73,11 +73,13 @@ namespace Fusion.Models.SH4
                     if (sh4.ValByName(res, "1.209.2.0").GetType() != typeof(DBNull))
                         gti.ParentID = sh4.ValByName(res, "1.209.2.0");
 
-                    Encoding srcEncodingFormat = Encoding.GetEncoding(1252);
+                    Encoding src1EncodingFormat = Encoding.GetEncoding(1252);
+                    Encoding src2EncodingFormat = Encoding.GetEncoding(1251);
                     Encoding dstEncodingFormat = Encoding.UTF8;
-                    byte[] originalByteString = srcEncodingFormat.GetBytes(sh4.ValByName(res, "1.209.3.0").ToString());
-                    byte[] convertedByteString = Encoding.Convert(srcEncodingFormat, dstEncodingFormat, originalByteString);
-                    gti.Name = dstEncodingFormat.GetString(convertedByteString);
+                    byte[] originalByteString = src1EncodingFormat.GetBytes(sh4.ValByName(res, "1.209.3.0").ToString());
+                    byte[] converted1ByteString = Encoding.Convert(src1EncodingFormat, src2EncodingFormat, originalByteString);
+                    byte[] converted2ByteString = Encoding.Convert(src2EncodingFormat, dstEncodingFormat, originalByteString);
+                    gti.Name = dstEncodingFormat.GetString(converted2ByteString);
                     gti.Code = sh4.ValByName(res, "1.209.4.0").ToString();
                     gti.ExternalCode = sh4.ValByName(res, "1.209.5.0").ToString();
 

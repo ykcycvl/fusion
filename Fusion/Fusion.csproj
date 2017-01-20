@@ -2288,6 +2288,7 @@
     <Content Include="Views\SH4\GoodsTree.cshtml" />
     <Content Include="Views\Shared\_GoodsTree.cshtml" />
     <Content Include="Views\SH4\Goods.cshtml" />
+    <Content Include="Views\Shared\_SH4Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
