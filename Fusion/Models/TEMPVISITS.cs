@@ -23,6 +23,7 @@ namespace Fusion.Models
         public Nullable<int> RESERVSOURCE { get; set; }
         public Nullable<int> RESERVID { get; set; }
         public Nullable<int> RESERVDURATION { get; set; }
+        public Nullable<int> RESERVSTATE { get; set; }
         public Nullable<int> RESERVFLAGS { get; set; }
         public Nullable<int> ENTRCARDMODE { get; set; }
         public Nullable<decimal> MAXCREDITSUM { get; set; }

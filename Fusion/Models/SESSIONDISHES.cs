@@ -62,5 +62,6 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<decimal> MENUITEMPRICE { get; set; }
         public string SOURCEGUIDSTRING { get; set; }
+        public Nullable<int> ADDBYALGORITHM { get; set; }
     }
 }

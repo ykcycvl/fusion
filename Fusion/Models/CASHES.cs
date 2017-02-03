@@ -32,9 +32,10 @@ namespace Fusion.Models
         public string DEVICENAME { get; set; }
         public string FILEMANAGERPATH { get; set; }
         public Nullable<short> GRAPHICPARAMETERS { get; set; }
-        public Nullable<short> SHUTDOWNCASH { get; set; }
         public Nullable<short> AFTERSHIFTCLOSURE { get; set; }
         public Nullable<short> SYNCSTATESFLAGS { get; set; }
         public string RECSTAMP { get; set; }
+        public Nullable<short> WAITDATASENDED { get; set; }
+        public Nullable<int> DATASENDTIMEOUT { get; set; }
     }
 }

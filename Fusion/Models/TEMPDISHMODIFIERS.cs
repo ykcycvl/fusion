@@ -27,6 +27,7 @@ namespace Fusion.Models
         public Nullable<int> IAUTHORROLE { get; set; }
         public string OPENNAME { get; set; }
         public Nullable<decimal> PRICE { get; set; }
+        public Nullable<long> SRCPRICE { get; set; }
         public Nullable<decimal> PRLISTSUM { get; set; }
         public Nullable<long> SRCPRLISTSUM { get; set; }
         public Nullable<double> PIECES { get; set; }

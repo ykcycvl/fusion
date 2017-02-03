@@ -53,6 +53,7 @@ namespace Fusion.Models
         public Nullable<int> TARIFFSIFR { get; set; }
         public string GUIDSTRING { get; set; }
         public string SOURCEGUIDSTRING { get; set; }
+        public Nullable<int> ADDBYALGORITHM { get; set; }
         public Nullable<double> WEIGHT { get; set; }
         public Nullable<short> CHANGECOUNT { get; set; }
         public Nullable<short> WEIGHTPRINTED { get; set; }

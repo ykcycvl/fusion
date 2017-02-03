@@ -32,7 +32,6 @@ namespace Fusion.Models
         public Nullable<short> NEEDCONFIRMAFTERPRINT { get; set; }
         public Nullable<int> TERMINALPRINTDETAILIDENT { get; set; }
         public Nullable<short> BANKTRANSACTIONTYPE { get; set; }
-        public byte[] SLIP { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

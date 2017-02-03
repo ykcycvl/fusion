@@ -18,7 +18,7 @@
             }
         }
     }
-    
+
     function showForm1() {
         document.getElementById("otlichno").hidden = false;
         document.getElementById("horosho").hidden = false;
@@ -125,9 +125,11 @@
             case 'Положительный':
                 showForm1();
                 break
+            case 'Нейтральный':
+                showForm3();
+                break
             case 'Отрицательный':
-                
-                showForm2();    
+                showForm2();
                 break
             case 'Критичный':
                 showForm3();
@@ -164,6 +166,9 @@
                 break
             case 'Сервис':
                 document.getElementById("serviceid").selected = true;
+                break
+            case 'Качество/Сервис':
+                document.getElementById("quaservid").selected = true;
                 break
             case 'Скорость':
                 document.getElementById("speedid").selected = true;
@@ -202,7 +207,7 @@
         @Html.HiddenFor(m => m.Rating1, new { @value = Model.Rating1, @id = "ratind" })
         @Html.HiddenFor(m => m.Rating2, new { @value = Model.Rating2, @id = "rat2ind" })
         @Html.HiddenFor(m => m.Type, new { @value = Model.Type, @id = "typeind" })
-        @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" }) 
+        @Html.HiddenFor(m => m.Payer, new { @value = Model.Payer, @id = "payerind" })
         <input hidden name="hidname" value="@Model.UserName" />
         <input hidden name="hidphone" value="@Model.phnumber" />
         <input hidden name="hidmail" value="@Model.email" />
@@ -219,7 +224,7 @@
         <input hidden name="hidtext" value="@Model.textkomm" />
         <input hidden name="hidproblem" value="@Model.Problem" />
         <input hidden name="hidmera" value="@Model.mera" />
-        <input hidden name="hidanswer" value="@Model.answer" />                
+        <input hidden name="hidanswer" value="@Model.answer" />
         <input hidden name="hidcost1" value="@Model.Cost" />
         <input hidden name="hidcost2" value="@Model.CostPoint" />
         <input hidden name="hidcost3" value="@Model.CostSert" />
@@ -228,7 +233,7 @@
             <li>
                 <label style="margin-left: 40px; float: left" for="">Фио гостя:</label>
                 <div class="input-group has-error has-feedback">
-                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @class = "contact_form", @value = Model.UserName, id="oplata1" })
+                    @Html.TextBoxFor(m => m.UserName, new { placeholder = "Введите ФИО гостя", @required = true, @class = "contact_form", @value = Model.UserName, id = "oplata1" })
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_1"></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.UserName)
@@ -236,11 +241,11 @@
             <li>
                 <span style="margin-left: 40px;">Телефон гостя:</span>
                 <div class="input-group has-error">
-                    @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber, @id="oplata2" })
+                    @Html.TextBoxFor(m => m.phnumber, new { placeholder = "Введите тел. гостя", @required = true, @class = "contact_form", @value = Model.phnumber, @id = "oplata2" })
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_2"></span>
-                    </div>
+                </div>
                 @Html.ValidationMessageFor(m => m.phnumber)
-</li>
+            </li>
             <li>
                 <span style="margin-left: 40px;">E-mail гостя:</span>
                 @Html.TextBoxFor(m => m.email, new { placeholder = "Введите email гостя", @class = "contact_form", @value = Model.email })
@@ -264,6 +269,7 @@
                     <option selected disabled value="Тип" id="typeid">Тип</option>
                     <option value="Качество" id="qualityid">Качество</option>
                     <option value="Сервис" id="serviceid">Сервис</option>
+                    <option value="Качество/Сервис" id="quaservid">Качество/Сервис</option>
                     <option value="Скорость" id="speedid">Скорость</option>
                     <option value="Прочее" id="otherid">Прочее</option>
                 </select>
@@ -320,6 +326,7 @@
             <li>
                 <p>@Html.RadioButtonFor(m => m.Rating1, "Положительный", new { onclick = "showForm1()", @id = "pologhid" })Положительный</p>
                 <p> @Html.RadioButtonFor(m => m.Rating1, "Отрицательный", new { onclick = "showForm2()", @id = "otricid" })Отрицательный</p>
+                <p> @Html.RadioButtonFor(m => m.Rating1, "Нейтральный", new { onclick = "showForm3()", @id = "neytrid" })Нейтральный</p>
                 <p> @Html.RadioButtonFor(m => m.Rating1, "Критичный", new { onclick = "showForm3()", @id = "kriticid" })Критичный</p>
                 <p> @Html.RadioButtonFor(m => m.Rating1, "ОТРАВЛЕНИЕ", new { onclick = "showForm3()", @id = "otravid" })ОТРАВЛЕНИЕ</p>
             </li>
@@ -336,10 +343,10 @@
                 <span style="margin-left: 40px;">Текст отзыва:</span>
                 @Html.ValidationMessageFor(m => m.textkomm)
                 <div class="input-group has-error has-feedback">
-                    @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm, @id = "oplata3"})
-                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id = "oplata_3"></span>
-                    </div>
-</li>
+                    @Html.TextAreaFor(m => m.textkomm, new { placeholder = "Введите текст отзыва гостя", @required = true, @class = "otz", @value = Model.textkomm, @id = "oplata3" })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_3"></span>
+                </div>
+            </li>
             <li>
                 <span style="margin-left: 40px;">Подробности проблемы:</span>
                 <div class="input-group has-error has-feedback">
@@ -350,12 +357,12 @@
             </li>
             <li>
                 <span style="margin-left: 40px;">Принятые меры:</span>
-                    @Html.TextAreaFor(m => m.mera, new { placeholder = "Опишите принятые меры", @class = "contact_form", @value = Model.mera })
+                @Html.TextAreaFor(m => m.mera, new { placeholder = "Опишите принятые меры", @class = "contact_form", @value = Model.mera })
                 @Html.ValidationMessageFor(m => m.mera)
             </li>
             <li>
                 <span style="margin-left: 40px;">Решение для гостя:</span>
-                    @Html.TextAreaFor(m => m.answer, new { placeholder = "Опишите решение для гостя", @class = "contact_form", @value = Model.answer })
+                @Html.TextAreaFor(m => m.answer, new { placeholder = "Опишите решение для гостя", @class = "contact_form", @value = Model.answer })
                 @Html.ValidationMessageFor(m => m.answer)
             </li>
             <li>

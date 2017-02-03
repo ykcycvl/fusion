@@ -51,6 +51,7 @@
                 <option value="">---</option>
                 <option value="Положительный">Полож</option>
                 <option value="Отрицательный">Отриц</option>
+                <option value="Нейтральный">Нейтр</option>
                 <option value="Критичный">Крит</option>
                 <option value="ОТРАВЛЕНИЕ">ОТРАВ</option>
             </select>
@@ -87,6 +88,7 @@
                 <option value="">---</option>
                 <option value="Качество">Качество</option>
                 <option value="Сервис">Сервис</option>
+                <option value="Качество/Сервис">Качество/Сервис</option>
                 <option value="Скорость">Скорость</option>
                 <option value="Прочее">Прочее</option>
             </select>
@@ -121,6 +123,7 @@
         <table class="sortable table table-bordered table-hover" id="t">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th class="name">Имя гостя</th>
                     <th>Оценка</th>
                     <th class="numb">Номер телефона</th>
@@ -148,6 +151,9 @@
                                 break;
                             case "Отрицательный":
                                 rowColor = "#ec971f";
+                                break;
+                            case "нейтральный":
+                                rowColor = "#337ab7";
                                 break;
                             case "Критичный":
                                 rowColor = "#c9302c";
@@ -194,6 +200,7 @@
                     costpoint = Convert.ToInt32(@attribute.CostPoint);
                     costsert = Convert.ToInt32(@attribute.CostSert);
                     <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/Callback/uniform?updorins=@attribute.id'">
+                        <td>@attribute.id</td>
                         <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Rating, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Phone, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
@@ -366,12 +373,20 @@
         sum5 = sum5 + 1;
     }
     @{
+        int sum6 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "Нейтральный"))
+    {
+        sum6 = sum6 + 1;
+    }
+    @{
         int sum4 = Model.persons.Count - sum1 - sum2 - sum3;
     }
 
     <span>
         Всего положительных отзывов: @sum1 <br />
         Всего отрицательных отзывов: @sum2 <br />
+        Всего нейтральных отзывов: @sum6 <br />
         Всего критичных отзывов: @sum3 <br />
         Всего ОТРАВЛЕНИЙ: @sum5 <br />
         Отзывов не обработано: @sum4

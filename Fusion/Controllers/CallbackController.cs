@@ -415,6 +415,9 @@ namespace Fusion.Controllers
                 case ",Отрицательный":
                     Rating = "Отрицательный";
                     break;
+                case ",Нейтральный":
+                    Rating = "Нейтральный";
+                    break;
                 case ",Критичный":
                     Rating = "Критичный";
                     break;
@@ -581,11 +584,11 @@ namespace Fusion.Controllers
             {
                 testCon = false;
             }
-            string UserLog; 
+            string UserLog;
             UserLog = User.Identity.GetUserName();
             string dbSTR;
             string dbSTR2;
-            dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id +"',Fields='" + Matching + "',Text='" + textkomm + "'";
+            dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id + "',Fields='" + Matching + "',Text='" + textkomm + "'";
             //проверяем id отзыва
             //idbridge
             if (id >= 0)

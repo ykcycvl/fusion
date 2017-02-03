@@ -32,5 +32,7 @@ namespace Fusion.Models
         public Nullable<int> LINKEDSCRIPT { get; set; }
         public Nullable<int> EXTRACONFIRMATION { get; set; }
         public string RECSTAMP { get; set; }
+        public string CONFIRMATIONTEXT { get; set; }
+        public string ALTCONFIRMATIONTEXT { get; set; }
     }
 }

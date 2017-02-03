@@ -25,6 +25,7 @@ namespace Fusion.Models
         public Nullable<int> ENTRANCECARDTYPE { get; set; }
         public Nullable<long> CLIENTID { get; set; }
         public Nullable<long> ADDRESSID { get; set; }
+        public Nullable<short> FISCORDERSTATE { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

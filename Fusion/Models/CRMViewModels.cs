@@ -236,7 +236,7 @@ namespace Fusion.Models
 
             public bool GetCheck(Guid TransactionGuid)
             {
-                CARD_TRANSACTION_NOTES checkinfo = db.CARD_TRANSACTION_NOTES.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid);
+                CARD_TRANSACTION_NOTES checkinfo = db.CARD_TRANSACTION_NOTES.First(p => p.TRANSACT_GUID == TransactionGuid);
 
                 if (checkinfo != null && checkinfo.DOP_INFO != null)
                 {

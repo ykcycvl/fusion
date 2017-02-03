@@ -23,5 +23,9 @@ namespace Fusion.Models
         public Nullable<int> RKPROPKIND { get; set; }
         public Nullable<int> RKENUMLINK { get; set; }
         public Nullable<int> PARENT { get; set; }
+        public string NAME { get; set; }
+        public string ALTNAME { get; set; }
+        public Nullable<short> STATUS { get; set; }
+        public Nullable<short> UCSPRESET { get; set; }
     }
 }

@@ -31,5 +31,6 @@ namespace Fusion.Models
         public Nullable<int> EXTRESTID { get; set; }
         public string FORMAT { get; set; }
         public string RECSTAMP { get; set; }
+        public Nullable<short> IMPLONNONPRINTEDDISH { get; set; }
     }
 }

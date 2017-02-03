@@ -39,5 +39,8 @@ namespace Fusion.Models
         public Nullable<int> OBJECTID3 { get; set; }
         public string RECSTAMP { get; set; }
         public Nullable<int> CALCINTERVAL { get; set; }
+        public Nullable<short> RESTRICTMANUAL { get; set; }
+        public Nullable<short> SHOWONORDERFORM { get; set; }
+        public Nullable<short> SHOWPROGRESSBAR { get; set; }
     }
 }

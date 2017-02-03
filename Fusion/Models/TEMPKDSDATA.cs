@@ -27,6 +27,11 @@ namespace Fusion.Models
         public Nullable<double> MENUCOOKTIME { get; set; }
         public Nullable<int> MENUCATEGORY { get; set; }
         public Nullable<int> SERVPRINTNUM { get; set; }
+        public Nullable<int> SENTMANAGERID { get; set; }
+        public Nullable<int> INITMANAGERID { get; set; }
+        public Nullable<int> DONEMANAGERID { get; set; }
+        public Nullable<int> TAKEMANAGERID { get; set; }
+        public Nullable<int> KDSSTATIONID { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

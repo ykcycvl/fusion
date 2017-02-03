@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Fusion.Models
 {
@@ -92,6 +93,104 @@ namespace Fusion.Models
                     </RK7Query>";
                 return HttpPost(query);
             }
+        }
+    }
+
+    [XmlRoot("RK7QueryResult")]
+    public class RK7QueryResult
+    {
+        public static string HttpPost(string PostData, string ip, string port)
+        {
+            var request = (HttpWebRequest)WebRequest.Create("http://10.1.0.22:8095/Delivery/Query");
+
+            var data = Encoding.UTF8.GetBytes(PostData);
+
+            request.Method = "POST";
+            request.ContentType = "application/text";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            return responseString;
+        }
+
+        [XmlRoot("LayoutResult")]
+        public class SystemBalanceReport
+        {
+            public class Item
+            {
+                public class Rhrow
+                {
+                    [XmlElement("rhcol")]
+                    public List<string> rhcol { get; set; }
+                }
+                [XmlElement("rhrow")]
+                public Rhrow rhrow { get; set; }
+
+                public class Rbrow
+                {
+                    [XmlElement("SystemBalance")]
+                    public Item SystemBalance { get; set; }
+
+                    [XmlElement("Discounts")]
+                    public Item Discounts { get; set; }
+
+                    [XmlElement("MonWaiterBalance")]
+                    public Item MonWaiterBalance { get; set; }
+
+                    [XmlElement("rbcol")]
+                    public List<string> rbcol { get; set; }
+                }
+
+                [XmlElement("rbrow")]
+                public List<Rbrow> rbrow { get; set; }
+
+                public class Rfrow
+                {
+                    [XmlElement("rfcol")]
+                    public List<string> rfcol { get; set; }
+                }
+                [XmlElement("rfrow")]
+                public Rfrow rfrow { get; set; }
+            }
+            [XmlElement("BandRepTitle")]
+            public Item BandRepTitle { get; set; }
+            [XmlElement("SystemBalance")]
+            public Item SystemBalance { get; set; }
+            [XmlElement("Discounts")]
+            public Item Discounts { get; set; }
+            [XmlElement("DishCategory")]
+            public Item DishCategory { get; set; }
+            [XmlElement("MonWaiterBalance")]
+            public Item MonWaiterBalance { get; set; }
+        }
+
+        [XmlElement("LayoutResult")]
+        public SystemBalanceReport systemBalanceReport { get; set; }
+        public void serialize()
+        {
+        }
+
+        public RK7QueryResult Deserialize(string xml)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(RK7QueryResult));
+            var stringReader = new StringReader(xml);
+            return (RK7QueryResult)xmlSerializer.Deserialize(stringReader);
+        }
+
+        public string GetSystemBalance(string ip, int port)
+        {
+            return HttpPost(@"<?xml version=""1.0"" encoding=""utf-8""?> 
+<RK7Query>
+  <RK7CMD CMD=""GetDocByLayout"" TextReport=""0"" LayoutFilters="""" DataSourceParams="""">
+    <Layout id=""10771"" />
+  </RK7CMD>
+</RK7Query>", ip, port.ToString());
         }
     }
 }

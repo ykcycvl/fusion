@@ -66,5 +66,8 @@ namespace Fusion.Models
         public Nullable<int> HTTPXMLPRIVILEGE { get; set; }
         public string RECSTAMP { get; set; }
         public Nullable<int> LICHARDINFONEW { get; set; }
+        public Nullable<int> LOGBASECONF { get; set; }
+        public string LOGBASENAME { get; set; }
+        public string LOGBASEPASS { get; set; }
     }
 }

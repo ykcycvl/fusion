@@ -37,5 +37,6 @@ namespace Fusion.Models
         public string GUIDSTRING { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> FREEMODICNT { get; set; }
+        public Nullable<long> SRCPRICE { get; set; }
     }
 }

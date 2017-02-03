@@ -29,5 +29,7 @@ namespace Fusion.Models
         public Nullable<int> MINMAKVERSION { get; set; }
         public Nullable<int> FISCFLAGMASK { get; set; }
         public string RECSTAMP { get; set; }
+        public Nullable<short> LOGPRINTFACT { get; set; }
+        public Nullable<short> LOGPRINTDATA { get; set; }
     }
 }

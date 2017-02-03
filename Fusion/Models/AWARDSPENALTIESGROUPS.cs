@@ -23,5 +23,7 @@ namespace Fusion.Models
         public Nullable<int> PARENT { get; set; }
         public Nullable<short> EDITRIGHT { get; set; }
         public string RECSTAMP { get; set; }
+        public Nullable<int> ITEMSKIND { get; set; }
+        public Nullable<short> UCSPRESET { get; set; }
     }
 }

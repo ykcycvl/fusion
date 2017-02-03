@@ -22,5 +22,6 @@ namespace Fusion.Models
         public Nullable<short> NOTICED { get; set; }
         public Nullable<short> ABSENT { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<short> ISQNTREST { get; set; }
     }
 }

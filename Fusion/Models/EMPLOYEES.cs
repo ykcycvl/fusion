@@ -21,31 +21,32 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<int> GCEXTCODE { get; set; }
         public Nullable<int> PAGERCODE { get; set; }
-        public Nullable<int> PAGERTYPE { get; set; }
+        public Nullable<short> PAGERTYPE { get; set; }
         public Nullable<int> FLAGS { get; set; }
-        public Nullable<int> PASSWORD { get; set; }
-        public Nullable<int> CARDCODE { get; set; }
-        public Nullable<int> DBLANG { get; set; }
+        public string PASSWORD { get; set; }
+        public string CARDCODE { get; set; }
+        public Nullable<short> DBLANG { get; set; }
         public Nullable<int> BRIGADE { get; set; }
         public Nullable<int> DEFSERVPOSITION { get; set; }
-        public int STATUS { get; set; }
+        public Nullable<short> STATUS { get; set; }
         public Nullable<int> BLST_INIFILE { get; set; }
         public Nullable<int> DEFAULTRESTAURANT { get; set; }
         public Nullable<int> VISUALTYPE_IMAGE { get; set; }
         public Nullable<int> VISUALTYPE_BCOLOR { get; set; }
         public Nullable<int> VISUALTYPE_TEXTCOLOR { get; set; }
-        public Nullable<int> VISUALTYPE_FLAGS { get; set; }
+        public Nullable<short> VISUALTYPE_FLAGS { get; set; }
         public Nullable<int> ROLE { get; set; }
-        public Nullable<int> USERATTRIBUTE1 { get; set; }
-        public Nullable<int> USERATTRIBUTE2 { get; set; }
-        public Nullable<int> USERATTRIBUTE3 { get; set; }
-        public Nullable<int> AUTHUSERNAME { get; set; }
-        public Nullable<int> USERSSID { get; set; }
-        public Nullable<int> WINDOWSNAME { get; set; }
-        public Nullable<int> LARGEIMAGEPATH { get; set; }
+        public string USERATTRIBUTE1 { get; set; }
+        public string USERATTRIBUTE2 { get; set; }
+        public string USERATTRIBUTE3 { get; set; }
+        public string AUTHUSERNAME { get; set; }
+        public string USERSSID { get; set; }
+        public string WINDOWSNAME { get; set; }
+        public byte[] LARGEIMAGEPATH { get; set; }
         public string EMPLOYEEEMAIL { get; set; }
         public Nullable<int> EXTCODE { get; set; }
         public Nullable<int> EXTRESTID { get; set; }
         public string PASSDATA { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }
