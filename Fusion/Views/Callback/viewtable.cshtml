@@ -1,4 +1,4 @@
-﻿@model Fusion.Models.Callback.TblViewModel.TblsModelDown
+@model Fusion.Models.Callback.TblViewModel.TblsModelDown
 
 @{
     ViewBag.Title = "Обратная связь";
@@ -22,7 +22,7 @@
             close: function (event, ui) { },
             modal: true,
             width: 450,
-            height: 350,
+            height: 550,
             autoOpen: false,
             draggable: true,
             closeText: '',
@@ -116,7 +116,15 @@
             <input type="checkbox" id="nalid" value="0" />Наличные
             <input type="checkbox" id="bonusid" value="0" />Бонусы
             <input type="checkbox" id="sertid" value="0" />Сертификат
-        </div>
+            <select id="payer">
+                <option value="">---</option>
+                <option value="Cотрудник">Cотрудник</option>
+                <option value="Компания">Компания</option>
+                <option value="Сотрудник/Компания">Сотрудник/Компания</option>
+            </select>
+
+            
+        </div>  
 
 
         //отзывы
@@ -152,7 +160,7 @@
                             case "Отрицательный":
                                 rowColor = "#ec971f";
                                 break;
-                            case "нейтральный":
+                            case "Нейтральный":
                                 rowColor = "#337ab7";
                                 break;
                             case "Критичный":
@@ -200,7 +208,7 @@
                     costpoint = Convert.ToInt32(@attribute.CostPoint);
                     costsert = Convert.ToInt32(@attribute.CostSert);
                     <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/Callback/uniform?updorins=@attribute.id'">
-                        <td>@attribute.id</td>
+                        <td style="color: @textColor">@attribute.id</td>
                         <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Rating, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Phone, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
@@ -215,6 +223,8 @@
                         <td hidden id="costpointid">@costpoint</td>
                         <td hidden id="costsertid">@costsert</td>
                         <td hidden id="cldate">@attribute.DateClose</td>
+                        <td hidden id="payerf">@attribute.Payer1</td>
+
                     </tr>
                 }
             </tbody>
@@ -223,7 +233,7 @@
     }
     <script>
         filterTable(document.getElementById("target"), {
-            0: new filterTable.Filter(document.getElementById("namef"),
+            1: new filterTable.Filter(document.getElementById("namef"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 var c_value = value.toLowerCase(),
@@ -233,8 +243,8 @@
             /* Будем вызывать валидацию по событию onkeyup фильтра */
             "onkeyup"
         ),
-            1: document.getElementById("reitf"),
-            2: new filterTable.Filter(document.getElementById("numf"),
+            2: document.getElementById("reitf"),
+            3: new filterTable.Filter(document.getElementById("numf"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -242,7 +252,7 @@
             /* Будем вызывать валидацию по событию onkeyup фильтра */
             "onkeyup"
         ),
-            3: new filterTable.Filter(document.getElementById("datenew2"),
+            4: new filterTable.Filter(document.getElementById("datenew2"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -251,7 +261,7 @@
             "onkeyup"
         ),
             //document.getElementById("datenew2"),
-            4: new filterTable.Filter(document.getElementById("dateclose"),
+            5: new filterTable.Filter(document.getElementById("dateclose"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -260,28 +270,29 @@
             "onkeyup"
         ),
             //document.getElementById("dateclose"),
-            5: document.getElementById("unitf"),
-            6: document.getElementById("digits"),
-            7: document.getElementById("typef"),
-            8: document.getElementById("sourcef"),
-            9: new filterTable.Filter([document.getElementById("nalid")],
+            6: document.getElementById("unitf"),
+            7: document.getElementById("digits"),
+            8: document.getElementById("typef"),
+            9: document.getElementById("sourcef"),
+            10: new filterTable.Filter([document.getElementById("nalid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
             ),
-            10: new filterTable.Filter([document.getElementById("bonusid")],
+            11: new filterTable.Filter([document.getElementById("bonusid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
             ),
-            11: new filterTable.Filter([document.getElementById("sertid")],
+            12: new filterTable.Filter([document.getElementById("sertid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
-            )
+            ),
+            14: document.getElementById("payer")
         }
     );
 
@@ -333,11 +344,47 @@
         sumb = sumb + Convert.ToInt32(attribute.CostPoint);
         sums = sums + Convert.ToInt32(attribute.CostSert);
     }
+    @{
+        int sumnal = 0;
+        int sumbonus = 0;
+        int sumsert = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Cотрудник"))
+    {
+        sumnal = sumnal + Convert.ToInt32(attribute.Cost);
+        sumbonus = sumbonus + Convert.ToInt32(attribute.CostPoint);
+        sumsert = sumsert + Convert.ToInt32(attribute.CostSert);
+    }
+    @{
+        int compsumnal = 0;
+        int compsumbonus = 0;
+        int compsumsert = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Компания"))
+    {
+        compsumnal = compsumnal + Convert.ToInt32(attribute.Cost);
+        compsumbonus = compsumbonus + Convert.ToInt32(attribute.CostPoint);
+        compsumsert = compsumsert + Convert.ToInt32(attribute.CostSert);
+    }
     <br />
     <span>
         Все расходы(наличные): @sum руб.<br />
         Все расходы(баллы): @sumb б.<br />
         Все расходы(сертификаты): @sums руб.<br />
+    </span>
+    <br />
+    <span>
+        Из них оплачено сотрудниками: <br />
+        Наличные: @sumnal <br />
+        Бонусы: @sumbonus<br />
+        Сертификат: @sumsert<br />
+    </span> 
+    <br />
+    <span>
+        Оплачено компанией: <br />
+        Наличные: @compsumnal <br />
+        Бонусы: @compsumbonus<br />
+        Сертификат: @compsumsert<br />
     </span>
     <br />
 
@@ -382,7 +429,8 @@
     @{
         int sum4 = Model.persons.Count - sum1 - sum2 - sum3;
     }
-
+    -------------------------------------
+    <br />
     <span>
         Всего положительных отзывов: @sum1 <br />
         Всего отрицательных отзывов: @sum2 <br />
