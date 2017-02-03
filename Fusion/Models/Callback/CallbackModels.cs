@@ -272,6 +272,7 @@ namespace Fusion.Models.Callback
             public string Type { get; set; }
 
             public string Source { get; set; }
+            public string Payer1 { get; set; }
         }
 
         public class TblsModelDown
@@ -318,11 +319,11 @@ namespace Fusion.Models.Callback
                         DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " 0" + (DateNEW2.Substring(11, 7));
                     }
                     DateNEW2 = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2));
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
                 }
                 else
                 {
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
                 }
                 //command.Parameters.AddWithValue("id", );
 
@@ -380,6 +381,8 @@ namespace Fusion.Models.Callback
 
                         if (Convert.ToString(record["Source"]) != "")
                             p.Source = Convert.ToString(record["Source"]);
+                        if (Convert.ToString(record["Payer"]) != "")
+                            p.Payer1 = Convert.ToString(record["Payer"]);
                             
                         persons.Add(p);
                
