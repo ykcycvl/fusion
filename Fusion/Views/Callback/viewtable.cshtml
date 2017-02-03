@@ -51,6 +51,7 @@
                 <option value="">---</option>
                 <option value="Положительный">Полож</option>
                 <option value="Отрицательный">Отриц</option>
+                <option value="Нейтральный">Нейтр</option>
                 <option value="Критичный">Крит</option>
                 <option value="ОТРАВЛЕНИЕ">ОТРАВ</option>
             </select>
@@ -87,6 +88,7 @@
                 <option value="">---</option>
                 <option value="Качество">Качество</option>
                 <option value="Сервис">Сервис</option>
+                <option value="Качество/Сервис">Качество/Сервис</option>
                 <option value="Скорость">Скорость</option>
                 <option value="Прочее">Прочее</option>
             </select>
@@ -114,13 +116,22 @@
             <input type="checkbox" id="nalid" value="0" />Наличные
             <input type="checkbox" id="bonusid" value="0" />Бонусы
             <input type="checkbox" id="sertid" value="0" />Сертификат
-        </div>
+            <select id="payer">
+                <option value="">---</option>
+                <option value="Cотрудник">Cотрудник</option>
+                <option value="Компания">Компания</option>
+                <option value="Сотрудник/Компания">Сотрудник/Компания</option>
+            </select>
+
+            
+        </div>  
 
 
         //отзывы
         <table class="sortable table table-bordered table-hover" id="t">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th class="name">Имя гостя</th>
                     <th>Оценка</th>
                     <th class="numb">Номер телефона</th>
@@ -148,6 +159,9 @@
                                 break;
                             case "Отрицательный":
                                 rowColor = "#ec971f";
+                                break;
+                            case "Нейтральный":
+                                rowColor = "#337ab7";
                                 break;
                             case "Критичный":
                                 rowColor = "#c9302c";
@@ -194,6 +208,7 @@
                     costpoint = Convert.ToInt32(@attribute.CostPoint);
                     costsert = Convert.ToInt32(@attribute.CostSert);
                     <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/Callback/uniform?updorins=@attribute.id'">
+                        <td style="color: @textColor">@attribute.id</td>
                         <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Rating, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
                         <td>@Html.ActionLink(attribute.Phone, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
@@ -208,6 +223,8 @@
                         <td hidden id="costpointid">@costpoint</td>
                         <td hidden id="costsertid">@costsert</td>
                         <td hidden id="cldate">@attribute.DateClose</td>
+                        <td hidden id="payerf">@attribute.Payer1</td>
+
                     </tr>
                 }
             </tbody>
@@ -216,7 +233,7 @@
     }
     <script>
         filterTable(document.getElementById("target"), {
-            0: new filterTable.Filter(document.getElementById("namef"),
+            1: new filterTable.Filter(document.getElementById("namef"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 var c_value = value.toLowerCase(),
@@ -226,8 +243,8 @@
             /* Будем вызывать валидацию по событию onkeyup фильтра */
             "onkeyup"
         ),
-            1: document.getElementById("reitf"),
-            2: new filterTable.Filter(document.getElementById("numf"),
+            2: document.getElementById("reitf"),
+            3: new filterTable.Filter(document.getElementById("numf"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -235,7 +252,7 @@
             /* Будем вызывать валидацию по событию onkeyup фильтра */
             "onkeyup"
         ),
-            3: new filterTable.Filter(document.getElementById("datenew2"),
+            4: new filterTable.Filter(document.getElementById("datenew2"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -244,7 +261,7 @@
             "onkeyup"
         ),
             //document.getElementById("datenew2"),
-            4: new filterTable.Filter(document.getElementById("dateclose"),
+            5: new filterTable.Filter(document.getElementById("dateclose"),
             /* Коллбэк ф-ция валидации */
             function (value, filters, i) {
                 return value.indexOf(filters[i].value) === 0;
@@ -253,28 +270,29 @@
             "onkeyup"
         ),
             //document.getElementById("dateclose"),
-            5: document.getElementById("unitf"),
-            6: document.getElementById("digits"),
-            7: document.getElementById("typef"),
-            8: document.getElementById("sourcef"),
-            9: new filterTable.Filter([document.getElementById("nalid")],
+            6: document.getElementById("unitf"),
+            7: document.getElementById("digits"),
+            8: document.getElementById("typef"),
+            9: document.getElementById("sourcef"),
+            10: new filterTable.Filter([document.getElementById("nalid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
             ),
-            10: new filterTable.Filter([document.getElementById("bonusid")],
+            11: new filterTable.Filter([document.getElementById("bonusid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
             ),
-            11: new filterTable.Filter([document.getElementById("sertid")],
+            12: new filterTable.Filter([document.getElementById("sertid")],
             function (value, filters, i) {
                 if (false === filters[i].checked) return true;
                 return filters[0].checked && filters[0].value !== value;
             }
-            )
+            ),
+            14: document.getElementById("payer")
         }
     );
 
@@ -366,12 +384,20 @@
         sum5 = sum5 + 1;
     }
     @{
+        int sum6 = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(n => n.Rating == "Нейтральный"))
+    {
+        sum6 = sum6 + 1;
+    }
+    @{
         int sum4 = Model.persons.Count - sum1 - sum2 - sum3;
     }
 
     <span>
         Всего положительных отзывов: @sum1 <br />
         Всего отрицательных отзывов: @sum2 <br />
+        Всего нейтральных отзывов: @sum6 <br />
         Всего критичных отзывов: @sum3 <br />
         Всего ОТРАВЛЕНИЙ: @sum5 <br />
         Отзывов не обработано: @sum4
