@@ -9,6 +9,8 @@ using System.Data.SqlClient;
 using System.Data;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
+using System.Net;
+using System.Net.Mail;
 
 
 namespace Fusion.Controllers
@@ -599,7 +601,23 @@ namespace Fusion.Controllers
             else
             {
                 dbSTR = @"INSERT tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
-
+                //отправляем письмо(а) о новом отзыве
+                MailMessage mail = new MailMessage();
+                string FROM = "feedback_tokyo@mail.ru";
+                string TO = "feedback_tokyo@mail.ru";
+                mail.Body = "Пришел новый отзыв от: " + NewDate + ". Создан: " + UserName + "";
+                mail.From = new MailAddress(FROM);
+                mail.To.Add(new MailAddress(TO));
+                mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
+                SmtpClient client = new SmtpClient();//ivermak@tokyo-bar.ru,ag@tokyo-bar.ru
+                client.Host = "smtp.mail.ru";
+                client.Port = 587;
+                client.EnableSsl = true;
+                //для mail.ru - не сплитовать (полный адрес), для gmail и yandex - сплитовать
+                client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L"); //FROM.Split('@')[0]
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Send(mail);
+                mail.Dispose();
             }
             MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
             MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);
