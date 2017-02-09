@@ -605,7 +605,7 @@ namespace Fusion.Controllers
                 MailMessage mail = new MailMessage();
                 string FROM = "feedback_tokyo@mail.ru";
                 string TO = "feedback_tokyo@mail.ru";
-                mail.Body = "Пришел новый отзыв от: " + NewDate + ". Создан: " + UserName + "";
+                mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + "";
                 mail.From = new MailAddress(FROM);
                 mail.To.Add(new MailAddress(TO));
                 mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
