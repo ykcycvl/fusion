@@ -205,6 +205,7 @@
     <Compile Include="Controllers\CallCenter\CDRController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InternetOrdersController.cs" />
     <Compile Include="Controllers\ITController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MiscReport\MiscReportController.cs" />
@@ -891,6 +892,7 @@
     <Compile Include="Models\INPDEVTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InternetOrders.cs" />
     <Compile Include="Models\INTFTRANSACTIONS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1913,6 +1915,7 @@
     <Content Include="Content\bootstrap-rtl.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\FakeBitrix.css" />
     <Content Include="Content\filterTable.v1.0.min.js" />
     <Content Include="Content\img\c1.gif" />
     <Content Include="Content\img\d1.gif" />
@@ -1964,6 +1967,9 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\sale\green.gif" />
+    <Content Include="images\sale\red.gif" />
+    <Content Include="images\sale\yellow.gif" />
     <Content Include="LinqToDB.Templates\CopyMe.PostgreSQL.tt.txt" />
     <Content Include="RK7XML.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2504,10 +2510,12 @@
     <Content Include="Views\SH4\Goods.cshtml" />
     <Content Include="Views\Shared\_SH4Layout.cshtml" />
     <Content Include="Views\RK7OnlineMonitor\SystemBalanceReport.cshtml" />
+    <Content Include="Views\InternetOrders\Index.cshtml" />
+    <Content Include="Views\InternetOrders\Edit.cshtml" />
+    <Content Include="Views\InternetOrders\Print.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="images\" />
     <Folder Include="Views\IT\" />
     <Folder Include="Views\MiscReport\" />
   </ItemGroup>

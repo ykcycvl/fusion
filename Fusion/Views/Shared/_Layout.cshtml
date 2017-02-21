@@ -69,8 +69,14 @@
                                     <li>@Html.ActionLink("Отчеты", "Reports", "CRM")</li>
                                 </ul>
                             </li>
-                            <li>@Html.ActionLink("Call-Center", "Index", "CallCenter")</li>
-                            <li>@Html.ActionLink("Bringo", "Index", "Bringo")</li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Call Center<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Отчеты", "Index", "CallCenter")</li>
+                                    <li>@Html.ActionLink("Интернет-заказы", "Index", "InternetOrders")</li>
+                                    <li>@Html.ActionLink("Bringo", "Index", "Bringo")</li>
+                                </ul>
+                            </li>
                             <li>
                                 @Html.ActionLink("Обратная связь", "viewtable", "Callback")
                             </li>

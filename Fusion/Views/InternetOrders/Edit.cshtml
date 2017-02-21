@@ -1,0 +1,213 @@
+﻿@model Fusion.Models.InternetOrders.OrderInfo
+
+@{
+    ViewBag.Title = "Заказ №" + Model.id.ToString();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="/Content/FakeBitrix.css" rel="stylesheet" />
+
+<h2>Заказ №@Model.id</h2>
+
+@Html.ActionLink("Выполнить и напечатать заказ", "Print", new { @id = Model.id }, new { @class = "btn btn-default" })
+
+@if (Model.EmployeeLocked != null && Model.DateLocked >= DateTime.Now.AddMinutes(-30) && Model.EmployeeLocked.id != Model.BitrixUserID)
+{
+    <div class="adm-info-message-wrap adm-info-message-red">
+        <div class="adm-info-message">
+            <div class="adm-info-message-title">Заказ временно заблокирован пользователем @Model.EmployeeLocked.Name @Model.EmployeeLocked.LastName (@Model.DateLocked.ToString("dd.MM.yyyy HH:mm:ss"))</div>
+
+            <div class="adm-info-message-icon"></div>
+        </div>
+    </div>
+}
+
+<div class="adm-detail-content-wrap">
+    <div class="adm-detail-content">
+        <div class="adm-detail-title">Параметры заказа</div>
+        <div class="adm-detail-content-item-block">
+            <table class="adm-detail-content-table edit-table" id="edit1_edit_table">
+                <tbody>
+                    <tr class="heading" id="tr_order_id"><td colspan="2" style="background-color: #e0e8ea;
+    border-top: 11px solid #F5F9F9;
+    border-bottom: 11px solid #F5F9F9;
+    color: #4b6267;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center!important;
+    text-shadow: 0 1px #fff;
+    padding: 8px 4px 10px!important;">Заказ</td></tr>
+                    <tr>
+                        <td width="40%" class="adm-detail-content-cell-l">Номер заказа:</td>
+                        <td width="60%" class="adm-detail-content-cell-r">@Model.id</td>
+                    </tr>
+                    <tr>
+                        <td width="40%" class="adm-detail-content-cell-l">Создан:</td>
+                        <td width="60%" class="adm-detail-content-cell-r">@Model.DateInsert.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td width="40%" class="adm-detail-content-cell-l">Последнее изменение:</td>
+                        <td width="60%" class="adm-detail-content-cell-r">@Model.DateUpdate.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                    </tr>
+                    <tr>
+                        <td width="40%" class="adm-detail-content-cell-l">Изменить статус:</td>
+                        <td width="60%" class="adm-detail-content-cell-r">
+                            @if (Model.EmployeeLocked != null && Model.DateLocked >= DateTime.Now.AddMinutes(-30) && Model.EmployeeLocked.id != Model.BitrixUserID)
+                            {
+                                <a href="#" style="float:left">Отменить заказ невозможно</a>
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Отменить заказ", "Cancel", new { @id = Model.id })
+                            }
+                        </td>
+                    </tr>
+                    <tr class="heading" id="tr_order_user"><td colspan="2" style="background-color: #e0e8ea;border-top: 11px solid #F5F9F9;border-bottom: 11px solid #F5F9F9;color: #4b6267;font-size: 14px;font-weight: bold;text-align: center!important;text-shadow: 0 1px #fff;padding: 8px 4px 10px!important;">Покупатель</td></tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center;font-weight:bold;font-size:14px;color:rgb(75, 98, 103);">Адрес доставки</td>
+                    </tr>
+
+                    @foreach (var op in Model.Properties)
+                    {
+                        <tr>
+                            <td valign="top" class="adm-detail-content-cell-l">@op.Name:</td>
+                            <td valign="middle" class="adm-detail-content-cell-r">
+                                @op.Value
+                            </td>
+                        </tr>
+                    }
+                    <tr class="heading" id="tr_order_delivery"><td colspan="2" style="background-color: #e0e8ea;border-top: 11px solid #F5F9F9;border-bottom: 11px solid #F5F9F9;color: #4b6267;font-size: 14px;font-weight: bold;text-align: center!important;text-shadow: 0 1px #fff;padding: 8px 4px 10px!important;">Доставка</td></tr>
+                    <tr>
+                        <td width="40%" class="adm-detail-content-cell-l">Служба доставки:</td>
+                        <td class="adm-detail-content-cell-r">
+                            <span id="allow_delivery_name">
+                                @Model.DeliveryName
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr class="heading" id="tr_order_payment"><td colspan="2" style="background-color: #e0e8ea; border-top: 11px solid #F5F9F9; border-bottom: 11px solid #F5F9F9; color: #4b6267; font-size: 14px; font-weight: bold; text-align: center !important; text-shadow: 0 1px #fff; padding: 8px 4px 10px !important;">Оплата</td></tr>
+                    <tr>
+                        <td valign="top" class="adm-detail-content-cell-l">Способ оплаты:</td>
+                        <td valign="middle" class="adm-detail-content-cell-r">
+                            <span id="payed_name">
+                                @Model.PaySystem.Name
+                            </span>
+                        </td>
+                    </tr>
+                    <tr id="summary_pay" style="display:table-row">
+                        <td valign="top" class="adm-detail-content-cell-l">Сумма оплаты:</td>
+                        <td valign="middle" class="adm-detail-content-cell-r">@Model.Price руб.</td>
+                    </tr>
+                    @if (Model.Payed)
+                    {
+                        <tr id="pay_is_pay" style="display:table-row">
+                            <td class="adm-detail-content-cell-l"><span class="alloy_payed_left">Оплачен:</span></td>
+                            <td class="adm-detail-content-cell-r">
+                                <span class="alloy_payed_right"><b>Да</b></span>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.Comment != null && Model.Comment != "")
+                    {
+                        <tr class="heading" id="tr_order_payment"><td colspan="2" style="background-color: #e0e8ea; border-top: 11px solid #F5F9F9; border-bottom: 11px solid #F5F9F9; color: #4b6267; font-size: 14px; font-weight: bold; text-align: center !important; text-shadow: 0 1px #fff; padding: 8px 4px 10px !important;">Коментарий</td></tr>
+                        <tr>
+							<td valign="top" class="adm-detail-content-cell-l">Покупатель:</td>
+							<td valign="middle" class="adm-detail-content-cell-r">@Model.Comment</td>
+						</tr>
+                    }
+
+                    <tr class="heading" id="tr_buyer_order"><td colspan="2" style="background-color: #e0e8ea; border-top: 11px solid #F5F9F9; border-bottom: 11px solid #F5F9F9; color: #4b6267; font-size: 14px; font-weight: bold; text-align: center !important; text-shadow: 0 1px #fff; padding: 8px 4px 10px !important;">Состав заказа</td></tr>
+                    <tr>
+                        <td colspan="2" valign="top">
+                            <!-- //? -->
+                            <table id="BASKET_TABLE" cellpadding="3" cellspacing="1" border="0" width="100%" class="internal">
+                                <tbody>
+                                    <tr class="heading">
+                                        <td>№</td>
+                                        <td>Название</td>
+                                        <td style="text-align:right">Количество</td>
+                                        <td style="text-align:right">Цена</td>
+                                        <td style="text-align:right">Сумма</td>
+                                    </tr>
+                                    @{int i = 0;}
+
+                                    @foreach (var p in Model.Items)
+                                    {
+                                        i++;
+                                        <tr>
+                                            <td class="COLUMN_NUMBER">
+                                                <div>@i.ToString()</div>
+                                            </td>
+                                            <td class="COLUMN_NAME">
+                                                <a href="iblock_element_edit.php?IBLOCK_ID=2&amp;type=iblocks&amp;ID=82&amp;lang=ru&amp;find_section_section=4&amp;WF=Y" class="name-link " target="_blank">
+                                                    @p.ProductName
+                                                </a>
+                                            </td>
+                                            <td class="COLUMN_PROPS" style="text-align:center">@p.Quantity.ToString("0.00") шт.</td>
+                                            <td class="COLUMN_PRICE" nowrap="" style="text-align:right">
+                                                <div class="edit_price">
+                                                    <span class="default_price_product">
+                                                        <span class="formated_price" style="font-size: 15px !important; font-weight: bold; margin-right: 4px;">@p.Price.ToString("0.00")</span>
+                                                    </span>
+                                                    <span class="currency_price">руб.</span>
+                                                </div>
+                                                <div class="base_price_title">
+                                                </div>
+                                            </td>
+                                            <td class="COLUMN_SUM" nowrap="" style="text-align:right">
+                                                <div style="font-size: 15px !important;text-align: right !important;vertical-align: top;font-weight: bold;">@(p.Price * p.Quantity) <span style="color: #717171;font-size: 11px;font-weight: bold;">руб.</span></div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div style="float:right">
+                                <div class="order-itog" style="background-color: #ecf2d3; padding: 10px; width: 425px; width: 98%; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;">
+                                    <table style="border: none;font-size: 15px;margin: 0;">
+                                        <tbody>
+                                            <tr>
+                                                <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Общая стоимость товаров</td>
+                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@(Model.Price + Model.Discount) руб.</td>
+                                            </tr>
+                                            <tr class="price">
+                                                <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Стоимость товаров с учётом скидок и наценок</td>
+                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@(Model.Price + Model.Discount) руб.</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Доставка</td>
+                                                <td nowrap="" style="white-space:nowrap; padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@Model.PriceDelivery руб.</td>
+                                            </tr>
+                                            @if (Model.Discount > 0)
+                                            {
+                                                <tr class="itog">
+                                                    <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Скидка на заказ</div></td>
+                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Discount руб.</div></td>
+                                                </tr>
+                                            }
+                                            <tr class="itog">
+                                                <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Итого</div></td>
+                                                <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price руб.</div></td>
+                                            </tr>
+                                            @if (Model.Payed)
+                                            {
+                                                <tr class="itog">
+                                                    <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Оплачено</div></td>
+                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price руб.</div></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

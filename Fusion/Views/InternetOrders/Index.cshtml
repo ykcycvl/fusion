@@ -1,0 +1,150 @@
+﻿@model Fusion.Models.InternetOrders
+@{
+    ViewBag.Title = "Заказы с сайта";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(function () {
+        $('#menuTable').DataTable({
+            "paging": true,
+            "order": [[ 1, "desc" ]],
+            "ordering": true,
+            "info": true,
+            "lengthMenu": [[10, 20, 50, -1], [10, 25, 50, "Все"]],
+            "iDisplayLength": 20,
+            "language": {
+                "lengthMenu": "Показывать _MENU_ на странице",
+                "zeroRecords": "Ничего не нашли - сорян!",
+                "info": "Страница _PAGE_ из _PAGES_",
+                "infoEmpty": "Пусто",
+                "infoFiltered": "(найдено _MAX_ записей)",
+                "sSearch": "<span>Поиск</span> _INPUT_",
+            }
+        });
+    });
+</script>
+
+<h2>Заказы</h2>
+
+<div class="row">
+    <table id="menuTable" class="table table-hover table-striped" style="font-size:12px">
+        <thead>
+            <tr>
+                <th>
+                    Создан
+                </th>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Покупатель
+                </th>
+                <th>
+                    Статус
+                </th>
+                <th>
+                    Оплачен
+                </th>
+                <th>
+                    ПС
+                </th>
+                <th>
+                    Оплата
+                </th>
+                <th>
+                    Сумма
+                </th>
+                <th style="width:145px">
+                    Телефон
+                </th>
+                <th>
+                    Email
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var o in Model.Orders)
+            {
+                <tr>
+                    <td>
+                        @o.DateInsert.ToString("dd.MM.yyyy HH:mm:ss")
+                    </td>
+                    <td style="width:90px">
+                        @if (o.EmployeeLocked != null && o.DateLocked >= DateTime.Now.AddMinutes(-30) && o.EmployeeLocked.id != Model.BitrixUserID)
+                        {
+                            string s = "Временно заблокирована пользователем \"(" + o.EmployeeLocked.Login + ") " + o.EmployeeLocked.LastName + "  " + @o.EmployeeLocked.Name + "\" (редактируется в данный момент)";
+                            <img style="float:left" src="~/images/sale/red.gif" hspace="4" alt="@s" title="@s">
+                        }
+                        else
+                        {
+                            if (o.EmployeeLocked != null && o.DateLocked >= DateTime.Now.AddMinutes(-30) && o.EmployeeLocked.id == Model.BitrixUserID)
+                            {
+                                <img style="float:left" src="~/images/sale/yellow.gif" hspace="4" alt="Заблокирована вами (не забудьте &quot; освободить&quot;)" title="Заблокирована вами (не забудьте &quot;освободить&quot;)">
+                            }
+                            else
+                            {
+                                <img style="float:left" src="~/images/sale/green.gif" hspace="4" alt="Доступна для модификации" title="Доступна для модификации">
+                            }
+                        }
+                        <b>&nbsp;@Html.ActionLink("№" + o.id.ToString(), "Edit", new { @id = o.id }, new { @target = "_blank" })</b>
+                    </td>
+                    @if (o.Guest != null)
+                    {
+                        <td>[@o.Guest.id] @o.Guest.Name @o.Guest.LastName</td>
+                    }
+                    else
+                    {
+                        <td>--------</td>
+                    }
+                    <td>
+                        @o.Status
+                    </td>
+                    @if (o.Payed)
+                    {
+                        <td>Да</td>
+                    }
+                    else
+                    {
+                        <td>Нет</td>
+                    }
+                    @if (o.PaySystem != null)
+                    {
+                        <td>@o.PaySystem.Name</td>
+                    }
+                    else
+                    {
+                        <td>--------</td>
+                    }
+                    <td>@o.PSMessage</td>
+                    <td>
+                        @o.Price.ToString("0.00")
+                    </td>
+                    @if (o.Guest != null)
+                    {
+                        <td>
+                            @o.Guest.phone
+                        </td>
+                    }
+                    else
+                    {
+                        <td>&nbsp;</td>
+                    }
+                    @if (o.Guest != null)
+                    {
+                        <td>
+                            @o.Guest.email
+                        </td>
+                    }
+                    else
+                    {
+                        <td>&nbsp;</td>
+                    }
+                </tr>
+            }
+        </tbody>
+</table>
+</div>
