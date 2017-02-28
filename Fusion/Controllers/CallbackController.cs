@@ -603,7 +603,7 @@ namespace Fusion.Controllers
                 dbSTR = @"INSERT tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
                 //отправляем письмо(а) о новом отзыве
                 MailMessage mail = new MailMessage();
-                string FROM = "feedback_vega_tokyo@mail.ru";
+                string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
                 string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
                 mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + "";
                 mail.From = new MailAddress(FROM);
