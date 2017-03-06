@@ -642,5 +642,11 @@ namespace Fusion.Controllers
 
             return Redirect("~/Callback/viewtable");
         }
+        public ActionResult SendEmail(string recipient, string MailBody, string Subject)
+        {
+            /*Код отправки письма*/
+            /*Конец кода*/
+            return View();
+        }
     }
 }
