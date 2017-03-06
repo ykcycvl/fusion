@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 
 namespace Fusion.Controllers
@@ -642,9 +643,10 @@ namespace Fusion.Controllers
 
             return Redirect("~/Callback/viewtable");
         }
+        [HttpPost, ValidateInput(false)]
         public ActionResult SendEmail(string MailBody)
         {
-            
+            //string message = System.Web.HttpUtility.HtmlDecode(MailBody);
             /*Код отправки письма*/
 
             //отправляем письмо(а) о новом отзыве
@@ -654,7 +656,10 @@ namespace Fusion.Controllers
             mail.Body = MailBody;
             mail.From = new MailAddress(FROM);
             mail.To.Add(new MailAddress(TO));
-            mail.Subject = "Новый отзыв с сайта"; 
+            mail.Subject = "Новый отзыв с сайта";
+            mail.SubjectEncoding = Encoding.UTF8;
+            mail.BodyEncoding = Encoding.UTF8;
+            mail.IsBodyHtml = true;
             SmtpClient client = new SmtpClient();
             client.Host = "srv-ex00.fg.local";
             client.Port = 587;
