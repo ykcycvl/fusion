@@ -41,8 +41,6 @@ namespace Fusion.Models
                 public string Login { get; set; }
                 [Display(Name="Имя")]
                 public string Name { get; set; }
-                [Display(Name = "Фамилия")]
-                public string LastName { get; set; }
                 [Display(Name = "email")]
                 public string email { get; set; }
                 [Display(Name = "Телефон")]
@@ -121,6 +119,7 @@ namespace Fusion.Models
             public string PSMessage { get; set; }
             public string DeliveryName { get; set; }
             public int BitrixUserID { get; set; }
+            public string Address { get; set; }
 
             public void SetStatus(char StatusId)
             {
@@ -222,9 +221,6 @@ WHERE bso.ID = {0}", id), con);
 
                             if (rdr["GuestName"] != DBNull.Value)
                                 Guest.Name = rdr["GuestName"].ToString();
-
-                            if (rdr["GuestLastName"] != DBNull.Value)
-                                Guest.LastName = rdr["GuestLastName"].ToString();
 
                             if (rdr["GuestEmail"] != DBNull.Value)
                                 Guest.email = Convert.ToString(rdr["GuestEmail"]);
@@ -374,8 +370,20 @@ WHERE bso.ID = {0}", id), con);
 
         public List<OrderInfo> Orders = new List<OrderInfo>();
 
-        public void GetOrderList(string UserName)
+        public void GetOrderList(string UserName, string[] filter_status)
         {
+            string statuses = "'C','F','N','O'";
+
+            if(filter_status != null)
+            {
+                statuses = "";
+
+                for (int i = 0; i < filter_status.Length; i++)
+                    filter_status[i] = "'" + filter_status[i] + "'";
+
+                statuses = string.Join(",", filter_status);
+            }
+
             BitrixUserID = 0;
             SqlConnection vegaCon = GetVegaConnection();
 
@@ -399,16 +407,14 @@ WHERE bso.ID = {0}", id), con);
 SELECT 
   bso.ID as OrderID,
   bso.DATE_INSERT AS OrderDateInsert,
-  guest.ID AS GuestID,
-  guest.NAME AS GuestName,
-  guest.LAST_NAME AS GuestLastName,
+  bso.USER_ID AS GuestID,
+  GuestInfo.VALUE AS GuestName,
   bssl.NAME AS OrderStatus,
   bso.PAYED AS Payed,
   bso.PRICE AS OrderPrice,
   bso.DATE_UPDATE AS OrderDateUpdate,
   bso.PRICE_DELIVERY AS OrderPriceDelivery,
-  guest.EMAIL AS GuestEmail,
-  guest.PERSONAL_PHONE AS GuestPhone,
+  GuestEmail.VALUE AS GuestEmail,
   bsps.ID AS PaySystemID,
   bsps.NAME AS PayTypeName,
   bsps.DESCRIPTION AS PaySystemDescription,
@@ -419,15 +425,20 @@ SELECT
   empLocked.LOGIN AS LockEmpLogin,
   empLocked.LAST_NAME AS LockEmpLastName,
   empLocked.NAME AS LockEmpName,
-  bso.DATE_LOCK AS DateLock
+  bso.DATE_LOCK AS DateLock,
+  addrInfo.VALUE AS Address,
+  contactInfo.VALUE AS GuestPhone
 FROM 
   b_sale_order bso
-  LEFT JOIN b_user guest ON bso.USER_ID = guest.ID
   LEFT JOIN b_sale_pay_system bsps ON bso.PAY_SYSTEM_ID = bsps.ID
   LEFT JOIN b_user empLocked ON bso.LOCKED_BY = empLocked.ID
   LEFT JOIN b_sale_status_lang bssl ON bso.STATUS_ID = bssl.STATUS_ID AND bssl.LID = 'ru'
-WHERE bso.DATE_INSERT > '{0}'
-ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH:mm:SS")), con);
+  LEFT JOIN b_sale_order_props_value as addrInfo ON bso.ID = addrInfo.ORDER_ID AND addrInfo.ORDER_PROPS_ID = 1
+  LEFT JOIN b_sale_order_props_value as contactInfo ON bso.ID = contactInfo.ORDER_ID AND contactInfo.ORDER_PROPS_ID = 2
+  LEFT JOIN b_sale_order_props_value as GuestInfo ON bso.ID = GuestInfo.ORDER_ID AND GuestInfo.ORDER_PROPS_ID = 7
+  LEFT JOIN b_sale_order_props_value as GuestEmail ON bso.ID = GuestEmail.ORDER_ID AND GuestEmail.ORDER_PROPS_ID = 3
+WHERE bso.DATE_INSERT > '{0}' AND bso.STATUS_ID IN ({1})
+ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH:mm:SS"), statuses), con);
             #endregion
 
             MySqlDataReader rdr = com.ExecuteReader();
@@ -447,9 +458,6 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
 
                         if (rdr["GuestName"] != DBNull.Value)
                             oi.Guest.Name = rdr["GuestName"].ToString();
-
-                        if (rdr["GuestLastName"] != DBNull.Value)
-                            oi.Guest.LastName = rdr["GuestLastName"].ToString();
 
                         if (rdr["GuestEmail"] != DBNull.Value)
                             oi.Guest.email = Convert.ToString(rdr["GuestEmail"]);
@@ -526,6 +534,9 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
                     {
                         oi.DateLocked = Convert.ToDateTime(rdr["DateLock"]);
                     }
+
+                    if (rdr["Address"] != DBNull.Value)
+                        oi.Address = Convert.ToString(rdr["Address"]);
 
                     Orders.Add(oi);
                 }

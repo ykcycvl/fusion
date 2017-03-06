@@ -11,10 +11,10 @@ namespace Fusion.Controllers
     {
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
         // GET: InternetOrders
-        public ActionResult Index()
+        public ActionResult Index(string[] filter_status)
         {
             InternetOrders model = new InternetOrders();
-            model.GetOrderList(User.Identity.Name.ToString());
+            model.GetOrderList(User.Identity.Name.ToString(), filter_status);
             return View(model);
         }
 

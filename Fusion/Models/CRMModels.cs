@@ -48,7 +48,7 @@ namespace Fusion.Models
 
             client.Connect(ip, 9191);
             NetworkStream tcpStream = client.GetStream();
-            byte[] sendBytes = Encoding.GetEncoding(1251).GetBytes(query);
+            byte[] sendBytes = Encoding.UTF8.GetBytes(query);
             tcpStream.Write(sendBytes, 0, sendBytes.Length);
             byte[] bytes = new byte[client.ReceiveBufferSize];
             int bytesRead = tcpStream.Read(bytes, 0, client.ReceiveBufferSize);
