@@ -642,9 +642,27 @@ namespace Fusion.Controllers
 
             return Redirect("~/Callback/viewtable");
         }
-        public ActionResult SendEmail(string recipient, string MailBody, string Subject)
+        public ActionResult SendEmail(string MailBody)
         {
+            
             /*Код отправки письма*/
+
+            //отправляем письмо(а) о новом отзыве
+            MailMessage mail = new MailMessage();
+            string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
+            string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
+            mail.Body = MailBody;
+            mail.From = new MailAddress(FROM);
+            mail.To.Add(new MailAddress(TO));
+            mail.Subject = "Новый отзыв с сайта"; 
+            SmtpClient client = new SmtpClient();
+            client.Host = "srv-ex00.fg.local";
+            client.Port = 587;
+            client.EnableSsl = true;            
+            client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Send(mail);
+            mail.Dispose();
             /*Конец кода*/
             return View();
         }
