@@ -50,15 +50,52 @@
                         <td width="60%" class="adm-detail-content-cell-r">@Model.DateUpdate.ToString("dd.MM.yyyy HH:mm:ss")</td>
                     </tr>
                     <tr>
-                        <td width="40%" class="adm-detail-content-cell-l">Изменить статус:</td>
+                        <td width="40%" class="adm-detail-content-cell-l">Статус:</td>
                         <td width="60%" class="adm-detail-content-cell-r">
                             @if (Model.EmployeeLocked != null && Model.DateLocked >= DateTime.Now.AddMinutes(-30) && Model.EmployeeLocked.id != Model.BitrixUserID)
                             {
-                                <a href="#" style="float:left">Отменить заказ невозможно</a>
+                                <b>Вы не можете изменять этот заказ</b>
                             }
                             else
                             {
-                                @Html.ActionLink("Отменить заказ", "Cancel", new { @id = Model.id })
+                                using (Html.BeginForm("SetStatus", "InternetOrders", new { @id = Model.id }, FormMethod.Get))
+                                {
+                                    <select name="status" class="form-control" style="width:180px;display:inline-block;">
+                                        @if (Model.Status == "Отменен")
+                                        {
+                                            <option value="C" selected>Отменен</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="C">Отменен</option>
+                                        }
+                                        @if (Model.Status == "Принят")
+                                        {
+                                            <option value="N" selected>Принят</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="N">Принят</option>
+                                        }
+                                        @if (Model.Status == "В обработке")
+                                        {
+                                            <option value="O" selected>В обработке</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="O">В обработке</option>
+                                        }
+                                        @if (Model.Status == "Выполнен")
+                                        {
+                                            <option value="F" selected>Выполнен</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="F">Выполнен</option>
+                                        }
+                                    </select>
+                                    <input type="submit" class="btn btn-default" value="Сохранить" style="vertical-align: top;"/>
+                                }
                             }
                         </td>
                     </tr>

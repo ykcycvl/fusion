@@ -54,6 +54,15 @@ namespace Fusion.Controllers
         }
 
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
+        public ActionResult SetStatus(int id, string status)
+        {
+            InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
+            model.GetOrder(id, User.Identity.Name.ToString());
+            model.SetStatus(status[0]);
+            return RedirectToAction("Edit", new { @id = id });
+        }
+
+        [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
         public ActionResult SendToRkeeper(int id)
         { 
             InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
