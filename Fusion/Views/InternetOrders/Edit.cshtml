@@ -169,33 +169,36 @@
                                     </tr>
                                     @{int i = 0;}
 
-                                    @foreach (var p in Model.Items)
+                                    @if (Model.Items != null)
                                     {
-                                        i++;
-                                        <tr>
-                                            <td class="COLUMN_NUMBER">
-                                                <div>@i.ToString()</div>
-                                            </td>
-                                            <td class="COLUMN_NAME">
-                                                <a href="iblock_element_edit.php?IBLOCK_ID=2&amp;type=iblocks&amp;ID=82&amp;lang=ru&amp;find_section_section=4&amp;WF=Y" class="name-link " target="_blank">
-                                                    @p.ProductName
-                                                </a>
-                                            </td>
-                                            <td class="COLUMN_PROPS" style="text-align:center">@p.Quantity.ToString("0.00") шт.</td>
-                                            <td class="COLUMN_PRICE" nowrap="" style="text-align:right">
-                                                <div class="edit_price">
-                                                    <span class="default_price_product">
-                                                        <span class="formated_price" style="font-size: 15px !important; font-weight: bold; margin-right: 4px;">@p.Price.ToString("0.00")</span>
-                                                    </span>
-                                                    <span class="currency_price">руб.</span>
-                                                </div>
-                                                <div class="base_price_title">
-                                                </div>
-                                            </td>
-                                            <td class="COLUMN_SUM" nowrap="" style="text-align:right">
-                                                <div style="font-size: 15px !important;text-align: right !important;vertical-align: top;font-weight: bold;">@(p.Price * p.Quantity) <span style="color: #717171;font-size: 11px;font-weight: bold;">руб.</span></div>
-                                            </td>
-                                        </tr>
+                                        foreach (var p in Model.Items)
+                                        {
+                                            i++;
+                                            <tr>
+                                                <td class="COLUMN_NUMBER">
+                                                    <div>@i.ToString()</div>
+                                                </td>
+                                                <td class="COLUMN_NAME">
+                                                    <a href="iblock_element_edit.php?IBLOCK_ID=2&amp;type=iblocks&amp;ID=82&amp;lang=ru&amp;find_section_section=4&amp;WF=Y" class="name-link " target="_blank">
+                                                        @p.ProductName
+                                                    </a>
+                                                </td>
+                                                <td class="COLUMN_PROPS" style="text-align:center">@p.Quantity.ToString("0.00") шт.</td>
+                                                <td class="COLUMN_PRICE" nowrap="" style="text-align:right">
+                                                    <div class="edit_price">
+                                                        <span class="default_price_product">
+                                                            <span class="formated_price" style="font-size: 15px !important; font-weight: bold; margin-right: 4px;">@p.Price.ToString("0.00")</span>
+                                                        </span>
+                                                        <span class="currency_price">руб.</span>
+                                                    </div>
+                                                    <div class="base_price_title">
+                                                    </div>
+                                                </td>
+                                                <td class="COLUMN_SUM" nowrap="" style="text-align:right">
+                                                    <div style="font-size: 15px !important;text-align: right !important;vertical-align: top;font-weight: bold;">@(p.Price * p.Quantity) <span style="color: #717171;font-size: 11px;font-weight: bold;">руб.</span></div>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 </tbody>
                             </table>
