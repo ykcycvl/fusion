@@ -878,12 +878,19 @@ namespace Fusion.Models
                 }
             }
 
+            private int _count;
+            public int count 
+            {
+                get { return _count; }
+                set { _count = value; }
+            }
+
             public List<PersonViewModel> persons = new List<PersonViewModel>();
             public void Search()
             {
                 SqlConnection con = GetConnection();
                 SqlCommand command = new SqlCommand(String.Format(@"
-                        select TOP 20
+                        select TOP {2}
 	                        cp.PEOPLE_ID,
 	                        cp.BIRTHDAY,
 	                        cp.L_NAME,
@@ -931,7 +938,7 @@ namespace Fusion.Models
 	                        cp.FULL_NAME,
                             cpv.NAME
                         {1}
-                    ", searchString, orderString), con);
+                    ", searchString, orderString, count), con);
 
                 
                 SqlDataReader rdr = command.ExecuteReader();
