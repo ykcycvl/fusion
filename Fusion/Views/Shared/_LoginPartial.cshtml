@@ -3,8 +3,8 @@
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
     {
-    @Html.AntiForgeryToken()
-    <a href="javascript:document.getElementById('logoutForm').submit()">@User.Identity.GetUserName() | Выход</a>
+        @Html.AntiForgeryToken()
+        <a href="javascript:document.getElementById('logoutForm').submit()">@LoginViewModel.GetUserProperty(User.Identity.GetUserName(), "DisplayName") | Выход</a>
     }
 }
 else
