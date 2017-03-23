@@ -55,7 +55,7 @@ namespace Fusion.Controllers
         public ActionResult Persons(CRMViewModels.PersonsViewModel model)
         {
             if (model.count <= 0)
-                model.count = 20;
+                model.count = 100;
 
             model.Search();
             return View(model);
