@@ -212,6 +212,7 @@
     <Compile Include="Controllers\RK7Controller.cs" />
     <Compile Include="Controllers\CallbackController.cs" />
     <Compile Include="Controllers\RK7OnlineMonitorController.cs" />
+    <Compile Include="Controllers\SalaryController.cs" />
     <Compile Include="Controllers\SH4Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2518,6 +2519,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\IT\" />
     <Folder Include="Views\MiscReport\" />
+    <Folder Include="Views\Salary\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff">
