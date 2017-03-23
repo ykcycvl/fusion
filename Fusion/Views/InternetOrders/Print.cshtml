@@ -58,6 +58,18 @@ div.Section1
     <div class=Section1>
         <p>
             <b>ЗАКАЗЧИК: </b>
+            @if(Model.Properties.First(p => p.OrderPropsId == 15).Value != null)
+            {
+                <br />
+                <b>@Model.Properties.First(p => p.OrderPropsId == 15).Value</b>
+                <br />
+                <br />
+                <br />
+                <b>@Model.Properties.First(p => p.OrderPropsId == 11).Name: </b>@Model.Properties.First(p => p.OrderPropsId == 11).Value
+                <br />
+                <b>@Model.Properties.First(p => p.OrderPropsId == 12).Name: </b>@Model.Properties.First(p => p.OrderPropsId == 12).Value
+                <hr>
+            }
             <br><br>Город: <b>@Model.Properties.First(p => p.OrderPropsId == 17).Value</b>
             <br>
             <br>
