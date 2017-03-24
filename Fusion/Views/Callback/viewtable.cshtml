@@ -368,6 +368,18 @@
         compsumsert = compsumsert + Convert.ToInt32(attribute.CostSert);
     }
     <br />
+    @{
+    int stafcompsumnal = 0;
+    int stafcompsumbonus = 0;
+    int stafcompsumsert = 0;
+    }
+    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Cотрудник/Компания"))
+    {
+        stafcompsumnal = stafcompsumnal + Convert.ToInt32(attribute.Cost);
+        stafcompsumbonus = stafcompsumbonus + Convert.ToInt32(attribute.CostPoint);
+        stafcompsumsert = stafcompsumsert + Convert.ToInt32(attribute.CostSert);
+    }
+    <br />
     <span>
         Все расходы(наличные): @sum руб.<br />
         Все расходы(баллы): @sumb б.<br />
@@ -379,13 +391,20 @@
         Наличные: @sumnal <br />
         Бонусы: @sumbonus<br />
         Сертификат: @sumsert<br />
-    </span> 
+    </span>
     <br />
     <span>
         Оплачено компанией: <br />
         Наличные: @compsumnal <br />
         Бонусы: @compsumbonus<br />
         Сертификат: @compsumsert<br />
+    </span>
+    <br />
+    <span>
+        Оплачено 50/50: <br />
+        Наличные: @stafcompsumnal <br />
+        Бонусы: @stafcompsumbonus<br />
+        Сертификат: @stafcompsumsert<br />
     </span>
     <br />
 
