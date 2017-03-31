@@ -1,0 +1,42 @@
+﻿@model Fusion.Models.SalaryModels.Organization
+
+@{
+    ViewBag.Title = "Ведомость " + Model.FullName;
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h3>@ViewBag.Title</h3>
+
+<table class="table table-bordered">
+    @foreach (var s in Model.Subdivisions)
+    {
+        <tr>
+            <th colspan="2">
+                @s.FullName
+            </th>
+            @foreach (var d in Model.Detentions)
+            {
+                <th>
+                    @d.Name
+                </th>
+            }
+        </tr>
+        foreach (var e in s.Employees)
+        {
+            <tr>
+                <td>
+                    @e.Position
+                </td>
+                <td>
+                    @e.FullName
+                </td>
+                @foreach (var d in e.Detentions)
+                {
+                    <td>
+                        &nbsp;
+                    </td>
+                }
+            </tr>
+        }
+    }
+</table>
