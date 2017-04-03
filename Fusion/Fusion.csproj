@@ -1409,6 +1409,7 @@
     <Compile Include="Models\RPT_TEMPLATES.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SalaryModels.cs" />
     <Compile Include="Models\SALEDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1908,6 +1909,7 @@
     <Compile Include="Models\ZREPORTVALUES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ZUP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -2514,12 +2516,14 @@
     <Content Include="Views\InternetOrders\Index.cshtml" />
     <Content Include="Views\InternetOrders\Edit.cshtml" />
     <Content Include="Views\InternetOrders\Print.cshtml" />
+    <Content Include="Views\Salary\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutWide.cshtml" />
+    <Content Include="Views\Salary\Sheet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\IT\" />
     <Folder Include="Views\MiscReport\" />
-    <Folder Include="Views\Salary\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff">
@@ -2544,6 +2548,15 @@
   <ItemGroup>
     <COMReference Include="Sh4Ole">
       <Guid>{95456CCB-659C-438A-8B48-C1637422941F}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="V83">
+      <Guid>{98AC3B5B-5323-418F-8F07-E32F231D2393}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>

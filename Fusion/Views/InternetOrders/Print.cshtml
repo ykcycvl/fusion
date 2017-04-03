@@ -15,39 +15,46 @@
     <title langs="ru">Печать заказа с сайта</title>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             print("");
         });
     </script>
     <style>
-<!--
- /* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{mso-style-parent:"";
-	margin:0cm;
-	margin-bottom:.0001pt;
-	mso-pagination:widow-orphan;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	mso-fareast-font-family:"Times New Roman";}
-p
-	{margin-right:0cm;
-	mso-margin-top-alt:auto;
-	mso-margin-bottom-alt:auto;
-	margin-left:0cm;
-	mso-pagination:widow-orphan;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	mso-fareast-font-family:"Times New Roman";}
-page Section1
-	{size:595.3pt 841.9pt;
-	margin:2.0cm 42.5pt 2.0cm 3.0cm;
-	mso-header-margin:35.4pt;
-	mso-footer-margin:35.4pt;
-	mso-paper-source:0;}
-div.Section1
-	{page:Section1;}
--->
+        <!--
+        /* Style Definitions */
+        p.MsoNormal, li.MsoNormal, div.MsoNormal {
+            mso-style-parent: "";
+            margin: 0cm;
+            margin-bottom: .0001pt;
+            mso-pagination: widow-orphan;
+            font-size: 12.0pt;
+            font-family: "Times New Roman";
+            mso-fareast-font-family: "Times New Roman";
+        }
+
+        p {
+            margin-right: 0cm;
+            mso-margin-top-alt: auto;
+            mso-margin-bottom-alt: auto;
+            margin-left: 0cm;
+            mso-pagination: widow-orphan;
+            font-size: 12.0pt;
+            font-family: "Times New Roman";
+            mso-fareast-font-family: "Times New Roman";
+        }
+
+        page Section1 {
+            size: 595.3pt 841.9pt;
+            margin: 2.0cm 42.5pt 2.0cm 3.0cm;
+            mso-header-margin: 35.4pt;
+            mso-footer-margin: 35.4pt;
+            mso-paper-source: 0;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+        -->
     </style>
 </head>
 
@@ -58,7 +65,7 @@ div.Section1
     <div class=Section1>
         <p>
             <b>ЗАКАЗЧИК: </b>
-            @if(Model.Properties.First(p => p.OrderPropsId == 15).Value != null)
+            @if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 15) != null)
             {
                 <br />
                 <b>@Model.Properties.First(p => p.OrderPropsId == 15).Value</b>
@@ -78,24 +85,24 @@ div.Section1
             <br>
             <b>Адрес: </b>@Model.Properties.First(p => p.OrderPropsId == 1).Value
             <br>
-            <b>Номер подъезда: </b> 
-            <br><b>Номер этажа: </b> 
+            <b>Номер подъезда: </b>
+            <br><b>Номер этажа: </b>
             <br>
             <br>
-            <b>Контактный телефон: </b>@Model.Properties.First(p => p.OrderPropsId == 2).Value 
+            <b>Контактный телефон: </b>@Model.Properties.First(p => p.OrderPropsId == 2).Value
             <br>
-            <b>Контактный email: </b>@Model.Properties.First(p => p.OrderPropsId == 3).Value 
+            <b>Контактный email: </b>@Model.Properties.First(p => p.OrderPropsId == 3).Value
             <br>
-            <br><b>Тип доставки: </b>@Model.DeliveryName 
-            <br><span style="font-size: 18px; font-weight: bold;"><b>Время доставки: </b>@Model.Properties.First(p => p.OrderPropsId == 4).Value</span> 
+            <br><b>Тип доставки: </b>@Model.DeliveryName
+            <br><span style="font-size: 18px; font-weight: bold;"><b>Время доставки: </b>@Model.Properties.First(p => p.OrderPropsId == 4).Value</span>
             <br>
             <br>
-            <b>Ресторан самовывоза: </b>@if(Model.Properties.FirstOrDefault(p => p.OrderPropsId == 10) != null)
-            {<text>@Model.Properties.First(p => p.OrderPropsId == 10).Value</text> } 
+            <b>Ресторан самовывоза: </b>@if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 10) != null)
+            {<text>@Model.Properties.First(p => p.OrderPropsId == 10).Value</text> }
             <br>
             <br>
             <b>Количество персон: </b>@if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 8) != null)
-            {<text>@Model.Properties.First(p => p.OrderPropsId == 8).Value</text> } 
+            {<text>@Model.Properties.First(p => p.OrderPropsId == 8).Value</text> }
             <br>
             <b>Требуется сдача с: </b>@if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 9) != null)
             {<text>@Model.Properties.First(p => p.OrderPropsId == 9).Value</text> }  руб.
@@ -104,7 +111,7 @@ div.Section1
             @if (@Model.Payed)
             {
                 <br />
-                <b>Заказ ОПЛАЧЕН</b>                
+                <b>Заказ ОПЛАЧЕН</b>
             }
             <br>
             <br>
