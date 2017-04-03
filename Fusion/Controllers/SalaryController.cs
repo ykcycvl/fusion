@@ -19,7 +19,8 @@ namespace Fusion.Controllers
 
         public ActionResult Sheet()
         {
-            SalaryModels.Organization model = new SalaryModels.Organization() { FullName = "Че" };
+            SalaryModels.Organization model = new SalaryModels.Organization() { FullName = "ФьюжнГрупп" };
+            model.Period = DateTime.Today;
             model.GetFullData();
             return View(model);
         }
@@ -27,7 +28,8 @@ namespace Fusion.Controllers
         [HttpPost]
         public ActionResult Sheet(SalaryModels.Organization model)
         {
-            return View();
+            model.Post();
+            return View(model);
         }
 
         public ActionResult Timetable()
