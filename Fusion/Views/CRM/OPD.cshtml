@@ -23,6 +23,9 @@
 <table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
     <tr>
         <th>
+            #
+        </th>
+        <th>
             OPD
         </th>
         <th>
@@ -37,9 +40,12 @@
     </tr>
     @if (Model.OPDInfoList != null && Model.OPDInfoList.Count > 0)
     {
+        int i = 0;
+        
         foreach (var opd in Model.OPDInfoList)
         {
             <tr>
+                <td>@i.ToString()</td>
                 <td>@opd.OPD</td>
                 <td>@Html.ActionLink(@opd.FULL_NAME, "EditPerson", new { people_id = @opd.PEOPLE_ID })</td>
                 <td>@opd.CARD_CODE</td>
