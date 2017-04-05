@@ -18,6 +18,8 @@
     }
 </style>
 
+<h2>@ViewBag.Error</h2>
+
 @using (Html.BeginForm("Sheet", "Salary", FormMethod.Post))
 {
     @Html.TextBoxFor(m => m.Period)
@@ -41,6 +43,15 @@
                             @t
                         </th>
                     }
+                }
+                @for (int t = 0; t < Model.Accruals.Count; t++)
+                {
+                    <th rowspan="2">
+                        @Html.HiddenFor(m => m.Accruals[t].Code)
+                        @Html.HiddenFor(m => m.Accruals[t].Name)
+                        @Html.HiddenFor(m => m.Accruals[t].Sum)
+                        @Model.Accruals[t].Name
+                    </th>
                 }
                 @for (int t = 0; t < Model.Detentions.Count; t++)
                 {
@@ -98,6 +109,14 @@
                             <td>
                                 @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Day)
                                 @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Hours, new { @style = "width: 25px; border: none; background: #f8f8f8;" })
+                            </td>
+                        }
+                        @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Accruals.Count; k++)
+                        {
+                            <td>
+                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Code)
+                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Name)
+                                @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Sum)
                             </td>
                         }
                         @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Detentions.Count; k++)
