@@ -22,13 +22,20 @@ namespace Fusion.Models
             public string Comment { get; set; }
             public string Name { get; set; }
         }
-
+        public class Accrual
+        {
+            public string Code { get; set; }
+            public Decimal Sum { get; set; }
+            public string Comment { get; set; }
+            public string Name { get; set; }
+        }
         public class Employee
         {
             public string Code { get; set; }
             public string FullName { get; set; }
             public string Position { get; set; }
             public List<Detention> Detentions { get; set; }
+            public List<Accrual> Accruals { get; set; }
             public List<HourPerDay> TimeSheet { get; set; }
         }
 
@@ -52,19 +59,19 @@ namespace Fusion.Models
 
         public class Organization
         {
-            string connectionString = WebConfigurationManager.ConnectionStrings["ZupConnectionString"].ConnectionString;
+            public dynamic connection;
             public string FullName { get; set; }
             public List<Subdivision> Subdivisions { get; set; }
             public List<Detention> Detentions { get; set; }
+            public List<Accrual> Accruals { get; set; }
             public DateTime Period { get; set; }
             public void GetFullData()
             {
                 //Список возможных удержаний из 1С
                 Subdivisions = new List<Subdivision>();
                 Detentions = GetDetentions();
+                Accruals = GetAccruals();
                 //Получение информации по организации, ее подразделениям и сотрудникам
-                COMConnector connector = new COMConnector();
-                dynamic connection = connector.Connect(connectionString);
                 dynamic QueryTo1C = connection.NewObject("Запрос");
                 QueryTo1C.Text = String.Format(@"ВЫБРАТЬ * ИЗ РегистрСведений.ДанныеДляПодбораСотрудников КАК ДанныеДляПодбораСотрудников ГДЕ ДанныеДляПодбораСотрудников.Организация.Наименование = ""{0}"" И ДанныеДляПодбораСотрудников.Подразделение.Наименование <> """"", FullName);
                 dynamic res = QueryTo1C.Execute().Choose();
@@ -79,7 +86,7 @@ namespace Fusion.Models
                         Subdivisions.Add(s);
                     }
 
-                    Employee e = new Employee() { Code = res.Сотрудник.Код, FullName = res.Сотрудник.Наименование, Detentions = Detentions, Position = res.Должность.Наименование, TimeSheet = new List<HourPerDay>() };
+                    Employee e = new Employee() { Code = res.Сотрудник.Код, FullName = res.Сотрудник.Наименование, Detentions = Detentions, Accruals = Accruals, Position = res.Должность.Наименование, TimeSheet = new List<HourPerDay>() };
 
                     for (int i = 1; i <= DateTime.DaysInMonth(Period.Year, Period.Month); i++)
                     {
@@ -89,25 +96,19 @@ namespace Fusion.Models
                     s.Employees.Add(e);
                 }
 
-                connection = false;
-                connection = null;
-                connector = null;
+                QueryTo1C = null;
             }
 
             public List<Detention> GetDetentions()
             {
                 List<Detention> Detentions = new List<Detention>();
-                COMConnector connector;
 
                 try
                 {
-                    connector = new COMConnector();
-
-                    dynamic connection = connector.Connect(connectionString);
+                    dynamic QueryTo1C = connection.NewObject("Запрос");
 
                     try
                     {
-                        dynamic QueryTo1C = connection.NewObject("Запрос");
                         QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Удержания.ДополнительныеРеквизиты КАК УдержанияДополнительныеРеквизиты ГДЕ УдержанияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
                         dynamic res = QueryTo1C.Execute().Choose();
 
@@ -127,28 +128,60 @@ namespace Fusion.Models
                     }
                     finally
                     {
-                        connection = false;
-                        connection = null;
+                        QueryTo1C = null;
                     }
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-                finally
-                {
-                    connector = null;
-                }
 
                 return Detentions;
+            }
+            public List<Accrual> GetAccruals()
+            {
+                List<Accrual> Accruals = new List<Accrual>();
+
+                try
+                {
+                    dynamic QueryTo1C = connection.NewObject("Запрос");
+
+                    try
+                    {
+                        QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Начисления.ДополнительныеРеквизиты КАК НачисленияДополнительныеРеквизиты ГДЕ НачисленияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
+                        dynamic res = QueryTo1C.Execute().Choose();
+
+                        while (res.Next())
+                        {
+                            Accrual a = new Accrual();
+                            a.Code = res.Ссылка.Код;
+                            a.Name = res.Ссылка.Наименование;
+                            a.Sum = 0;
+                            a.Comment = "";
+                            Accruals.Add(a);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    finally
+                    {
+                        QueryTo1C = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                return Accruals;
             }
 
             public void Post()
             {
                 try
                 {
-                    COMConnector connector = new COMConnector();
-                    dynamic connection = connector.Connect(connectionString);
                     try
                     {
                         /* Удержания */
@@ -173,6 +206,8 @@ namespace Fusion.Models
                                         det.ДатаОкончания = Period.ToString("yyyyMM") + DateTime.DaysInMonth(Period.Year, Period.Month).ToString();
                                         det.Результат = Subdivisions[i].Employees[j].Detentions[k].Sum;
                                         det.Сотрудник = connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code);
+                                        det = false;
+                                        det = null;
                                     }
                                 }
                             }
@@ -182,6 +217,7 @@ namespace Fusion.Models
 
                         /* Конец Удержания*/
 
+                        doc = false;
                         doc = null;
 
                         /* Индивидуальные графики */
@@ -218,6 +254,7 @@ namespace Fusion.Models
                                         {
                                             dynamic Str = connection.NewObject("Структура");
                                             Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
+                                            Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), Subdivisions[i].Employees[j].TimeSheet[k].Hours);
                                             Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.ВыходныеДни);
                                             connection.ЗаполнитьЗначенияСвойств(dot, Str);
                                         }
@@ -235,11 +272,6 @@ namespace Fusion.Models
                     catch (Exception ex)
                     {
                         throw ex;
-                    }
-                    finally
-                    {
-                        connection = false;
-                        connection = null;
                     }
                 }
                 catch (Exception ex)
