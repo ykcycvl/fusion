@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -10,12 +11,19 @@ namespace Fusion
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        static V83.COMConnector connector;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            connector = new V83.COMConnector();
+            connector.PoolCapacity = 10;
+            connector.PoolTimeout = 60;
+            connector.MaxConnections = 20;
+            Application.Add("connector", connector);
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {
@@ -25,7 +33,6 @@ namespace Fusion
             nf_info.NumberFormat.CurrencyDecimalSeparator = ".";
             nf_info.NumberFormat.CurrencyGroupSeparator = " ";
             System.Threading.Thread.CurrentThread.CurrentCulture = nf_info;
-
         }
     }
 }
