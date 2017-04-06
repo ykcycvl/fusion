@@ -2083,6 +2083,7 @@
     <None Include="Properties\PublishProfiles\Fusion.pubxml" />
     <None Include="Properties\PublishProfiles\FusionTest.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery.fixedtable.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.maskedinput.min.js" />
     <Content Include="Scripts\jqueryui\external\globalize.culture.de-DE.js" />
