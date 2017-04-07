@@ -42,6 +42,10 @@
         margin: 10px auto;
     }*/
 
+    .ui-widget-header {
+        font-weight: normal !important;
+    }
+
     .ft_container table tr th,
     .ft_container table tr td {
         padding: 2px 0 2px 0 !important;
@@ -122,14 +126,13 @@
             <tbody>
                 @for (int i = 0; i < Model.Subdivisions.Count; i++)
                 {
+                    all = all + 2;
                     <tr>
-                        <th>
+                        <th colspan="@all">
                             @Html.HiddenFor(m => m.Subdivisions[i].Code)
                             @Html.HiddenFor(m => m.Subdivisions[i].FullName)
                             @Model.Subdivisions[i].FullName
                         </th>
-                        <th>&nbsp;</th>
-                        <th colspan="@all"></th>
                     </tr>
                     for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
                     {
