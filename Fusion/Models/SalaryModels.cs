@@ -5,6 +5,7 @@ using System.Web;
 using V83;
 using System.Web.Configuration;
 using System.Reflection;
+using System.Web.Mvc;
 
 namespace Fusion.Models
 {
@@ -13,19 +14,19 @@ namespace Fusion.Models
         public class HourPerDay
         {
             public DateTime Day { get; set; }
-            public Decimal Hours { get; set; }
+            public Decimal? Hours { get; set; }
         }
         public class Detention
         {
             public string Code { get; set; }
-            public Decimal Sum { get; set; }
+            public Decimal? Sum { get; set; }
             public string Comment { get; set; }
             public string Name { get; set; }
         }
         public class Accrual
         {
             public string Code { get; set; }
-            public Decimal Sum { get; set; }
+            public Decimal? Sum { get; set; }
             public string Comment { get; set; }
             public string Name { get; set; }
         }
@@ -61,10 +62,67 @@ namespace Fusion.Models
         {
             public dynamic connection;
             public string FullName { get; set; }
+            public List<string> Organizations { get; set; }
             public List<Subdivision> Subdivisions { get; set; }
             public List<Detention> Detentions { get; set; }
             public List<Accrual> Accruals { get; set; }
             public DateTime Period { get; set; }
+
+            public IEnumerable<SelectListItem> OrganizationsSelectList
+            {
+                get
+                {
+                    List<SelectListItem> Orgs = new List<SelectListItem>();
+
+                    for (int i = 0; i < Organizations.Count; i++)
+                    {
+                        Orgs.Add(new SelectListItem() { Text = Organizations[i], Value = Organizations[i] });
+                    }
+
+                    SelectListItem sli = Orgs.FirstOrDefault(p => p.Value == FullName);
+
+                    if (sli != null)
+                        sli.Selected = true;
+
+                    return Orgs;
+                }
+            }
+
+            public void GetDivisionList()
+            {
+                Organizations = new List<string>();
+
+                try
+                {
+                    dynamic QueryTo1C = connection.NewObject("Запрос");
+
+                    try
+                    {
+                        QueryTo1C.Text = @"ВЫБРАТЬ Организации.Наименование ИЗ Справочник.Организации КАК Организации";
+                        dynamic res = QueryTo1C.Execute().Choose();
+
+                        while (res.Next())
+                        {
+                            Organizations.Add(res.Наименование);
+                        }
+
+                        if(Organizations.Count > 0 && FullName != null && FullName != "")
+                            FullName = Organizations[0];
+                    }
+                    catch (Exception ex)
+                    {
+                        throw ex;
+                    }
+                    finally
+                    {
+                        QueryTo1C = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public void GetFullData()
             {
                 //Список возможных удержаний из 1С
@@ -90,7 +148,7 @@ namespace Fusion.Models
 
                     for (int i = 1; i <= DateTime.DaysInMonth(Period.Year, Period.Month); i++)
                     {
-                        e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, i), Hours = 0 });
+                        e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, i) });
                     }
 
                     s.Employees.Add(e);
@@ -98,7 +156,6 @@ namespace Fusion.Models
 
                 QueryTo1C = null;
             }
-
             public List<Detention> GetDetentions()
             {
                 List<Detention> Detentions = new List<Detention>();
@@ -117,7 +174,6 @@ namespace Fusion.Models
                             Detention d = new Detention();
                             d.Code = res.Ссылка.Код;
                             d.Name = res.Ссылка.Наименование;
-                            d.Sum = 0;
                             d.Comment = "";
                             Detentions.Add(d);
                         }
@@ -156,7 +212,6 @@ namespace Fusion.Models
                             Accrual a = new Accrual();
                             a.Code = res.Ссылка.Код;
                             a.Name = res.Ссылка.Наименование;
-                            a.Sum = 0;
                             a.Comment = "";
                             Accruals.Add(a);
                         }
@@ -177,14 +232,13 @@ namespace Fusion.Models
 
                 return Accruals;
             }
-
             public void Post()
             {
                 try
                 {
                     try
                     {
-                        /* Удержания */
+                        /* Удержания и начисления */
                         dynamic doc = connection.Документы.НачислениеЗарплаты.СоздатьДокумент();
                         doc.Организация = connection.Справочники.Организации.НайтиПоНаименованию(FullName);
                         doc.МесяцНачисления = Period.ToString("yyyyMM01");
@@ -195,9 +249,11 @@ namespace Fusion.Models
                         {
                             for (int j = 0; j < Subdivisions[i].Employees.Count; j++)
                             {
+
+                                /* Удержания */
                                 for (int k = 0; k < Subdivisions[i].Employees[j].Detentions.Count; k++)
                                 {
-                                    if (Subdivisions[i].Employees[j].Detentions[k].Sum > 0)
+                                    if (Subdivisions[i].Employees[j].Detentions[k].Sum != null && Subdivisions[i].Employees[j].Detentions[k].Sum > 0)
                                     {
                                         dynamic det = doc.Удержания.Добавить();
                                         det.ФизическоеЛицо = connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code).ФизическоеЛицо;
@@ -210,12 +266,28 @@ namespace Fusion.Models
                                         det = null;
                                     }
                                 }
+
+                                /* Начисления */
+                                for (int k = 0; k < Subdivisions[i].Employees[j].Accruals.Count; k++)
+                                {
+                                    if (Subdivisions[i].Employees[j].Accruals[k].Sum != null && Subdivisions[i].Employees[j].Accruals[k].Sum > 0)
+                                    {
+                                        dynamic det = doc.Начисления.Добавить();
+                                        det.Начисление = connection.ПланыВидовРасчета.Начисления.НайтиПоКоду(Subdivisions[i].Employees[j].Accruals[k].Code);
+                                        det.ДатаНачала = Period.ToString("yyyyMM01");
+                                        det.ДатаОкончания = Period.ToString("yyyyMM") + DateTime.DaysInMonth(Period.Year, Period.Month).ToString();
+                                        det.Результат = Subdivisions[i].Employees[j].Accruals[k].Sum;
+                                        det.Сотрудник = connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code);
+                                        det = false;
+                                        det = null;
+                                    }
+                                }
                             }
                         }
 
-                        doc.Записать(connection.РежимЗаписиДокумента.Проведение);
+                        doc.Записать();
 
-                        /* Конец Удержания*/
+                        /* Конец Удержания и начисления*/
 
                         doc = false;
                         doc = null;
@@ -234,15 +306,15 @@ namespace Fusion.Models
                         {
                             for (int j = 0; j < Subdivisions[i].Employees.Count; j++)
                             {
-                                Decimal total = Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
+                                Decimal? total = Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
 
-                                if (total > 0)
+                                if (total != null && total > 0)
                                 {
                                     dynamic dot = doc.ДанныеОВремени.Добавить();
 
                                     for (int k = 0; k < Subdivisions[i].Employees[j].TimeSheet.Count; k++)
                                     {
-                                        if (Subdivisions[i].Employees[j].TimeSheet[k].Hours > 0)
+                                        if (Subdivisions[i].Employees[j].TimeSheet[k].Hours != null && Subdivisions[i].Employees[j].TimeSheet[k].Hours > 0)
                                         {
                                             dynamic Str = connection.NewObject("Структура");
                                             Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
@@ -254,7 +326,7 @@ namespace Fusion.Models
                                         {
                                             dynamic Str = connection.NewObject("Структура");
                                             Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
-                                            Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), Subdivisions[i].Employees[j].TimeSheet[k].Hours);
+                                            Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), 0);
                                             Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.ВыходныеДни);
                                             connection.ЗаполнитьЗначенияСвойств(dot, Str);
                                         }
@@ -263,7 +335,7 @@ namespace Fusion.Models
                             }
                         }
 
-                        doc.Записать(connection.РежимЗаписиДокумента.Проведение);
+                        doc.Записать();
                         doc = false;
                         doc = null;
 
@@ -278,6 +350,13 @@ namespace Fusion.Models
                 {
                     throw ex;
                 }
+            }
+            public Organization()
+            { 
+                Organizations = new List<string>();
+                Subdivisions = new List<Subdivision>();
+                Detentions = new List<Detention>();
+                Accruals = new List<Accrual>();
             }
         }
     }
