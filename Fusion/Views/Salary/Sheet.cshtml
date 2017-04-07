@@ -3,163 +3,174 @@
 @{
     ViewBag.Title = "Ведомость " + Model.FullName;
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    int daysCount = DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month);
+    int miscCount = Model.Accruals.Count + Model.Detentions.Count;
+    string monthColumn = "";
+    string miscColumn = "";
+    int all = daysCount + miscCount;
+    
+    for(int i = 0; i < daysCount; i++)
+    {
+        monthColumn += "{ width: 35, align: 'center' },\r\n";
+    }
+
+    for (int i = 0; i < miscCount; i++)
+    {
+        miscColumn += "{ width: 80, align: 'center' },\r\n";
+    }
 }
+
+<link href="~/Scripts/css/fixed_table_rc.css" rel="stylesheet" />
+<script src="~/Scripts/js/fixed_table_rc.js"></script>
+
 <style>
-    table thead,
-    table tbody {
-        overflow: auto;
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+    input[type="text"]:focus {
+        cursor: text;
+        outline: none;
+    }
+    input[type="text"] {
+        background: rgba(0, 0, 0, 0);
+        cursor: cell;
+    }
+    /*div.container {
+        padding: 5px 15px;
+        width: 80vw;
+        margin: 10px auto;
+    }*/
+
+    .ft_container table tr th,
+    .ft_container table tr td {
+        padding: 2px 0 2px 0 !important;
     }
 
-    table tbody {
-        overflow: auto;
-        display: block;
-        height: 500px;
-    }
-
-    thead {
-        display: block;
-    }
-
-    tbody tr td {
-        white-space: nowrap;
-    }
-
-    input {
-        width: 98%;
-        padding: 0px;
-        margin: 0px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-    }
-    .day {
-        width: 36px;
-    }
-    .accr {
-        width: 185px;
-    }
-    .subdivision {
-        font-weight: bold;
-        text-align: center;
+    .ft_container table tr th {
+        background-color: #DBEAF9;
     }
 </style>
+<script>
+    $(function () {
+        $('#fixed_hdr1').fxdHdrCol({
+            fixedCols: 2,
+            width: '100%',
+            height: '70vh',
+            colModal: [
+                { width: 200, align: 'left' },
+                { width: 250, align: 'left' },
+                @Html.Raw(monthColumn)
+                @Html.Raw(miscColumn)
+                
+            ]
+        });
 
-<h2>@ViewBag.Error</h2>
+        $('input').click(function () {
+            $(this).select()
+        });
+
+        $("#FullName").change(function () {
+            window.location.href = '/Salary/Sheet?OrgName=' + encodeURIComponent($("#FullName").val()) + '&period=' + $("#Period").val();
+        });
+        $("#Period").change(function () {
+            window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+        });
+    });
+</script>
 
 @using (Html.BeginForm("Sheet", "Salary", FormMethod.Post))
 {
     @Html.TextBoxFor(m => m.Period)
-    @Html.HiddenFor(m => m.FullName)
+    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
 
-    <table class="table-bordered table-condensed table-responsive table-striped" id="selector">
-        <thead>
-            <tr>
-                <th rowspan="2" width="491px" style="text-align: center;">@ViewBag.Title</th>
-                @for (int t = 1; t <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); t++)
-                {
-                    if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Вс")
-                    {
-                        <th style="color: #e00" class="day">
-                            @t
-                        </th>
-                    }
-                    else
-                    {
-                        <th class="day">
-                            @t
-                        </th>
-                    }
-                }
-                @for (int t = 0; t < Model.Accruals.Count; t++)
-                {
-                    <th rowspan="2" class="accr">
-                        @Html.HiddenFor(m => m.Accruals[t].Code)
-                        @Html.HiddenFor(m => m.Accruals[t].Name)
-                        @Html.HiddenFor(m => m.Accruals[t].Sum)
-                        @Model.Accruals[t].Name
-                    </th>
-                }
-                @for (int t = 0; t < Model.Detentions.Count; t++)
-{
-    <th rowspan="2" class="accr">
-        @Html.HiddenFor(m => m.Detentions[t].Code)
-        @Html.HiddenFor(m => m.Detentions[t].Name)
-        @Html.HiddenFor(m => m.Detentions[t].Sum)
-        @Model.Detentions[t].Name
-    </th>
-}
-            </tr>
-            <tr>
-                @for (int t = 1; t <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); t++)
-{
-    if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Вс")
-    {
-        <th style="color: #e00" class="day">
-            @System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek)
-        </th>
-    }
-    else
-    {
-        <th class="day">
-            @System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek)
-        </th>
-    }
-}
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Subdivisions.Count; i++)
-            {
-                int colspan = 2 + DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month) + Model.Detentions.Count +Model.Accruals.Count -2;
+    <div class="dwrapper" style="font-size:13px;font-weight:normal">
+        <table id="fixed_hdr1" class="">
+            <thead>
                 <tr>
-                    <td class="subdivision">
-                        @Html.HiddenFor(m => m.Subdivisions[i].Code)
-                        @Html.HiddenFor(m => m.Subdivisions[i].FullName)
-                        @Model.Subdivisions[i].FullName
-                    </td>
-                    <td></td>
-
+                    <th>Должность</th>
+                    <th>ФИО</th>
+                    @for (int t = 1; t <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); t++)
+                    {
+                        if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Вс")
+                        {
+                            <th style="color: #e00">@t<br/>@System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek)</th>
+                        }
+                        else
+                        {
+                            <th>@t<br />@System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek)</th>
+                        }
+                    }
+                    @for (int k = 0; k < Model.Accruals.Count; k++)
+                    {
+                        <th>
+                            @Html.HiddenFor(m => m.Accruals[k].Code)
+                            @Html.HiddenFor(m => m.Accruals[k].Name)
+                            @Model.Accruals[k].Name
+                        </th>
+                    }
+                    @for (int k = 0; k < Model.Detentions.Count; k++)
+                    {
+                        <th>
+                            @Html.HiddenFor(m => m.Detentions[k].Code)
+                            @Html.HiddenFor(m => m.Detentions[k].Name)
+                            @Model.Detentions[k].Name
+                        </th>
+                    }
                 </tr>
-                for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Subdivisions.Count; i++)
                 {
                     <tr>
-                        <td>
-                            @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Code)
-                            @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].FullName)
-                            @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Position)
-                            @Model.Subdivisions[i].Employees[j].Position
-                        </td>
-                        <td>
-                            @Model.Subdivisions[i].Employees[j].FullName
-                        </td>
-                        @for (int t = 1; t <= Model.Subdivisions[i].Employees[j].TimeSheet.Count; t++)
-                        {
-                            <td>
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Day)
-                                @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Hours, new { @style = "width: 25px; border: none; background: #f8f8f8;" })
-                            </td>
-                        }
-                        @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Accruals.Count; k++)
-                        {
-                            <td>
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Code)
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Name)
-                                @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Sum, new { @style = "width: 173px; border: none; background: #f8f8f8;" })
-                            </td>
-                        }
-                        @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Detentions.Count; k++)
-                        {
-                            <td>
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Code)
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Name)
-                                @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Sum, new { @style = "width: 173px; border: none; background: #f8f8f8;" })
-                            </td>
-                        }
+                        <th>
+                            @Html.HiddenFor(m => m.Subdivisions[i].Code)
+                            @Html.HiddenFor(m => m.Subdivisions[i].FullName)
+                            @Model.Subdivisions[i].FullName
+                        </th>
+                        <th>&nbsp;</th>
+                        <th colspan="@all"></th>
                     </tr>
+                    for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Code)
+                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].FullName)
+                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Position)
+                                @Model.Subdivisions[i].Employees[j].Position
+                            </td>
+                            <td>
+                                @Model.Subdivisions[i].Employees[j].FullName
+                            </td>
+                            @for (int t = 1; t <= Model.Subdivisions[i].Employees[j].TimeSheet.Count; t++)
+                            {
+                                <td>
+                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Day)
+                                    @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].TimeSheet[t - 1].Hours, new { @style = "width: 25px; border: none;text-align:center;" })
+                                </td>
+                            }
+                            @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Accruals.Count; k++)
+                            {
+                                <td>
+                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Code)
+                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Name)
+                                    @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Accruals[k].Sum, new { @style = "width: 60px; border: none;text-align:center;" })
+                                </td>
+                            }
+                            @for (int k = 0; k < Model.Subdivisions[i].Employees[j].Detentions.Count; k++)
+                            {
+                                <td>
+                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Code)
+                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Name)
+                                    @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Detentions[k].Sum, new { @style = "width: 60px; border: none;text-align:center;" })
+                                </td>
+                            }
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
     <input type="submit" value="Сохранить" />
 }
