@@ -2083,6 +2083,10 @@
     <None Include="Properties\PublishProfiles\Fusion.pubxml" />
     <None Include="Properties\PublishProfiles\FusionTest.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\css\fixed_table_rc.css" />
+    <Content Include="Scripts\css\images\asc.gif" />
+    <Content Include="Scripts\css\images\bg.gif" />
+    <Content Include="Scripts\css\images\desc.gif" />
     <Content Include="Scripts\jquery.fixedtable.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.maskedinput.min.js" />
@@ -2394,6 +2398,7 @@
     <Content Include="Scripts\jstree\themes\default\style.css" />
     <Content Include="Scripts\jstree\themes\default\style.min.css" />
     <Content Include="Scripts\jstree\themes\default\throbber.gif" />
+    <Content Include="Scripts\js\fixed_table_rc.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />
     <Content Include="Scripts\plugins\flot\flot-data.js" />
