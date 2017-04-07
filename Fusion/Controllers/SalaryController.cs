@@ -17,14 +17,25 @@ namespace Fusion.Controllers
             return View();
         }
 
-        public ActionResult Sheet()
+        public ActionResult Sheet(string OrgName, string period)
         {
-            SalaryModels.Organization model = new SalaryModels.Organization() { FullName = "ФьюжнГрупп" };
+            SalaryModels.Organization model = new SalaryModels.Organization();
 
             try
             {
+                if (period == null || period == "")
+                    model.Period = DateTime.Today;
+                else
+                    model.Period = DateTime.Parse(period);
+
                 model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-                model.Period = DateTime.Today;
+                model.GetDivisionList();
+
+                if (OrgName != null)
+                {
+                    model.FullName = OrgName;
+                }
+
                 model.GetFullData();
             }
             catch (Exception ex)
@@ -45,6 +56,7 @@ namespace Fusion.Controllers
         {
             model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
             model.Post();
+            model.GetDivisionList();
             return View(model);
         }
 
