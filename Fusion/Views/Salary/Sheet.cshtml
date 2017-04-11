@@ -54,6 +54,12 @@
     .ft_container table tr th {
         background-color: #DBEAF9;
     }
+    .ui-datepicker-calendar {
+        display: none;
+    }
+    .ui-datepicker {
+        z-index: 9999 !important;
+    }
 </style>
 <script>
     $(function () {
@@ -82,11 +88,25 @@
         });
     });
 </script>
+<script>
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: '0m.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+            }
+        });
+    });
+</script>
 
-@using (Html.BeginForm("Sheet", "Salary", FormMethod.Post))
+@using (Html.BeginForm("Sheet", "Salary", FormMethod.Post, new { id = "Form" }))
 {
-    @Html.TextBoxFor(m => m.Period)
-    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
+    @Html.TextBoxFor(m => m.Period, new { @class = "date-picker", @onclick = "opacity()" })
+    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control",  @onclick = "opacity()", @onblur = "location.reload()"})
 
     <div class="dwrapper" style="font-size:13px;font-weight:normal">
         <table id="fixed_hdr1" class="">
@@ -175,5 +195,25 @@
             </tbody>
         </table>
     </div>
-    <input type="submit" value="Сохранить" />
+    <input type="submit" value="Сохранить" onclick="opacity()" />
 }
+<script>
+    function opacity() {
+        var i = document.getElementById("Form");
+        i.style.opacity = 0.5;
+    }
+    function blur() {
+        window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+    }
+    $(document).ready(function () {
+        $.datepicker.setDefaults($.datepicker.regional["ru"]);
+        $('Form').keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var i = document.getElementById("Form");
+        i.style.opacity = 1;
+    });
+</script>
