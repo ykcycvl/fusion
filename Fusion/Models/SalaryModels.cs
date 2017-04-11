@@ -6,6 +6,7 @@ using V83;
 using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Fusion.Models
 {
@@ -66,6 +67,8 @@ namespace Fusion.Models
             public List<Subdivision> Subdivisions { get; set; }
             public List<Detention> Detentions { get; set; }
             public List<Accrual> Accruals { get; set; }
+            
+            [DataType(DataType.Date)]
             public DateTime Period { get; set; }
 
             public IEnumerable<SelectListItem> OrganizationsSelectList
