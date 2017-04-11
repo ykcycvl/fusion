@@ -14,7 +14,10 @@ namespace Fusion.Controllers
         // GET: Salary
         public ActionResult Index()
         {
-            return View();
+            SalaryModels.DetAccList model = new SalaryModels.DetAccList();
+            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
+            model.GetDAList();
+            return View(model);
         }
 
         public ActionResult Sheet(string OrgName, string period)
@@ -57,12 +60,9 @@ namespace Fusion.Controllers
             model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
             model.Post();
             model.GetDivisionList();
+            model.connection = false;
+            model.connection = null;
             return View(model);
-        }
-
-        public ActionResult Timetable()
-        {
-            return View();
         }
     }
 }

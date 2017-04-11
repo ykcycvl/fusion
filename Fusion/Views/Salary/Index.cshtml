@@ -1,6 +1,61 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model Fusion.Models.SalaryModels.DetAccList
+@{
+    ViewBag.Title = "ЗУП: Начисление зарплаты и взносов";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
 
-<h2>@ViewBag.Text</h2>
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Создать", "Sheet", "Salary", new { @class = "btn btn-default" })
+
+<table class="table table-bordered table-striped" style="font-size:13px">
+    <tr>
+        <th>
+            Месяц начисления
+        </th>
+        <th>
+            Тип
+        </th>
+        <th>
+            Дата
+        </th>
+        <th>
+            Номер
+        </th>
+        <th>
+            Организация
+        </th>
+        <th style="text-align:right">
+            Начислено
+        </th>
+        <th style="text-align:right">
+            Удержано
+        </th>
+    </tr>
+    @foreach (var item in Model.DetAccS)
+    { 
+        <tr>
+            <td>
+                @item.period.ToString("MMMM yyyy")
+            </td>
+            <td>
+                @item.DAType
+            </td>
+            <td>
+                @item.Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @item.Number
+            </td>
+            <td>
+                @item.OrganizationName
+            </td>
+            <td style="text-align:right">
+                @item.Accrued.ToString("n")
+            </td>
+            <td style="text-align:right">
+                @item.Detented.ToString("n")
+            </td>
+        </tr>
+    }
+</table>

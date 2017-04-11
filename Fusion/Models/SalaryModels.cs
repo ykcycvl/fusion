@@ -359,5 +359,67 @@ namespace Fusion.Models
                 Accruals = new List<Accrual>();
             }
         }
+        public class DetAccList
+        {
+            public dynamic connection;
+            public class DA
+            {
+                public string Number { get; set; }
+                public string DAType { get; set; }
+                public DateTime period { get; set; }
+                public DateTime Date { get; set; }
+                public string OrganizationName { get; set; }
+                public Decimal Accrued { get; set; }
+                public Decimal Detented { get; set; }
+            }
+            public List<DA> DetAccS = new List<DA>();
+            public void GetDAList()
+            {
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = String.Format(@"ВЫБРАТЬ 
+	                РАЗЛИЧНЫЕ
+	                НачисленияУдержанияПоСотрудникам.Период,
+	                НачисленияУдержанияПоСотрудникам.Регистратор.Номер КАК Номер,
+	                НачисленияУдержанияПоСотрудникам.Регистратор.Дата КАК Дата,
+	                ПРЕДСТАВЛЕНИЕ(ТИПЗНАЧЕНИЯ(НачисленияУдержанияПоСотрудникам.Регистратор)) Как Тип,
+	                НачисленияУдержанияПоСотрудникам.Организация.Наименование КАК Наименование, 
+	                СУММА(
+		                ВЫБОР 
+			                КОГДА НачисленияУдержанияПоСотрудникам.ГруппаНачисленияУдержанияВыплаты = ЗНАЧЕНИЕ(Перечисление.ГруппыНачисленияУдержанияВыплаты.Начислено) ТОГДА
+				                НачисленияУдержанияПоСотрудникам.Сумма
+			                ИНАЧЕ 0
+			                КОНЕЦ
+		                ) КАК Начислено,
+	                СУММА(
+		                ВЫБОР 
+			                КОГДА НачисленияУдержанияПоСотрудникам.ГруппаНачисленияУдержанияВыплаты = ЗНАЧЕНИЕ(Перечисление.ГруппыНачисленияУдержанияВыплаты.Удержано) ТОГДА
+				                НачисленияУдержанияПоСотрудникам.Сумма
+			                ИНАЧЕ 0
+			                КОНЕЦ
+		                ) КАК Удержано
+                ИЗ 
+	                РегистрНакопления.НачисленияУдержанияПоСотрудникам КАК НачисленияУдержанияПоСотрудникам
+                СГРУППИРОВАТЬ ПО
+	                НачисленияУдержанияПоСотрудникам.Период,
+	                НачисленияУдержанияПоСотрудникам.Регистратор, 
+	                НачисленияУдержанияПоСотрудникам.Организация.Наименование");
+                dynamic res = QueryTo1C.Execute().Choose();
+
+                while (res.Next())
+                {
+                    DA da = new DA();
+                    da.period = DateTime.Parse(Convert.ToString(res.Период));
+                    da.Date = DateTime.Parse(Convert.ToString(res.Дата));
+                    da.DAType = Convert.ToString(res.Тип);
+                    da.Number = Convert.ToString(res.Номер);
+                    da.OrganizationName = Convert.ToString(res.Наименование);
+                    da.Accrued = Convert.ToDecimal(res.Начислено);
+                    da.Detented = Convert.ToDecimal(res.Удержано);
+                    DetAccS.Add(da);
+                }
+
+                QueryTo1C = null;
+            }
+        }
     }
 }
