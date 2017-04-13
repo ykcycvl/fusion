@@ -72,7 +72,6 @@
                 { width: 250, align: 'left' },
                 @Html.Raw(monthColumn)
                 @Html.Raw(miscColumn)
-                
             ]
         });
 
@@ -81,15 +80,15 @@
         });
 
         $("#FullName").change(function () {
+            var i = document.getElementById("Form");
+            i.style.opacity = 0.5;
             window.location.href = '/Salary/Sheet?OrgName=' + encodeURIComponent($("#FullName").val()) + '&period=' + $("#Period").val();
         });
         $("#Period").change(function () {
+            var i = document.getElementById("Form");
+            i.style.opacity = 0.5;
             window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
         });
-    });
-</script>
-<script>
-    $(function () {
         $('.date-picker').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -100,13 +99,31 @@
                 window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
             }
         });
+        $.datepicker.setDefaults($.datepicker.regional["ru"]);
+        $('Form').keydown(function (event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+        var i = document.getElementById("Form");
+        i.style.opacity = 1;
     });
+</script>
+
+<script>
+    function blur() {
+        window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+    }
 </script>
 
 @using (Html.BeginForm("Sheet", "Salary", FormMethod.Post, new { id = "Form" }))
 {
-    @Html.TextBoxFor(m => m.Period, new { @class = "date-picker", @onclick = "opacity()" })
-    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control",  @onclick = "opacity()", @onblur = "location.reload()"})
+    <div class="form-group" style="width: 250px;">
+        @Html.TextBoxFor(m => m.Period, String.Format("{0:MM/yyyy}", Model.Period), new { @class = "date-picker form-control" })
+        @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
+        <p class="help-block">Example block-level help text here.</p>
+    </div>
 
     <div class="dwrapper" style="font-size:13px;font-weight:normal">
         <table id="fixed_hdr1" class="">
@@ -197,23 +214,3 @@
     </div>
     <input type="submit" value="Сохранить" onclick="opacity()" />
 }
-<script>
-    function opacity() {
-        var i = document.getElementById("Form");
-        i.style.opacity = 0.5;
-    }
-    function blur() {
-        window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
-    }
-    $(document).ready(function () {
-        $.datepicker.setDefaults($.datepicker.regional["ru"]);
-        $('Form').keydown(function (event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
-            }
-        });
-        var i = document.getElementById("Form");
-        i.style.opacity = 1;
-    });
-</script>

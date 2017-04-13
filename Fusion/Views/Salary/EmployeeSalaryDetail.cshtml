@@ -1,0 +1,53 @@
+﻿@model Fusion.Models.SalaryModels.EmployeeSalaryDetail
+
+@{
+    ViewBag.Title = "Детализация";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            Наименование
+        </th>
+        <th>
+            Тип
+        </th>
+        <th>
+            Сумма
+        </th>
+    </tr>
+    @foreach (var e in Model.Employees)
+    { 
+        @foreach (var a in e.Accruals)
+        { 
+            <tr>
+                <td>
+                    @a.Name
+                </td>
+                <td>
+                    Начислено
+                </td>
+                <td>
+                    @a.Sum
+                </td>
+            </tr>
+        }
+        foreach (var d in e.Detentions)
+        {
+            <tr>
+                <td>
+                    @d.Name
+                </td>
+                <td>
+                    Удержано
+                </td>
+                <td>
+                    @d.Sum
+                </td>
+            </tr>
+        }
+    }
+</table>

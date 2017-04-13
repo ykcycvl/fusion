@@ -64,5 +64,33 @@ namespace Fusion.Controllers
             model.connection = null;
             return View(model);
         }
+
+        public ActionResult SAC(string number)
+        {
+            SalaryModels.SalariesAndContributions model = new SalaryModels.SalariesAndContributions();
+            model.Number = number;
+            model.Employees = new List<SalaryModels.Employee>();
+            model.OrganizationName = "";
+            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
+
+            if (!String.IsNullOrEmpty(number))
+            {
+                model.Get(number);
+                return View(model);
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        public ActionResult EmployeeSalaryDetail(string number, string code)
+        {
+            SalaryModels.EmployeeSalaryDetail model = new SalaryModels.EmployeeSalaryDetail();
+            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
+
+            model.Get(number, code);
+            return View(model);
+        }
     }
 }

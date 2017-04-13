@@ -1,0 +1,40 @@
+﻿@model Fusion.Models.SalaryModels.SalariesAndContributions
+@{
+    ViewBag.Title = "Начисления и удержания по сотрудникам";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Model.OrganizationName
+<br/>
+@Model.Period
+<br/>
+@Model.Number
+<table class="table table-striped table-bordered" style="cursor:cell">
+    <tr>
+        <th>
+            Сотрудник
+        </th>
+        <th style="text-align:right">
+            Удержано
+        </th>
+        <th style="text-align:right">
+            Начислено
+        </th>
+    </tr>
+    @foreach (var e in Model.Employees)
+    { 
+        <tr>
+            <td>
+                @Html.ActionLink(e.FullName, "EmployeeSalaryDetail", new { @number = Model.Number, @code = e.Code })
+            </td>
+            <td style="text-align:right">
+                @e.AccrualsSum.ToString("n")
+            </td>
+            <td style="text-align:right">
+                @e.DetentionsSum.ToString("n")
+            </td>
+        </tr>
+    }
+</table>
