@@ -9,6 +9,9 @@
 
 <table class="table table-bordered table-striped">
     <tr>
+        <td>
+            Сотрудник
+        </td>
         <th>
             Наименование
         </th>
@@ -25,6 +28,9 @@
         { 
             <tr>
                 <td>
+                    @e.FullName
+                </td>
+                <td>
                     @a.Name
                 </td>
                 <td>
@@ -38,6 +44,9 @@
         foreach (var d in e.Detentions)
         {
             <tr>
+                <td>
+                    @e.FullName
+                </td>
                 <td>
                     @d.Name
                 </td>
