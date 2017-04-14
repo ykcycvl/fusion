@@ -36,7 +36,7 @@
     { 
         <tr>
             <td>
-                @item.period.ToString("MMMM yyyy")
+                @Html.ActionLink(item.period.ToString("MMMM yyyy"), "SAC", new { @number = item.Number.ToString() })
             </td>
             <td>
                 @item.DAType

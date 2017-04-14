@@ -1,6 +1,6 @@
 ﻿@model Fusion.Models.SalaryModels.SalariesAndContributions
 @{
-    ViewBag.Title = "Начисления и удержания по сотрудникам";
+    ViewBag.Title = "Начисление зарплаты и взносов " + Model.Number;
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
 
@@ -17,10 +17,10 @@
             Сотрудник
         </th>
         <th style="text-align:right">
-            Удержано
+            Начислено
         </th>
         <th style="text-align:right">
-            Начислено
+            Удержано
         </th>
     </tr>
     @foreach (var e in Model.Employees)

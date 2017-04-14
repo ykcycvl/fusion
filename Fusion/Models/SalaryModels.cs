@@ -27,7 +27,7 @@ namespace Fusion.Models
         public class Accrual
         {
             public string Code { get; set; }
-            public Decimal? Sum { get; set; }
+            public Decimal Sum { get; set; }
             public string Comment { get; set; }
             public string Name { get; set; }
         }
@@ -527,7 +527,7 @@ namespace Fusion.Models
                 Employees = new List<Employee>();
                 dynamic QueryTo1C = connection.NewObject("Запрос");
                 QueryTo1C.Text = String.Format(@"ВЫБРАТЬ 
-                        НачисленияУдержанияПоСотрудникам.Сотрудник.Код,
+                        НачисленияУдержанияПоСотрудникам.Сотрудник.Код КАК КодСотрудника,
                         НачисленияУдержанияПоСотрудникам.Период КАК Период,
 	                    НачисленияУдержанияПоСотрудникам.Регистратор.Номер КАК Номер,
 	                    НачисленияУдержанияПоСотрудникам.Организация.Наименование КАК НаименованиеОрганизации,
@@ -560,7 +560,6 @@ namespace Fusion.Models
                     e.Detentions = new List<Detention>();
                     e.Code = ecode;
                     e.FullName = Convert.ToString(res.ИмяСотрудника);
-                    e.DetentionsSum = Convert.ToDecimal(res.Удержано);
 
                     if (otype == "Удержано")
                     {
