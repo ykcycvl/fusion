@@ -29,15 +29,31 @@
         <th>
             Удержано
         </th>
+        <th>
+            &nbsp;
+        </th>
     </tr>
     @foreach (var s in Model.Items)
     {
-        <tr style="cursor:pointer" onclick="window.location.href = '/Salary/SAC?number=@s.Number'">
+        string textDecoration = "none";
+        string color = "#000";
+
+        if (s.Deleted)
+        {
+            textDecoration = "line-through";
+        }
+
+        if (s.Passed)
+        {
+            color = "#0A0";
+        }
+        
+        <tr style="text-decoration:@textDecoration;color:@color;cursor:pointer" onclick="window.location.href = '/Salary/SAC?number=@s.Number'">
             <td>
                 @s.period.ToString("MMMM yyyy")
             </td>
             <td>
-                @s.DAType
+                &nbsp;
             </td>
             <td>
                 @s.Date.ToString("dd.MM.yyyy")
@@ -54,6 +70,14 @@
             <td>
                 @s.Detented.ToString("0.00")
             </td>
+            @if (s.Passed)
+            {
+                <td>Проведен</td>
+            }
+            else
+            {
+                <td>Не проведен</td>
+            }
         </tr>
     }
 </table>

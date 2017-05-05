@@ -70,6 +70,7 @@
             colModal: [
                 { width: 200, align: 'left' },
                 { width: 250, align: 'left' },
+                { width: 50, align: 'right' },
                 @Html.Raw(monthColumn)
                 @Html.Raw(miscColumn)
             ]
@@ -137,6 +138,7 @@
                 <tr>
                     <th>Должность</th>
                     <th>ФИО</th>
+                    <th>Итого ч.</th>
                     @for (int t = 1; t <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); t++)
                     {
                         if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, t).DayOfWeek) == "Вс")
@@ -152,25 +154,23 @@
             </thead>
             <tbody>
                 @for (int i = 0; i < Model.Subdivisions.Count; i++)
-                {
-                    Decimal SubdivisionHoursTotal = (Decimal)Model.Subdivisions[i].Employees.Sum(p => p.TimeSheet.Sum(h => h.Hours));
-                    
-                    all = all + 2;
+                {                    
                     <tr style="background: #DBEAF9;font-weight: bold">
-                        <td>
+                        <td colspan="2">
                             @Html.HiddenFor(m => m.Subdivisions[i].Code)
                             @Html.HiddenFor(m => m.Subdivisions[i].FullName)
                             @Model.Subdivisions[i].FullName
                         </td>
-                        <td>Итого по подразделению: @SubdivisionHoursTotal ч.</td>
+                        <td>&nbsp;</td>
                         @for (int t = 1; t <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); t++)
                         {
-                            Decimal SubdivisionHoursPerDay = (Decimal)Model.Subdivisions[i].Employees.Sum(p => p.TimeSheet.Where(d => d.Day.Day == t).Sum(h => h.Hours));                    
-                            <td>@SubdivisionHoursPerDay</td>
+                            <td></td>
                         }
                     </tr>
                     for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
                     {
+                        Decimal TotalHours = (Decimal)Model.Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
+                        
                         <tr>
                             <td>
                                 @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Code)
@@ -180,6 +180,9 @@
                             </td>
                             <td>
                                 @Model.Subdivisions[i].Employees[j].FullName
+                            </td>
+                            <td style="text-align: right; background-color: #DBEAF9">
+                                @TotalHours
                             </td>
                             @for (int t = 1; t <= Model.Subdivisions[i].Employees[j].TimeSheet.Count; t++)
                             {
