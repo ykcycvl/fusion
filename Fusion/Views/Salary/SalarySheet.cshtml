@@ -1,0 +1,147 @@
+﻿@model Fusion.Models.SalaryModels.Organization
+
+@{
+    ViewBag.Title = "Ведомость";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>SalarySheet</h2>
+
+<script src="../Scripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../Scripts/codebase/webix.js" type="text/javascript"></script>
+<link rel="stylesheet" href="../Scripts/codebase/webix.css" type="text/css">
+<script src="../Scripts/codebase/i18n/ru.js" type="text/javascript"></script>
+<style>
+            .mystyle1 {
+                font-weight: bold;
+                color: #B51454;
+                background-color: #FFAAAA;
+            }
+
+            .mystyle2 {
+                font-weight: bold;
+                background-color: #AFA;
+            }
+            #grid {
+                margin-left: 0px;
+            }
+        </style>
+        <div id="tabl">
+            <button onclick="showBatch()" class="btn btn-success">Показать табель</button>
+            <button onclick="hideBatch()" class="btn btn-success">Скрыть табель</button>
+            <button onclick="addData()" class="btn btn-success">Добавить строку</button>
+            <button onclick="removeData()" class="btn btn-success">Удалить строку</button>
+        </div>
+
+        <div id="tabl1"></div>
+        <script type="text/javascript">
+    webix.ready(function () {
+        grid = webix.ui({
+            container: "tabl",
+            id: "grid",
+            view: "datatable",
+            leftSplit: 2,
+                        columns: [
+                          { id: "position", header: "Должность", width: 150, editor: "richselect", options: ["Управляющий", "Менеджер", "Товаровед", "Шеф-повар", "Бармен", "Кассир", "Адм.-хостесс", "Официант", "Су-шеф", "Повар"], sort: "string" },
+                          { id: "fio", header: "Фио", width: 220, editor: "text", sort: "string" },
+                          { id: "costhour", header: "Стоимость часа", width: 130, editor: "text", sort: "string" },
+
+                          { id: "d1", header: "01", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d2", header: "02", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d3", header: "03", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d4", header: "04", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d5", header: "05", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d6", header: "06", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d7", header: "07", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d8", header: "08", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d9", header: "09", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d10", header: "10", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d11", header: "11", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d12", header: "12", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d13", header: "13", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d14", header: "14", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d15", header: "15", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d16", header: "16", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d17", header: "17", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d18", header: "18", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d19", header: "19", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d20", header: "20", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d21", header: "21", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d22", header: "22", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d23", header: "23", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d24", header: "24", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d25", header: "25", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d26", header: "26", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d27", header: "27", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d28", header: "28", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d29", header: "29", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d30", header: "30", width: 35, editor: "text", sort: "string", batch: 2 },
+                          { id: "d31", header: "31", width: 35, editor: "text", sort: "string", batch: 2 },
+
+
+                          { id: "hours", header: "Итого часы", width: 100, editor: "text", sort: "string", math: "[$r,d1] + [$r,d2]+ [$r,d3]+ [$r,d4]+ [$r,d5]+ [$r,d6]+ [$r,d7]+ [$r,d8]+ [$r,d9]+ [$r,d10]+ [$r,d11]+ [$r,d12]+ [$r,d13]+ [$r,d14]+ [$r,d15]+ [$r,d16]+ [$r,d17]+ [$r,d18]+ [$r,d19]+ [$r,d20]+ [$r,d21]+ [$r,d22]+ [$r,d23]+ [$r,d24]+ [$r,d25]+ [$r,d26]+ [$r,d27]+ [$r,d28]+ [$r,d29]+ [$r,d30]+ [$r,d31]" },
+
+                          { id: "sumhour", header: "Сумма (часы)", width: 120, editor: "text", sort: "string", math: "[$r, costhour]*[$r, hours]" },
+
+                          { id: "prem", header: "Премии", width: 70, editor: "text", sort: "string" },
+                          { id: "percents", header: "Процент", width: 70, editor: "text", sort: "string" },
+
+                          { id: "nach", header: "Итого начислено", width: 135, editor: "text", sort: "string", math: "[$r, sumhour]+[$r, prem]+[$r, percents]", css: "mystyle2", footer: { content: "summColumn", height: 15, css: "mystyle2" } },
+
+                          { id: "prepayment", header: "Аванс", width: 70, editor: "text", sort: "string" },
+                          { id: "penalties", header: "Штрафы", width: 80, editor: "text", sort: "string" },
+                          { id: "taxes", header: "Вычеты налога", width: 130, editor: "text", sort: "string" },
+                          { id: "firstcost", header: "Продукты по СС", width: 100, editor: "text", sort: "string" },
+                          { id: "other", header: "Прочее", width: 70, editor: "text", sort: "string" },
+                          { id: "medexam", header: "Медосмотр", width: 100, editor: "text", sort: "string" },
+                          { id: "uniform", header: "Форма", width: 70, editor: "text", sort: "string" },
+                          { id: "shortages", header: "Недостачи", width: 100, editor: "text", sort: "string" },
+                          { id: "dishes", header: "Бой посуды", width: 100, editor: "text", sort: "string" },
+                          { id: "table300", header: "300 стол", width: 80, editor: "text", sort: "string" },
+
+                          { id: "resume", header: "Итого удержано", width: 135, editor: "text", sort: "string", math: "[$r, prepayment]+[$r,penalties]+[$r,taxes]+[$r,firstcost]+[$r,other]+[$r,medexam]+[$r,uniform]+[$r,shortages]+[$r,dishes]+[$r,table300]", footer: { content: "summColumn", height: 15, css: "mystyle1" }, css: "mystyle1" },
+
+                          { id: "summ", header: "Сумма к выдаче", width: 150, editor: "text", sort: "string", math: "[$r,nach]-[$r,resume]", footer: { content: "summColumn", height: 15, css: "mystyle2" }, css: "mystyle2" }
+                        ],
+
+                        data: [
+                       { position: "Управляющий", fio: "Атмайкина Юлия Ивановна", costhour: 250, d1: 25 },
+                       { position: "Менеджер", fio: "Иванов Иван Иванович", costhour: 250, d1: "25", hours: "XXX", prepayment: 20, penalties: 500, taxes: 200, firstcost: 100, other: 0, medexam: 200, uniform: 500, shortages: 10 }
+                        ],
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            math: true,
+            visibleBatch: 1
+        });
+    });
+            function showBatch() {
+                $$("grid").showColumnBatch(2);
+            }
+            function hideBatch() {
+                $$("grid").showColumnBatch(1);
+            }
+            function addData() {
+                $$("grid").add({
+                    fio: "",
+                }, 0)
+            }
+            function removeData() {
+                if (!$$("grid").getSelectedId()) {
+                    webix.message("No item is selected!");
+                    return;
+                }
+                $$("grid").remove($$("grid").getSelectedId());
+            }
+            function Excel() {
+                webix.toExcel($$("grid"), {
+                    filename: "table",
+                    name: "Films",
+
+                });
+            }
+        </script>

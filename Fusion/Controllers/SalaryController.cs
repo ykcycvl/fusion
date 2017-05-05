@@ -219,5 +219,9 @@ namespace Fusion.Controllers
             GC.WaitForPendingFinalizers();
             return View(model);
         }
+        public ActionResult SalarySheet()
+        {
+            return View();
+        }
     }
 }
