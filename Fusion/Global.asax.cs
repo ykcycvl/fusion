@@ -20,9 +20,9 @@ namespace Fusion
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             connector = new V83.COMConnector();
-            connector.PoolCapacity = 10;
-            connector.PoolTimeout = 60;
-            connector.MaxConnections = 20;
+            connector.PoolCapacity = 5;
+            connector.PoolTimeout = 30;
+            connector.MaxConnections = 10;
             Application.Add("connector", connector);
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)

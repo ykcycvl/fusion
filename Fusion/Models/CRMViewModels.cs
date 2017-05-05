@@ -671,6 +671,7 @@ namespace Fusion.Models
             public decimal accrued { get; set; }
             public decimal spented { get; set; }
             public string CityAttr { get; set; }
+            public string TypeAttr { get; set; }
         }
         public class PersonsViewModel
         {
@@ -872,9 +873,25 @@ namespace Fusion.Models
                 set
                 {
                     if (value != null && value != "")
-                        searchString += string.Format(" AND cpv.NAME = '{0}'", value);
+                        searchString += string.Format(" AND cpvCity.NAME = '{0}'", value);
 
                     _CityAttr = value;
+                }
+            }
+
+            private string _TypeAttr;
+            public string TypeAttr
+            {
+                get
+                {
+                    return _TypeAttr;
+                }
+                set
+                {
+                    if (value != null && value != "")
+                        searchString += string.Format(" AND cpvType.NAME = '{0}'", value);
+
+                    _TypeAttr = value;
                 }
             }
 
@@ -891,56 +908,86 @@ namespace Fusion.Models
                 SqlConnection con = GetConnection();
                 SqlCommand command = new SqlCommand(String.Format(@"
                         select TOP {2}
-	                        cp.PEOPLE_ID,
-	                        cp.BIRTHDAY,
-	                        cp.L_NAME,
-	                        cp.F_NAME,
-	                        cp.M_NAME,
-	                        cp.FULL_NAME,
-	                        MAX(Case when cpa.ACCOUNT_TYPE_ID = 16 then cpa.BALANCE End) as BALANCE,
-							ltrim(STUFF(
-							 (SELECT ', ' + CAST (b.CARD_CODE AS varchar(20))
-							  FROM CARD_PEOPLES a 
-									LEFT JOIN CARD_CARDS b ON a.PEOPLE_ID = b.PEOPLE_ID
-							  WHERE a.PEOPLE_ID = cp.PEOPLE_ID
-							  FOR XML PATH ('')), 1, 1, ''))  AS CARDS,
-							STUFF(
-							 (SELECT ', ' + b.CONTACT_VALUE
-							  FROM CARD_PEOPLES a 
-									LEFT JOIN CARD_CONTACTS b ON a.PEOPLE_ID = b.PEOPLE_ID
-							  WHERE a.PEOPLE_ID = cp.PEOPLE_ID and b.CONTACT_TYPE IN (254, 250)
-							  FOR XML PATH ('')), 1, 1, '')  AS phones,
+	                        t1.PEOPLE_ID,
+	                        t1.BIRTHDAY,
+	                        t1.L_NAME,
+	                        t1.F_NAME,
+	                        t1.M_NAME,
+	                        t1.FULL_NAME,
+	                        MAX(t1.BALANCE) as BALANCE,
+	                        ltrim(STUFF(
+		                        (SELECT ', ' + CAST (b.CARD_CODE AS varchar(20))
+		                        FROM CARD_PEOPLES a 
+			                        LEFT JOIN CARD_CARDS b ON a.PEOPLE_ID = b.PEOPLE_ID
+		                        WHERE a.PEOPLE_ID = t1.PEOPLE_ID
+		                        FOR XML PATH ('')), 1, 1, ''))  AS CARDS,
 	                        STUFF(
-							 (SELECT ', ' + b.CONTACT_VALUE
-							  FROM CARD_PEOPLES a 
-									LEFT JOIN CARD_CONTACTS b ON a.PEOPLE_ID = b.PEOPLE_ID
-							  WHERE a.PEOPLE_ID = cp.PEOPLE_ID and b.CONTACT_TYPE IN (252)
-							  FOR XML PATH ('')), 1, 1, '')  AS emails,
-	                        Sum(Case when ct.transaction_type = 162 then ct.SUMM End) as accrued,
-	                        Sum(Case when ct.transaction_type = 161 then ct.SUMM End) as spented,
-                            cpv.NAME as CityAttr
-                        from 
-	                        CARD_PEOPLES cp
-	                        LEFT JOIN CARD_PEOPLE_ACCOUNTS cpa ON cp.PEOPLE_ID = cpa.PEOPLE_ID
-	                        LEFT JOIN CARD_CARDS cc ON CP.PEOPLE_ID = cc.PEOPLE_ID
-	                        LEFT JOIN CARD_CONTACTS cphone ON cp.PEOPLE_ID = cphone.PEOPLE_ID and cphone.CONTACT_TYPE IN (254, 250) and cphone.DELETED = 0
-	                        LEFT JOIN CARD_CONTACTS cemail ON cp.PEOPLE_ID = cemail.PEOPLE_ID and cemail.CONTACT_TYPE = 252 and cemail.DELETED = 0
-                            LEFT JOIN CARD_TRANSACTIONS ct ON cpa.PEOPLE_ACCOUNT_ID = ct.ACCOUNT_ID
-							LEFT JOIN CARD_PEOPLE_PROPERTY_LINKS cppl ON (cp.PEOPLE_ID = cppl.PEOPLE_ID AND cppl.PROPERTY_ID = 2)
-							LEFT JOIN CARD_PROPERTY_VALUES cpv ON cppl.PROPERTY_VALUE_ID = cpv.PROPERTY_VALUE_ID
-                        {0}
-                        GROUP BY 
-	                        cp.PEOPLE_ID,
-	                        cp.BIRTHDAY,
-	                        cp.L_NAME,
-	                        cp.F_NAME,
-	                        cp.M_NAME,
-	                        cp.FULL_NAME,
-                            cpv.NAME
-                        {1}
-                    ", searchString, orderString, count), con);
+		                        (SELECT ', ' + b.CONTACT_VALUE
+		                        FROM CARD_PEOPLES a 
+			                        LEFT JOIN CARD_CONTACTS b ON a.PEOPLE_ID = b.PEOPLE_ID
+		                        WHERE a.PEOPLE_ID = t1.PEOPLE_ID and b.CONTACT_TYPE IN (254, 250)
+		                        FOR XML PATH ('')), 1, 1, '')  AS phones,
+	                        STUFF(
+		                        (SELECT ', ' + b.CONTACT_VALUE
+		                        FROM CARD_PEOPLES a 
+			                        LEFT JOIN CARD_CONTACTS b ON a.PEOPLE_ID = b.PEOPLE_ID
+		                        WHERE a.PEOPLE_ID = t1.PEOPLE_ID and b.CONTACT_TYPE IN (252)
+		                        FOR XML PATH ('')), 1, 1, '')  AS emails,
+	                        MAX(t1.accrued) as accrued,
+	                        MAX(t1.spented) as spented,
+                            t1.CityAttr,
+	                        t1.TypeAttr
+                        from
+                            (select
+	                                cp.PEOPLE_ID,
+	                                cp.BIRTHDAY,
+	                                cp.L_NAME,
+	                                cp.F_NAME,
+	                                cp.M_NAME,
+	                                cp.FULL_NAME,
+	                                MAX(Case when cpa.ACCOUNT_TYPE_ID = 16 then cpa.BALANCE End) as BALANCE,
+		                            cc.CARD_CODE,
+		                            cphone.CONTACT_VALUE as phone,
+		                            cemail.CONTACT_VALUE as email,
+	                                Sum(Case when ct.transaction_type = 162 then ct.SUMM End) as accrued,
+	                                Sum(Case when ct.transaction_type = 161 then ct.SUMM End) as spented,
+                                    cpvCity.NAME as CityAttr,
+		                            cpvType.NAME as TypeAttr
+                                from 
+	                                CARD_PEOPLES cp
+	                                LEFT JOIN CARD_PEOPLE_ACCOUNTS cpa ON cp.PEOPLE_ID = cpa.PEOPLE_ID
+	                                LEFT JOIN CARD_CARDS cc ON CP.PEOPLE_ID = cc.PEOPLE_ID
+	                                LEFT JOIN CARD_CONTACTS cphone ON cp.PEOPLE_ID = cphone.PEOPLE_ID and cphone.CONTACT_TYPE IN (254, 250) and cphone.DELETED = 0
+	                                LEFT JOIN CARD_CONTACTS cemail ON cp.PEOPLE_ID = cemail.PEOPLE_ID and cemail.CONTACT_TYPE = 252 and cemail.DELETED = 0
+                                    LEFT JOIN CARD_TRANSACTIONS ct ON cpa.PEOPLE_ACCOUNT_ID = ct.ACCOUNT_ID
+		                            LEFT JOIN CARD_PEOPLE_PROPERTY_LINKS cpplCity ON (cp.PEOPLE_ID = cpplCity.PEOPLE_ID AND cpplCity.PROPERTY_ID = 2)
+		                            LEFT JOIN CARD_PEOPLE_PROPERTY_LINKS cpplType ON (cp.PEOPLE_ID = cpplType.PEOPLE_ID AND cpplType.PROPERTY_ID = 3)
+		                            LEFT JOIN CARD_PROPERTY_VALUES cpvCity ON (cpplCity.PROPERTY_VALUE_ID = cpvCity.PROPERTY_VALUE_ID OR cpplCity.PROPERTY_VALUE_ID = cpvCity.PROPERTY_VALUE_ID)
+		                            LEFT JOIN CARD_PROPERTY_VALUES cpvType ON (cpplType.PROPERTY_VALUE_ID = cpvType.PROPERTY_VALUE_ID OR cpplType.PROPERTY_VALUE_ID = cpvType.PROPERTY_VALUE_ID)
+                                {0}
+                                GROUP BY 
+	                                cp.PEOPLE_ID,
+	                                cp.BIRTHDAY,
+	                                cp.L_NAME,
+	                                cp.F_NAME,
+	                                cp.M_NAME,
+	                                cp.FULL_NAME,
+                                    cpvCity.NAME,
+		                            cpvType.NAME,
+		                            cc.CARD_CODE,
+		                            cphone.CONTACT_VALUE,
+		                            cemail.CONTACT_VALUE) t1
+                            GROUP BY 
+	                            t1.PEOPLE_ID,
+	                            t1.BIRTHDAY,
+	                            t1.L_NAME,
+	                            t1.F_NAME,
+	                            t1.M_NAME,
+	                            t1.FULL_NAME,
+                                t1.CityAttr,
+	                            t1.TypeAttr
+                            {1}", searchString, orderString, count), con);
 
-                
                 SqlDataReader rdr = command.ExecuteReader();
 
                 if (rdr.HasRows)
@@ -975,6 +1022,8 @@ namespace Fusion.Models
                             p.spented = Convert.ToDecimal(record["spented"]);
                         if (record["CityAttr"] != DBNull.Value)
                             p.CityAttr = Convert.ToString(record["CityAttr"]);
+                        if (record["TypeAttr"] != DBNull.Value)
+                            p.TypeAttr = Convert.ToString(record["TypeAttr"]);
                         persons.Add(p);
                     }
                 }
@@ -1055,6 +1104,82 @@ namespace Fusion.Models
                             opd.DT = Convert.ToDateTime(record["DT"]);
 
                         OPDInfoList.Add(opd);
+                    }
+                }
+
+                rdr.Close();
+                con.Close();
+            }
+        }
+        public class OPMViewModel
+        {
+            private static SqlConnection GetConnection()
+            {
+                string connectionString = WebConfigurationManager.ConnectionStrings["crmConnectionString"].ConnectionString;
+                SqlConnection dbConnection = new SqlConnection(connectionString);
+                dbConnection.Open();
+                return dbConnection;
+            }
+            private string whereString = "";
+            private string havingString = "";
+
+            public class OPMInfo
+            {
+                public long PEOPLE_ID { get; set; }
+                public int OPM { get; set; }
+                public string FULL_NAME { get; set; }
+                public long CARD_CODE { get; set; }
+                public DateTime DT { get; set; }
+            }
+            public int count { get; set; }
+            public DateTime StartDateTime { get; set; }
+            public DateTime EndDateTime { get; set; }
+            public List<OPMInfo> OPMInfoList = new List<OPMInfo>();
+            public void Search()
+            {
+                whereString = String.Format("WHERE ct.transaction_type IN (162, 161) and ct.TRANSACTION_TIME >= '{0}' and ct.TRANSACTION_TIME <= '{1}'", StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd"));
+                havingString = String.Format("HAVING COUNT(ct.TRANSACTION_ID) >= {0}", count);
+
+                SqlConnection con = GetConnection();
+                SqlCommand command = new SqlCommand(String.Format(@"select
+	                COUNT(ct.TRANSACTION_ID) as OPM,
+                    cp.PEOPLE_ID,
+	                cp.FULL_NAME,
+	                ct.CARD_CODE,
+	                FORMAT(ct.TRANSACTION_TIME, 'MM.yyyy') as DT
+                FROM
+	                CARD_TRANSACTIONS ct
+	                INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+	                INNER JOIN CARD_PEOPLES cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+                {0}
+                GROUP BY
+                    cp.PEOPLE_ID,
+	                cp.FULL_NAME,
+	                ct.CARD_CODE,
+	                FORMAT(ct.TRANSACTION_TIME, 'MM.yyyy')
+                {1}
+                ORDER BY OPM DESC", whereString, havingString), con);
+
+                SqlDataReader rdr = command.ExecuteReader();
+
+                if (rdr.HasRows)
+                {
+                    foreach (DbDataRecord record in rdr)
+                    {
+                        OPMInfo opm = new OPMInfo();
+
+                        if (record["PEOPLE_ID"] != DBNull.Value)
+                            opm.PEOPLE_ID = Convert.ToInt64(record["PEOPLE_ID"]);
+                        if (record["OPM"] != DBNull.Value)
+                            opm.OPM = Convert.ToInt32(record["OPM"]);
+                        if (record["FULL_NAME"] != DBNull.Value)
+                            opm.FULL_NAME = Convert.ToString(record["FULL_NAME"]);
+                        if (record["CARD_CODE"] != DBNull.Value)
+                            opm.CARD_CODE = Convert.ToInt32(record["CARD_CODE"]);
+                        if (record["DT"] != DBNull.Value)
+                            opm.DT = Convert.ToDateTime("01." + record["DT"].ToString());
+
+                        OPMInfoList.Add(opm);
                     }
                 }
 

@@ -1,0 +1,78 @@
+﻿@model Fusion.Models.SalaryModels.TimeSheetsViewModel
+
+@{
+    ViewBag.Title = "Индивидуальные графики";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(function () {
+        $("#OrganizationName").change(function () {
+            blur();
+        });
+        var i = document.getElementById("Form");
+        i.style.opacity = 1;
+    });
+</script>
+
+<script>
+    function blur() {
+        $("#loader").show();
+        var i = document.getElementById("Form");
+        i.style.opacity = 0.5;
+        window.location.href = '/Salary/TimeSheets?OrgName=' + encodeURIComponent($("#OrganizationName").val());
+    }
+</script>
+
+<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
+
+@Html.ActionLink("Создать", "Sheet", "Salary", new { @class="btn btn-default"})
+<br/>
+
+@using (Html.BeginForm("TimeSheets", "Salary", FormMethod.Get, new { id = "Form" }))
+{
+    <div class="form-group" style="width: 250px;">
+        @Html.DropDownListFor(m => m.OrganizationName, Model.OrganizationsSelectList, new { @class = "form-control" })
+    </div>
+}
+
+<table class="table table-hover table-bordered table-responsive table-striped">
+    <tr>
+        <th>Дата</th>
+        <th>Номер</th>
+        <th>Период регистрации</th>
+        <th>Организация</th>
+        <th>&nbsp;</th>
+    </tr>
+    @foreach (var ts in Model.TimeSheets)
+    {
+        string textDecoration = "none";
+        string color = "#000";
+
+        if (ts.Deleted)
+        {
+            textDecoration = "line-through";
+        }
+
+        if (ts.Passed)
+        {
+            color = "#0A0";
+        }
+
+        <tr style="text-decoration:@textDecoration;color:@color;cursor:pointer" onclick="location.href = '/Salary/Sheet?number=@ts.Number'">
+            <td>@ts.Date.ToString("dd.MM.yyyy")</td>
+            <td>@ts.Number</td>
+            <td>@ts.Period.ToString("MMMM yyyy")</td>
+            <td>@ts.OrganizationName</td>
+            @if (ts.Passed)
+            {
+                <td>Проведен</td>
+            }
+            else
+            {
+                <td>Не проведен</td>
+            }
+        </tr>
+    }
+</table>

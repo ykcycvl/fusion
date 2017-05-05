@@ -20,7 +20,7 @@ body,
 .content {
   box-sizing: border-box;
   min-height: 100%;
-  padding-bottom: 70px;
+  padding-bottom: 0 !important;
 }
 .footer {
   height: 60px;

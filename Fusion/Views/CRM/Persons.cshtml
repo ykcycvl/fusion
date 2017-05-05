@@ -100,7 +100,12 @@
                     <th>
                         Город
                         <br />
-                        @Html.TextBoxFor(m => m.CityAttr, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 5px;width:130px" })
+                        @Html.TextBoxFor(m => m.CityAttr, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 5px;width:100px" })
+                    </th>
+                    <th>
+                        Тип гостя
+                        <br />
+                        @Html.TextBoxFor(m => m.TypeAttr, new { @class = "form-control", @style = "font-size: 12px;height: 24px;padding: 0 5px;width:100px" })
                     </th>
                     <th style="width:100px">&nbsp;<br /><input type="submit" value="Найти" style="font-size: 12px;height: 24px;padding: 0 5px" /></th>
                 </tr>
@@ -122,6 +127,7 @@
                             <td>@person.phone</td>
                             <td>@person.email</td>
                             <td>@person.CityAttr</td>
+                            <td>@person.TypeAttr</td>
                             <td>
                                 @Html.ActionLink("Операции", "Transactions", new { @people_id = @person.PEOPLE_ID, @returnUrl = @ViewBag.returnUrl }, new { @class = "button" })
                             </td>

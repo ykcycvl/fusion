@@ -1970,6 +1970,8 @@
     </Content>
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\1369408992_cat-3.gif" />
+    <Content Include="images\load.gif" />
     <Content Include="images\sale\green.gif" />
     <Content Include="images\sale\red.gif" />
     <Content Include="images\sale\yellow.gif" />
@@ -2456,6 +2458,10 @@
     <Content Include="Views\Salary\Sheet.cshtml" />
     <Content Include="Views\Salary\SAC.cshtml" />
     <Content Include="Views\Salary\EmployeeSalaryDetail.cshtml" />
+    <Content Include="Views\CRM\OPM.cshtml" />
+    <Content Include="Views\Salary\TimeSheets.cshtml" />
+    <Content Include="Views\Salary\ChargeList.cshtml" />
+    <Content Include="Views\Salary\SalaryCharge.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

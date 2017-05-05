@@ -1,0 +1,63 @@
+﻿@model Fusion.Models.ReportViewModels.OPMViewModel
+@{
+    ViewBag.Title = "OPM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>OPM</h2>
+<div style="margin: 10px 0; border:none;" class="alert alert-info">
+    @using (Html.BeginForm("OPM", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+    {
+        <div class="col-xs-1">
+            @Html.TextBoxFor(m => m.count, new { @class = "form-control", @style = "width: 50px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.StartDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <div class="col-xs-2">
+            @Html.TextBoxFor(m => m.EndDateTime, "{0:dd.MM.yyyy}", new { @class = "form-control date", @style = "width: 150px" })
+        </div>
+        <input type="submit" value="Поиск" class="btn btn-default" />
+    }
+</div>
+<table class="table table-bordered table-hover table-striped" style="font-size:12px!important">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            OPM
+        </th>
+        <th>
+            Владелец
+        </th>
+        <th>
+            Карта
+        </th>
+        <th>
+            Дата
+        </th>
+    </tr>
+    @if (Model.OPMInfoList != null && Model.OPMInfoList.Count > 0)
+    {
+        int i = 0;
+
+        foreach (var opm in Model.OPMInfoList)
+        {
+            i++;
+            <tr>
+                <td>@i.ToString()</td>
+                <td>@opm.OPM</td>
+                <td>@Html.ActionLink(@opm.FULL_NAME, "EditPerson", new { people_id = @opm.PEOPLE_ID })</td>
+                <td>@opm.CARD_CODE</td>
+                <td>@opm.DT.ToString("MM.yyyy")</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4" style="text-align:center;color:#f00">Нет результатов, удовлетворяющих условиям фильтра</td>
+        </tr>
+    }
+</table>

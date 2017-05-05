@@ -1,12 +1,13 @@
 ﻿@model Fusion.Models.SalaryModels.EmployeeSalaryDetail
 
 @{
-    ViewBag.Title = "Детализация";
+    ViewBag.Title = "Начисления и удержания";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
-
+Месяц: @Model.Period.ToString("MMMM yyyy")
+<br/>
 <table class="table table-bordered table-striped">
     <tr>
         <td>

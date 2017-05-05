@@ -7,6 +7,7 @@ using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace Fusion.Models
 {
@@ -27,7 +28,7 @@ namespace Fusion.Models
         public class Accrual
         {
             public string Code { get; set; }
-            public Decimal Sum { get; set; }
+            public Decimal? Sum { get; set; }
             public string Comment { get; set; }
             public string Name { get; set; }
         }
@@ -59,10 +60,10 @@ namespace Fusion.Models
                 Employees = new List<Employee>();
             }
         }
-
         public class Organization
         {
             public dynamic connection;
+            public string SheetNumber { get; set; }
             public string FullName { get; set; }
             public List<string> Organizations { get; set; }
             public List<Subdivision> Subdivisions { get; set; }
@@ -70,7 +71,12 @@ namespace Fusion.Models
             public List<Accrual> Accruals { get; set; }
             [DataType(DataType.Date)]
             public DateTime Period { get; set; }
-
+            private class TimeSheetInfo
+            {
+                public string EmployeeCode { get; set; }
+                public List<HourPerDay> TimeSheet { get; set; }
+            }
+            private List<TimeSheetInfo> tsiList = new List<TimeSheetInfo>();
             public IEnumerable<SelectListItem> OrganizationsSelectList
             {
                 get
@@ -91,50 +97,58 @@ namespace Fusion.Models
                 }
             }
 
-            public void GetDivisionList()
+            public void GetOrganizationList()
             {
                 Organizations = new List<string>();
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = @"ВЫБРАТЬ Организации.Наименование ИЗ Справочник.Организации КАК Организации";
+                dynamic res = QueryTo1C.Execute().Choose();
 
-                try
+                while (res.Next())
                 {
-                    dynamic QueryTo1C = connection.NewObject("Запрос");
-
-                    try
-                    {
-                        QueryTo1C.Text = @"ВЫБРАТЬ Организации.Наименование ИЗ Справочник.Организации КАК Организации";
-                        dynamic res = QueryTo1C.Execute().Choose();
-
-                        while (res.Next())
-                        {
-                            Organizations.Add(res.Наименование);
-                        }
-
-                        if(Organizations.Count > 0 && FullName != null && FullName != "")
-                            FullName = Organizations[0];
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    finally
-                    {
-                        QueryTo1C = null;
-                    }
+                    Organizations.Add(res.Наименование);
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+
+                if (Organizations.Count > 0 && FullName != null && FullName != "")
+                    FullName = Organizations[0];
+
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                
             }
-            public void GetFullData()
+            public void GetEmployees()
             {
-                //Список возможных удержаний из 1С
                 Subdivisions = new List<Subdivision>();
-                Detentions = GetDetentions();
-                Accruals = GetAccruals();
                 //Получение информации по организации, ее подразделениям и сотрудникам
                 dynamic QueryTo1C = connection.NewObject("Запрос");
-                QueryTo1C.Text = String.Format(@"ВЫБРАТЬ * ИЗ РегистрСведений.ДанныеДляПодбораСотрудников КАК ДанныеДляПодбораСотрудников ГДЕ ДанныеДляПодбораСотрудников.Организация.Наименование = ""{0}"" И ДанныеДляПодбораСотрудников.Подразделение.Наименование <> """"", FullName);
+                QueryTo1C.Text = String.Format(@"ВЫБРАТЬ
+ КадроваяИсторияСотрудниковСрезПоследних.Сотрудник КАК Сотрудник,
+ КадроваяИсторияСотрудниковСрезПоследних.Организация КАК Организация,
+ КадроваяИсторияСотрудниковСрезПоследних.ФизическоеЛицо КАК ФизическоеЛицо,
+ КадроваяИсторияСотрудниковСрезПоследних.Подразделение КАК Подразделение,
+ КадроваяИсторияСотрудниковСрезПоследних.Должность КАК Должность,
+ КадроваяИсторияСотрудниковСрезПоследних.ДолжностьПоШтатномуРасписанию КАК ДолжностьПоШтатномуРасписанию,
+ КадроваяИсторияСотрудниковСрезПоследних.ЭтоГоловнойСотрудник КАК ЭтоГоловнойСотрудник,
+ КадроваяИсторияСотрудниковСрезПоследних.ВидСобытия КАК ВидСобытия,
+ КадроваяИсторияСотрудниковСрезПоследних.КоличествоСтавок КАК КоличествоСтавок,
+ КадроваяИсторияСотрудниковСрезПоследних.ВидЗанятости КАК ВидЗанятости,
+ КадроваяИсторияСотрудниковСрезПоследних.ВидДоговора КАК ВидДоговора,
+ ЗначенияПериодическихПоказателейРасчетаЗарплатыСотрудниковСрезПоследних.Показатель КАК Показатель,
+ ЗначенияПериодическихПоказателейРасчетаЗарплатыСотрудниковСрезПоследних.Значение КАК Значение,
+ КадроваяИсторияСотрудниковСрезПоследних.ФизическоеЛицо.Наименование КАК ФизическоеЛицоНаименование
+ИЗ
+ РегистрСведений.КадроваяИсторияСотрудников.СрезПоследних(, ) КАК КадроваяИсторияСотрудниковСрезПоследних
+ ЛЕВОЕ СОЕДИНЕНИЕ РегистрСведений.ЗначенияПериодическихПоказателейРасчетаЗарплатыСотрудников.СрезПоследних КАК ЗначенияПериодическихПоказателейРасчетаЗарплатыСотрудниковСрезПоследних 
+ 	ПО (КадроваяИсторияСотрудниковСрезПоследних.Сотрудник = ЗначенияПериодическихПоказателейРасчетаЗарплатыСотрудниковСрезПоследних.Сотрудник)
+ГДЕ
+ КадроваяИсторияСотрудниковСрезПоследних.Организация.Наименование = ""{0}""
+УПОРЯДОЧИТЬ ПО
+ КадроваяИсторияСотрудниковСрезПоследних.Должность,
+ ФизическоеЛицоНаименование", FullName);
                 dynamic res = QueryTo1C.Execute().Choose();
 
                 while (res.Next())
@@ -147,95 +161,299 @@ namespace Fusion.Models
                         Subdivisions.Add(s);
                     }
 
-                    Employee e = new Employee() { Code = res.Сотрудник.Код, FullName = res.Сотрудник.Наименование, Detentions = Detentions, Accruals = Accruals, Position = res.Должность.Наименование, TimeSheet = new List<HourPerDay>() };
+                    Employee e = new Employee() { Code = res.Сотрудник.Код, FullName = res.Сотрудник.Наименование, Position = res.Должность.Наименование, TimeSheet = new List<HourPerDay>() };
 
                     for (int i = 1; i <= DateTime.DaysInMonth(Period.Year, Period.Month); i++)
                     {
-                        e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, i) });
+                        TimeSheetInfo tsi = tsiList.FirstOrDefault(p => p.EmployeeCode == e.Code);
+
+                        if (tsi == null)
+                            e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, i) });
+                        else
+                        {
+                            e.TimeSheet = tsi.TimeSheet;
+                            break;
+                        }
                     }
+
+                    if (Accruals != null)
+                        e.Accruals = Accruals;
+
+                    if (Detentions != null)
+                        e.Detentions = Detentions;
 
                     s.Employees.Add(e);
                 }
 
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
                 QueryTo1C = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            public void GetSheetData()
+            {
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = String.Format(@"ВЫБРАТЬ * ИЗ Документ.ИндивидуальныйГрафик КАК ИндивидуальныйГрафик ГДЕ ИндивидуальныйГрафик.Номер = ""{0}""", SheetNumber);
+                dynamic res = QueryTo1C.Execute().Choose();
+
+                while (res.Next())
+                {
+                    Period = Convert.ToDateTime(res.ПериодРегистрации);
+                    FullName = Convert.ToString(res.Организация.Наименование);
+                    dynamic tRes = res.ДанныеОВремени.Choose();
+
+                    while (tRes.Next())
+                    {
+                        TimeSheetInfo tsi = new TimeSheetInfo();
+                        tsi.EmployeeCode = Convert.ToString(tRes.Сотрудник.Код);
+                        tsi.TimeSheet = new List<HourPerDay>();
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 1), Hours = Convert.ToDecimal(tRes.Часов1) == 0 ? null : Convert.ToDecimal(tRes.Часов1) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 2), Hours = Convert.ToDecimal(tRes.Часов2) == 0 ? null : Convert.ToDecimal(tRes.Часов2) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 3), Hours = Convert.ToDecimal(tRes.Часов3) == 0 ? null : Convert.ToDecimal(tRes.Часов3) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 4), Hours = Convert.ToDecimal(tRes.Часов4) == 0 ? null : Convert.ToDecimal(tRes.Часов4) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 5), Hours = Convert.ToDecimal(tRes.Часов5) == 0 ? null : Convert.ToDecimal(tRes.Часов5) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 6), Hours = Convert.ToDecimal(tRes.Часов6) == 0 ? null : Convert.ToDecimal(tRes.Часов6) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 7), Hours = Convert.ToDecimal(tRes.Часов7) == 0 ? null : Convert.ToDecimal(tRes.Часов7) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 8), Hours = Convert.ToDecimal(tRes.Часов8) == 0 ? null : Convert.ToDecimal(tRes.Часов8) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 9), Hours = Convert.ToDecimal(tRes.Часов9) == 0 ? null : Convert.ToDecimal(tRes.Часов9) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 10), Hours = Convert.ToDecimal(tRes.Часов10) == 0 ? null : Convert.ToDecimal(tRes.Часов10) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 11), Hours = Convert.ToDecimal(tRes.Часов11) == 0 ? null : Convert.ToDecimal(tRes.Часов11) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 12), Hours = Convert.ToDecimal(tRes.Часов12) == 0 ? null : Convert.ToDecimal(tRes.Часов12) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 13), Hours = Convert.ToDecimal(tRes.Часов13) == 0 ? null : Convert.ToDecimal(tRes.Часов13) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 14), Hours = Convert.ToDecimal(tRes.Часов14) == 0 ? null : Convert.ToDecimal(tRes.Часов14) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 15), Hours = Convert.ToDecimal(tRes.Часов15) == 0 ? null : Convert.ToDecimal(tRes.Часов15) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 16), Hours = Convert.ToDecimal(tRes.Часов16) == 0 ? null : Convert.ToDecimal(tRes.Часов16) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 17), Hours = Convert.ToDecimal(tRes.Часов17) == 0 ? null : Convert.ToDecimal(tRes.Часов17) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 18), Hours = Convert.ToDecimal(tRes.Часов18) == 0 ? null : Convert.ToDecimal(tRes.Часов18) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 19), Hours = Convert.ToDecimal(tRes.Часов19) == 0 ? null : Convert.ToDecimal(tRes.Часов19) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 20), Hours = Convert.ToDecimal(tRes.Часов20) == 0 ? null : Convert.ToDecimal(tRes.Часов20) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 21), Hours = Convert.ToDecimal(tRes.Часов21) == 0 ? null : Convert.ToDecimal(tRes.Часов21) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 22), Hours = Convert.ToDecimal(tRes.Часов22) == 0 ? null : Convert.ToDecimal(tRes.Часов22) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 23), Hours = Convert.ToDecimal(tRes.Часов23) == 0 ? null : Convert.ToDecimal(tRes.Часов23) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 24), Hours = Convert.ToDecimal(tRes.Часов24) == 0 ? null : Convert.ToDecimal(tRes.Часов24) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 25), Hours = Convert.ToDecimal(tRes.Часов25) == 0 ? null : Convert.ToDecimal(tRes.Часов25) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 26), Hours = Convert.ToDecimal(tRes.Часов26) == 0 ? null : Convert.ToDecimal(tRes.Часов26) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 27), Hours = Convert.ToDecimal(tRes.Часов27) == 0 ? null : Convert.ToDecimal(tRes.Часов27) });
+                        tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 28), Hours = Convert.ToDecimal(tRes.Часов28) == 0 ? null : Convert.ToDecimal(tRes.Часов28) });
+
+                        try
+                        {
+                            tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 29), Hours = Convert.ToDecimal(tRes.Часов29) == 0 ? null : Convert.ToDecimal(tRes.Часов29) });
+                            tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 30), Hours = Convert.ToDecimal(tRes.Часов30) == 0 ? null : Convert.ToDecimal(tRes.Часов30) });
+                            tsi.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 31), Hours = Convert.ToDecimal(tRes.Часов31) == 0 ? null : Convert.ToDecimal(tRes.Часов31) });
+                        }
+                        catch { }
+
+                        tsiList.Add(tsi);
+                    }
+                }
+
+                GetEmployees();
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
             public List<Detention> GetDetentions()
             {
                 List<Detention> Detentions = new List<Detention>();
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Удержания.ДополнительныеРеквизиты КАК УдержанияДополнительныеРеквизиты ГДЕ УдержанияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
+                dynamic res = QueryTo1C.Execute().Choose();
 
-                try
+                while (res.Next())
                 {
-                    dynamic QueryTo1C = connection.NewObject("Запрос");
-
-                    try
-                    {
-                        QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Удержания.ДополнительныеРеквизиты КАК УдержанияДополнительныеРеквизиты ГДЕ УдержанияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
-                        dynamic res = QueryTo1C.Execute().Choose();
-
-                        while (res.Next())
-                        {
-                            Detention d = new Detention();
-                            d.Code = res.Ссылка.Код;
-                            d.Name = res.Ссылка.Наименование;
-                            d.Comment = "";
-                            Detentions.Add(d);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw ex;
-                    }
-                    finally
-                    {
-                        QueryTo1C = null;
-                    }
+                    Detention d = new Detention();
+                    d.Code = res.Ссылка.Код;
+                    d.Name = res.Ссылка.Наименование;
+                    d.Comment = "";
+                    Detentions.Add(d);
                 }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
 
                 return Detentions;
             }
             public List<Accrual> GetAccruals()
             {
                 List<Accrual> Accruals = new List<Accrual>();
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Начисления.ДополнительныеРеквизиты КАК НачисленияДополнительныеРеквизиты ГДЕ НачисленияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
+                dynamic res = QueryTo1C.Execute().Choose();
 
+                while (res.Next())
+                {
+                    Accrual a = new Accrual();
+                    a.Code = res.Ссылка.Код;
+                    a.Name = res.Ссылка.Наименование;
+                    a.Comment = "";
+                    Accruals.Add(a);
+                }
+
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                return Accruals;
+            }
+            public void PostTimeSheet()
+            {
                 try
                 {
-                    dynamic QueryTo1C = connection.NewObject("Запрос");
-
                     try
                     {
-                        QueryTo1C.Text = @"ВЫБРАТЬ * ИЗ ПланВидовРасчета.Начисления.ДополнительныеРеквизиты КАК НачисленияДополнительныеРеквизиты ГДЕ НачисленияДополнительныеРеквизиты.Свойство.Заголовок = ""Выгружаемое""";
-                        dynamic res = QueryTo1C.Execute().Choose();
-
-                        while (res.Next())
+                        if (String.IsNullOrEmpty(SheetNumber))
                         {
-                            Accrual a = new Accrual();
-                            a.Code = res.Ссылка.Код;
-                            a.Name = res.Ссылка.Наименование;
-                            a.Comment = "";
-                            Accruals.Add(a);
+                            dynamic doc = connection.Документы.ИндивидуальныйГрафик.СоздатьДокумент();
+                            doc.ПериодРегистрации = Period.ToString("yyyyMM01");
+                            doc.Организация = connection.Справочники.Организации.НайтиПоНаименованию(FullName);
+                            doc.ДатаНачалаПериода = Period.ToString("yyyyMM01");
+                            doc.ДатаОкончанияПериода = new DateTime(Period.Year, Period.Month, DateTime.DaysInMonth(Period.Year, Period.Month)).ToString("yyyyMMdd");
+                            doc.ПериодВводаДанныхОВремени = connection.Перечисления.ПериодыВводаДанныхОВремени.ТекущийМесяц;
+                            doc.Дата = DateTime.Today.ToString("yyyyMMdd");
+
+                            for (int i = 0; i < Subdivisions.Count; i++)
+                            {
+                                for (int j = 0; j < Subdivisions[i].Employees.Count; j++)
+                                {
+                                    Decimal? total = Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
+
+                                    if (total != null && total > 0)
+                                    {
+                                        dynamic dot = doc.ДанныеОВремени.Добавить();
+
+                                        for (int k = 0; k < Subdivisions[i].Employees[j].TimeSheet.Count; k++)
+                                        {
+                                            if (Subdivisions[i].Employees[j].TimeSheet[k].Hours != null && Subdivisions[i].Employees[j].TimeSheet[k].Hours > 0)
+                                            {
+                                                dynamic Str = connection.NewObject("Структура");
+                                                Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
+                                                Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), Subdivisions[i].Employees[j].TimeSheet[k].Hours);
+                                                Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.Явка);
+                                                connection.ЗаполнитьЗначенияСвойств(dot, Str);
+                                                Marshal.Release(Marshal.GetIDispatchForObject(Str));
+                                                Str = null;
+                                            }
+                                            else
+                                            {
+                                                dynamic Str = connection.NewObject("Структура");
+                                                Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
+                                                Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), 0);
+                                                Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.ВыходныеДни);
+                                                connection.ЗаполнитьЗначенияСвойств(dot, Str);
+                                                Marshal.Release(Marshal.GetIDispatchForObject(Str));
+                                                Str = null;
+                                            }
+                                        }
+
+                                        Marshal.Release(Marshal.GetIDispatchForObject(dot));
+                                        dot = null;
+                                    }
+                                }
+                            }
+
+                            doc.Записать();
+                            SheetNumber = doc.Номер;
+                            Marshal.Release(Marshal.GetIDispatchForObject(doc));
+                            doc = null;
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+                        }
+                        else
+                        {
+                            dynamic QueryTo1C = connection.NewObject("Запрос");
+                            QueryTo1C.Text = String.Format(@"ВЫБРАТЬ * ИЗ Документ.ИндивидуальныйГрафик КАК ИндивидуальныйГрафик ГДЕ ИндивидуальныйГрафик.Номер = ""{0}""", SheetNumber);
+                            dynamic res = QueryTo1C.Execute().Choose();
+
+                            while (res.Next())
+                            {
+                                dynamic doc = res.Ссылка.ПолучитьОбъект();
+                                doc.ПериодРегистрации = Period.ToString("yyyyMM01");
+                                doc.Организация = connection.Справочники.Организации.НайтиПоНаименованию(FullName);
+                                doc.ДатаНачалаПериода = Period.ToString("yyyyMM01");
+                                doc.ДатаОкончанияПериода = new DateTime(Period.Year, Period.Month, DateTime.DaysInMonth(Period.Year, Period.Month)).ToString("yyyyMMdd");
+                                doc.ПериодВводаДанныхОВремени = connection.Перечисления.ПериодыВводаДанныхОВремени.ТекущийМесяц;
+                                doc.Дата = DateTime.Today.ToString("yyyyMMdd");
+                                doc.ДанныеОВремени.Очистить();
+
+                                for (int i = 0; i < Subdivisions.Count; i++)
+                                {
+                                    for (int j = 0; j < Subdivisions[i].Employees.Count; j++)
+                                    {
+                                        Decimal? total = Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
+
+                                        if (total != null && total > 0)
+                                        {
+                                            dynamic dot = doc.ДанныеОВремени.Добавить();
+
+                                            for (int k = 0; k < Subdivisions[i].Employees[j].TimeSheet.Count; k++)
+                                            {
+                                                if (Subdivisions[i].Employees[j].TimeSheet[k].Hours != null && Subdivisions[i].Employees[j].TimeSheet[k].Hours > 0)
+                                                {
+                                                    dynamic Str = connection.NewObject("Структура");
+                                                    Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
+                                                    Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), Subdivisions[i].Employees[j].TimeSheet[k].Hours);
+                                                    Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.Явка);
+                                                    connection.ЗаполнитьЗначенияСвойств(dot, Str);
+                                                    Marshal.Release(Marshal.GetIDispatchForObject(Str));
+                                                    Str = null;
+                                                }
+                                                else
+                                                {
+                                                    dynamic Str = connection.NewObject("Структура");
+                                                    Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
+                                                    Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), 0);
+                                                    Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.ВыходныеДни);
+                                                    connection.ЗаполнитьЗначенияСвойств(dot, Str);
+                                                    Marshal.Release(Marshal.GetIDispatchForObject(Str));
+                                                    Str = null;
+                                                }
+                                            }
+
+                                            Marshal.Release(Marshal.GetIDispatchForObject(dot));
+                                            dot = null;
+                                        }
+                                    }
+                                }
+
+                                doc.Записать();
+                                Marshal.Release(Marshal.GetIDispatchForObject(doc));
+                                doc = null;
+                            }
+
+                            GetEmployees();
+
+                            Marshal.Release(Marshal.GetIDispatchForObject(res));
+                            res = null;
+                            Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                            QueryTo1C = null;
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
                         }
                     }
                     catch (Exception ex)
                     {
                         throw ex;
                     }
-                    finally
-                    {
-                        QueryTo1C = null;
-                    }
                 }
                 catch (Exception ex)
                 {
                     throw ex;
                 }
-
-                return Accruals;
             }
-            public void Post()
+            public void PostDetentionsAndAccruals()
             {
                 try
                 {
@@ -265,7 +483,7 @@ namespace Fusion.Models
                                         det.ДатаОкончания = Period.ToString("yyyyMM") + DateTime.DaysInMonth(Period.Year, Period.Month).ToString();
                                         det.Результат = Subdivisions[i].Employees[j].Detentions[k].Sum;
                                         det.Сотрудник = connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code);
-                                        det = false;
+                                        Marshal.Release(Marshal.GetIDispatchForObject(det));
                                         det = null;
                                     }
                                 }
@@ -276,73 +494,35 @@ namespace Fusion.Models
                                     if (Subdivisions[i].Employees[j].Accruals[k].Sum != null && Subdivisions[i].Employees[j].Accruals[k].Sum > 0)
                                     {
                                         dynamic det = doc.Начисления.Добавить();
-                                        det.Начисление = connection.ПланыВидовРасчета.Начисления.НайтиПоКоду(Subdivisions[i].Employees[j].Accruals[k].Code);
+                                        dynamic d = connection.ПланыВидовРасчета.Начисления.НайтиПоКоду(Subdivisions[i].Employees[j].Accruals[k].Code);
+                                        det.Начисление = d;
                                         det.ДатаНачала = Period.ToString("yyyyMM01");
                                         det.ДатаОкончания = Period.ToString("yyyyMM") + DateTime.DaysInMonth(Period.Year, Period.Month).ToString();
                                         det.Результат = Subdivisions[i].Employees[j].Accruals[k].Sum;
                                         det.Сотрудник = connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code);
-                                        det = false;
+                                        dynamic ttt = connection.Метаданные().Перечисления.ВариантыИспользованияПериодаНачисления.EnumValues.Get(connection.Перечисления.ВариантыИспользованияПериодаНачисления.Индекс(d.ИспользованиеПериода)).Имя;
+
+                                        if (connection.Метаданные().Перечисления.ВариантыИспользованияПериодаНачисления.EnumValues.Get(connection.Перечисления.ВариантыИспользованияПериодаНачисления.Индекс(d.ИспользованиеПериода)).Имя == "НеИспользовать")
+                                        {
+                                            det.ПериодДействия = Period.ToString("yyyyMM01");
+                                        }
+
+                                        Marshal.Release(Marshal.GetIDispatchForObject(det));
                                         det = null;
+                                        Marshal.Release(Marshal.GetIDispatchForObject(ttt));
+                                        ttt = null;
+                                        Marshal.Release(Marshal.GetIDispatchForObject(d));
+                                        d = null;
                                     }
                                 }
                             }
                         }
 
                         doc.Записать();
-
-                        /* Конец Удержания и начисления*/
-
-                        doc = false;
+                        Marshal.Release(Marshal.GetIDispatchForObject(doc));
                         doc = null;
-
-                        /* Индивидуальные графики */
-
-                        doc = connection.Документы.ИндивидуальныйГрафик.СоздатьДокумент();
-                        doc.ПериодРегистрации = Period.ToString("yyyyMM01");
-                        doc.Организация = connection.Справочники.Организации.НайтиПоНаименованию(FullName);
-                        doc.ДатаНачалаПериода = Period.ToString("yyyyMM01");
-                        doc.ДатаОкончанияПериода = new DateTime(Period.Year, Period.Month, DateTime.DaysInMonth(Period.Year, Period.Month)).ToString("yyyyMMdd");
-                        doc.ПериодВводаДанныхОВремени = connection.Перечисления.ПериодыВводаДанныхОВремени.ТекущийМесяц;
-                        doc.Дата = DateTime.Today.ToString("yyyyMMdd");
-
-                        for (int i = 0; i < Subdivisions.Count; i++)
-                        {
-                            for (int j = 0; j < Subdivisions[i].Employees.Count; j++)
-                            {
-                                Decimal? total = Subdivisions[i].Employees[j].TimeSheet.Sum(p => p.Hours);
-
-                                if (total != null && total > 0)
-                                {
-                                    dynamic dot = doc.ДанныеОВремени.Добавить();
-
-                                    for (int k = 0; k < Subdivisions[i].Employees[j].TimeSheet.Count; k++)
-                                    {
-                                        if (Subdivisions[i].Employees[j].TimeSheet[k].Hours != null && Subdivisions[i].Employees[j].TimeSheet[k].Hours > 0)
-                                        {
-                                            dynamic Str = connection.NewObject("Структура");
-                                            Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
-                                            Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), Subdivisions[i].Employees[j].TimeSheet[k].Hours);
-                                            Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.Явка);
-                                            connection.ЗаполнитьЗначенияСвойств(dot, Str);
-                                        }
-                                        else
-                                        {
-                                            dynamic Str = connection.NewObject("Структура");
-                                            Str.Вставить("Сотрудник", connection.Справочники.Сотрудники.НайтиПоКоду(Subdivisions[i].Employees[j].Code));
-                                            Str.Вставить("Часов" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), 0);
-                                            Str.Вставить("ВидВремени" + Subdivisions[i].Employees[j].TimeSheet[k].Day.Day.ToString(), connection.Справочники.ВидыИспользованияРабочегоВремени.ВыходныеДни);
-                                            connection.ЗаполнитьЗначенияСвойств(dot, Str);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        doc.Записать();
-                        doc = false;
-                        doc = null;
-
-                        /* Конец Индивидуальные графики */
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                     }
                     catch (Exception ex)
                     {
@@ -405,7 +585,10 @@ namespace Fusion.Models
                 СГРУППИРОВАТЬ ПО
 	                НачисленияУдержанияПоСотрудникам.Период,
 	                НачисленияУдержанияПоСотрудникам.Регистратор, 
-	                НачисленияУдержанияПоСотрудникам.Организация.Наименование");
+	                НачисленияУдержанияПоСотрудникам.Организация.Наименование
+                УПОРЯДОЧИТЬ ПО
+	            	НачисленияУдержанияПоСотрудникам.Период,
+	            	НачисленияУдержанияПоСотрудникам.Регистратор.Дата");
                 dynamic res = QueryTo1C.Execute().Choose();
 
                 while (res.Next())
@@ -421,7 +604,12 @@ namespace Fusion.Models
                     Items.Add(da);
                 }
 
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
                 QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
         public class SalariesAndContributions
@@ -512,7 +700,12 @@ namespace Fusion.Models
                     TotalDetended += e.DetentionsSum;
                 }
 
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
                 QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
         public class EmployeeSalaryDetail
@@ -533,7 +726,13 @@ namespace Fusion.Models
 	                    НачисленияУдержанияПоСотрудникам.Организация.Наименование КАК НаименованиеОрганизации,
 	                    НачисленияУдержанияПоСотрудникам.Сотрудник.Наименование КАК ИмяСотрудника,
 	                    НачисленияУдержанияПоСотрудникам.НачислениеУдержание.Наименование КАК НаименованиеНачисленияУдержания,
-	                    НачисленияУдержанияПоСотрудникам.ГруппаНачисленияУдержанияВыплаты КАК ГуппаНачисленияУдержания,
+	                    ВЫБОР 
+			                КОГДА НачисленияУдержанияПоСотрудникам.ГруппаНачисленияУдержанияВыплаты = ЗНАЧЕНИЕ(Перечисление.ГруппыНачисленияУдержанияВыплаты.Начислено) ТОГДА
+				                ""Начислено""
+			                ИНАЧЕ
+			                	""Удержано""
+			                КОНЕЦ
+		                КАК ГуппаНачисленияУдержания,
 	                    НачисленияУдержанияПоСотрудникам.Сумма КАК Сумма
                     ИЗ 
                         РегистрНакопления.НачисленияУдержанияПоСотрудникам 
@@ -553,13 +752,12 @@ namespace Fusion.Models
                     if (e == null)
                     {
                         e = new Employee();
+                        e.Accruals = new List<Accrual>();
+                        e.Detentions = new List<Detention>();
+                        e.Code = ecode;
+                        e.FullName = Convert.ToString(res.ИмяСотрудника);
                         Employees.Add(e);
                     }
-
-                    e.Accruals = new List<Accrual>();
-                    e.Detentions = new List<Detention>();
-                    e.Code = ecode;
-                    e.FullName = Convert.ToString(res.ИмяСотрудника);
 
                     if (otype == "Удержано")
                     {
@@ -573,7 +771,90 @@ namespace Fusion.Models
                     }
                 }
 
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
                 QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+        public class TimeSheetsViewModel
+        {
+            public dynamic connection;
+            public class TimeSheet
+            {
+                public DateTime Date { get; set; }
+                public string Number { get; set; }
+                public DateTime Period { get; set; }
+                public String OrganizationName { get; set; }
+                public bool Deleted { get; set; }
+                public bool Passed { get; set; }
+            }
+            public string OrganizationName { get; set; }
+            public List<string> Organizations { get; set; }
+            public List<TimeSheet> TimeSheets = new List<TimeSheet>();
+            public IEnumerable<SelectListItem> OrganizationsSelectList
+            {
+                get
+                {
+                    List<SelectListItem> Orgs = new List<SelectListItem>();
+
+                    if(Organizations != null)
+                        for (int i = 0; i < Organizations.Count; i++)
+                            Orgs.Add(new SelectListItem() { Text = Organizations[i], Value = Organizations[i] });
+
+                    SelectListItem sli = Orgs.FirstOrDefault(p => p.Value == OrganizationName);
+
+                    if (sli != null)
+                        sli.Selected = true;
+
+                    return Orgs;
+                }
+            }
+            public void GetOrganizationList()
+            {
+                Organizations = new List<string>();
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+                QueryTo1C.Text = @"ВЫБРАТЬ Организации.Наименование ИЗ Справочник.Организации КАК Организации";
+                dynamic res = QueryTo1C.Execute().Choose();
+
+                while (res.Next())
+                    Organizations.Add(res.Наименование);
+
+                if (Organizations.Count > 0 && !String.IsNullOrEmpty(OrganizationName))
+                    OrganizationName = Organizations[0];
+
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            public void Get()
+            {
+                dynamic QueryTo1C = connection.NewObject("Запрос");
+
+                if (String.IsNullOrEmpty(OrganizationName))
+                    return;
+                else
+                    QueryTo1C.Text = String.Format(@"ВЫБРАТЬ * ИЗ Документ.ИндивидуальныйГрафик КАК ИндивидуальныйГрафик ГДЕ ИндивидуальныйГрафик.Организация.Наименование = ""{0}""", OrganizationName);
+
+                dynamic res = QueryTo1C.Execute().Choose();
+
+                while (res.Next())
+                {
+                    TimeSheet ts = new TimeSheet() { Date = Convert.ToDateTime(res.Дата), Deleted = Convert.ToBoolean(res.ПометкаУдаления), Number = Convert.ToString(res.Ссылка.Номер), OrganizationName = Convert.ToString(res.Организация.Наименование), Passed =  Convert.ToBoolean(res.Проведен), Period = Convert.ToDateTime(res.ПериодРегистрации) };
+                    TimeSheets.Add(ts);
+                }
+
+                Marshal.Release(Marshal.GetIDispatchForObject(QueryTo1C));
+                QueryTo1C = null;
+                Marshal.Release(Marshal.GetIDispatchForObject(res));
+                res = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
     }

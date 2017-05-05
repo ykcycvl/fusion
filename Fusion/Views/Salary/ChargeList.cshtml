@@ -1,0 +1,59 @@
+﻿@model Fusion.Models.SalaryModels.DetAccList
+@{
+    ViewBag.Title = "Начисление зарплаты и взносов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-bordered table-responsive table-hover table-striped">
+    <tr>
+        <th>
+            Месяц начисления
+        </th>
+        <th>
+            Тип
+        </th>
+        <th>
+            Дата
+        </th>
+        <th>
+            Номер
+        </th>
+        <th>
+            Организация
+        </th>
+        <th>
+            Начислено
+        </th>
+        <th>
+            Удержано
+        </th>
+    </tr>
+    @foreach (var s in Model.Items)
+    {
+        <tr style="cursor:pointer" onclick="window.location.href = '/Salary/SAC?number=@s.Number'">
+            <td>
+                @s.period.ToString("MMMM yyyy")
+            </td>
+            <td>
+                @s.DAType
+            </td>
+            <td>
+                @s.Date.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @s.Number
+            </td>
+            <td>
+                @s.OrganizationName
+            </td>
+            <td>
+                @s.Accrued.ToString("0.00")
+            </td>
+            <td>
+                @s.Detented.ToString("0.00")
+            </td>
+        </tr>
+    }
+</table>
