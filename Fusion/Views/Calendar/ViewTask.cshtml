@@ -1,0 +1,25 @@
+﻿@model Fusion.Models.CalendarTaskViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Задача " + Model.title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        @Model.title
+    </div>
+    <div class="panel-body">
+        @Model.description
+    </div>
+    <div class="panel-footer">
+        <ul class="list-unstyled">
+            @foreach (var e in Model.uNames)
+            {
+                <li>@LoginViewModel.GetUserProperty(e, "DisplayName")</li>
+            }
+        </ul>
+    </div>
+</div>

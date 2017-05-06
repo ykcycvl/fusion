@@ -99,12 +99,21 @@ namespace Fusion.Models
         public CalendarTaskViewModel(int id)
         {
             mc_task t = db.mc_task.FirstOrDefault(p => p.id == id);
+            uNames = new List<string>();
             this.id = t.id;
             this.title = t.title;
             this.description = t.description;
             this.DateStart = t.DateStart;
             this.DateEnd = t.DateEnd;
             this.username = t.username;
+
+            var ut = db.mc_userTask.Where(p => p.taskId == id);
+
+            if (ut != null)
+            {
+                foreach (var u in ut.ToList())
+                    uNames.Add(u.username);
+            }
         }
         public CalendarTaskViewModel()
         {

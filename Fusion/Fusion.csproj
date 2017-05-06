@@ -2511,6 +2511,7 @@
     <Content Include="Views\Calendar\Add.cshtml" />
     <Content Include="Views\Calendar\ViewCalendar.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Calendar\ViewTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

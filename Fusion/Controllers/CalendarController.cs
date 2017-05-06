@@ -46,7 +46,7 @@ namespace Fusion.Controllers
         public ActionResult Add(CalendarTaskViewModel model)
         {
             model.Save();
-            return RedirectToAction("ViewCalendar", new { period = model.DateStart.ToString("dd.MM.yyyy") });
+            return RedirectToAction("ViewTask", new { @id = model.id });
         }
         public ActionResult Edit(int id)
         {
@@ -77,6 +77,11 @@ namespace Fusion.Controllers
             model.userName = userName;
             model.GetTasks();
 
+            return View(model);
+        }
+        public ActionResult ViewTask(int id)
+        {
+            CalendarTaskViewModel model = new CalendarTaskViewModel(id);
             return View(model);
         }
     }
