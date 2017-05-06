@@ -113,7 +113,7 @@
         $("#loader").show();
         var i = document.getElementById("Form");
         i.style.opacity = 0.5;
-        window.location.href = '/Salary/Sheet?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+        window.location.href = '/Salary/Sheet?OrgName=' + encodeURIComponent($("#OrganizationName").val()) + '&period=' + $("#Period").val();
     }
     function opacity()
     {

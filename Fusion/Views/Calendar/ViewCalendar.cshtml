@@ -1,0 +1,137 @@
+﻿@model Fusion.Models.Planner
+@{
+    ViewBag.Title = "Просмотр календаря";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/MonthPicker.css" rel="stylesheet" />
+<script src="~/Scripts/MonthPicker.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#period').MonthPicker({
+            Button: false,
+            i18n: {
+                year: 'Год',
+                prevYear: 'Пред. год',
+                nextYear: 'След. год',
+                next12Years: 'Jump Forward 12 Years',
+                prev12Years: 'Jump Back 12 Years',
+                nextLabel: 'След.',
+                prevLabel: 'Пред.',
+                buttonText: 'Open Month Chooser',
+                jumpYears: 'Выбрать год',
+                backTo: 'Назад',
+                months: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июн.', 'Июл.', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.']
+            }
+        });
+
+        $("#period").blur(function () {
+            $('form#periodForm').submit();
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+<h3>@LoginViewModel.GetUserProperty(Model.userName, "DisplayName")</h3>
+<div class="row">
+    @using (Html.BeginForm("ViewCalendar", "Calendar", FormMethod.Get, new { @id = "periodForm" }))
+    {
+        @Html.HiddenFor(m => m.userName)
+        <div class="form-group col-lg-3 col-md-3">
+            Выберите месяц:
+            @Html.TextBoxFor(m => m.Period, "MM.yyyy", new { @class = "month-year-input form-control", @id = "period" })
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-lg-3 col-md-3">
+        @Html.ActionLink("Добавить задачу", "Add", null, new { @class = "btn btn-success" })
+    </div>
+</div>
+<br/>
+<table class="table table-bordered table-condensed table-striped">
+    @{
+        DateTime dt = new DateTime(Model.Period.Year, Model.Period.Month, 1);
+        DateTime EndDate = new DateTime(Model.Period.Year, Model.Period.Month, DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month));
+        DayOfWeek dow = DayOfWeek.Monday;
+    }
+
+    <tr>
+        @while (dow != DayOfWeek.Sunday)
+        {
+            <td style="width: 14%">@System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(dow)</td>
+            dow++;
+
+            if ((int)dow >= 7)
+            {
+                dow = DayOfWeek.Sunday;
+                <td style="width: 14%">@System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(dow)</td>
+            }
+        }
+    </tr>
+
+    @{
+        dow = DayOfWeek.Monday;            
+    }
+
+    @while (dt <= EndDate)
+    {
+        <tr>
+            @for (int i = 0; i < 7 && dt <= EndDate; i++)
+            {
+                if (dow != dt.DayOfWeek && dt.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    <td style="background-color:#eaeaea">
+                        &nbsp;
+                    </td>
+
+                    dow++;
+
+                    if ((int)dow >= 7)
+                    {
+                        dow = DayOfWeek.Sunday; 
+                    }
+                }
+                else
+                {
+                    var tasks = Model.Tasks.Where(p => p.DateStart <= dt && p.DateEnd >= dt);
+                    string headingClass = "list-group-item-info";
+                    
+                    <td>
+                        <div class="list-group">
+                            @if(dow == DayOfWeek.Sunday|| dow == DayOfWeek.Saturday)
+                            {
+                                headingClass = "list-group-item-danger";
+                            }
+
+                            <div class="list-group-item @headingClass" style="font-size: 12px;padding: 2px 5px">
+                                <strong>@dt.ToString("dd.MM.yy")</strong>
+                                <br/>
+                                @System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetDayName(dow)
+                            </div>
+                            @if (tasks != null)
+                            {
+                                foreach (var t in tasks.ToList())
+                                {
+                                    <a href=@Url.Action("ViewTask", new { @id = t.id }) class="list-group-item" style="font-size: 12px;padding: 5px 5px">
+                                        <i class="fa fa-tasks fa-fw"></i>
+                                        @t.title
+                                        <br />
+                                        <span class="text-danger small">
+                                            <em>@t.DateStart.ToString("dd.MM.yy")</em> - <em>@t.DateEnd.ToString("dd.MM.yy")</em>
+                                        </span>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </td>
+                
+                    dt = dt.AddDays(1);
+                    dow = dt.DayOfWeek;
+                }
+            }
+        </tr>
+    }
+</table>

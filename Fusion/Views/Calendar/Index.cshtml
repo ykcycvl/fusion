@@ -1,0 +1,26 @@
+﻿@model Fusion.Models.CalendarModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Календарь управляющего";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/MonthPicker.css" rel="stylesheet" />
+<script src="~/Scripts/MonthPicker.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#NoIconDemo').MonthPicker({ Button: false });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<ul>
+    @foreach (var e in Model.employees)
+    {
+        <li>
+            @Html.ActionLink(@e.Name, "ViewCalendar", new { @userName = e.Login, @period = DateTime.Today.ToString("MM.yyyy") })
+        </li>
+    }
+</ul>

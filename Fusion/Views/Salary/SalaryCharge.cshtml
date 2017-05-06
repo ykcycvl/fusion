@@ -108,7 +108,7 @@
         $("#loader").show();
         var i = document.getElementById("Form");
         i.style.opacity = 0.5;
-        window.location.href = '/Salary/SalaryCharge?OrgName=' + $("#FullName").val() + '&period=' + $("#Period").val();
+        window.location.href = '/Salary/SalaryCharge?OrgName=' + encodeURIComponent($("#FullName").val()) + '&period=' + $("#Period").val();
     }
     function opacity()
     {

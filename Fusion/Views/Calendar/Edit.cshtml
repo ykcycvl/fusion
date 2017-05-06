@@ -1,0 +1,69 @@
+﻿@model Fusion.Models.CalendarTaskViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Новая задача";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/MonthPicker.css" rel="stylesheet" />
+<script src="~/Scripts/MonthPicker.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $.datepicker.regional['ru'] = {
+            closeText: 'Закрыть',
+            prevText: '&#x3c;Пред',
+            nextText: 'След&#x3e;',
+            currentText: 'Сегодня',
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+            'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+            dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+            dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            weekHeader: 'Нед',
+            dateFormat: 'dd.mm.yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        $.datepicker.setDefaults($.datepicker.regional['ru']);
+        $("#DateStart").datepicker();
+        $("#DateEnd").datepicker();
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+<b>@LoginViewModel.GetUserProperty(User.Identity.GetUserName(), "DisplayName")</b>
+
+@using (Html.BeginForm("Edit", "Calendar", FormMethod.Post, new { id = "Form" }))
+{
+    @Html.HiddenFor(m => m.id)
+    <div class="form-group">
+        <div class="col-lg-2 col-md-2">
+            Начало
+            @Html.TextBoxFor(m => m.DateStart, String.Format("{0:dd/MM/yyyy}", Model.DateStart), new { @class = "date-picker form-control" })
+        </div>
+        <div class="col-lg-2 col-md-2">
+            Окончание
+            @Html.TextBoxFor(m => m.DateEnd, String.Format("{0:dd/MM/yyyy}", Model.DateEnd), new { @class = "date-picker form-control" })
+        </div>
+    </div>
+    <br style="clear:both" />
+    <br />
+    <div class="col-lg-4 col-md-4">
+        <div class="form-group">
+            @Html.LabelFor(m => m.title)
+            @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Создать" class="btn btn-success" />
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-5 form-group">
+        @Html.LabelFor(m => m.description)
+        @Html.TextAreaFor(m => m.description, new { @class = "form-control", @cols = "20", @rows = "10" })
+    </div>
+}

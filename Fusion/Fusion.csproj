@@ -201,6 +201,7 @@
     <Compile Include="Controllers\BC\BCController.cs" />
     <Compile Include="Controllers\BonusClub\BonusClubController.cs" />
     <Compile Include="Controllers\BringoController.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CallCenter\CallCenterController.cs" />
     <Compile Include="Controllers\CallCenter\CDRController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
@@ -258,6 +259,22 @@
     <Compile Include="Models\BUSINESSPERIODS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Calendar.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendar.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Calendar.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendar.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Calendar.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calendar.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CalendarModels.cs" />
     <Compile Include="Models\CallCenter\CallCenterModels.cs" />
     <Compile Include="Models\CallCenter\CallCenterViewModels.cs" />
     <Compile Include="Models\CallCenter\CDR.cs" />
@@ -1033,6 +1050,15 @@
     </Compile>
     <Compile Include="Models\MCRALGORITHMS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mc_extra.cs">
+      <DependentUpon>Calendar.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mc_task.cs">
+      <DependentUpon>Calendar.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\mc_userTask.cs">
+      <DependentUpon>Calendar.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MENUITEMS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1941,10 +1967,22 @@
     <Content Include="Content\img\u7.gif" />
     <Content Include="Content\img\u8.gif" />
     <Content Include="Content\img\u9.gif" />
+    <Content Include="Models\Calendar.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Calendar.edmx</DependentUpon>
+      <LastGenOutput>Calendar.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Calendar.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Calendar.edmx</DependentUpon>
+      <LastGenOutput>Calendar.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\MonthPicker.js" />
     <Content Include="Content\pickmeup.min.css" />
     <Content Include="Content\plugins\morris.css" />
     <Content Include="Content\sb-admin-rtl.css" />
     <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\MonthPicker.css" />
     <Content Include="Content\style_form11.css" />
     <Content Include="Content\style_form222.css" />
     <Content Include="Content\style_list_uni.css" />
@@ -2076,6 +2114,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>RK7.edmx</DependentUpon>
       <LastGenOutput>RK7.cs</LastGenOutput>
+    </Content>
+    <EntityDeploy Include="Models\Calendar.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Calendar.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Calendar.edmx.diagram">
+      <DependentUpon>Calendar.edmx</DependentUpon>
     </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
@@ -2462,11 +2507,16 @@
     <Content Include="Views\Salary\TimeSheets.cshtml" />
     <Content Include="Views\Salary\ChargeList.cshtml" />
     <Content Include="Views\Salary\SalaryCharge.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Calendar\Add.cshtml" />
+    <Content Include="Views\Calendar\ViewCalendar.cshtml" />
+    <Content Include="Views\Calendar\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\IT\" />
     <Folder Include="Views\MiscReport\" />
+    <Folder Include="Views\TaskCalendar\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff">

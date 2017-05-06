@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 
 public class LoginViewModel
 {
@@ -17,6 +18,9 @@ public class LoginViewModel
 
     public static string GetUserProperty(string accountName, string propertyName)
     {
+        if (string.IsNullOrEmpty(accountName))
+            return "";
+
         DirectoryEntry entry = new DirectoryEntry();
         entry.Path = "LDAP://fg.local:389/DC=fg,DC=local";
         entry.AuthenticationType = AuthenticationTypes.Secure;
@@ -34,5 +38,15 @@ public class LoginViewModel
         {
             return "Unknown User";
         }
+    }
+
+    public static bool IsMemberOf(string accountName, string GroupName)
+    {
+        PrincipalContext context = new PrincipalContext(ContextType.Domain, "fg.local");
+        UserPrincipal upUser = UserPrincipal.FindByIdentity(context, accountName);
+        if (upUser != null)
+            return upUser.IsMemberOf(context, IdentityType.SamAccountName, GroupName);
+        else
+            return false;
     }
 }

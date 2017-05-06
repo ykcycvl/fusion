@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FusionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="mc_extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="taskId" Type="int" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="extraContent" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mc_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="text" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" Nullable="false" />
+          <Property Name="DateEnd" Type="datetime" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mc_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="taskId" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="appointed" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_mc_extra_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_extra" Type="Self.mc_extra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_extra">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mc_userTask_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_userTask" Type="Self.mc_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_userTask">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FusionModelStoreContainer">
+          <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mc_task" EntityType="Self.mc_task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mc_userTask" EntityType="Self.mc_userTask" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_mc_extra_mc_task" Association="Self.FK_mc_extra_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_extra" EntitySet="mc_extra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mc_userTask_mc_task" Association="Self.FK_mc_userTask_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_userTask" EntitySet="mc_userTask" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FusionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CalendarEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mc_extra" EntityType="FusionModel.mc_extra" />
+          <EntitySet Name="mc_task" EntityType="FusionModel.mc_task" />
+          <AssociationSet Name="FK_mc_extra_mc_task" Association="FusionModel.FK_mc_extra_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_extra" EntitySet="mc_extra" />
+          </AssociationSet>
+          <EntitySet Name="mc_userTask" EntityType="FusionModel.mc_userTask" />
+          <AssociationSet Name="FK_mc_userTask_mc_task" Association="FusionModel.FK_mc_userTask_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_userTask" EntitySet="mc_userTask" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="mc_extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="taskId" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="extraContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="mc_task" Relationship="FusionModel.FK_mc_extra_mc_task" FromRole="mc_extra" ToRole="mc_task" />
+        </EntityType>
+        <EntityType Name="mc_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="mc_extra" Relationship="FusionModel.FK_mc_extra_mc_task" FromRole="mc_task" ToRole="mc_extra" />
+          <NavigationProperty Name="mc_userTask" Relationship="FusionModel.FK_mc_userTask_mc_task" FromRole="mc_task" ToRole="mc_userTask" />
+        </EntityType>
+        <Association Name="FK_mc_extra_mc_task">
+          <End Type="FusionModel.mc_task" Role="mc_task" Multiplicity="1" />
+          <End Type="FusionModel.mc_extra" Role="mc_extra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_extra">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="mc_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="taskId" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="appointed" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="mc_task" Relationship="FusionModel.FK_mc_userTask_mc_task" FromRole="mc_userTask" ToRole="mc_task" />
+        </EntityType>
+        <Association Name="FK_mc_userTask_mc_task">
+          <End Type="FusionModel.mc_task" Role="mc_task" Multiplicity="1" />
+          <End Type="FusionModel.mc_userTask" Role="mc_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_userTask">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FusionModelStoreContainer" CdmEntityContainer="CalendarEntities">
+          <EntitySetMapping Name="mc_extra">
+            <EntityTypeMapping TypeName="FusionModel.mc_extra">
+              <MappingFragment StoreEntitySet="mc_extra">
+                <ScalarProperty Name="extraContent" ColumnName="extraContent" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mc_task">
+            <EntityTypeMapping TypeName="FusionModel.mc_task">
+              <MappingFragment StoreEntitySet="mc_task">
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mc_userTask">
+            <EntityTypeMapping TypeName="FusionModel.mc_userTask">
+              <MappingFragment StoreEntitySet="mc_userTask">
+                <ScalarProperty Name="appointed" ColumnName="appointed" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
