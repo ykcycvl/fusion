@@ -141,7 +141,7 @@ namespace Fusion.Models.Callback
 
         //сам отзыв
         [Required(ErrorMessage = "Напишите отзыв")]
-        [StringLength(18000,MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
+        [StringLength(18000, MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
         [DataType(DataType.MultilineText)]
         public string textkomm { get; set; }
 
@@ -242,8 +242,9 @@ namespace Fusion.Models.Callback
                 _source.Add(new SelectListItem() { Text = "Сайт", Value = "1" });
                 _source.Add(new SelectListItem() { Text = "Инста", Value = "2" });
                 _source.Add(new SelectListItem() { Text = "Соцсети", Value = "3" });
-                _source.Add(new SelectListItem() { Text = "Телефон с чека", Value = "4" });
-                _source.Add(new SelectListItem() { Text = "Лично/книга жалоб", Value = "5" });
+                _source.Add(new SelectListItem() { Text = "vl.ru", Value = "4" });
+                _source.Add(new SelectListItem() { Text = "Телефон с чека", Value = "5" });
+                _source.Add(new SelectListItem() { Text = "Лично/книга жалоб", Value = "6" });
                 return _source;
             }
         }
@@ -297,20 +298,20 @@ namespace Fusion.Models.Callback
 
             public void Search() /*++++++++++++++++++++++++++++++++++++++++++++++++++*/
             {
-                
+
                 string time = " 23:59:59";
                 MySqlConnection con = GetConnect();
                 MySqlCommand command;
                 if (DateNEW1 == null && DateNEW2 == null)
-                {                    
+                {
                     DateTime now = DateTime.Now;
                     //DateTime.TryParseExact(now, "YY-mm-dd", null,DateTimeStyles.NoCurrentDateDefault, now);
                     DateTime yesterday = DateTime.Now.Subtract(new TimeSpan(10, 0, 0, 0));
                     DateNEW1 = Convert.ToString(yesterday);
-                    DateNEW1 = (DateNEW1.Substring(6, 4))+"-" + (DateNEW1.Substring(3, 2))+ "-" + (DateNEW1.Substring(0, 2));
+                    DateNEW1 = (DateNEW1.Substring(6, 4)) + "-" + (DateNEW1.Substring(3, 2)) + "-" + (DateNEW1.Substring(0, 2));
                     DateNEW2 = Convert.ToString(now);
                     string DateNEW2tosql;
-                    if(DateNEW2.Count()>=19)
+                    if (DateNEW2.Count() >= 19)
                     {
                         DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " " + (DateNEW2.Substring(11, 8));
                     }
@@ -328,7 +329,7 @@ namespace Fusion.Models.Callback
                 //command.Parameters.AddWithValue("id", );
 
                 MySqlDataReader rdr = command.ExecuteReader();
-                
+
                 if (rdr.HasRows)
                 {
                     foreach (DbDataRecord record in rdr)
@@ -342,13 +343,13 @@ namespace Fusion.Models.Callback
                         if (record["Data"] != null)
                         {
                             string Date = Convert.ToString(record["Data"]);
-                            string year = Date.Substring(0,4);
-                            string month = Date.Substring(5,2);
-                            string day = Date.Substring(8,2);
+                            string year = Date.Substring(0, 4);
+                            string month = Date.Substring(5, 2);
+                            string day = Date.Substring(8, 2);
                             Date = day + "." + month + "." + year;
                             p.Data = Date;
                         }
-                           
+
                         if (record["Phone"] != null)
                             p.Phone = Convert.ToString(record["Phone"]);
                         if (record["Unit"] != null)
@@ -383,9 +384,9 @@ namespace Fusion.Models.Callback
                             p.Source = Convert.ToString(record["Source"]);
                         if (Convert.ToString(record["Payer"]) != "")
                             p.Payer1 = Convert.ToString(record["Payer"]);
-                            
+
                         persons.Add(p);
-               
+
                     }
                     persons.Reverse();
                 }
@@ -432,7 +433,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для подразделений
         public string Unit { get; set; }
-       
+
 
         //детали проблемы
         [Required(ErrorMessage = "Введите детали проблемы")]
@@ -442,7 +443,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для ресторанов
         public string Rest { get; set; }
-        
+
         //фио сотрудника
         //[Required(ErrorMessage = "Пожалуйста введите ФИО")]
         //[RegularExpression(@"([а-яА-Я]+\s[а-яА-Я]+\s[а-яА-Я]+)|([а-яА-Я]+\s[а-яА-Я]+)|([а-яА-Я]+)|([а-яА-Я]+-*[а-яА-Я]+)", ErrorMessage = "Введите ФИО ответственного")]
@@ -452,7 +453,7 @@ namespace Fusion.Models.Callback
 
         //выпадаюий список для источника отзывов
         public string Source { get; set; }
-      
+
 
         //дата создания отзыва
         [Required(ErrorMessage = "Введите дату визита гостя")]
@@ -463,13 +464,13 @@ namespace Fusion.Models.Callback
         [DataType(DataType.Time)]
         public string NewTime { get; set; }
 
-      
+
         [DataType(DataType.Date)]
-        
+
         public string OldDate { get; set; }
 
         //выбор оценки отзыва
-     
+
         public string Rating1 { get; set; }
 
         //выпадаюий список для подробной оценки
@@ -477,7 +478,7 @@ namespace Fusion.Models.Callback
 
         //сам отзыв
         [Required(ErrorMessage = "Текст отзыва")]
-        [StringLength(18000,MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
+        [StringLength(18000, MinimumLength = 5, ErrorMessage = "Слишком короткий отзыв")]
         [DataType(DataType.MultilineText)]
         public string textkomm { get; set; }
 
