@@ -11,7 +11,7 @@ namespace Fusion.Controllers
 {
     public class CalendarController : Controller
     {
-        // GET: Calendar
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Index()
         {
             CalendarModel model = new CalendarModel();
@@ -35,6 +35,7 @@ namespace Fusion.Controllers
             else
                 return View(model);
         }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Add()
         {
             CalendarTaskViewModel model = new CalendarTaskViewModel();
@@ -43,23 +44,26 @@ namespace Fusion.Controllers
             return View(model);
         }
         [HttpPost]
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Add(CalendarTaskViewModel model)
         {
             model.Save();
             return RedirectToAction("ViewTask", new { @id = model.id });
         }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Edit(int id)
         {
             CalendarTaskViewModel model = new CalendarTaskViewModel(id);
             return View(model);
         }
         [HttpPost]
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Edit(CalendarTaskViewModel model)
         {
             model.Save();
             return View(model);
         }
-
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult ViewCalendar(string period, string userName)
         {
             Planner model = new Planner();
@@ -79,6 +83,7 @@ namespace Fusion.Controllers
 
             return View(model);
         }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult ViewTask(int id)
         {
             CalendarTaskViewModel model = new CalendarTaskViewModel(id);
