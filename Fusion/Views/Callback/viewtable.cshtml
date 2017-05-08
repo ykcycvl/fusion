@@ -99,6 +99,7 @@
                 <option value="Сайт">Сайт</option>
                 <option value="Инста">Инста</option>
                 <option value="Соцсети">Соцсети</option>
+                <option value="vl.ru">vl.ru</option>
                 <option value="Чек-телефон">Чек-телефон</option>
                 <option value="Лично/Жалобная книга">Лично/Ж. книга</option>
                 <option value="КЦ">КЦ</option>
@@ -106,6 +107,7 @@
             </select>
             @* кнопка для отчёта *@
             <button type="button" class="btn btn-danger" id="AddTransactionBtn">Отчет</button>
+
             <script>
                 $(function () {
                     $("#AddTransactionBtn").click(function () {
@@ -114,6 +116,7 @@
                     });
                 });
             </script>
+
             <input type="checkbox" id="nalid" value="0" />Наличные
             <input type="checkbox" id="bonusid" value="0" />Бонусы
             <input type="checkbox" id="sertid" value="0" />Сертификат
@@ -124,8 +127,8 @@
                 <option value="Сотрудник/Компания">Сотрудник/Компания</option>
             </select>
 
-            
-        </div>  
+
+        </div>
 
 
         //отзывы
@@ -232,6 +235,8 @@
         </table>
 
     }
+
+    @** скрипт для фильтров *@
     <script>
         filterTable(document.getElementById("target"), {
             1: new filterTable.Filter(document.getElementById("namef"),
@@ -369,9 +374,9 @@
     }
     <br />
     @{
-    int stafcompsumnal = 0;
-    int stafcompsumbonus = 0;
-    int stafcompsumsert = 0;
+        int stafcompsumnal = 0;
+        int stafcompsumbonus = 0;
+        int stafcompsumsert = 0;
     }
     @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Cотрудник/Компания"))
     {
@@ -449,7 +454,7 @@
     @{
         int sum4 = Model.persons.Count - sum1 - sum2 - sum3 - sum5 - sum6;
     }
-    
+
     <br />
     <span>
         Всего положительных отзывов: @sum1 <br />
