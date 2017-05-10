@@ -591,7 +591,7 @@ namespace Fusion.Controllers
             UserLog = User.Identity.GetUserName();
             string dbSTR;
             string dbSTR2;
-            string dbID = "";
+            bool ind = false;
             string dbSTRid; //для определения id последнего добавленого отзыва
             dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id + "',Fields='" + Matching + "',Text='" + textkomm + "'";
             dbSTRid = @"SELECT MAX(id) FROM tblfeedback";
@@ -600,16 +600,16 @@ namespace Fusion.Controllers
             if (id >= 0)
             {
                 dbSTR = @"UPDATE tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
-
             }
             else
             {
                 dbSTR = @"INSERT INTO tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
-                MySqlCommand cmdID = new MySqlCommand(dbSTRid, conn);
-                dbID = cmdID.ExecuteScalar().ToString();
+                ind = true;
             }
+
             MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
-            MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);            
+            MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);
+            MySqlCommand cmdID = new MySqlCommand(dbSTRid, conn);
 
             if (!ModelState.IsValid)
             {
@@ -617,25 +617,30 @@ namespace Fusion.Controllers
             }
             else
             {
-                int count = cmd.ExecuteNonQuery();
-                int count2 = cmd2.ExecuteNonQuery();                
-                //отправляем письмо(а) о новом отзыве
-                MailMessage mail = new MailMessage();
-                string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
-                string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
-                mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + ".\r\nТекст отзыва:" + textkomm + "\r\nОтзыв в Vega: http://192.168.0.102:8005/Callback/uniform?updorins=" + dbID + "";
-                mail.From = new MailAddress(FROM);
-                mail.To.Add(new MailAddress(TO));
-                mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
-                SmtpClient client = new SmtpClient();//ivermak@tokyo-bar.ru,ag@tokyo-bar.ru
-                client.Host = "srv-ex00.fg.local";//smtp.mail.ru
-                client.Port = 587;
-                client.EnableSsl = true;
-                //для mail.ru - не сплитовать (полный адрес), для gmail и yandex - сплитовать
-                client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L"); //FROM.Split('@')[0]
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.Send(mail);
-                mail.Dispose();
+                if (ind)
+                {
+                    int count = cmd.ExecuteNonQuery();
+                    int count2 = cmd2.ExecuteNonQuery();
+                    string dbID = cmdID.ExecuteScalar().ToString();
+                    //отправляем письмо(а) о новом отзыве
+                    MailMessage mail = new MailMessage();
+                    string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
+                    string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
+                    mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + ".\r\nТекст отзыва:" + textkomm + "\r\nОтзыв в Vega: http://192.168.0.102:8005/Callback/uniform?updorins=" + dbID + "";
+                    mail.From = new MailAddress(FROM);
+                    mail.To.Add(new MailAddress(TO));
+                    mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
+                    SmtpClient client = new SmtpClient();//ivermak@tokyo-bar.ru,ag@tokyo-bar.ru
+                    client.Host = "srv-ex00.fg.local";//smtp.mail.ru
+                    client.Port = 587;
+                    client.EnableSsl = true;
+                    //для mail.ru - не сплитовать (полный адрес), для gmail и yandex - сплитовать
+                    client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L"); //FROM.Split('@')[0]
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.Send(mail);
+                    mail.Dispose();
+                }
+
             }
 
             if (testCon)
@@ -652,7 +657,7 @@ namespace Fusion.Controllers
         public ActionResult SendEmail(string MailBody)
         {
             //string message = System.Web.HttpUtility.HtmlDecode(MailBody);
-            /*Код отправки письма*/            
+            /*Код отправки письма*/
             MailMessage mail = new MailMessage();
             string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
             string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
@@ -666,7 +671,7 @@ namespace Fusion.Controllers
             SmtpClient client = new SmtpClient();
             client.Host = "srv-ex00.fg.local";
             client.Port = 587;
-            client.EnableSsl = true;            
+            client.EnableSsl = true;
             client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.Send(mail);
