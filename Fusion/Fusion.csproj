@@ -1940,6 +1940,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\chosen-sprite%402x.png" />
+    <Content Include="Scripts\chosen-sprite.png" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\chosen.min.css" />
     <Content Include="Content\bootstrap-rtl.css" />
     <Content Include="Content\bootstrap-rtl.min.css" />
     <Content Include="Content\bootstrap.css" />

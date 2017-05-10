@@ -7,6 +7,8 @@
 
 <link href="~/Content/MonthPicker.css" rel="stylesheet" />
 <script src="~/Scripts/MonthPicker.js"></script>
+<link href="~/Scripts/chosen.min.css" rel="stylesheet" />
+<script src="~/Scripts/chosen.jquery.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -38,6 +40,8 @@
             ccontc++;
             return false;
         });
+
+        $("#uNames").chosen();
     });
 </script>
 
@@ -57,13 +61,23 @@
             @Html.TextBoxFor(m => m.DateEnd, String.Format("{0:dd/MM/yyyy}", Model.DateEnd), new { @class = "date-picker form-control" })
         </div>
     </div>
-    <br style="clear:both"/>
-    <br/>
+    <br style="clear:both" />
+    <br />
     <div class="col-lg-4 col-md-4">
         <div class="form-group">
             @Html.LabelFor(m => m.title)
             @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
         </div>
+    </div>
+    <br style="clear:both" />
+    <div class="col-lg-6 col-md-6 form-group">
+        @Html.LabelFor(m => m.description)
+        @Html.TextAreaFor(m => m.description, new { @class = "form-control", @cols = "20", @rows = "10" })
+        <div class="form-group">
+            <input type="submit" value="Создать" class="btn btn-success" />
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3">
         <div class="form-group">
             <h5>Назначить: </h5>
             <table id="uTable">
@@ -71,7 +85,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DropDownListFor(m => m.uNames[0], Model.MemberList, new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.uNames, Model.MemberList, new { @class = "form-control", @multiple="multiple" })
                         </td>
                     </tr>
                 }
@@ -85,15 +99,6 @@
                     </tr>
                 }
             </table>
-        </div>
-    </div>
-    <div class="col-lg-6 col-md-5 form-group">
-        @Html.LabelFor(m => m.description)
-        @Html.TextAreaFor(m => m.description, new { @class = "form-control", @cols = "20", @rows = "10" })
-    </div>
-    <div class="col-lg-4 col-md-4">
-        <div class="form-group">
-            <input type="submit" value="Создать" class="btn btn-success" />
         </div>
     </div>
 }
