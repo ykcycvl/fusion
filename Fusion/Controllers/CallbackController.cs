@@ -591,6 +591,7 @@ namespace Fusion.Controllers
             UserLog = User.Identity.GetUserName();
             string dbSTR;
             string dbSTR2;
+            string dbID = "";
             string dbSTRid; //для определения id последнего добавленого отзыва
             dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id + "',Fields='" + Matching + "',Text='" + textkomm + "'";
             dbSTRid = @"SELECT MAX(id) FROM tblfeedback";
@@ -605,6 +606,7 @@ namespace Fusion.Controllers
             {
                 dbSTR = @"INSERT INTO tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
                 MySqlCommand cmdID = new MySqlCommand(dbSTRid, conn);
+                dbID = cmdID.ExecuteScalar().ToString();
             }
             MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
             MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);            
@@ -616,8 +618,7 @@ namespace Fusion.Controllers
             else
             {
                 int count = cmd.ExecuteNonQuery();
-                int count2 = cmd2.ExecuteNonQuery();
-                string dbID = cmd2.ExecuteScalar().ToString();
+                int count2 = cmd2.ExecuteNonQuery();                
                 //отправляем письмо(а) о новом отзыве
                 MailMessage mail = new MailMessage();
                 string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
