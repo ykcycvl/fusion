@@ -617,10 +617,11 @@ namespace Fusion.Controllers
             }
             else
             {
+                int count = cmd.ExecuteNonQuery();
+                int count2 = cmd2.ExecuteNonQuery();
+
                 if (ind)
                 {
-                    int count = cmd.ExecuteNonQuery();
-                    int count2 = cmd2.ExecuteNonQuery();
                     string dbID = cmdID.ExecuteScalar().ToString();
                     //отправляем письмо(а) о новом отзыве
                     MailMessage mail = new MailMessage();
