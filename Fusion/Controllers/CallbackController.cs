@@ -593,7 +593,7 @@ namespace Fusion.Controllers
             string dbSTR2;
             string dbSTRid; //для определения id последнего добавленого отзыва
             dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id + "',Fields='" + Matching + "',Text='" + textkomm + "'";
-            dbSTRid = @"select @@IDENTITY";
+            dbSTRid = @"SELECT MAX(id) FROM tblfeedback";
             //проверяем id отзыва
             //idbridge
             if (id >= 0)
@@ -603,11 +603,11 @@ namespace Fusion.Controllers
             }
             else
             {
-                dbSTR = @"INSERT INTO tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";                
+                dbSTR = @"INSERT INTO tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
+                MySqlCommand cmdID = new MySqlCommand(dbSTRid, conn);
             }
             MySqlCommand cmd = new MySqlCommand(dbSTR, conn);
-            MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);
-            MySqlCommand cmdID = new MySqlCommand(dbSTRid, conn);
+            MySqlCommand cmd2 = new MySqlCommand(dbSTR2, conn);            
 
             if (!ModelState.IsValid)
             {
@@ -651,9 +651,7 @@ namespace Fusion.Controllers
         public ActionResult SendEmail(string MailBody)
         {
             //string message = System.Web.HttpUtility.HtmlDecode(MailBody);
-            /*Код отправки письма*/
-
-            //отправляем письмо(а) о новом отзыве
+            /*Код отправки письма*/            
             MailMessage mail = new MailMessage();
             string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
             string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
