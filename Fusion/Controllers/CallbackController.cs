@@ -594,7 +594,7 @@ namespace Fusion.Controllers
             bool ind = false;
             string dbSTRid; //для определения id последнего добавленого отзыва
             dbSTR2 = @"INSERT logTable SET Name='" + UserLog + "',Date='" + DateTime.Now + "',Ident='" + id + "',Fields='" + Matching + "',Text='" + textkomm + "'";
-            dbSTRid = @"SELECT MAX(id) FROM tblfeedback";
+            dbSTRid = @"SELECT LAST_INSERT_ID() FROM tblfeedback";
             //проверяем id отзыва
             //idbridge
             if (id >= 0)
