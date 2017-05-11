@@ -5,18 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/MonthPicker.css" rel="stylesheet" />
-<script src="~/Scripts/MonthPicker.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#NoIconDemo').MonthPicker({ Button: false });
-    });
-</script>
-
 <h2>@ViewBag.Title</h2>
 
-<ul>
+<div class="row">
+    <div class="col-lg-3 col-md-3">
+        @Html.ActionLink("Создать", "Add", null, new { @class = "btn btn-default" })
+    </div>
+</div>
+<br />
+<ul class="list-unstyled">
     @foreach (var e in Model.employees)
     {
         <li>

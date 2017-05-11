@@ -31,7 +31,11 @@
         });
     });
 </script>
-
+<style>
+    .list-group {
+        min-height: 180px;
+    }
+</style>
 <h2>@ViewBag.Title</h2>
 <h3>@LoginViewModel.GetUserProperty(Model.userName, "DisplayName")</h3>
 <div class="row">
@@ -51,7 +55,7 @@
     </div>
 </div>
 <br/>
-<table class="table table-bordered table-condensed table-striped">
+<table class="table table-bordered table-condensed">
     @{
         DateTime dt = new DateTime(Model.Period.Year, Model.Period.Month, 1);
         DateTime EndDate = new DateTime(Model.Period.Year, Model.Period.Month, DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month));
@@ -116,12 +120,11 @@
                                 foreach (var t in tasks.ToList())
                                 {
                                     <a href=@Url.Action("ViewTask", new { @id = t.id }) class="list-group-item" style="font-size: 12px;padding: 5px 5px">
-                                        <i class="fa fa-tasks fa-fw"></i>
-                                        @t.title
-                                        <br />
                                         <span class="text-danger small">
                                             <em>@t.DateStart.ToString("dd.MM.yy")</em> - <em>@t.DateEnd.ToString("dd.MM.yy")</em>
                                         </span>
+                                        <br/>
+                                        @t.title
                                     </a>
                                 }
                             }

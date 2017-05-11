@@ -41,9 +41,7 @@ namespace Fusion.Controllers
                     model.GetSheetData();
                 }
                 else
-                {
                     model.GetEmployees();
-                }
             }
             catch (Exception ex)
             {
