@@ -227,14 +227,31 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Models\ZakupModel.cs" />
-    <Compile Include="Models\bd_category.cs" />
-    <Compile Include="Models\bd_employee.cs" />
-    <Compile Include="Models\bd_measurement.cs" />
-    <Compile Include="Models\bd_nomenclature.cs" />
-    <Compile Include="Models\bd_order.cs" />
-    <Compile Include="Models\bd_organization.cs" />
-    <Compile Include="Models\bd_subdivision.cs" />
-    <Compile Include="Models\bd_vendor.cs" />
+    <Compile Include="Models\bd_category.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_employee.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_measurement.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_nomenclature.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_order.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_organization.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_subdivision.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_vendor.cs">
+      <DependentUpon>Zakup.tt</DependentUpon>
+    </Compile>
+
     <Compile Include="Models\ACTIVITYLIST.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
