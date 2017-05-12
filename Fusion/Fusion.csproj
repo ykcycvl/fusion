@@ -215,10 +215,26 @@
     <Compile Include="Controllers\RK7OnlineMonitorController.cs" />
     <Compile Include="Controllers\SalaryController.cs" />
     <Compile Include="Controllers\SH4Controller.cs" />
+    <Compile Include="Controllers\ZakupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Zakup.cs" />
+    <Compile Include="Models\Zakup.Designer.cs">
+      <DependentUpon>Zakup.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Models\ZakupModel.cs" />
+    <Compile Include="Models\bd_category.cs" />
+    <Compile Include="Models\bd_employee.cs" />
+    <Compile Include="Models\bd_measurement.cs" />
+    <Compile Include="Models\bd_nomenclature.cs" />
+    <Compile Include="Models\bd_order.cs" />
+    <Compile Include="Models\bd_organization.cs" />
+    <Compile Include="Models\bd_subdivision.cs" />
+    <Compile Include="Models\bd_vendor.cs" />
     <Compile Include="Models\ACTIVITYLIST.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -2126,6 +2142,22 @@
     <Content Include="Models\Calendar.edmx.diagram">
       <DependentUpon>Calendar.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="Models\Zakup.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Zakup.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Zakup.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Zakup.edmx</DependentUpon>
+      <LastGenOutput>Zakup.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Zakup.edmx.diagram">
+      <DependentUpon>Zakup.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Zakup.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Zakup.edmx</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -2516,6 +2548,11 @@
     <Content Include="Views\Calendar\ViewCalendar.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
     <Content Include="Views\Calendar\ViewTask.cshtml" />
+    <Content Include="Views\Zakup\Index.cshtml" />
+    <Content Include="Views\Zakup\CreateOrder.cshtml" />
+    <Content Include="Views\Zakup\Nomenclatures.cshtml" />
+    <Content Include="Views\Zakup\Orders.cshtml" />
+    <Content Include="Views\Zakup\Vendors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
