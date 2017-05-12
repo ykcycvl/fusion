@@ -1,0 +1,142 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    thead {
+        background-color: #DBEAF9;
+    }
+
+    input[type="text"]:focus {
+        cursor: text;
+        outline: none;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 0px;
+        outline: none !important;
+        border: 0px;
+        cursor: cell;
+        background-color: #f8f8f8;
+    }
+    .ui-datepicker-calendar {
+        display: none;
+    }
+    .ui-datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+<script>
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: '0m.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                window.location.href = '/Zakup/Orders?period=' + $("#Period").val();
+            }
+        });
+    });
+</script>
+<h2>Заказы за @Model.Period.ToString("MM.yyyy")</h2>
+@Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
+@using (Html.BeginForm("orders", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    if (LoginViewModel.IsMemberOf(Model.username, "ZakupAdmin"))
+    {
+        <input type="submit" value="Сохранить" class="btn btn-success" />
+    }
+<div>
+    @Html.TextBoxFor(m => m.Period, new { @class = "date-picker form-control", @style = "width: 100px; text-align:center;" })
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Сотрудник</th>
+                <th>Ресторан</th>
+                <th>Организация</th>
+                <th>Категория</th>
+                <th>Номенклатура</th>
+                <th>Поставщик</th>
+                <th>Ед. измерения</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
+                <th>Итого</th>
+                <th>Дата создания</th>
+                <th>Дата прихода</th>
+                <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.orders.Count(); i++)
+            {
+                string colorName = "#f9f9f9";
+                string textColor = "black";
+                if (Model.orders[i].statу != null && Model.orders[i].statу != "")
+                {
+                    colorName = "#669966";
+                    textColor = "white";
+                }
+                <tr style="display: none">
+                    <td>
+                        @Html.HiddenFor(m => m.orders[i].id)  
+                    </td>
+                </tr>
+                double? sum = 0;
+                if ((Model.orders[i].date.Value.Month + Model.orders[i].date.Value.Year) == Model.Period.Month + Model.Period.Year)
+                {
+                    sum = Model.orders[i].count * Model.orders[i].bd_nomenclature.Price;
+                    if (LoginViewModel.IsMemberOf(Model.username, "ZakupAdmin"))
+                    {
+                        <tr style="background-color: @colorName; color: @textColor">
+                            <td>@Model.orders[i].id</td>
+                            <td>@Model.orders[i].bd_employee.full_name</td>
+                            <td>@Model.orders[i].bd_employee.bd_subdivision.name</td>
+                            <td>@Model.orders[i].bd_organization.name</td>
+                            <td>@Model.orders[i].bd_category.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.bd_vendor.name</td>
+                            <td>@Model.orders[i].bd_measurement.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.Price</td>
+                            <td>@Model.orders[i].count</td>
+                            <td>@sum</td>
+                            <td>@Model.orders[i].date.Value.ToString("dd.MM.yyyy")</td>
+                            <td>@Html.TextBoxFor(m => m.orders[i].date_end, new { @type="date", @style = "color: black" })</td>
+                            <td>@Html.TextBoxFor(m => m.orders[i].statу, new { @style="color: "+textColor+"; background-color:"+colorName+"" })</td>
+                            @Html.HiddenFor(m => m.orders[i].statу)
+                            @Html.HiddenFor(m => m.orders[i].date_end)
+                            @Html.HiddenFor(m => m.orders[i].id)
+                        </tr>
+                    }
+                    else if (Model.username == Model.orders[i].bd_employee.domain_login)
+                    {
+                        <tr style="background-color: @colorName">
+                            <td>@Model.orders[i].id</td>
+                            <td>@Model.orders[i].bd_employee.full_name</td>
+                            <td>@Model.orders[i].bd_employee.bd_subdivision.name</td>
+                            <td>@Model.orders[i].bd_organization.name</td>
+                            <td>@Model.orders[i].bd_category.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.bd_vendor.name</td>
+                            <td>@Model.orders[i].bd_measurement.name</td>
+                            <td>@Model.orders[i].bd_nomenclature.Price</td>
+                            <td>@Model.orders[i].count</td>
+                            <td>@sum</td>
+                            <td>@Model.orders[i].date.Value.ToString("dd.MM.yyyy")</td>
+                            <td>@Html.TextBoxFor(m => m.orders[i].date_end, new { @type = "date", @style = "width: 120px;" })</td>
+                            <td>@Html.TextBoxFor(m => m.orders[i].statу)</td>
+                            @Html.HiddenFor(m => m.orders[i].statу)
+                            @Html.HiddenFor(m => m.orders[i].id)
+                            @Html.HiddenFor(m => m.orders[i].date_end)
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+}

@@ -1,0 +1,92 @@
+﻿@model Fusion.Models.ZakupModel
+
+@{
+    ViewBag.Title = "Vendors";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    thead {
+        background-color: #DBEAF9;
+    }
+
+    input[type="text"]:focus {
+        cursor: text;
+        outline: none;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 0px;
+        outline: none !important;
+        border: 0px;
+        cursor: cell;
+        background-color: #f8f8f8;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var count = 0;
+        var tbody = document.getElementsByTagName('tbody')[0];
+        tbody = tbody.rows.length;
+        $('#addRow').click(function () {
+            count++;
+            vall = tbody + count;
+            var template = $('.records').first().clone()
+            template.find('input[type=text]').val(null)
+            template.find('#di').html(vall)
+            $.each(template.find('input[type=text]'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall-1);
+                name = name.replace('0', vall-1);
+                $(this).attr('name', name);
+                $(this).attr('id', id)
+            });
+            $.each(template.find('input[type=hidden]'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall-1);
+                name = name.replace('0', vall-1);
+                $(this).attr('name', name);
+                $(this).attr('id', id);
+                $(this).val(vall);
+            });
+            $('#mytable').append(template);
+        })
+    });
+</script>
+<h2>Vendors</h2>
+@using (Html.BeginForm("Vendors", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    <table class="table table-striped table-bordered" id="mytable">
+        <thead>
+            <tr>
+                <td>ИД</td>
+                <td>Код</td>
+                <td>Наименование</td>
+                <td>Телефон</td>
+                <td>ИНН</td>
+                <td>КПП</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.vendorList.Count(); i++)
+            {
+                <tr class="records">
+                    <td id="di">
+                        @Model.vendorList[i].id
+                        @Html.HiddenFor(m => m.vendorList[i].id)
+                    </td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].code)</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].name)</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].phones)</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].INN)</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].KPP)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+<input type="button" class="btn btn-primary" id="addRow" value="Добавить поставщика"/>
+<input type="submit" value="Сохранить" class="btn btn-success"/>
+}
