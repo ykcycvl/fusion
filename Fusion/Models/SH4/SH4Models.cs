@@ -190,7 +190,9 @@ namespace Fusion.Models.SH4
 
                     for (int i = 0; i < Goods.Count; i++)
                     {
-                        int res = sh4.GsFifo(Goods[i].id, 0, DateTime.Today.ToOADate(), DateTime.Today.ToOADate());
+                        DateTime dtStart = DateTime.Parse("01.04.2017");
+
+                        int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtStart.ToOADate());
 
                         if (res >= 0)
                         {
