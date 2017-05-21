@@ -53,7 +53,7 @@ namespace Fusion.Controllers
             {
                 model.id = id;
                 #region dbConn
-                string connPRTS = @"server=192.168.0.102;user Id=feedback;database=feedback;port=3306;password=73915;";
+                string connPRTS = @"server=10.1.0.90;user Id=feedback;database=feedback;port=3306;password=73915;";
                 MySqlConnection conn = new MySqlConnection(connPRTS);
                 bool testCon = true;
                 try
@@ -576,7 +576,7 @@ namespace Fusion.Controllers
             #endregion
 
             #region dbConn
-            string connPRTS = @"server=192.168.0.102;user Id=feedback;database=feedback;port=3306;password=73915;";
+            string connPRTS = @"server=10.1.0.90;user Id=feedback;database=feedback;port=3306;password=73915;";
             MySqlConnection conn = new MySqlConnection(connPRTS);
             bool testCon = true;
             try
@@ -627,7 +627,7 @@ namespace Fusion.Controllers
                     MailMessage mail = new MailMessage();
                     string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
                     string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
-                    mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + ".\r\nТекст отзыва:" + textkomm + "\r\nОтзыв в Vega: http://192.168.0.102:8005/Callback/uniform?updorins=" + dbID + "";
+                    mail.Body = "Пришел новый отзыв от: " + NewDate + ", от имени: " + UserName + ", созданный: " + UserLog + ".\r\nТекст отзыва:" + textkomm + "\r\nОтзыв в Vega: http://vega/Callback/uniform?updorins=" + dbID + "";
                     mail.From = new MailAddress(FROM);
                     mail.To.Add(new MailAddress(TO));
                     mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
