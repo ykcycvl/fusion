@@ -33,6 +33,12 @@
                     Себест2.
                 </th>
                 <th>
+                    НДС
+                </th>
+                <th>
+                    НСП
+                </th>
+                <th>
                     Сумма
                 </th>
                 <th>
@@ -54,6 +60,8 @@
                     <td>@g.good.Unit</td>
                     <td style="text-align:right">@g.cost.ToString("0.00")</td>
                     <td style="text-align:right">@g.cost_bal.ToString("0.00")</td>
+                    <td style="text-align:right">@g.NDS.ToString("0.00")</td>
+                    <td style="text-align:right">@g.NSP.ToString("0.00")</td>
                     <td style="text-align:right">@sum.ToString("0.00")</td>
                     <td>@g.good.GroupName</td>
                 </tr>

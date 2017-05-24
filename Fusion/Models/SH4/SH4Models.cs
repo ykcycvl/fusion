@@ -53,6 +53,8 @@ namespace Fusion.Models.SH4
             public dynamic balance { get; set; }
             public double cost { get; set; }
             public double cost_bal { get; set; }
+            public double NDS { get; set; }
+            public double NSP { get; set; }
         }
         /*Здесь будут переменные*/
         public List<GoodsTreeItem> GoodsTree = new List<GoodsTreeItem>();
@@ -160,7 +162,7 @@ namespace Fusion.Models.SH4
                 //Остатки
                 for (int i = 0; i < Goods.Count; i++)
                 {
-                    int res = sh4.GsFifo(Goods[i].id, 0, DateTime.Today.ToOADate(), DateTime.Today.ToOADate());
+                    int res = sh4.GsFifo(Goods[i].id, 0, DateTime.Parse("2017-05-01").ToOADate(), DateTime.Today.AddDays(-1).ToOADate());
 
                     if (res >= 0)
                     {
@@ -204,12 +206,21 @@ namespace Fusion.Models.SH4
                                     gb.good = Goods[i];
                                     gb.balance = sh4.ValByName(res, "1.105.3.0");
 
-                                    dynamic sum = sh4.ValByName(res, "1.105.4.0");
+                                    dynamic sum = sh4.ValByName(res, "2.105.4.0");
+
+                                    dynamic NDS = sh4.ValByName(res, "2.105.5.0");
+                                    dynamic NSP = sh4.ValByName(res, "2.105.6.0");
 
                                     if (gb.balance > 0)
                                         gb.cost_bal = (double)sum / (double)gb.balance;
                                     else
                                         gb.cost_bal = 0;
+
+                                    if(NDS != DBNull.Value)
+                                        gb.NDS = (double)NDS;
+
+                                    if(NSP != DBNull.Value)
+                                        gb.NSP = (double)NSP;
 
                                     GoodsBalances.Add(gb);
                                     break;

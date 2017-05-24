@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Fusion.Models;
 using System.Web.Configuration;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace Fusion.Controllers
 {
@@ -42,6 +43,9 @@ namespace Fusion.Controllers
                 }
                 else
                     model.GetEmployees();
+
+                if (!String.IsNullOrEmpty(OrgName) && !String.IsNullOrEmpty(period) && String.IsNullOrEmpty(number))
+                    model.CreateTimeSheet();
             }
             catch (Exception ex)
             {
@@ -49,30 +53,23 @@ namespace Fusion.Controllers
             }
             finally
             {
-                Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-                model.connection = null;
+                if (model.connection != null)
+                {
+                    Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
+                    model.connection = null;
+                }
+
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
 
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult Sheet(SalaryModels.Organization model)
-        {
-            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-            model.PostTimeSheet();
-            model.GetOrganizationList();
-            Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-            model.connection = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            if (String.IsNullOrEmpty(model.SheetNumber))
+            if (String.IsNullOrEmpty(OrgName) && String.IsNullOrEmpty(period) && String.IsNullOrEmpty(number))
                 return View(model);
             else
-                return RedirectToAction("Sheet", new { @number = model.SheetNumber });
+                if (String.IsNullOrEmpty(number))
+                    return RedirectToAction("Sheet", new { @number = model.SheetNumber });
+                else
+                    return View(model);
         }
 
         public ActionResult TimeSheets(string OrgName)
@@ -220,6 +217,46 @@ namespace Fusion.Controllers
         public ActionResult SalarySheet()
         {
             return View();
+        }
+
+        public ActionResult Test()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ContentResult SaveTimeSheet(string data)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+
+            SalaryModels.TimeSheet model = new SalaryModels.TimeSheet();
+
+            try
+            {
+                model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
+                model.ETS = model.Deserialize(data.ToString()).Where(p => p.Code != null).ToList();
+
+                if (model.Save())
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успшено сохранено"", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
+                else
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
+            }
+            catch (Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": "" Ошибка: " + ex.Message + @""", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
+            }
+            finally
+            {
+                if (model.connection != null)
+                    Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
+                
+                model.connection = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            return result;
         }
     }
 }
