@@ -12,251 +12,127 @@ namespace Fusion.Controllers
 {
     public class SalaryController : Controller
     {
-        string connectionString = WebConfigurationManager.ConnectionStrings["ZupConnectionString"].ConnectionString;
-        // GET: Salary
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult Sheet(string OrgName, string period, string number)
+        public ActionResult TimeSheets(string orgname)
         {
-            SalaryModels.Organization model = new SalaryModels.Organization();
+            SalaryModels.Vega1CWS.TimeSheetViewModel model = new SalaryModels.Vega1CWS.TimeSheetViewModel();
+            model.FullName = orgname;
+            model.GetTimeSheetList(orgname);
+            return View(model);
+        }
+        public ActionResult TimeSheet(string orgname, string period, string number, int? year)
+        {
+            SalaryModels.Vega1CWS.TimeSheetViewModel model = new SalaryModels.Vega1CWS.TimeSheetViewModel();
 
-            try
-            {
-                model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-                model.GetOrganizationList();
+            if (!String.IsNullOrEmpty(orgname))
+                model.FullName = orgname;
 
-                if (OrgName != null)
-                    model.FullName = OrgName;
-
-                if (String.IsNullOrEmpty(period))
-                    model.Period = DateTime.Today;
-                else
-                    model.Period = DateTime.Parse(period);
-
-                if (!String.IsNullOrEmpty(number))
-                {
-                    model.SheetNumber = number;
-                    model.GetSheetData();
-                }
-                else
-                    model.GetEmployees();
-
-                if (!String.IsNullOrEmpty(OrgName) && !String.IsNullOrEmpty(period) && String.IsNullOrEmpty(number))
-                    model.CreateTimeSheet();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-            finally
-            {
-                if (model.connection != null)
-                {
-                    Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-                    model.connection = null;
-                }
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-
-            if (String.IsNullOrEmpty(OrgName) && String.IsNullOrEmpty(period) && String.IsNullOrEmpty(number))
-                return View(model);
+            if (!String.IsNullOrEmpty(period))
+                model.Period = DateTime.Parse(period);
             else
-                if (String.IsNullOrEmpty(number))
-                    return RedirectToAction("Sheet", new { @number = model.SheetNumber });
-                else
-                    return View(model);
-        }
+                model.Period = new DateTime(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month, 1);
 
-        public ActionResult TimeSheets(string OrgName)
-        {
-            SalaryModels.TimeSheetsViewModel model = new SalaryModels.TimeSheetsViewModel();
-
-            try
-            {
-                model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-                model.GetOrganizationList();
-                model.OrganizationName = OrgName;
-                model.Get();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-            finally
-            {
-                Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-                model.connection = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-
-            return View(model);
-        }
-
-        public ActionResult AccrualsAndDetentions()
-        {
-            return View();
-        }
-
-        public ActionResult SAC(string number)
-        {
-            SalaryModels.SalariesAndContributions model = new SalaryModels.SalariesAndContributions();
-            model.Number = number;
-            model.Employees = new List<SalaryModels.Employee>();
-            model.OrganizationName = "";
-            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-
-            if (!String.IsNullOrEmpty(number))
-                model.Get(number);
-
-            Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-            model.connection = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            return View(model);
-        }
-
-        public ActionResult EmployeeSalaryDetail(string number, string code)
-        {
-            SalaryModels.EmployeeSalaryDetail model = new SalaryModels.EmployeeSalaryDetail();
-            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-            model.Get(number, code);
-            Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-            model.connection = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            return View(model);
-        }
-        public ActionResult ChargeList()
-        {
-            SalaryModels.DetAccList model = new SalaryModels.DetAccList();
-            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-            model.GetDAList();
-            Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-            model.connection = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            return View(model);
-        }
-
-        public ActionResult SalaryCharge(string OrgName, string period)
-        {
-            SalaryModels.Organization model = new SalaryModels.Organization();
-
-            try
-            {
-                model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-                model.GetOrganizationList();
-
-                if (OrgName != null)
-                    model.FullName = OrgName;
-
-                if (String.IsNullOrEmpty(period))
-                    model.Period = DateTime.Today;
-                else
-                    model.Period = DateTime.Parse(period);
-
-                model.Accruals = model.GetAccruals();
-                model.Detentions = model.GetDetentions();
-                model.GetEmployees();
-
-                for (int i = 0; i < model.Subdivisions.Count; i++)
-                {
-                    for (int j = 0; j < model.Subdivisions[i].Employees.Count; j++)
-                    {
-                        model.Subdivisions[i].Employees[j].Accruals = model.Accruals;
-                        model.Subdivisions[i].Employees[j].Detentions = model.Detentions;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-            }
-            finally
-            {
-                Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-                model.connection = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-
-            return View(model);
-            return View();
-        }
-        [HttpPost]
-        public ActionResult SalaryCharge(SalaryModels.Organization model)
-        {
-            model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-            model.PostDetentionsAndAccruals();
             model.GetOrganizationList();
-            model.Accruals = model.GetAccruals();
-            model.Detentions = model.GetDetentions();
 
-            for (int i = 0; i < model.Subdivisions.Count; i++)
-            {
-                for (int j = 0; j < model.Subdivisions[i].Employees.Count; j++)
+            if (!String.IsNullOrEmpty(number) && year != null)
+                model.GetDocument(number, (int)year);
+            else
+                if (!String.IsNullOrEmpty(orgname) && !String.IsNullOrEmpty(period))
                 {
-                    model.Subdivisions[i].Employees[j].Accruals = model.Accruals;
-                    model.Subdivisions[i].Employees[j].Detentions = model.Detentions;
+                    model.CreateDocument();
+                    return RedirectToAction("TimeSheet", new { number = model.DocNumber, year = model.Date.Year });
                 }
-            }
 
-            Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-            model.connection = null;
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
             return View(model);
         }
-        public ActionResult SalarySheet()
+        public ActionResult AccrualsAndDetentions(string orgname)
         {
-            return View();
+            SalaryModels.Vega1CWS.AccrualAndDetentionViewModel model = new SalaryModels.Vega1CWS.AccrualAndDetentionViewModel();
+            model.FullName = orgname;
+            model.GetAccrualsAndDetentionsDocuments(orgname);
+            return View(model);
         }
-
-        public ActionResult Test()
+        public ActionResult AAD(string orgname, string period, string number, int? year)
         {
-            return View();
-        }
+            SalaryModels.Vega1CWS.AccrualAndDetentionViewModel model = new SalaryModels.Vega1CWS.AccrualAndDetentionViewModel();
 
+            if (!String.IsNullOrEmpty(orgname))
+                model.FullName = orgname;
+
+            if (!String.IsNullOrEmpty(period))
+                model.Period = DateTime.Parse(period);
+            else
+                model.Period = new DateTime(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month, 1);
+
+            model.GetOrganizationList();
+
+            if (!String.IsNullOrEmpty(number) && year != null)
+                model.GetDocument(number, (int)year);
+            else
+                if (!String.IsNullOrEmpty(orgname) && !String.IsNullOrEmpty(period))
+                {
+                    model.CreateDocument();
+                    return RedirectToAction("AAD", new { number = model.DocNumber, year = model.Date.Year });
+                }
+
+            return View(model);
+        }
         [HttpPost]
         public ContentResult SaveTimeSheet(string data)
         {
             ContentResult result = new ContentResult();
             result.ContentType = "json";
-
-            SalaryModels.TimeSheet model = new SalaryModels.TimeSheet();
+            SalaryModels.Vega1CWS.TimeSheetViewModel model = new SalaryModels.Vega1CWS.TimeSheetViewModel();
 
             try
             {
-                model.connection = ((V83.COMConnector)HttpContext.Application["connector"]).Connect(connectionString);
-                model.ETS = model.Deserialize(data.ToString()).Where(p => p.Code != null).ToList();
-
-                if (model.Save())
-                    result.Content = @"{ ""result"": ""success"",""message"": ""Успшено сохранено"", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
+                if (model.SaveDocument(data))
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"", ""sheetnumber"" : """ + model.DocNumber + @""" }";
                 else
-                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"", ""sheetnumber"" : """ + model.DocNumber + @""" }";
             }
             catch (Exception ex)
             {
-                result.Content = @"{ ""result"": ""error"",""message"": "" Ошибка: " + ex.Message + @""", ""sheetnumber"" : """ + model.SheetNumber + @""" }";
-            }
-            finally
-            {
-                if (model.connection != null)
-                    Marshal.Release(Marshal.GetIDispatchForObject(model.connection));
-                
-                model.connection = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                result.Content = @"{ ""result"": ""error"",""message"": """ + ex.Message + @""", ""sheetnumber"" : """ + model.DocNumber + @""" }";
             }
 
             return result;
+        }
+        [HttpPost]
+        public ContentResult SaveAAD(string data)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+            SalaryModels.Vega1CWS.AccrualAndDetentionViewModel model = new SalaryModels.Vega1CWS.AccrualAndDetentionViewModel();
+
+            try
+            {
+                if (model.SaveDocument(data))
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"", ""sheetnumber"" : """ + model.DocNumber + @""" }";
+                else
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"", ""sheetnumber"" : """ + model.DocNumber + @""" }";
+            }
+            catch (Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": """ + "Ошибка" + @""", ""sheetnumber"" : """ + model.DocNumber + @""" }";
+            }
+
+            return result;
+        }
+        public ActionResult SalarySheet()
+        {
+            return View();
+        }
+        public ActionResult Test()
+        {
+            SalaryModels.Vega1CWS.AccrualAndDetentionViewModel model = new SalaryModels.Vega1CWS.AccrualAndDetentionViewModel();
+            model.GetEmployees("ФьюжнГрупп");
+            model.GetEmployeesAccrualsType();
+            model.GetEmployeesDetentionsType();
+            return View();
         }
     }
 }

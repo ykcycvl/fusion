@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://srv-1c_g/vega" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd2="http://srv-1c_g/autozup" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://srv-1c_g/vega" name="VegaWS" targetNamespace="http://srv-1c_g/vega" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:tns="http://srv-1c_g/autozup" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://srv-1c_g/autozup" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="Accrual">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Sum" type="xs:decimal" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Accruals">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Accrual" type="tns:Accrual" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Detention">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Sum" type="xs:decimal" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Detentions">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Detention" type="tns:Detention" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Document">
+        <xs:sequence>
+          <xs:element name="Date" type="xs:dateTime" />
+          <xs:element name="Number" type="xs:string" />
+          <xs:element name="Organization" type="tns:Organization" />
+          <xs:element name="Employees" type="tns:Employees" />
+          <xs:element name="RegistrationPeriod" type="xs:dateTime" />
+          <xs:element name="PeriodStartDate" type="xs:dateTime" />
+          <xs:element name="PeriodEndDate" type="xs:dateTime" />
+          <xs:element name="CarriedOut" type="xs:boolean" />
+          <xs:element name="Deleted" type="xs:boolean" />
+          <xs:element name="TotalAccrued" type="xs:decimal" />
+          <xs:element name="TotalDetended" type="xs:decimal" />
+          <xs:element name="Type" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DocumentList">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Document" type="tns:Document" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Employee">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Subdivision" type="xs:string" />
+          <xs:element name="Position" type="xs:string" />
+          <xs:element name="TimeSheet" type="tns:TimeSheet" />
+          <xs:element name="Accruals" type="tns:Accruals" />
+          <xs:element name="Detentions" type="tns:Detentions" />
+          <xs:element name="SubdivisionCode" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
+          <xs:element name="CodeIndividual" type="xs:string" />
+          <xs:element name="Rate" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Employees">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Employee" type="tns:Employee" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Organization">
+        <xs:sequence>
+          <xs:element name="Deleted" type="xs:boolean" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="FullName" type="xs:string" />
+          <xs:element name="ShortName" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Organizations">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Organization" type="tns:Organization" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="TimeSheet">
+        <xs:sequence>
+          <xs:element name="d1" type="xs:double" />
+          <xs:element name="d2" type="xs:double" />
+          <xs:element name="d3" type="xs:double" />
+          <xs:element name="d4" type="xs:double" />
+          <xs:element name="d5" type="xs:double" />
+          <xs:element name="d6" type="xs:double" />
+          <xs:element name="d7" type="xs:double" />
+          <xs:element name="d8" type="xs:double" />
+          <xs:element name="d9" type="xs:double" />
+          <xs:element name="d10" type="xs:double" />
+          <xs:element name="d11" type="xs:double" />
+          <xs:element name="d12" type="xs:double" />
+          <xs:element name="d13" type="xs:double" />
+          <xs:element name="d14" type="xs:double" />
+          <xs:element name="d15" type="xs:double" />
+          <xs:element name="d16" type="xs:double" />
+          <xs:element name="d17" type="xs:double" />
+          <xs:element name="d18" type="xs:double" />
+          <xs:element name="d19" type="xs:double" />
+          <xs:element name="d20" type="xs:double" />
+          <xs:element name="d21" type="xs:double" />
+          <xs:element name="d22" type="xs:double" />
+          <xs:element name="d23" type="xs:double" />
+          <xs:element name="d24" type="xs:double" />
+          <xs:element name="d25" type="xs:double" />
+          <xs:element name="d26" type="xs:double" />
+          <xs:element name="d27" type="xs:double" />
+          <xs:element name="d28" type="xs:double" />
+          <xs:element name="d29" type="xs:double" />
+          <xs:element name="d30" type="xs:double" />
+          <xs:element name="d31" type="xs:double" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+    <xs:schema xmlns:xs2="http://srv-1c_g/vega" xmlns:xs1="http://srv-1c_g/autozup" elementFormDefault="qualified" targetNamespace="http://srv-1c_g/vega" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://srv-1c_g/autozup" />
+      <xs:element name="GetEmployees">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrganizationName" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetEmployeesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Employees" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetTimeSheetInfo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="НомерДокумента" nillable="true" type="xs:string" />
+            <xs:element name="Год" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetTimeSheetInfoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrganizations">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetOrganizationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Organizations" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsAndDetentionsCharges">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="НомерДокумента" nillable="true" type="xs:string" />
+            <xs:element name="Год" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsAndDetentionsChargesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsTypes">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Accruals" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDetentionsTypes">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDetentionsTypesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Detentions" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveTimeSheet">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Сотрудники" type="xs:anyType" />
+            <xs:element name="НомерДокумента" type="xs:string" />
+            <xs:element name="Год" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveTimeSheetResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetTimeSheets">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Организация" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetTimeSheetsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:DocumentList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveAccrualsAndDetentions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Сотрудники" type="xs:anyType" />
+            <xs:element name="НомерДокумента" type="xs:string" />
+            <xs:element name="Год" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveAccrualsAndDetentionsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsAndDetentionsDocuments">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Организация" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetAccrualsAndDetentionsDocumentsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:DocumentList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateTimeSheet">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="НачалоПериода" type="xs:string" />
+            <xs:element name="КонецПериода" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateTimeSheetResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateAccrualsAndDetentionsDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="МесяцНачисления" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CreateAccrualsAndDetentionsDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="GetEmployeesRequestMessage">
+    <part name="parameters" element="tns:GetEmployees" />
+  </message>
+  <message name="GetEmployeesResponseMessage">
+    <part name="parameters" element="tns:GetEmployeesResponse" />
+  </message>
+  <message name="GetTimeSheetInfoRequestMessage">
+    <part name="parameters" element="tns:GetTimeSheetInfo" />
+  </message>
+  <message name="GetTimeSheetInfoResponseMessage">
+    <part name="parameters" element="tns:GetTimeSheetInfoResponse" />
+  </message>
+  <message name="GetOrganizationsRequestMessage">
+    <part name="parameters" element="tns:GetOrganizations" />
+  </message>
+  <message name="GetOrganizationsResponseMessage">
+    <part name="parameters" element="tns:GetOrganizationsResponse" />
+  </message>
+  <message name="GetAccrualsAndDetentionsChargesRequestMessage">
+    <part name="parameters" element="tns:GetAccrualsAndDetentionsCharges" />
+  </message>
+  <message name="GetAccrualsAndDetentionsChargesResponseMessage">
+    <part name="parameters" element="tns:GetAccrualsAndDetentionsChargesResponse" />
+  </message>
+  <message name="GetAccrualsTypesRequestMessage">
+    <part name="parameters" element="tns:GetAccrualsTypes" />
+  </message>
+  <message name="GetAccrualsTypesResponseMessage">
+    <part name="parameters" element="tns:GetAccrualsTypesResponse" />
+  </message>
+  <message name="GetDetentionsTypesRequestMessage">
+    <part name="parameters" element="tns:GetDetentionsTypes" />
+  </message>
+  <message name="GetDetentionsTypesResponseMessage">
+    <part name="parameters" element="tns:GetDetentionsTypesResponse" />
+  </message>
+  <message name="SaveTimeSheetRequestMessage">
+    <part name="parameters" element="tns:SaveTimeSheet" />
+  </message>
+  <message name="SaveTimeSheetResponseMessage">
+    <part name="parameters" element="tns:SaveTimeSheetResponse" />
+  </message>
+  <message name="GetTimeSheetsRequestMessage">
+    <part name="parameters" element="tns:GetTimeSheets" />
+  </message>
+  <message name="GetTimeSheetsResponseMessage">
+    <part name="parameters" element="tns:GetTimeSheetsResponse" />
+  </message>
+  <message name="SaveAccrualsAndDetentionsRequestMessage">
+    <part name="parameters" element="tns:SaveAccrualsAndDetentions" />
+  </message>
+  <message name="SaveAccrualsAndDetentionsResponseMessage">
+    <part name="parameters" element="tns:SaveAccrualsAndDetentionsResponse" />
+  </message>
+  <message name="GetAccrualsAndDetentionsDocumentsRequestMessage">
+    <part name="parameters" element="tns:GetAccrualsAndDetentionsDocuments" />
+  </message>
+  <message name="GetAccrualsAndDetentionsDocumentsResponseMessage">
+    <part name="parameters" element="tns:GetAccrualsAndDetentionsDocumentsResponse" />
+  </message>
+  <message name="CreateTimeSheetRequestMessage">
+    <part name="parameters" element="tns:CreateTimeSheet" />
+  </message>
+  <message name="CreateTimeSheetResponseMessage">
+    <part name="parameters" element="tns:CreateTimeSheetResponse" />
+  </message>
+  <message name="CreateAccrualsAndDetentionsDocumentRequestMessage">
+    <part name="parameters" element="tns:CreateAccrualsAndDetentionsDocument" />
+  </message>
+  <message name="CreateAccrualsAndDetentionsDocumentResponseMessage">
+    <part name="parameters" element="tns:CreateAccrualsAndDetentionsDocumentResponse" />
+  </message>
+  <portType name="VegaWSPortType">
+    <operation name="GetEmployees">
+      <input message="tns:GetEmployeesRequestMessage" />
+      <output message="tns:GetEmployeesResponseMessage" />
+    </operation>
+    <operation name="GetTimeSheetInfo">
+      <input message="tns:GetTimeSheetInfoRequestMessage" />
+      <output message="tns:GetTimeSheetInfoResponseMessage" />
+    </operation>
+    <operation name="GetOrganizations">
+      <input message="tns:GetOrganizationsRequestMessage" />
+      <output message="tns:GetOrganizationsResponseMessage" />
+    </operation>
+    <operation name="GetAccrualsAndDetentionsCharges">
+      <input message="tns:GetAccrualsAndDetentionsChargesRequestMessage" />
+      <output message="tns:GetAccrualsAndDetentionsChargesResponseMessage" />
+    </operation>
+    <operation name="GetAccrualsTypes">
+      <input message="tns:GetAccrualsTypesRequestMessage" />
+      <output message="tns:GetAccrualsTypesResponseMessage" />
+    </operation>
+    <operation name="GetDetentionsTypes">
+      <input message="tns:GetDetentionsTypesRequestMessage" />
+      <output message="tns:GetDetentionsTypesResponseMessage" />
+    </operation>
+    <operation name="SaveTimeSheet">
+      <input message="tns:SaveTimeSheetRequestMessage" />
+      <output message="tns:SaveTimeSheetResponseMessage" />
+    </operation>
+    <operation name="GetTimeSheets">
+      <input message="tns:GetTimeSheetsRequestMessage" />
+      <output message="tns:GetTimeSheetsResponseMessage" />
+    </operation>
+    <operation name="SaveAccrualsAndDetentions">
+      <input message="tns:SaveAccrualsAndDetentionsRequestMessage" />
+      <output message="tns:SaveAccrualsAndDetentionsResponseMessage" />
+    </operation>
+    <operation name="GetAccrualsAndDetentionsDocuments">
+      <input message="tns:GetAccrualsAndDetentionsDocumentsRequestMessage" />
+      <output message="tns:GetAccrualsAndDetentionsDocumentsResponseMessage" />
+    </operation>
+    <operation name="CreateTimeSheet">
+      <input message="tns:CreateTimeSheetRequestMessage" />
+      <output message="tns:CreateTimeSheetResponseMessage" />
+    </operation>
+    <operation name="CreateAccrualsAndDetentionsDocument">
+      <input message="tns:CreateAccrualsAndDetentionsDocumentRequestMessage" />
+      <output message="tns:CreateAccrualsAndDetentionsDocumentResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="VegaWSSoapBinding" type="tns:VegaWSPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetEmployees">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetEmployees" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetTimeSheetInfo">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetTimeSheetInfo" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrganizations">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetOrganizations" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsAndDetentionsCharges">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsCharges" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsTypes">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsTypes" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetDetentionsTypes">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetDetentionsTypes" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveTimeSheet">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveTimeSheet" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetTimeSheets">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetTimeSheets" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveAccrualsAndDetentions">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveAccrualsAndDetentions" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsAndDetentionsDocuments">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsDocuments" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateTimeSheet">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:CreateTimeSheet" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccrualsAndDetentionsDocument">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:CreateAccrualsAndDetentionsDocument" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="VegaWSSoap12Binding" type="tns:VegaWSPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetEmployees">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetEmployees" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetTimeSheetInfo">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetTimeSheetInfo" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetOrganizations">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetOrganizations" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsAndDetentionsCharges">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsCharges" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsTypes">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsTypes" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetDetentionsTypes">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetDetentionsTypes" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveTimeSheet">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveTimeSheet" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetTimeSheets">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetTimeSheets" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveAccrualsAndDetentions">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveAccrualsAndDetentions" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetAccrualsAndDetentionsDocuments">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsDocuments" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateTimeSheet">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:CreateTimeSheet" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="CreateAccrualsAndDetentionsDocument">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:CreateAccrualsAndDetentionsDocument" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="VegaWS">
+    <port name="VegaWSSoap" binding="tns:VegaWSSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://srv-1c_g/service/ws/vegaws.1cws" />
+    </port>
+    <port name="VegaWSSoap12" binding="tns:VegaWSSoap12Binding">
+      <soap12bind:address location="http://srv-1c_g/service/ws/vegaws.1cws" />
+    </port>
+  </service>
+</definitions>

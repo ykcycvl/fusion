@@ -32,8 +32,8 @@
         {
             j++;
             TableData += "{ Code: \"" + e.Code + "\", Organization: \""
-                + Model.FullName + "\", Period: \"" + Model.Period + "\", SheetNumber: \""
-                + Model.SheetNumber + "\", Position: \""
+                + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
+                + Model.DocNumber + "\", Position: \""
                 + e.Position + "\", FullName: \""
                 + e.FullName + "\", Salary: \"" + e.Salary + "\"";
 
@@ -60,7 +60,7 @@
 </div>
 
 <h2>@ViewBag.Title</h2>
-<h5>@Model.SheetNumber</h5>
+<h5>@Model.DocNumber</h5>
 <h5>Организация: @Model.FullName</h5>
 <h5>Период: @Model.Period.ToString("MMMM yyyy")</h5>
 
@@ -137,10 +137,13 @@
             body: webix.copy(form)
         });
 
-        var sheetnumber = "@Model.SheetNumber";
+        var docnumber = "@Model.DocNumber";
         var orgname = "@Model.FullName";
 
-        if ((sheetnumber == null || sheetnumber == '') && (orgname == null || orgname == ''))
+        if (docnumber == null || docnumber == '')
+            clearInterval(timerId);
+
+        if ((docnumber == null || docnumber == '') && (orgname == null || orgname == ''))
             TSParameters.show();
     });
 
@@ -151,6 +154,20 @@
     }
 
     webix.ready(function () {
+        webix.ui({
+            container: "areaC",
+            view: "toolbar", paddingY: 2,
+            cols: [
+                {},
+                { view: "button", value: "Сохранить", width: 100, id: "Save" },
+            ],
+            on: {
+                'onItemClick': function (id) {
+                    alert("you have clicked on an item with id=" + id);
+                }
+            }
+        });
+
         grid = webix.ui({
             container: "tabl",
             id: "grid",
@@ -160,7 +177,7 @@
             padding: 10,
             columns: [
               { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
-              { id: "SheetNumber", header: "SheetNumber", hidden: "true" },
+              { id: "DocNumber", header: "DocNumber", hidden: "true" },
               { id: "Period", header: "Period", hidden: "true" },
               { id: "Organization", header: "Organization", hidden: "true" },
               { id: "Code", header: "Code", hidden: "true" },
@@ -230,16 +247,16 @@
     }
 </script>
 
-<div id="tabl">
+<div id="areaC"></div>
 
-</div>
+<div id="tabl"></div>
 
 <div id="TimeSheetParameters">
     <div class="alert-danger">
         @ViewBag.Error
     </div>
 
-    @Html.HiddenFor(m => m.SheetNumber)
+    @Html.HiddenFor(m => m.DocNumber)
     <label>Период (месяц / год)</label>
     @Html.TextBoxFor(m => m.Period, String.Format("{0:MM/yyyy}", Model.Period), new { @class = "date-picker form-control", @style = "text-align: center" })
     <label>Выберите организацию</label>

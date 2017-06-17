@@ -1,4 +1,4 @@
-﻿@model Fusion.Models.SalaryModels.TimeSheetsViewModel
+﻿@model Fusion.Models.SalaryModels.Vega1CWS.TimeSheetViewModel
 
 @{
     ViewBag.Title = "Индивидуальные графики";
@@ -6,7 +6,7 @@
 }
 <script>
     $(function () {
-        $("#OrganizationName").change(function () {
+        $("#FullName").change(function () {
             blur();
         });
         var i = document.getElementById("Form");
@@ -19,7 +19,7 @@
         $("#loader").show();
         var i = document.getElementById("Form");
         i.style.opacity = 0.5;
-        window.location.href = '/Salary/TimeSheets?OrgName=' + encodeURIComponent($("#OrganizationName").val());
+        window.location.href = '/Salary/TimeSheets?orgname=' + encodeURIComponent($("#FullName").val());
     }
 </script>
 
@@ -27,16 +27,18 @@
     <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
 </div>
 
-@Html.ActionLink("Создать", "Sheet", "Salary", new { @class="btn btn-default"})
-<br/>
-
-@using (Html.BeginForm("TimeSheets", "Salary", FormMethod.Get, new { id = "Form" }))
-{
-    <div class="form-group" style="width: 250px;">
-        @Html.DropDownListFor(m => m.OrganizationName, Model.OrganizationsSelectList, new { @class = "form-control" })
+<div class="row">
+    <div class="col-md-3">
+        @using (Html.BeginForm("TimeSheets", "Salary", FormMethod.Get, new { id = "Form" }))
+        {
+            @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
+        }
     </div>
-}
-
+    <div class="col-md-offset-3 right">
+        @Html.ActionLink("Создать", "TimeSheet", "Salary", new { @class = "btn btn-default" })
+    </div>
+</div>
+<br />
 <table class="table table-hover table-bordered table-responsive table-striped">
     <tr style="background-color: #DBEAFD">
         <th>Дата</th>
@@ -45,27 +47,27 @@
         <th>Организация</th>
         <th>&nbsp;</th>
     </tr>
-    @foreach (var ts in Model.TimeSheets)
+    @foreach (var d in Model.Documents)
     {
         string textDecoration = "none";
         string color = "#000";
 
-        if (ts.Deleted)
+        if (d.Deleted)
         {
             textDecoration = "line-through";
         }
 
-        if (ts.Passed)
+        if (d.CarriedOut)
         {
             color = "#0A0";
         }
 
-        <tr style="text-decoration:@textDecoration;color:@color;cursor:pointer" onclick="location.href = '/Salary/Sheet?number=@ts.Number'">
-            <td>@ts.Date.ToString("dd.MM.yyyy")</td>
-            <td>@ts.Number</td>
-            <td>@ts.Period.ToString("MMMM yyyy")</td>
-            <td>@ts.OrganizationName</td>
-            @if (ts.Passed)
+        <tr style="text-decoration:@textDecoration;color:@color;cursor:pointer" onclick="location.href = '/Salary/TimeSheet?number=@d.Number&orgname=@d.Organization.Name&year=@d.Date.Year'">
+            <td>@d.Date.ToString("dd.MM.yyyy")</td>
+            <td>@d.Number</td>
+            <td>@d.RegistrationPeriod.ToString("MMMM yyyy")</td>
+            <td>@d.Organization.Name</td>
+            @if (d.CarriedOut)
             {
                 <td>Проведен</td>
             }

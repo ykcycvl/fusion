@@ -10,7 +10,7 @@
         <AssociationConnector Association="FusionModel.FK_mc_extra_mc_task" />
         <EntityTypeShape EntityType="FusionModel.mc_userTask" Width="1.5" PointX="3" PointY="4.25" />
         <AssociationConnector Association="FusionModel.FK_mc_userTask_mc_task" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

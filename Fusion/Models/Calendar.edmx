@@ -5,6 +5,8 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="FusionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fusion.dbo.hostip' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="mc_extra">
           <Key>
             <PropertyRef Name="id" />
@@ -25,6 +27,7 @@
           <Property Name="DateEnd" Type="datetime" Nullable="false" />
           <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="deleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="mc_userTask">
           <Key>
@@ -36,6 +39,8 @@
           <Property Name="dt" Type="datetime" Nullable="false" />
           <Property Name="appointed" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <Association Name="FK_mc_extra_mc_task">
           <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
           <End Role="mc_extra" Type="Self.mc_extra" Multiplicity="*" />
@@ -72,7 +77,7 @@
             <End Role="mc_task" EntitySet="mc_task" />
             <End Role="mc_userTask" EntitySet="mc_userTask" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -113,6 +118,7 @@
           <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="mc_extra" Relationship="FusionModel.FK_mc_extra_mc_task" FromRole="mc_task" ToRole="mc_extra" />
           <NavigationProperty Name="mc_userTask" Relationship="FusionModel.FK_mc_userTask_mc_task" FromRole="mc_task" ToRole="mc_userTask" />
+          <Property Name="deleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_mc_extra_mc_task">
           <End Type="FusionModel.mc_task" Role="mc_task" Multiplicity="1" />
@@ -168,6 +174,7 @@
           <EntitySetMapping Name="mc_task">
             <EntityTypeMapping TypeName="FusionModel.mc_task">
               <MappingFragment StoreEntitySet="mc_task">
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
                 <ScalarProperty Name="dt" ColumnName="dt" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
@@ -189,7 +196,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

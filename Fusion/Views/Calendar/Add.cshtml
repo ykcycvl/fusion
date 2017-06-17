@@ -55,10 +55,12 @@
         <div class="col-lg-2 col-md-2">
             Начало
             @Html.TextBoxFor(m => m.DateStart, String.Format("{0:dd/MM/yyyy}", Model.DateStart), new { @class = "date-picker form-control" })
+            @Html.ValidationMessageFor(m => m.DateStart, "", new { @class = "text-danger" })
         </div>
         <div class="col-lg-2 col-md-2">
             Окончание
             @Html.TextBoxFor(m => m.DateEnd, String.Format("{0:dd/MM/yyyy}", Model.DateEnd), new { @class = "date-picker form-control" })
+            @Html.ValidationMessageFor(m => m.DateEnd, "", new { @class = "text-danger" })
         </div>
     </div>
     <br style="clear:both" />
@@ -67,12 +69,14 @@
         <div class="form-group">
             @Html.LabelFor(m => m.title)
             @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.title, "", new { @class = "text-danger" })
         </div>
     </div>
     <br style="clear:both" />
     <div class="col-lg-6 col-md-6 form-group">
         @Html.LabelFor(m => m.description)
         @Html.TextAreaFor(m => m.description, new { @class = "form-control", @cols = "20", @rows = "10" })
+        @Html.ValidationMessageFor(m => m.description, "", new { @class = "text-danger" })
         <div class="form-group">
             <input type="submit" value="Создать" class="btn btn-success" />
         </div>

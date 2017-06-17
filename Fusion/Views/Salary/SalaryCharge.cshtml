@@ -1,53 +1,101 @@
 ﻿@model Fusion.Models.SalaryModels.Organization
+
 @{
-    ViewBag.Title = "Создание начислений и удержаний";
+    ViewBag.Title = "Документ: начисления и удержания";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
+
     int miscCount = Model.Accruals.Count + Model.Detentions.Count;
     string miscColumn = "";
 
     int all = miscCount;
-    
+    string accrstring = "";
+    string detstring = "";
+    string TableData = "";
+    string SpansData = "";
+    foreach (var subdivision in Model.Subdivisions)
+    {
+        TableData += "{ id: \"sub" + subdivision.FullName + "\", Position: \"" + subdivision.FullName + "\", $css:\"subhighlight\" },\r\n";
+
+        foreach (var e in subdivision.Employees)
+        {
+            TableData += "{ Code: \"" + e.Code + "\", Organization: \""
+                + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
+                + Model.DocNumber + "\", Position: \""
+                + e.Position + "\", FullName: \""
+                + e.FullName + "\"";
+
+            for (int i = 0; i < e.Accruals.Count; i++)
+            {
+                TableData += ", accr" + i.ToString() + ": \"" + e.Accruals[i].Sum + "\"";
+            }
+            for (int i = 0; i < e.Detentions.Count; i++)
+            {
+                TableData += ", det" + i.ToString() + ": \"" + e.Detentions[i].Sum + "\"";
+            }
+            TableData += "},";
+        }
+    }
     for (int i = 0; i < miscCount; i++)
     {
         miscColumn += "{ width: 90, align: 'center' },\r\n";
+    }
+    for (int i = 0; i < Model.Accruals.Count; i++)
+    {
+        accrstring += "{ id: 'accr" + i.ToString() + "', header: '" + Model.Accruals[i].Name + "', editor: 'text'},\r\n";
+    }
+    for (int i = 0; i < Model.Detentions.Count; i++)
+    {
+        detstring += "{ id: 'det" + i.ToString() + "', header: '" + Model.Detentions[i].Name + "', editor: 'text'},\r\n";
+    }
+    foreach (var subdivision in Model.Subdivisions)
+    {
+        SpansData += "[ \"sub" + subdivision.FullName + "\", \"Position\", 2, 1, null, \"subhighlight\" ],\r\n";
     }
 }
 
 <link href="~/Scripts/css/fixed_table_rc.css" rel="stylesheet" />
 <script src="~/Scripts/js/fixed_table_rc.js"></script>
 
+<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
+
+<h2>@ViewBag.Title</h2>
+<h5>@Model.DocNumber</h5>
+<h5>Организация: @Model.FullName</h5>
+<h5>Период: @Model.Period.ToString("MMMM yyyy")</h5>
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
 <style>
-    html, body {
-        margin: 0;
-        padding: 0;
+    .webix_ss_center_scroll {
+        cursor: cell !important;
     }
 
-    input[type="text"]:focus {
-        cursor: text;
-        outline: none;
+    .mystyle1 {
+        font-weight: bold;
+        color: #B51454;
+        background-color: #FFAAAA;
     }
 
-    input[type="text"] {
-        background: rgba(0, 0, 0, 0);
-        cursor: cell;
-    }
-    /*div.container {
-        padding: 5px 15px;
-        width: 80vw;
-        margin: 10px auto;
-    }*/
-
-    .ui-widget-header {
-        font-weight: normal !important;
+    .mystyle2 {
+        font-weight: bold;
+        background-color: #AFA;
     }
 
-    .ft_container table tr th,
-    .ft_container table tr td {
-        padding: 2px 0 2px 0 !important;
+    .weekend {
+        background: #f00;
     }
 
-    .ft_container table tr th {
-        background-color: #DBEAF9;
+    #grid {
+        margin-left: 0px;
+    }
+
+    .subhighlight {
+        background-color: #edf4f9;
+        font-weight: bold;
     }
 
     .ui-datepicker-calendar {
@@ -58,29 +106,11 @@
         z-index: 9999 !important;
     }
 </style>
-<script>
+
+<script type="text/javascript">
     $(function () {
-        $('#fixed_hdr1').fxdHdrCol({
-            fixedCols: 2,
-            width: '100%',
-            height: '70vh',
-            colModal: [
-                { width: 200, align: 'left' },
-                { width: 250, align: 'left' },
-                @Html.Raw(miscColumn)
-            ]
-        });
+        var timerId = setInterval("AutoSave()", 300000);
 
-        $('input').click(function () {
-            $(this).select()
-        });
-
-        $("#FullName").change(function () {
-            blur();
-        });
-        $("#Period").change(function () {
-            blur();
-        });
         $('.date-picker').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -92,99 +122,150 @@
             }
         });
         $.datepicker.setDefaults($.datepicker.regional["ru"]);
-        $('Form').keydown(function (event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
+
+        var form = {
+            view: "htmlform",
+            content: "DocumentParameters"
+        };
+
+        var ADParameters = webix.ui({
+            view: "window",
+            id: "ADParameters",
+            width: 300,
+            position: "center",
+            modal: true,
+            head: "Начисления и удержания",
+            body: webix.copy(form)
+        });
+
+        var docnumber = "@Model.DocNumber";
+        var orgname = "@Model.FullName";
+
+        if (docnumber == null || docnumber == '')
+            clearInterval(timerId);
+
+        if ((docnumber == null || docnumber == '') && (orgname == null || orgname == ''))
+            ADParameters.show();
+    });
+
+    function ApplyADParameters() {
+        $("#loader").show();
+        window.location.href = '/Salary/SalaryCharge?OrgName=' + encodeURIComponent($("#FullName").val()) + '&period=' + $("#Period").val();
+        return false;
+    }
+
+    webix.ready(function () {
+        webix.ui({
+            container: "areaC",
+            view: "toolbar", paddingY: 2,
+            cols: [
+                {},
+                { view: "button", value: "Загрузить", width: 100, id: "Load" },
+                { view: "button", value: "Сохранить", width: 100, id: "Save" },
+                { view: "button", value: "Инфо", width: 100, id: "Info" }
+            ],
+            on: {
+                'onItemClick': function (id) {
+                    alert("you have clicked on an item with id=" + id);
+                }
             }
         });
-        var i = document.getElementById("Form");
-        i.style.opacity = 1;
+
+        grid = webix.ui({
+            container: "tabl",
+            id: "grid",
+            view: "datatable",
+            rowHeight: 23,
+            leftSplit: 5,
+            padding: 10,
+            columns: [
+              { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
+              { id: "DocNumber", header: "DocNumber", hidden: "true" },
+              { id: "Period", header: "Period", hidden: "true" },
+              { id: "Organization", header: "Organization", hidden: "true" },
+              { id: "Code", header: "Code", hidden: "true" },
+              { id: "Position", header: "Должность", width: 150 },
+              { id: "FullName", header: "ФИО", width: 230 },
+              @Html.Raw(accrstring),
+              @Html.Raw(detstring)
+            ],
+            spans: true,
+            data: {
+                data: [
+                    @Html.Raw(TableData)
+                ],
+                spans: [
+                    @Html.Raw(SpansData)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 500,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid);
+
+        grid.attachEvent("onPaste", function (code, e) {
+            grid.refreshColumns();
+        });
     });
+
+    function Save() {
+        webix.message({ type: "default", text: "Сохранение документа...", expire: 20000 });
+        $("#loader").show();
+        var grid = $$("grid");
+        var serializedData = grid.serialize();
+        webix.ajax().post("/Salary/SaveAD", { data: serializedData }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message, expire: 20000 });
+        });
+
+        return false;
+    }
+
+    function AutoSave() {
+        webix.message({
+            type: "default",
+            text: "Автосохранение...",
+            expire: 30000
+        });
+        var grid = $$("grid");
+        var serializedData = grid.serialize();
+        webix.ajax().post("/Salary/SaveAD", { data: serializedData }, function (result) {
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+        return false;
+    }
 </script>
 
-<script>
-    function blur() {
-        $("#loader").show();
-        var i = document.getElementById("Form");
-        i.style.opacity = 0.5;
-        window.location.href = '/Salary/SalaryCharge?OrgName=' + encodeURIComponent($("#FullName").val()) + '&period=' + $("#Period").val();
-    }
-    function opacity()
-    {
-        $("#loader").show();
-    }
-</script>
+<div id="areaC"></div>
 
-<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
-    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
-</div>
-@using (Html.BeginForm("SalaryCharge", "Salary", FormMethod.Post, new { id = "Form" }))
-{
-    <div class="form-group" style="width: 250px;">
-        @Html.TextBoxFor(m => m.Period, String.Format("{0:MM/yyyy}", Model.Period), new { @class = "date-picker form-control" })
-        @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
+<div id="tabl"></div>
+
+<div id="DocumentParameters">
+    <div class="alert-danger">
+        @ViewBag.Error
     </div>
 
-    <div class="dwrapper" style="font-size:13px;font-weight:normal">
-        <table id="fixed_hdr1" class="">
-            <thead>
-                <tr>
-                    <th>Должность</th>
-                    <th>ФИО</th>
-                    @for (int i = 0; i < Model.Accruals.Count; i++)
-                    { 
-                        <th>@Model.Accruals[i].Name</th>
-                    }
-                    @for (int i = 0; i < Model.Detentions.Count; i++)
-                    {
-                        <th>@Model.Detentions[i].Name</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Subdivisions.Count; i++)
-                {
-                    all = all + 2;
-                    <tr>
-                        <th colspan="@all">
-                            @Html.HiddenFor(m => m.Subdivisions[i].Code)
-                            @Html.HiddenFor(m => m.Subdivisions[i].FullName)
-                            @Model.Subdivisions[i].FullName
-                        </th>
-                    </tr>
-                    for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
-                    {
-                        <tr>
-                            <td>
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Code)
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].FullName)
-                                @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Position)
-                                @Model.Subdivisions[i].Employees[j].Position
-                            </td>
-                            <td>
-                                @Model.Subdivisions[i].Employees[j].FullName
-                            </td>
-                            @for (int t = 0; t < Model.Subdivisions[i].Employees[j].Accruals.Count; t++)
-                            {
-                                <td>
-                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Accruals[t].Code)
-                                    @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Accruals[t].Sum, new { @style = "width: 90px; border: none;text-align:center;" })
-                                </td>
-                            }
-                            @for (int t = 0; t < Model.Subdivisions[i].Employees[j].Detentions.Count; t++)
-                            {
-                                <td>
-                                    @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Detentions[t].Code)
-                                    @Html.TextBoxFor(m => m.Subdivisions[i].Employees[j].Detentions[t].Sum, new { @style = "width: 90px; border: none;text-align:center;" })
-                                </td>
-                            }
-                        </tr>
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
+    @Html.HiddenFor(m => m.DocNumber)
+    <label>Период (месяц / год)</label>
+    @Html.TextBoxFor(m => m.Period, String.Format("{0:MM/yyyy}", Model.Period), new { @class = "date-picker form-control", @style = "text-align: center" })
+    <label>Выберите организацию</label>
+    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control", @style = "text-align: center" })
     <br />
-    <input type="submit" value="Сохранить" onclick="opacity()" class="btn btn-success" />
-}
+    <a href="#" onclick="ApplyADParameters();" class="btn btn-success form-control">Применить</a>
+</div>
+
+<br />
+<input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />

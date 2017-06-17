@@ -27,6 +27,7 @@ namespace Fusion.Models
         public System.DateTime DateEnd { get; set; }
         public string username { get; set; }
         public System.DateTime dt { get; set; }
+        public bool deleted { get; set; }
     
         public virtual ICollection<mc_extra> mc_extra { get; set; }
         public virtual ICollection<mc_userTask> mc_userTask { get; set; }

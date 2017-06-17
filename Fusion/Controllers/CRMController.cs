@@ -89,14 +89,7 @@ namespace Fusion.Controllers
             model.Search();
             return View(model);
         }
-        [HttpPost]
-        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
-        public ActionResult OPM(ReportViewModels.OPMViewModel model)
-        {
-            model.EndDateTime = model.EndDateTime.AddDays(1);
-            model.Search();
-            return View(model);
-        }
+        
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
         public ActionResult FPD()
         {

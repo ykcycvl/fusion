@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Календарь</title>
+    <script src="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/dhtmlxscheduler.js"></script>
+    <link href="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/dhtmlxscheduler_flat.css" rel="stylesheet" />
+    <script src="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/locale/locale_ru.js"></script>
+    <script src="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_serialize.js"></script>
+    <script src="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_recurring.js"></script>
+    <script src="~/Scripts/dhtmlx/dhtmlxScheduler/codebase/ext/dhtmlxscheduler_readonly.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <style type="text/css">
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+
+    <script type="text/javascript" charset="utf-8">
+    function init() {
+        scheduler.config.xml_date = "%Y-%m-%d %H:%i";
+        scheduler.config.resize_month_events = false;
+        scheduler.config.drag_move = false;
+        scheduler.config.first_hour=7;
+        scheduler.init('scheduler_here', new Date(@DateTime.Today.Year, @DateTime.Today.Month, @DateTime.Today.Day), "month");
+        scheduler.load("/IT/CalendarData?username=usatmaikina");
+        scheduler.load("/IT/CalendarData?username=tv");
+
+        var dp = new dataProcessor("/IT/CalendarData?username=usatmaikina");
+        dp.init(scheduler);
+
+        //User.Identity.GetUserName();
+        function allow_own(id){
+            var ev = this.getEvent(id);
+            return ev.userId == "@User.Identity.GetUserName()";
+        }
+        scheduler.attachEvent("onClick",allow_own);
+        scheduler.attachEvent("onDblClick", function (id, e){
+            window.location.href = '/Calendar/ViewTask/' + id;
+        })
+    }
+
+    function test()
+    {
+        var s = scheduler.toJSON()
+        $.ajax({
+            type: "POST",
+            url:"/IT/Test",
+            data: "",
+            success:function(result){
+                alert("123");
+            }
+        });
+
+        return false;
+    }
+</script>
+</head>
+
+<body onload="init();">
+    @using (Html.BeginForm("ITController", "Test", FormMethod.Post, new { id = "Form", @target = "hidden_frame" }))
+    {
+        @Html.Hidden("data")
+    }
+    <iframe src='about:blank' frameborder="0" style="width:0px; height:0px;" id="hidden_frame" name="hidden_frame"></iframe>
+    <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+        <div class="dhx_cal_navline">
+            <div class="dhx_cal_prev_button">&nbsp;</div>
+            <div class="dhx_cal_next_button">&nbsp;</div>
+            <div class="dhx_cal_date"></div>
+            <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+            <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+        </div>
+        <div class="dhx_cal_header">
+        </div>
+        <div class="dhx_cal_data">
+        </div>
+    </div>
+</body>
+</html>

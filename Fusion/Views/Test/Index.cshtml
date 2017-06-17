@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="//cdn.webix.com/site/pivot//pivot.css?v=4.3.0" type="text/css" charset="utf-8">
+<script src="//cdn.webix.com/site/pivot/pivot.js?v=4.3.0" type="text/javascript" charset="utf-8"></script>
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
+<link rel="stylesheet" href="../common/samples.css" type="text/css">
+<script src="https://docs.webix.com/samples/61_pivot/common/testdata.js" type="text/javascript" charset="utf-8"></script>
+
+<h2>Тест всякой бабуйни</h2>
+
+<div class='header_comment'>Loading from inline datasource</div>
+<div id="testA"></div>
+
+<style type="text/css">
+    html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<script type="text/javascript" charset="utf-8">
+    webix.i18n.pivot = {
+        columns: "Колонки",
+        count: "count",
+        fields: "Поля",
+        filters: "Фильтры",
+        max: "max",
+        min: "min",
+        operationNotDefined: "Operation is not defined",
+        pivotMessage: "[Нажмите сюда для выбора]",
+        rows: "Строки",
+        select: "select",
+        sum: "sum",
+        text: "text",
+        values: "Значения",
+        windowTitle: "Конфигурирование отчета",
+        windowMessage: "[перетащите поля в требуемый сектор]",
+        apply: "Применить",
+        cancel: "Отмена"
+    };
+
+    webix.ready(function () {
+        grida = webix.ui({
+            container: "testA",
+            id: "pivot",
+            view: "pivot",
+            height: 400,
+            data: [],
+            max: true
+        });
+    });
+</script>

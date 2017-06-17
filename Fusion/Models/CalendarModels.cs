@@ -28,12 +28,17 @@ namespace Fusion.Models
 
         public int id { get; set; }
         [Display(Name="Задача")]
+        [Required]
         public string title { get; set; }
         [Display(Name = "Описание")]
+        [Required]
         public string description { get; set; }
+        [Required]
         public DateTime DateStart { get; set; }
+        [Required]
         public DateTime DateEnd { get; set; }
         public string username { get; set; }
+        public bool Deleted { get; set; }
         public List<string> uNames { get; set; }
         public IEnumerable<SelectListItem> MemberList
         {
@@ -51,9 +56,13 @@ namespace Fusion.Models
                             UserPrincipal theUser = p as UserPrincipal;
 
                             if (!theUser.IsAccountLockedOut())
-                            {
-                                members.Add(new SelectListItem() { Text = theUser.Name, Value = theUser.SamAccountName });
-                            }
+                                if (uNames != null)
+                                    if (uNames.FirstOrDefault(t => t == theUser.SamAccountName) != null)
+                                        members.Add(new SelectListItem() { Text = theUser.Name, Value = theUser.SamAccountName, Selected = true });
+                                    else
+                                        members.Add(new SelectListItem() { Text = theUser.Name, Value = theUser.SamAccountName, Selected = false });
+                                else
+                                    members.Add(new SelectListItem() { Text = theUser.Name, Value = theUser.SamAccountName, Selected = false });
                         }
                 }
 
@@ -61,6 +70,23 @@ namespace Fusion.Models
             }
         }
 
+        public void Clone()
+        {
+            if (id == 0)
+                return;
+            else
+            {
+                mc_task t = db.mc_task.FirstOrDefault(p => p.id == id);
+
+                if (t != null)
+                {
+                    mc_task task = new mc_task() { title = t.title, description = t.description, DateStart = t.DateStart, DateEnd = t.DateEnd, username = username, dt = DateTime.Now };
+                    db.mc_task.Add(task);
+                    db.SaveChanges();
+                    this.id = task.id;
+                }
+            }
+        }
         public void Save()
         {
             if (id == 0)
@@ -81,8 +107,14 @@ namespace Fusion.Models
                     t.DateStart = DateStart;
                     t.DateEnd = DateEnd;
                     t.username = username;
-                    db.SaveChanges();
                 }
+
+                var uts = db.mc_userTask.Where(p => p.taskId == id).ToList();
+
+                foreach (var ut in uts)
+                    db.mc_userTask.Remove(ut);
+
+                db.SaveChanges();
             }
 
             for (int i = 0; i < uNames.Count; i++)
@@ -96,6 +128,15 @@ namespace Fusion.Models
 
             db.SaveChanges();
         }
+        public void Delete()
+        {
+            mc_task t = db.mc_task.FirstOrDefault(p => p.id == id);
+
+            if (t != null)
+                t.deleted = true;
+
+            db.SaveChanges();
+        }
         public CalendarTaskViewModel(int id)
         {
             mc_task t = db.mc_task.FirstOrDefault(p => p.id == id);
@@ -106,14 +147,31 @@ namespace Fusion.Models
             this.DateStart = t.DateStart;
             this.DateEnd = t.DateEnd;
             this.username = t.username;
+            this.Deleted = t.deleted;
 
             var ut = db.mc_userTask.Where(p => p.taskId == id);
 
             if (ut != null)
-            {
                 foreach (var u in ut.ToList())
                     uNames.Add(u.username);
-            }
+        }
+        public void GetTaskByUTID(int utid)
+        {
+            mc_userTask t = db.mc_userTask.FirstOrDefault(p => p.id == utid);
+            uNames = new List<string>();
+            this.id = t.mc_task.id;
+            this.title = t.mc_task.title;
+            this.description = t.mc_task.description;
+            this.DateStart = t.mc_task.DateStart;
+            this.DateEnd = t.mc_task.DateEnd;
+            this.username = t.mc_task.username;
+            this.Deleted = t.mc_task.deleted;
+
+            var ut = db.mc_userTask.Where(p => p.taskId == id);
+
+            if (ut != null)
+                foreach (var u in ut.ToList())
+                    uNames.Add(u.username);
         }
         public CalendarTaskViewModel()
         {
@@ -134,7 +192,7 @@ namespace Fusion.Models
 
             var userTasks = (from t in db.mc_task
                              join ut in db.mc_userTask on t.id equals ut.taskId
-                             where ut.username == userName
+                             where ut.username == userName && !t.deleted
                              select t
                 ).Where(p => p.DateStart <= DateEnd && DateEnd >= DateStart).ToList();
 

@@ -18,13 +18,21 @@
         <mvcSiteMapNode title="ASIOD" controller="CRM" action="ASIOD" />
       </mvcSiteMapNode>
     </mvcSiteMapNode>
-    <mvcSiteMapNode title="Отчетность КЦ" controller="CallCenter" action="Index">
+    <mvcSiteMapNode title="КЦ" controller="CallCenter" action="Index">
       <mvcSiteMapNode title="Отчет по операторам" controller="CallCenter" action="OperatorsReport"/>
       <mvcSiteMapNode title="Список для прозвона" controller="CallCenter" action="CallingList" />
       <mvcSiteMapNode title="CDR отчеты" controller="CDR" action="Index">
         <mvcSiteMapNode title="Обзор" controller="CDR" action="Overall" />
         <mvcSiteMapNode title="Детализация уровня обслуживания" controller="CDR" action="ServiceLevelDetail" />
         <mvcSiteMapNode title="Детализация пропущенных звонков" controller="CDR" action="MissedCallsDetail" />
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="ЗУП" controller="Salary" action="Index">
+      <mvcSiteMapNode title="Индивидуальные графики" controller="Salary" action="TimeSheets">
+        <mvcSiteMapNode title="Ведомость" controller="Salary" action="TimeSheet" />
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Начисление зарплаты и взносов" controller="Salary" action="AccrualsAndDetentions">
+        <mvcSiteMapNode title="Начисления и удержания" controller="Salary" action="AAD" />
       </mvcSiteMapNode>
     </mvcSiteMapNode>
   </mvcSiteMapNode>

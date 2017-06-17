@@ -47,8 +47,13 @@ namespace Fusion.Controllers
         [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Add(CalendarTaskViewModel model)
         {
-            model.Save();
-            return RedirectToAction("ViewTask", new { @id = model.id });
+            if (ModelState.IsValid)
+            {
+                model.Save();
+                return RedirectToAction("ViewTask", new { @id = model.id });
+            }
+            else
+                return View(model);
         }
         [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult Edit(int id)
@@ -61,10 +66,51 @@ namespace Fusion.Controllers
         public ActionResult Edit(CalendarTaskViewModel model)
         {
             model.Save();
-            return View(model);
+            return RedirectToAction("ViewTask", new { @id=model.id });
         }
         [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
         public ActionResult ViewCalendar(string period, string userName)
+        {
+            Planner model = new Planner();
+
+            DateTime dt;
+
+            if (!DateTime.TryParse(period, out dt))
+                dt = DateTime.Today;
+
+            model.Period = dt;
+
+            if (!LoginViewModel.IsMemberOf(User.Identity.Name, "VegaCMAdmin"))
+                userName = User.Identity.Name;
+
+            model.userName = userName;
+            //model.GetTasks();
+
+            return View(model);
+        }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
+        public ActionResult ViewTask(int id)
+        {
+            CalendarTaskViewModel model = new CalendarTaskViewModel(id);
+            return View(model);
+        }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
+        public ActionResult Delete(int id)
+        {
+            CalendarTaskViewModel model = new CalendarTaskViewModel(id);
+            model.Delete();
+            return RedirectToAction("Index");
+        }
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
+        public ActionResult Clone(int id)
+        {
+            CalendarTaskViewModel model = new CalendarTaskViewModel(id);
+            model.Clone();
+            return RedirectToAction("Edit", new { @id = model.id });
+        }
+
+        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
+        public ActionResult TestCalendar(string period, string userName)
         {
             Planner model = new Planner();
 
@@ -83,11 +129,15 @@ namespace Fusion.Controllers
 
             return View(model);
         }
-        [MyAuthorize(Roles = "VegaCMAdmin, Управляющие")]
-        public ActionResult ViewTask(int id)
+        public ContentResult CalendarData(string username)
         {
-            CalendarTaskViewModel model = new CalendarTaskViewModel(id);
-            return View(model);
+            ITDeptModels model = new ITDeptModels();
+            ContentResult cr = new ContentResult();
+            cr.ContentType = "text/xml";
+            cr.Content = "<data>";
+            cr.Content += model.GetTasks(username);
+            cr.Content += "</data>";
+            return cr;
         }
     }
 }
