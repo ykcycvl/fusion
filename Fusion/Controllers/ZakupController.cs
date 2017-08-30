@@ -7,8 +7,6 @@ using Fusion.Models;
 using Microsoft.AspNet.Identity;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
-using PagedList.Mvc;
-using PagedList;
 
 namespace Fusion.Controllers
 {
@@ -86,13 +84,20 @@ namespace Fusion.Controllers
             model.getOrders();
             return View(model);
         }
-        public ActionResult CreateOrder(int catId = 0)
+        public ActionResult CreateOrder(int catId)
         {
             ZakupModel model = new ZakupModel();
             model.getVendors();
             model.getNomenclatures();
             model.getOrders();
-            model.categoryId = catId;
+            if (catId == null)
+            {
+                catId = 1;
+            }
+            else
+            {
+                model.categoryId = catId;
+            }
             return View(model);
         }
         [HttpPost]
@@ -104,29 +109,8 @@ namespace Fusion.Controllers
             model.sendOrder(username);
             model.getVendors();
             model.getNomenclatures();
+            model.categoryId = 1;
             return View(model);
-        }
-        public ActionResult Test1(int? page)
-        {
-            ZakupModel model = new ZakupModel();
-            model.getVendors();
-            model.getNomenclatures();
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            
-            List<ZakupModel.items1> listItem = new List<ZakupModel.items1>();
-            foreach (var it in model.items)
-            {
-                var item = new ZakupModel.items1();
-                item.category = it.bd_category.name;
-                item.id = it.id;
-                item.measurement = it.bd_measurement.name;
-                item.name = it.name;
-                item.vendor_name = it.bd_vendor.name;
-                item.price = it.Price;
-                listItem.Add(item);
-            }
-            return View(listItem.ToPagedList(pageNumber, pageSize));
         }
     }
 }

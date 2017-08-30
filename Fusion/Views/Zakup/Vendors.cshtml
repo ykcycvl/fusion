@@ -55,7 +55,7 @@
         })
     });
 </script>
-<h2>Vendors</h2>
+<h2>Поставщики</h2>
 @using (Html.BeginForm("Vendors", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
     <div id="filters">
@@ -82,8 +82,8 @@
                         @Model.vendorList[i].id
                         @Html.HiddenFor(m => m.vendorList[i].id)
                     </td>
-                    <td>@Html.TextBoxFor(m => m.vendorList[i].code)</td>
-                    <td>@Html.TextBoxFor(m => m.vendorList[i].name)</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].code, new { @style="width: 50px;" })</td>
+                    <td style="width: 500px;">@Html.TextBoxFor(m => m.vendorList[i].name, new { })</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].phones)</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].INN)</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].KPP)</td>

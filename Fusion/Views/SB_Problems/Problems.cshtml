@@ -2,9 +2,7 @@
 @{
     ViewBag.Title = "Problems";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
-}
-<<<<<<< HEAD
-=======
+} 
 <style>
     .monthpicker > .ui-datepicker-calendar {
         display: none;
@@ -12,18 +10,40 @@
     .monthpicker > .ui-datepicker {
         z-index: 9999 !important;
     }
+    .records {
+        height: 200px;
+    }
+    textarea {
+        height: 200px !important;
+    }
 </style>
->>>>>>> origin/master
 <script>
     $(document).ready(function () {
+        $("#AddTransactionDialog").dialog({
+            buttons: {
+                "Закрыть": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) { },
+            modal: true,
+            width: 450,
+            height: 550,
+            autoOpen: false,
+            draggable: true,
+            closeText: '',
+            resizable: true
+        });
+        $("#AddTransactionBtn").click(function () {
+            $("#AddTransactionDialog").dialog("open");
+            return false;
+        });
         $('.date-picker').datepicker({
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
             dateFormat: 'd.m.yy'
         });
-<<<<<<< HEAD
-=======
         $('.monthpicker').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -34,7 +54,6 @@
                 window.location.href = '/SB_Problems/Problems?period=' + $("#Period").val();
             }
         });
->>>>>>> origin/master
         var count = 0;
         var tbody = document.getElementsByTagName('tbody')[0];
         tbody = tbody.rows.length;
@@ -99,10 +118,8 @@
 @using (Html.BeginForm("Problems", "SB_Problems", FormMethod.Post, new { id = "Form" }))
 {
     <div id="wrapper">
-<<<<<<< HEAD
-=======
         @Html.TextBoxFor(m => m.Period, new { @class = "monthpicker form-control", @style = "width: 100px; text-align:center;" })
->>>>>>> origin/master
+        <button id="AddTransactionBtn" class="btn btn-danger">Отчет</button>
         <table class="table table-bordered table-striped" id="myTable">
             <thead>
                 <tr>
@@ -117,8 +134,6 @@
             <tbody>
                 @for (int i = 0; i < Model.problems.Count(); i++)
                 {
-<<<<<<< HEAD
-=======
                     string color = "";
                     string adminColor = "";
                     if (Model.problems[i].sb_managers.domain_name == Model.username && (Model.problems[i].solution == null || Model.problems[i].solution == ""))
@@ -141,36 +156,10 @@
                     {
                         adminColor = "#d9534f";
                     }
->>>>>>> origin/master
                     Model.RestaurantName = Model.problems[i].sb_restaurants.restaurant_name;
                     Model.ManagerName = Model.problems[i].sb_managers.name;
                     if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin"))
                     {
-<<<<<<< HEAD
-                        <tr class="records">
-                            <td id="di" style="display: none">@Model.problems[i].id</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @class="form-control", @required="true" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new {@class="form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class="form-control"  })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new{ @class="form-control" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].sb_managers.id, Model.ManagersSelectList, new {@class="form-control"  })</td>
-                            @Html.HiddenFor(m => m.problems[i].id)
-                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
-                        </tr>
-                    }
-                    else
-                    {
-                        <tr class="records">
-                            <td id="di" style="display: none">@Model.problems[i].id</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @disabled = "true", @class="form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @disabled = "true", @class = "form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].sb_managers.name, new { @disabled = "true", @class = "form-control" })</td>
-                            @Html.HiddenFor(m => m.problems[i].id)
-                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
-                        </tr>
-=======
                         <tr style="display: none;">
                             <td>@Html.HiddenFor(m => m.problems[i].id)</td>
                         </tr>
@@ -206,7 +195,6 @@
                                 @Html.HiddenFor(m => m.problems[i].sb_managers.name)
                             </tr>
                         }
->>>>>>> origin/master
                     }
                 }
             </tbody>
@@ -218,3 +206,22 @@
         <input type="text" class="btn btn-primary" id="addRow" value="Добавить замечание" />
     }
 }
+<div id="AddTransactionDialog" title="Отчет по жалобам">
+    <span>
+        Всего пришло жалоб: @Model.problems.Count
+        <br />
+        Неотвеченных: @Model.problems.Where(m => m.solution == "" || m.solution == null).Count() <br />
+        Из них по: <br />
+        <p>
+            Каваи: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Каваи").Count() <br />
+            Киото: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Киото").Count() <br />
+            Находка: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Находка").Count() <br />
+            Уссурийск: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Уссурийск").Count() <br />
+            Хоум: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Хоум").Count() <br />
+            Гайдамак: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Гайдамак").Count() <br />
+            Фабрика: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Фабрика").Count() <br />
+            Находка 2 этаж: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Находка 2 этаж").Count() <br />
+            Офис: @Model.problems.Where(m => m.sb_restaurants.restaurant_name == "Офис").Count()
+        </p>
+    </span>
+</div>

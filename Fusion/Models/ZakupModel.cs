@@ -6,8 +6,6 @@ using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using PagedList.Mvc;
-using PagedList;
 
 
 namespace Fusion.Models

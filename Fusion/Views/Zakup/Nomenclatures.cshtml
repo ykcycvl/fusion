@@ -1,5 +1,5 @@
 ﻿@model Fusion.Models.ZakupModel
-@using PagedList.Mvc;
+
 
 @{
     ViewBag.Title = "Nomenclatures";
@@ -23,12 +23,6 @@
                 "sSearch": "<span>Фильтрануть</span> _INPUT_",
             }
         });
-    });
-    $(window).on('load', function () {
-            $("#loader").show();
-            window.setTimeout(function () {
-                $("#loader").hide();
-            }, 6000);
     });
 </script>
 <style>
@@ -54,12 +48,13 @@
 }
 <script>
     $(document).ready(function () {
-        var count = 0;
+        $('#loader').css('display', 'none');
+        var count = $('#rowsCount').val();
         var tbody = document.getElementsByTagName('tbody')[0];
         tbody = tbody.rows.length;
         $('#addRow').click(function () {
             count++;
-            vall = tbody + count;
+            vall = 1 + count;
             var template = $('.records').first().clone()
             template.find('input[type=text]').val(null)
             template.find('#di').html(vall)
@@ -93,7 +88,9 @@
         })
     });
 </script>
-<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+<h2>Номенклатуры</h2>
+<input  style="display: none;" id="rowsCount" value="@Model.list.bd_nomenclature.Count()"/>
+<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw; background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: block;z-index:9999;opacity:0.8;" id="loader">
     <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
 </div>
 @using (Html.BeginForm("Nomenclatures", "Zakup", FormMethod.Post, new { id = "Form" }))

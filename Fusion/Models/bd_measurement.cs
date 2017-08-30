@@ -14,29 +14,19 @@ namespace Fusion.Models
     
     public partial class bd_measurement
     {
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
->>>>>>> origin/master
         public bd_measurement()
         {
             this.bd_nomenclature = new HashSet<bd_nomenclature>();
             this.bd_order = new HashSet<bd_order>();
         }
     
-<<<<<<< HEAD
-        public int id { get; set; }
-        public string name { get; set; }
-    
-        public virtual ICollection<bd_nomenclature> bd_nomenclature { get; set; }
-=======
         public byte id { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<bd_nomenclature> bd_nomenclature { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
->>>>>>> origin/master
         public virtual ICollection<bd_order> bd_order { get; set; }
     }
 }

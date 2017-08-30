@@ -14,10 +14,7 @@ namespace Fusion.Models
     
     public partial class sb_rights
     {
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
->>>>>>> origin/master
         public sb_rights()
         {
             this.sb_managers = new HashSet<sb_managers>();
@@ -26,10 +23,7 @@ namespace Fusion.Models
         public int id { get; set; }
         public string name { get; set; }
     
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
->>>>>>> origin/master
         public virtual ICollection<sb_managers> sb_managers { get; set; }
     }
 }

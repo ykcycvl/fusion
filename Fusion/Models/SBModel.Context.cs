@@ -13,17 +13,10 @@ namespace Fusion.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-<<<<<<< HEAD
-    public partial class SBEntities_F : DbContext
-    {
-        public SBEntities_F()
-            : base("name=SBEntities_F")
-=======
     public partial class SBEntities : DbContext
     {
         public SBEntities()
             : base("name=SBEntities")
->>>>>>> origin/master
         {
         }
     

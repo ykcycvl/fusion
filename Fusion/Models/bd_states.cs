@@ -14,10 +14,7 @@ namespace Fusion.Models
     
     public partial class bd_states
     {
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
->>>>>>> origin/master
         public bd_states()
         {
             this.bd_order = new HashSet<bd_order>();
@@ -26,10 +23,7 @@ namespace Fusion.Models
         public int id { get; set; }
         public string name { get; set; }
     
-<<<<<<< HEAD
-=======
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
->>>>>>> origin/master
         public virtual ICollection<bd_order> bd_order { get; set; }
     }
 }
