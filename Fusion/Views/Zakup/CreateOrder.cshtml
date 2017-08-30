@@ -3,6 +3,7 @@
     ViewBag.Title = "CreateOrder";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
+<script type="text/javascript" src="~/Content/filterTable.v1.0.min.js"></script> @*скрипт для фильтрации*@
 <script>
     $(function () {
         $("#categoryId").change(function () {
@@ -18,7 +19,13 @@
 <h2>Заявка</h2>
 
 @Html.DropDownListFor(m => m.categoryId, Model.CategoriesSelectList, new { @class = "form-control"})
-@using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" })) {
+@using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    <input type="submit" class="btn btn-success" id="sub" value="Сохранить" />
+    @Html.ActionLink("Перейти к списку", "Orders", null, new { @class = "btn btn-primary" })
+    <div id="filters">
+        <input id="namef" placeholder="Наименование..." />
+    </div>
 <table class="table table-bordered table-condensed table-responsive" id="mytable">
     <thead>
         <tr>
@@ -27,7 +34,7 @@
             <th width="150px">Кол-во</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="target">
         @for (int i = 0; i < Model.items.Count(); i++ )
         {
             <tr>
@@ -59,6 +66,18 @@
         }
     </tbody>
 </table>
-    <input type="submit" class="btn btn-success" id="sub" value="Сохранить" />
-    @Html.ActionLink("Перейти к списку", "Orders", null, new { @class = "btn btn-primary" })
     }
+@** скрипт для фильтров *@
+<script>
+    filterTable(document.getElementById("target"), {
+        0: new filterTable.Filter(document.getElementById("namef"),
+        /* Коллбэк ф-ция валидации */
+        function (value, filters, i) {
+            var c_value = value.toLowerCase(),
+                f_value = filters[i].value.toLowerCase();
+            return c_value.indexOf(f_value) === 0;
+        },
+        "onkeyup"
+    )
+    });
+</script>

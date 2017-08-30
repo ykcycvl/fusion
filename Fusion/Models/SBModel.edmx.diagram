@@ -4,6 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
+<<<<<<< HEAD
       <Diagram DiagramId="c1e42a242b74405ea3f08d9136e27e14" Name="Diagram1">
         <EntityTypeShape EntityType="Fusion.Model.sb_managers" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Fusion.Model.sb_problems" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
@@ -13,6 +14,17 @@
         <AssociationConnector Association="Fusion.Model.FK_sb_office_rights" ManuallyRouted="false" />
         <AssociationConnector Association="Fusion.Model.FK_sb_problems_mgr_id" ManuallyRouted="false" />
         <AssociationConnector Association="Fusion.Model.FK_sb_problems_restaurant_id" ManuallyRouted="false" />
+=======
+      <Diagram DiagramId="73598ff154cd42da9edc1d82938bafe5" Name="Diagram1">
+        <EntityTypeShape EntityType="SBModel.sb_managers" Width="1.5" PointX="2.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SBModel.sb_problems" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SBModel.sb_restaurants" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SBModel.sb_rights" Width="1.5" PointX="7" PointY="2.25" IsExpanded="true" />
+        <AssociationConnector Association="SBModel.FK_sb_managers_restaurant_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SBModel.FK_sb_office_rights" ManuallyRouted="false" />
+        <AssociationConnector Association="SBModel.FK_sb_problems_mgr_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SBModel.FK_sb_problems_restaurant_id" ManuallyRouted="false" />
+>>>>>>> origin/master
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

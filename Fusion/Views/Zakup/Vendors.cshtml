@@ -4,6 +4,7 @@
     ViewBag.Title = "Vendors";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
+<script type="text/javascript" src="~/Content/filterTable.v1.0.min.js"></script> @*скрипт для фильтрации*@
 <style>
     thead {
         background-color: #DBEAF9;
@@ -20,7 +21,6 @@
         outline: none !important;
         border: 0px;
         cursor: cell;
-        background-color: #f8f8f8;
     }
 </style>
 <script>
@@ -58,7 +58,10 @@
 <h2>Vendors</h2>
 @using (Html.BeginForm("Vendors", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
-    <table class="table table-striped table-bordered" id="mytable">
+    <div id="filters">
+        <input id="namef" placeholder="Наименование..."/>
+    </div>
+    <table class="table table-stripped table-bordered" id="mytable">
         <thead>
             <tr>
                 <td>ИД</td>
@@ -70,10 +73,11 @@
             </tr>
         </thead>
 
-        <tbody>
+        <tbody id="target">
             @for (int i = 0; i < Model.vendorList.Count(); i++)
             {
                 <tr class="records">
+                    <td hidden>@Model.vendorList[i].name</td>
                     <td id="di">
                         @Model.vendorList[i].id
                         @Html.HiddenFor(m => m.vendorList[i].id)
@@ -90,3 +94,17 @@
 <input type="button" class="btn btn-primary" id="addRow" value="Добавить поставщика"/>
 <input type="submit" value="Сохранить" class="btn btn-success"/>
 }
+@** скрипт для фильтров *@
+<script>
+    filterTable(document.getElementById("target"), {
+        0: new filterTable.Filter(document.getElementById("namef"),
+        /* Коллбэк ф-ция валидации */
+        function (value, filters, i) {
+            var c_value = value.toLowerCase(),
+                f_value = filters[i].value.toLowerCase();
+            return c_value.indexOf(f_value) === 0;
+        },
+        "onkeyup"
+    )
+    });
+</script>

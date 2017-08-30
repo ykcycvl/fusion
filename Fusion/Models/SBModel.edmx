@@ -4,7 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
+<<<<<<< HEAD
     <Schema Namespace="Fusion.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+=======
+      <Schema Namespace="SBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+>>>>>>> origin/master
         <EntityType Name="sb_managers">
           <Key>
             <PropertyRef Name="id" />
@@ -22,8 +26,13 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="date" Type="date" />
           <Property Name="restaurant_id" Type="int" />
+<<<<<<< HEAD
           <Property Name="problem" Type="text" />
           <Property Name="solution" Type="text" />
+=======
+          <Property Name="problem" Type="varchar" MaxLength="300" />
+          <Property Name="solution" Type="varchar" MaxLength="300" />
+>>>>>>> origin/master
           <Property Name="mgr_id" Type="int" />
         </EntityType>
         <EntityType Name="sb_restaurants">
@@ -88,7 +97,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+<<<<<<< HEAD
         <EntityContainer Name="FusionModelStoreContainer">
+=======
+        <EntityContainer Name="SBModelStoreContainer">
+>>>>>>> origin/master
           <EntitySet Name="sb_managers" EntityType="Self.sb_managers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_problems" EntityType="Self.sb_problems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" Schema="dbo" store:Type="Tables" />
@@ -110,10 +123,18 @@
             <End Role="sb_problems" EntitySet="sb_problems" />
           </AssociationSet>
         </EntityContainer>
+<<<<<<< HEAD
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Fusion.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+=======
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+>>>>>>> origin/master
         <EntityType Name="sb_managers">
           <Key>
             <PropertyRef Name="id" />
@@ -134,8 +155,13 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="date" Type="DateTime" Precision="0" />
           <Property Name="restaurant_id" Type="Int32" />
+<<<<<<< HEAD
           <Property Name="problem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+=======
+          <Property Name="problem" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="solution" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+>>>>>>> origin/master
           <Property Name="mgr_id" Type="Int32" />
           <NavigationProperty Name="sb_managers" Relationship="Self.FK_sb_problems_mgr_id" FromRole="sb_problems" ToRole="sb_managers" />
           <NavigationProperty Name="sb_restaurants" Relationship="Self.FK_sb_problems_restaurant_id" FromRole="sb_problems" ToRole="sb_restaurants" />
@@ -205,7 +231,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+<<<<<<< HEAD
         <EntityContainer Name="SBEntities_F" annotation:LazyLoadingEnabled="true">
+=======
+        <EntityContainer Name="SBEntities" annotation:LazyLoadingEnabled="true">
+>>>>>>> origin/master
           <EntitySet Name="sb_managers" EntityType="Self.sb_managers" />
           <EntitySet Name="sb_problems" EntityType="Self.sb_problems" />
           <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" />
@@ -232,9 +262,15 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+<<<<<<< HEAD
         <EntityContainerMapping StorageEntityContainer="FusionModelStoreContainer" CdmEntityContainer="SBEntities_F">
           <EntitySetMapping Name="sb_managers">
             <EntityTypeMapping TypeName="Fusion.Model.sb_managers">
+=======
+        <EntityContainerMapping StorageEntityContainer="SBModelStoreContainer" CdmEntityContainer="SBEntities">
+          <EntitySetMapping Name="sb_managers">
+            <EntityTypeMapping TypeName="SBModel.sb_managers">
+>>>>>>> origin/master
               <MappingFragment StoreEntitySet="sb_managers">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -245,7 +281,11 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sb_problems">
+<<<<<<< HEAD
             <EntityTypeMapping TypeName="Fusion.Model.sb_problems">
+=======
+            <EntityTypeMapping TypeName="SBModel.sb_problems">
+>>>>>>> origin/master
               <MappingFragment StoreEntitySet="sb_problems">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="date" ColumnName="date" />
@@ -257,7 +297,11 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sb_restaurants">
+<<<<<<< HEAD
             <EntityTypeMapping TypeName="Fusion.Model.sb_restaurants">
+=======
+            <EntityTypeMapping TypeName="SBModel.sb_restaurants">
+>>>>>>> origin/master
               <MappingFragment StoreEntitySet="sb_restaurants">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="restaurant_name" ColumnName="restaurant_name" />
@@ -265,7 +309,11 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sb_rights">
+<<<<<<< HEAD
             <EntityTypeMapping TypeName="Fusion.Model.sb_rights">
+=======
+            <EntityTypeMapping TypeName="SBModel.sb_rights">
+>>>>>>> origin/master
               <MappingFragment StoreEntitySet="sb_rights">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />

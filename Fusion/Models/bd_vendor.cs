@@ -14,6 +14,10 @@ namespace Fusion.Models
     
     public partial class bd_vendor
     {
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+>>>>>>> origin/master
         public bd_vendor()
         {
             this.bd_nomenclature = new HashSet<bd_nomenclature>();
@@ -26,6 +30,10 @@ namespace Fusion.Models
         public string INN { get; set; }
         public string KPP { get; set; }
     
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+>>>>>>> origin/master
         public virtual ICollection<bd_nomenclature> bd_nomenclature { get; set; }
     }
 }

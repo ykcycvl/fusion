@@ -17,7 +17,11 @@ namespace Fusion.Controllers
         {
             return View();
         }
+<<<<<<< HEAD
         public ActionResult Problems()
+=======
+        public ActionResult Problems(string period)
+>>>>>>> origin/master
         {
             SB model = new SB();
             model.username = User.Identity.GetUserName();
@@ -25,8 +29,17 @@ namespace Fusion.Controllers
             {
                 return Redirect("~/Home");
             }
+<<<<<<< HEAD
             else if (LoginViewModel.IsMemberOf(model.username, "SB_Admin") || LoginViewModel.IsMemberOf(model.username, "FusionAdmin") || LoginViewModel.IsMemberOf(model.username, "SB_User"))
             {
+=======
+            else if (LoginViewModel.IsMemberOf(model.username, "SB_Admin") || LoginViewModel.IsMemberOf(model.username, "SB_User"))
+            {
+                if (period == null || period == "")
+                    model.Period = DateTime.Today;
+                else
+                    model.Period = DateTime.Parse(period);
+>>>>>>> origin/master
                 model.getProblems();
                 return View(model);
             }

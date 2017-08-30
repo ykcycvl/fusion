@@ -14,6 +14,10 @@ namespace Fusion.Models
     
     public partial class sb_restaurants
     {
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+>>>>>>> origin/master
         public sb_restaurants()
         {
             this.sb_managers = new HashSet<sb_managers>();
@@ -23,7 +27,13 @@ namespace Fusion.Models
         public int id { get; set; }
         public string restaurant_name { get; set; }
     
+<<<<<<< HEAD
         public virtual ICollection<sb_managers> sb_managers { get; set; }
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<sb_managers> sb_managers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+>>>>>>> origin/master
         public virtual ICollection<sb_problems> sb_problems { get; set; }
     }
 }

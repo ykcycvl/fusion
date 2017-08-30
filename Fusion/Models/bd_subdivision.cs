@@ -14,6 +14,10 @@ namespace Fusion.Models
     
     public partial class bd_subdivision
     {
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+>>>>>>> origin/master
         public bd_subdivision()
         {
             this.bd_employee = new HashSet<bd_employee>();
@@ -23,6 +27,10 @@ namespace Fusion.Models
         public string name { get; set; }
         public string address { get; set; }
     
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+>>>>>>> origin/master
         public virtual ICollection<bd_employee> bd_employee { get; set; }
     }
 }

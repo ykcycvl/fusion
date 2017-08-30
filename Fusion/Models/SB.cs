@@ -15,11 +15,19 @@ namespace Fusion.Models
         public List<Models.sb_problems> problems { get; set; }
         public List<Models.sb_managers> managers { get; set; }
         public List<Models.sb_rights> rights { get; set; }
+<<<<<<< HEAD
         public SBEntities_F list = new SBEntities_F();
+=======
+        public SBEntities list = new SBEntities();
+>>>>>>> origin/master
         
         public string RestaurantName { get; set; }
         public string username { get; set; }
         public string ManagerName { get; set; }
+<<<<<<< HEAD
+=======
+        public DateTime Period { get; set; }
+>>>>>>> origin/master
         public class rests
         {
             public string name;
