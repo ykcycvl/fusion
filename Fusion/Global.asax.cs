@@ -11,19 +11,12 @@ namespace Fusion
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        static V83.COMConnector connector;
-
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            connector = new V83.COMConnector();
-            connector.PoolCapacity = 5;
-            connector.PoolTimeout = 30;
-            connector.MaxConnections = 10;
-            Application.Add("connector", connector);
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)
         {

@@ -1,0 +1,118 @@
+﻿@model Fusion.Models.SalaryModels.Vega1CWS.EmployeesRateModel
+@{
+    ViewBag.Title = "Ставки";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Scripts/css/fixed_table_rc.css" rel="stylesheet" />
+<script src="~/Scripts/js/fixed_table_rc.js"></script>
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'dd.mm.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay));
+                blur();
+            }
+        }).datepicker('setDate', new Date());
+        $.datepicker.setDefaults($.datepicker.regional["ru"]);
+
+        var form = {
+            view: "htmlform",
+            content: "RateChangeParameters"
+        };
+
+        var RCParameters = webix.ui({
+            view: "window",
+            id: "RCParameters",
+            width: 300,
+            position: "center",
+            modal: true,
+            head: "Сохранение ставок",
+            body: webix.copy(form)
+        });
+
+        var period = "@Model.Period.ToString("dd.MM.yyyy")";
+
+        if (period == null || period == '01.01.0001')
+            RCParameters.show();
+    });
+
+    function ApplySettings() {
+        $("#loader").show();
+        window.location.href = '/Salary/Rates?orgname=' + encodeURIComponent($("#SelectedOrganization").val()) + '&period=' + $("#SelectedPeriod").val();
+        return false;
+    }
+</script>
+
+<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Rates", "Salary", FormMethod.Post, new { id = "Form" }))
+{
+    @Html.HiddenFor(m => m.Period)
+    @Html.HiddenFor(m => m.FullName)
+    <table class="table table-bordered table-responsive table-hover table-striped" style="font-size: 12px !important">
+        <tr style="background-color: #DBEAFD">
+            <th>
+                Должность
+            </th>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Ставка
+            </th>
+            <th style="width: 40%">
+                &nbsp;
+            </th>
+        </tr>
+        @for (int i = 0; i < Model.Subdivisions.Count; i++)
+        {
+            <tr style="background-color: #DBEAFD">
+                <td colspan="4">
+                    @Html.HiddenFor(m => m.Subdivisions[i].Code)
+                    @Html.HiddenFor(m => m.Subdivisions[i].Code)
+                    @Model.Subdivisions[i].FullName
+                </td>
+            </tr>
+            for (int j = 0; j < Model.Subdivisions[i].Employees.Count; j++)
+            {
+                <tr>
+                    <td>
+                        @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Code)
+                        @Html.HiddenFor(m => m.Subdivisions[i].Employees[j].Rate)
+                        @Model.Subdivisions[i].Employees[j].Position
+                    </td>
+                    <td>
+                        @Model.Subdivisions[i].Employees[j].FullName
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(m => m.Subdivisions[i].Employees[j].RateNew, Model.Subdivisions[i].Employees[j].Rates, new { @class = "form-control", @style="padding: 3px; height: 25px; font-size: 12px" })
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            }
+        }
+    </table>
+    <input type="submit" value="Сохранить" class="btn btn-default"/>
+}
+
+<div id="RateChangeParameters">
+    <label>Период (месяц / год)</label>
+    @Html.TextBoxFor(m => m.Period, String.Format("{0:dd/MM/yyyy}", Model.Period), new { @class = "date-picker form-control", @style = "text-align: center", @id="SelectedPeriod" })
+    <label>Организация</label>
+    @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control", @style = "text-align: center", @id = "SelectedOrganization" })
+    <br />
+    <a href="#" onclick="ApplySettings();" class="btn btn-success form-control">Применить</a>
+</div>

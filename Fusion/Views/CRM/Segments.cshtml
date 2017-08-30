@@ -1,0 +1,41 @@
+﻿@model Fusion.Models.CRMTools
+@{
+    ViewBag.Title = "Сегменты";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Сегменты</h2>
+
+<div class="row">
+    <table class="table ">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Описание
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var segment in Model.Segments)
+            { 
+                <tr>
+                    <td>
+                        @Html.ActionLink(segment.id.ToString(), "ViewSegment", new { @id = segment.id })
+                    </td>
+                    <td>
+                        @Html.ActionLink(segment.SegmentName, "ViewSegment", new { @id = @segment.id })
+                    </td>
+                    <td>
+                        @segment.SegmentDescription
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

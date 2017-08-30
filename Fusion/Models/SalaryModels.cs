@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using V83;
 using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
@@ -229,12 +228,22 @@ namespace Fusion.Models
             public string Code { get; set; }
             public string FullName { get; set; }
             public string Position { get; set; }
+            public string Hours { get; set; }
             public List<ZupWS.Detention> Detentions { get; set; }
             public List<ZupWS.Accrual> Accruals { get; set; }
             public List<HourPerDay> TimeSheet { get; set; }
             public Decimal AccrualsSum { get; set; }
             public Decimal DetentionsSum { get; set; }
             public string Rate { get; set; }
+            public string RateNew { get; set; }
+            public List<SelectListItem> RatesList = new List<SelectListItem>();
+            public IEnumerable<SelectListItem> Rates 
+            {
+                get
+                {
+                    return RatesList;
+                }
+            }
         }
         public class Subdivision
         {
@@ -286,12 +295,12 @@ namespace Fusion.Models
                         return Orgs;
                     }
                 }
-                public void GetOrganizationList()
+                public void GetOrganizationList(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                        Organizations = service.GetOrganizations().ToList();
+                        Organizations = service.GetOrganizations(username).ToList();
                     }
 
                     if (Organizations.Count > 0 && String.IsNullOrEmpty(FullName))
@@ -305,31 +314,34 @@ namespace Fusion.Models
                 {
                     return JsonConvert.DeserializeObject<EmployeeTimeSheet[]>(JSONString);
                 }
-                public void GetTimeSheetList(string orgname)
+                public void GetTimeSheetList(string orgname, string username)
                 {
                     if (orgname == null)
                         orgname = "";
 
-                    GetOrganizationList();
+                    GetOrganizationList(username);
+
+                    if (orgname == "")
+                        orgname = FullName;
 
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
 
-                        var docs = service.GetTimeSheets(orgname);
+                        var docs = service.GetTimeSheets(orgname, username);
 
                         foreach (var doc in docs)
                             if (!doc.Deleted)
                                 Documents.Add(doc);
                     }
                 }
-                public void GetDocument(string Number, int year)
+                public void GetDocument(string Number, int year, string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
 
-                        var doc = service.GetTimeSheetInfo(Number, year);
+                        var doc = service.GetTimeSheetInfo(username, Number, year);
                         DocNumber = doc.Number;
                         Date = doc.Date;
                         CarriedOut = doc.CarriedOut;
@@ -426,21 +438,23 @@ namespace Fusion.Models
                                     e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 31), Hours = Convert.ToDecimal(etsi.TimeSheet.d31) });
                             }
                             catch { }
+
+                            s.Employees.OrderBy(p => p.Position).ThenBy(p => p.FullName);
                         }
                     }
                 }
-                public void CreateDocument()
+                public void CreateDocument(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                        var document = service.CreateTimeSheet(FullName, Period.ToString("yyyyMM01"), new DateTime(Period.Year, Period.Month, DateTime.DaysInMonth(Period.Year, Period.Month)).ToString("yyyyMMdd"));
+                        var document = service.CreateTimeSheet(FullName, username, Period.ToString("yyyyMM01"), new DateTime(Period.Year, Period.Month, DateTime.DaysInMonth(Period.Year, Period.Month)).ToString("yyyyMMdd"));
 
                         DocNumber = document.Number;
                         Date = document.Date;
                     }
                 }
-                public bool SaveDocument(string JSONString)
+                public bool SaveDocument(string JSONString, string username)
                 {
                     try
                     {
@@ -494,7 +508,7 @@ namespace Fusion.Models
                             employee.TimeSheet.d26 = e.d26 == null ? 0 : (double)e.d26;
                             employee.TimeSheet.d27 = e.d27 == null ? 0 : (double)e.d27;
                             employee.TimeSheet.d28 = e.d28 == null ? 0 : (double)e.d28;
-                            employee.TimeSheet.d29 = e.d28 == null ? 0 : (double)e.d29;
+                            employee.TimeSheet.d29 = e.d29 == null ? 0 : (double)e.d29;
                             employee.TimeSheet.d30 = e.d30 == null ? 0 : (double)e.d30;
                             employee.TimeSheet.d31 = e.d31 == null ? 0 : (double)e.d31;
                             TimeSheet.Add(employee);
@@ -503,7 +517,7 @@ namespace Fusion.Models
                         using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                         {
                             service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                            service.SaveTimeSheet(TimeSheet.ToArray(), DocNumber, year);
+                            service.SaveTimeSheet(username, TimeSheet.ToArray(), DocNumber, year);
                         }
 
                         return true;
@@ -522,13 +536,15 @@ namespace Fusion.Models
                 {
                     return JsonConvert.DeserializeObject<EmployeeAccrualsAndDetentions[]>(JSONString);
                 }
-                public void GetEmployees(string orgname)
+
+                /*
+                public void GetEmployees(string orgname, string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
 
-                        var employees = service.GetEmployees(orgname);
+                        var employees = service.GetEmployees(orgname, username, );
 
                         foreach (var e in employees)
                         {
@@ -555,7 +571,8 @@ namespace Fusion.Models
                         }
                     }
                 }
-                public void GetEmployeesAccrualsType()
+                */
+                public void GetEmployeesAccrualsType(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
@@ -568,7 +585,7 @@ namespace Fusion.Models
                                 e.Accruals = accruals.ToList();
                     }
                 }
-                public void GetEmployeesDetentionsType()
+                public void GetEmployeesDetentionsType(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
@@ -581,31 +598,34 @@ namespace Fusion.Models
                                 e.Detentions = detentions.ToList();
                     }
                 }
-                public void GetAccrualsAndDetentionsDocuments(string orgname)
+                public void GetAccrualsAndDetentionsDocuments(string orgname, string username)
                 {
                     if (orgname == null)
                         orgname = "";
 
-                    GetOrganizationList();
+                    GetOrganizationList(username);
+
+                    if (orgname == "")
+                        orgname = FullName;
 
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
 
-                        var docs = service.GetAccrualsAndDetentionsDocuments(orgname);
+                        var docs = service.GetAccrualsAndDetentionsDocuments(username, orgname);
 
                         foreach (var doc in docs)
                             if (!doc.Deleted)
                                 Documents.Add(doc);
                     }
                 }
-                public void GetDocument(string number, int year)
+                public void GetDocument(string number, int year, string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
 
-                        var doc = service.GetAccrualsAndDetentionsCharges(number, year);
+                        var doc = service.GetAccrualsAndDetentionsCharges(username, number, year);
                         DocNumber = doc.Number;
                         Date = doc.Date;
                         CarriedOut = doc.CarriedOut;
@@ -629,7 +649,7 @@ namespace Fusion.Models
 
                             if (e == null)
                             {
-                                e = new Employee() { Code = item.Code, FullName = item.Name, Position = item.Position, Rate = item.Rate, TimeSheet = new List<HourPerDay>() };
+                                e = new Employee() { Code = item.Code, FullName = item.Name, Position = item.Position, Rate = item.Rate, Hours = item.Hours, TimeSheet = new List<HourPerDay>() };
                                 s.Employees.Add(e);
                             }
 
@@ -638,7 +658,7 @@ namespace Fusion.Models
                         }
                     }
                 }
-                public bool SaveDocument(string JSONString)
+                public bool SaveDocument(string JSONString, string username)
                 {
                     try
                     {
@@ -723,7 +743,7 @@ namespace Fusion.Models
                             using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                             {
                                 service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                                ZupWS.Document doc = service.SaveAccrualsAndDetentions(Employees.ToArray(), DocNumber.ToString(), year);
+                                ZupWS.Document doc = service.SaveAccrualsAndDetentions(username, Employees.ToArray(), DocNumber.ToString(), year);
                             }
 
                         return true;
@@ -733,15 +753,117 @@ namespace Fusion.Models
                         throw ex;
                     }
                 }
-                public void CreateDocument()
+                public void CreateDocument(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                        var document = service.CreateAccrualsAndDetentionsDocument(FullName, Period.ToString("yyyyMM01"));
+                        var document = service.CreateAccrualsAndDetentionsDocument(FullName, username, Period.ToString("yyyyMM01"));
 
                         DocNumber = document.Number;
                         Date = document.Date;
+                    }
+                }
+            }
+
+            public class EmployeesRateModel
+            {
+                public DateTime Period { get; set; }
+                public string FullName { get; set; }
+                public List<ZupWS.Organization> Organizations = new List<ZupWS.Organization>();
+                public IEnumerable<SelectListItem> OrganizationsSelectList
+                {
+                    get
+                    {
+                        List<SelectListItem> Orgs = new List<SelectListItem>();
+
+                        foreach (ZupWS.Organization org in Organizations)
+                            Orgs.Add(new SelectListItem() { Text = org.Name, Value = org.Name });
+
+                        SelectListItem sli = Orgs.FirstOrDefault(p => p.Value == FullName);
+
+                        if (sli != null)
+                            sli.Selected = true;
+
+                        return Orgs;
+                    }
+                }
+                public void GetOrganizationList(string username)
+                {
+                    using (ZupWS.VegaWS service = new ZupWS.VegaWS())
+                    {
+                        service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
+                        Organizations = service.GetOrganizations(username).ToList();
+                    }
+
+                    if (Organizations.Count > 0 && String.IsNullOrEmpty(FullName))
+                        FullName = Organizations[0].Name;
+                }
+                public List<Subdivision> Subdivisions { get; set; }
+                public void GetEmployees(string orgname, string username)
+                {
+                    using (ZupWS.VegaWS service = new ZupWS.VegaWS())
+                    {
+                        service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
+
+                        var employees = service.GetEmployees(orgname, username);
+
+                        foreach (var employee in employees)
+                        {
+                            if (Subdivisions == null)
+                                Subdivisions = new List<Subdivision>();
+
+                            Subdivision s = Subdivisions.FirstOrDefault(p => p.Code == employee.SubdivisionCode);
+
+                            if (s == null)
+                            {
+                                s = new Subdivision() { Employees = new List<Employee>(), Code = employee.SubdivisionCode, FullName = employee.Subdivision };
+                                Subdivisions.Add(s);
+                            }
+
+                            Employee e = s.Employees.FirstOrDefault(p => p.Code == employee.Code);
+
+                            if (e == null)
+                            {
+                                e = new Employee() { Code = employee.Code, FullName = employee.Name, Position = employee.Position, Rate = employee.Rate, RateNew = employee.Rate, TimeSheet = new List<HourPerDay>() };
+                                s.Employees.Add(e);
+                            }
+
+                            var ratesForPosition = service.GetListRate(orgname, e.Position);
+                            e.RatesList = new List<SelectListItem>();
+
+                            for(int i = 0; i < ratesForPosition.Length; i++)
+                            {
+                                if (e.Rate == ratesForPosition[i])
+                                    e.RatesList.Add(new SelectListItem() { Text = ratesForPosition[i], Value = ratesForPosition[i], Selected = true });
+                                else
+                                    e.RatesList.Add(new SelectListItem() { Text = ratesForPosition[i], Value = ratesForPosition[i] });
+                            }
+
+                            s.Employees.OrderBy(p => p.Position).ThenBy(p => p.FullName);
+                        }
+                    }
+                }
+                public void Save(string username)
+                {
+                    List<ZupWS.Employee> Employees = new List<ZupWS.Employee>();
+
+                    foreach (var sub in Subdivisions)
+                    {
+                        foreach (var emp in sub.Employees)
+                        {
+                            ZupWS.Employee e = new ZupWS.Employee();
+                            e.Code = emp.Code;
+                            e.Rate = emp.Rate;
+                            e.RateNew = emp.RateNew;
+                            Employees.Add(e);
+                        }
+                    }
+
+                    using (ZupWS.VegaWS service = new ZupWS.VegaWS())
+                    {
+                        service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
+                        service.SaveListRate(Employees.ToArray(), FullName, username, Period.ToString("dd.MM.yyyy"));
                     }
                 }
             }

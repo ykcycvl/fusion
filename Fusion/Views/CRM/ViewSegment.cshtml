@@ -1,0 +1,41 @@
+﻿@model Fusion.Models.CRMTools
+@{
+    ViewBag.Title = "Сегмент " + @Model.Segment.SegmentName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Сегмент "@Model.Segment.SegmentName"</h2>
+
+<div class="row">
+    <blockquote>
+        <p>@Model.Segment.SegmentDescription</p>
+    </blockquote>
+    <p>SQL запрос</p>
+    <blockquote>
+        <code>@Model.Segment.SegmentQuery</code>
+    </blockquote>
+</div>
+
+@using (Html.BeginForm("ViewSegment", "CRM", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(p => Model.Segment.id)
+    @Html.HiddenFor(p => Model.Segment.SegmentName)
+    @Html.HiddenFor(p => Model.Segment.SegmentDescription)
+    @Html.HiddenFor(p => Model.Segment.SegmentQuery)
+
+    <div class="row">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-8">
+            <div class="form-group">
+                @Html.LabelFor(m => Model.MailTitle)
+                @Html.EditorFor(m => Model.MailTitle, new { htmlattributes = new { @class = "form-control" } })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => Model.MailText)
+                @Html.TextAreaFor(m => Model.MailText, new { @class = "form-control", @cols = "20", @rows = "10" })
+            </div>
+            <input type="submit" value="Отправить" class="btn btn-primary" />
+        </div>
+    </div>
+}

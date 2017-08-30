@@ -205,13 +205,6 @@ namespace Fusion.Models
             public int shiftnum { get; set; }
             public void Deserialize(string xml)
             {
-                Encoding utf8 = Encoding.GetEncoding("UTF-8");
-                Encoding win1251 = Encoding.GetEncoding(1251);
-
-                byte[] utf8Bytes = utf8.GetBytes(xml);
-                byte[] win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
-                xml = utf8.GetString(win1251Bytes);
-
                 var xmlSerializer = new XmlSerializer(typeof(CheckInfo));
                 var stringReader = new StringReader(xml);
                 CheckInfo c = (CheckInfo)xmlSerializer.Deserialize(stringReader);
@@ -236,9 +229,9 @@ namespace Fusion.Models
 
             public bool GetCheck(Guid TransactionGuid)
             {
-                CARD_TRANSACTION_NOTES checkinfo = db.CARD_TRANSACTION_NOTES.First(p => p.TRANSACT_GUID == TransactionGuid);
+                CARD_TRANSACTION_NOTES checkinfo = db.CARD_TRANSACTION_NOTES.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid);
 
-                if (checkinfo != null && checkinfo.DOP_INFO != null)
+                if (checkinfo != null && (checkinfo.DOP_INFO != null || checkinfo.XML_CHECK != null))
                 {
                     CARD_TRANSACTIONS transaction = db.CARD_TRANSACTIONS.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid && p.TRANSACTION_TYPE == 162);
 
@@ -250,7 +243,18 @@ namespace Fusion.Models
                     if (transaction != null && transaction.SUMM != null)
                         bp_minus = (decimal)transaction.SUMM;
 
-                    this.Deserialize(checkinfo.DOP_INFO);
+                    if(checkinfo.XML_CHECK == null)
+                    {
+                        Encoding utf8 = Encoding.GetEncoding("UTF-8");
+                        Encoding win1251 = Encoding.GetEncoding(1251);
+
+                        byte[] utf8Bytes = utf8.GetBytes(checkinfo.DOP_INFO);
+                        byte[] win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
+                        checkinfo.DOP_INFO = utf8.GetString(win1251Bytes);
+                        this.Deserialize(checkinfo.DOP_INFO);
+                    }
+                    else
+                        this.Deserialize(checkinfo.XML_CHECK);
 
                     midserver = dbRK.CASHGROUPS.FirstOrDefault(p => p.NETNAME == cashservername && p.STATUS == 3);
 
@@ -348,7 +352,7 @@ namespace Fusion.Models
 									</Addresses>
 								</Holder>
 							</Message>", people_ids[i]);
-                        RKCRM.Query(query);
+                        RKCRM.Query(query, "1");
                     }
                 }
             }
@@ -533,18 +537,19 @@ namespace Fusion.Models
                 public long card_code { get; set; }
                 public string account_name { get; set; }
                 public string dop_info { get; set; }
+                public string xml_check { get; set; }
                 public string REASON { get; set; }
                 public string NOTES { get; set; }
                 public string full_name { get; set; }
                 public Decimal bpAccrued = 0;
                 public Decimal bpSpented = 0;
+                public CheckInfo Check = new CheckInfo();
             }
             public List<TransactionInfo> Transactions = new List<TransactionInfo>();
             public void Search()
             {
 
                 string query = String.Format(@"select 
-	                                DISTINCT
                                     ct.TRANSACTION_LINK,
 	                                ct.TRANSACTION_ID,
 	                                ct.TRANSACTION_TIME,
@@ -559,6 +564,7 @@ namespace Fusion.Models
 									cp.FULL_NAME,
 									ctr.NAME AS REASON,
 									ctn.NOTES,
+                                    ctn.XML_CHECK,
 									ct.CARD_CODE
                                 from CARD_TRANSACTIONS ct
 	                                INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
@@ -589,6 +595,9 @@ namespace Fusion.Models
                     if (record["DOP_INFO"] != DBNull.Value)
                         ti.dop_info = record["DOP_INFO"].ToString();
 
+                    if (record["XML_CHECK"] != DBNull.Value)
+                        ti.xml_check = record["XML_CHECK"].ToString();
+
                     if (record["FULL_NAME"] != DBNull.Value)
                         ti.full_name = record["FULL_NAME"].ToString();
 
@@ -596,7 +605,7 @@ namespace Fusion.Models
                         ti.transaction_id = Convert.ToInt64(record["TRANSACTION_ID"]);
 
                     if (record["TRANSACTION_TIME"] != DBNull.Value)
-                        ti.transaction_time = Convert.ToDateTime(record["TRANSACTION_TIME"]);
+                        ti.transaction_time = ((DateTimeOffset)record["TRANSACTION_TIME"]).DateTime;
 
                     if (record["TRANSACTION_TYPE"] != DBNull.Value)
                         ti.transaction_type = Convert.ToInt32(record["TRANSACTION_TYPE"]);
@@ -611,6 +620,8 @@ namespace Fusion.Models
                     }
 
                     ti.TransactionGuid = Guid.Parse(record["TRANSACT_GUID"].ToString());
+                    ti.Check.GetCheck(ti.TransactionGuid);
+
 
                     if (record["REASON"] != DBNull.Value)
                         ti.REASON = record["REASON"].ToString();
@@ -1047,6 +1058,217 @@ namespace Fusion.Models
             private string whereString = "";
             private string havingString = "";
 
+            [XmlRoot("CHECK")]
+            public class CheckInfo
+            {
+                private CARD_SYSTEMEntities db = new CARD_SYSTEMEntities();
+                private RK7Entities dbRK = new RK7Entities();
+                public class EXTINFO
+                {
+                    public class INTERFACE
+                    {
+                        [XmlRoot("ITEM")]
+                        public class Item
+                        {
+                            [XmlAttribute("cardcode")]
+                            public string cardcode { get; set; }
+                        }
+
+                        [XmlArray("HOLDERS"), XmlArrayItem("ITEM")]
+                        public List<Item> Items { get; set; }
+                    }
+                    [XmlArray("INTERFACES"), XmlArrayItem("INTERFACE")]
+                    public List<INTERFACE> Interfaces { get; set; }
+                }
+                [XmlElement("EXTINFO")]
+                public EXTINFO Extinfo { get; set; }
+                public class CHECKDATA
+                {
+                    [XmlAttribute("checknum")]
+                    public int checknum { get; set; }
+                    [XmlAttribute("tablename")]
+                    public string tablename { get; set; }
+                    [XmlAttribute("startservice")]
+                    public string startservice { get; set; }
+                    [XmlAttribute("closedatetime")]
+                    public string closedatetime { get; set; }
+                    [XmlAttribute("ordernum")]
+                    public string ordernum { get; set; }
+                    [XmlAttribute("guests")]
+                    public int guests { get; set; }
+
+                    public class PERSON
+                    {
+                        [XmlAttribute("name")]
+                        public string Name { get; set; }
+                    }
+                    [XmlArray("CHECKPERSONS"), XmlArrayItem("PERSON")]
+                    public List<PERSON> Checkpersons { get; set; }
+
+                    public class Checkline
+                    {
+                        [XmlAttribute("id")]
+                        public string id { get; set; }
+                        [XmlAttribute("code")]
+                        public int code { get; set; }
+                        [XmlAttribute("name")]
+                        public string name { get; set; }
+                        [XmlAttribute("uni")]
+                        public int uni { get; set; }
+                        [XmlAttribute("type")]
+                        public string type { get; set; }
+                        [XmlAttribute("price")]
+                        public Decimal price { get; set; }
+                        [XmlIgnore]
+                        [XmlAttribute("categ_id")]
+                        public Nullable<int> categ_id { get; set; }
+                        [XmlAttribute("servprint_id")]
+                        public string servprint_id { get; set; }
+                        [XmlAttribute("servprint")]
+                        public string servprint { get; set; }
+                        [XmlAttribute("quantity")]
+                        public Decimal quantity { get; set; }
+                        [XmlAttribute("sum")]
+                        public Decimal sum { get; set; }
+                        [XmlAttribute("parent")]
+                        public int parent { get; set; }
+                    }
+                    [XmlArray("CHECKLINES"), XmlArrayItem("LINE")]
+                    public List<Checkline> Checklines { get; set; }
+
+                    public class CheckDiscount
+                    {
+                        [XmlAttribute("id")]
+                        public string id { get; set; }
+                        [XmlAttribute("code")]
+                        public int code { get; set; }
+                        [XmlAttribute("name")]
+                        public string name { get; set; }
+                        [XmlAttribute("cardcode")]
+                        public string cardcode { get; set; }
+                    }
+                    [XmlArray("CHECKDISCOUNTS"), XmlArrayItem("DISCOUNT")]
+                    public List<CheckDiscount> Discounts { get; set; }
+
+                    public class PAYMENT
+                    {
+                        [XmlAttribute("id")]
+                        public string id { get; set; }
+                        [XmlAttribute("code")]
+                        public int code { get; set; }
+                        [XmlAttribute("name")]
+                        public string name { get; set; }
+                        [XmlAttribute("uni")]
+                        public int uni { get; set; }
+                        [XmlAttribute("paytype")]
+                        public int paytype { get; set; }
+                        [XmlAttribute("bsum")]
+                        public Decimal bsum { get; set; }
+                        [XmlAttribute("sum")]
+                        public Decimal sum { get; set; }
+                        [XmlAttribute("cardcode")]
+                        public string cardcode { get; set; }
+                        [XmlAttribute("ownerinfo")]
+                        public string ownerinfo { get; set; }
+                    }
+                    [XmlArray("CHECKPAYMENTS"), XmlArrayItem("PAYMENT")]
+                    public List<PAYMENT> Payments { get; set; }
+                }
+                [XmlElement("CHECKDATA")]
+                public CHECKDATA CheckData { get; set; }
+                [XmlAttribute("stationcode")]
+                public int stationcode { get; set; }
+                [XmlAttribute("restaurantcode")]
+                public int restaurantcode { get; set; }
+                [XmlAttribute("cashservername")]
+                public string cashservername { get; set; }
+                [XmlAttribute("generateddatetime")]
+                public string generateddatetime { get; set; }
+                [XmlAttribute("chmode")]
+                public string chmode { get; set; }
+                [XmlAttribute("shiftdate")]
+                public string shiftdate { get; set; }
+                [XmlAttribute("shiftnum")]
+                public int shiftnum { get; set; }
+                public void Deserialize(string xml)
+                {
+                    Encoding utf8 = Encoding.GetEncoding("UTF-8");
+                    Encoding win1251 = Encoding.GetEncoding(1251);
+
+                    byte[] utf8Bytes = utf8.GetBytes(xml);
+                    byte[] win1251Bytes = Encoding.Convert(utf8, win1251, utf8Bytes);
+                    xml = utf8.GetString(win1251Bytes);
+
+                    var xmlSerializer = new XmlSerializer(typeof(CheckInfo));
+                    var stringReader = new StringReader(xml);
+                    CheckInfo c = (CheckInfo)xmlSerializer.Deserialize(stringReader);
+                    this.cashservername = c.cashservername;
+                    this.Extinfo = c.Extinfo;
+                    this.CheckData = c.CheckData;
+                    this.chmode = c.chmode;
+                    this.generateddatetime = c.generateddatetime;
+                    this.restaurantcode = c.restaurantcode;
+                    this.shiftdate = c.shiftdate;
+                    this.shiftnum = c.shiftnum;
+                    this.stationcode = c.stationcode;
+                }
+                [XmlIgnore]
+                public CASHGROUPS midserver;
+                [XmlIgnore]
+                public CASHES cashstation;
+                [XmlIgnore]
+                public Decimal bp_plus = 0;
+                [XmlIgnore]
+                public Decimal bp_minus = 0;
+
+                public bool GetCheck(Guid TransactionGuid)
+                {
+                    CARD_TRANSACTION_NOTES checkinfo = db.CARD_TRANSACTION_NOTES.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid);
+
+                    if (checkinfo != null && checkinfo.DOP_INFO != null)
+                    {
+                        CARD_TRANSACTIONS transaction = db.CARD_TRANSACTIONS.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid && p.TRANSACTION_TYPE == 162);
+
+                        if (transaction != null && transaction.SUMM != null)
+                            bp_plus = (decimal)transaction.SUMM;
+
+                        transaction = db.CARD_TRANSACTIONS.FirstOrDefault(p => p.TRANSACT_GUID == TransactionGuid && p.TRANSACTION_TYPE == 161);
+
+                        if (transaction != null && transaction.SUMM != null)
+                            bp_minus = (decimal)transaction.SUMM;
+
+                        this.Deserialize(checkinfo.DOP_INFO);
+
+                        midserver = dbRK.CASHGROUPS.FirstOrDefault(p => p.NETNAME == cashservername && p.STATUS == 3);
+
+                        if (midserver != null)
+                        {
+                            cashstation = dbRK.CASHES.FirstOrDefault(p => p.CASHGROUP == midserver.SIFR && p.STATUS == 3 && p.CODE == stationcode);
+                        }
+
+                        return true;
+                    }
+                    else
+                        return false;
+                }
+            }
+            public class TransactionInfo
+            {
+                public long transaction_id { get; set; }
+                public long? transaction_link { get; set; }
+                public Guid TransactionGuid { get; set; }
+                public DateTime transaction_time { get; set; }
+                public int transaction_type { get; set; }
+                public long card_code { get; set; }
+                public string account_name { get; set; }
+                public string dop_info { get; set; }
+                public string REASON { get; set; }
+                public string NOTES { get; set; }
+                public string full_name { get; set; }
+                public Decimal bpAccrued = 0;
+                public Decimal bpSpented = 0;
+                public CheckInfo Check = new CheckInfo();
+            }
             public class OPDInfo
             {
                 public long PEOPLE_ID { get; set; }
@@ -1059,6 +1281,7 @@ namespace Fusion.Models
             public DateTime StartDateTime { get; set; }
             public DateTime EndDateTime { get; set; }
             public List<OPDInfo> OPDInfoList = new List<OPDInfo>();
+            public List<TransactionInfo> Transactions = new List<TransactionInfo>();
             public void Search()
             {
                 whereString = String.Format("WHERE ct.transaction_type IN (162, 161) and ct.TRANSACTION_TIME >= '{0}' and ct.TRANSACTION_TIME <= '{1}'", StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd"));
@@ -1108,6 +1331,118 @@ namespace Fusion.Models
                 }
 
                 rdr.Close();
+                con.Close();
+            }
+            public void SearchWT()
+            {
+                SqlConnection con = GetConnection();
+                SqlCommand command = new SqlCommand(String.Format(@"select DISTINCT *
+                from CARD_TRANSACTIONS ct
+	                INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+	                INNER JOIN CARD_ACCOUNT_TYPES ca ON cpa.ACCOUNT_TYPE_ID = ca.ACCOUNT_TYPE_ID
+	                LEFT JOIN CARD_TRANSACTION_NOTES ctn ON ct.TRANSACT_GUID = ctn.TRANSACT_GUID
+                    LEFT JOIN CARD_TRANSFER_REASONS ctr ON ctn.TRANSFER_REASON_ID = ctr.TRANSFER_REASON_ID
+	                LEFT JOIN CARD_PEOPLES cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+                where 
+                cpa.PEOPLE_ID IN (select
+					                cp.PEOPLE_ID
+				                FROM
+					                CARD_TRANSACTIONS ct
+					                INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+					                INNER JOIN CARD_PEOPLES cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+				                WHERE ct.transaction_type IN (162, 161) and ct.TRANSACTION_TIME >= '{0}' and ct.TRANSACTION_TIME <= '{1}'
+				                GROUP BY
+					                cp.PEOPLE_ID,
+					                cp.FULL_NAME,
+					                ct.CARD_CODE,
+					                convert(varchar, ct.TRANSACTION_TIME, 104)
+				                HAVING COUNT(ct.TRANSACTION_ID) >= {2})
+                and
+                ct.TRANSACTION_TIME >= '{0}' and ct.TRANSACTION_TIME <= '{1}'
+                and
+                ca.ACCOUNT_TYPE_ID = 16
+                and
+                ct.TRANSACTION_TYPE IN (161, 162)
+                ORDER BY ct.TRANSACTION_LINK, ct.TRANSACTION_TIME DESC", StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd 23:59:59"), count), con);
+
+                command.CommandTimeout = 120000;
+                SqlDataReader rdr = command.ExecuteReader();
+
+                foreach (DbDataRecord record in rdr)
+                {
+                    TransactionInfo ti = new TransactionInfo();
+                    ti.account_name = record["NAME"].ToString();
+
+                    if (record["CARD_CODE"] != DBNull.Value)
+                        ti.card_code = Convert.ToInt64(record["CARD_CODE"]);
+
+                    if (record["TRANSACTION_LINK"] != DBNull.Value)
+                        ti.transaction_link = Convert.ToInt64(record["TRANSACTION_LINK"]);
+
+                    if (record["DOP_INFO"] != DBNull.Value)
+                        ti.dop_info = record["DOP_INFO"].ToString();
+
+                    if (record["FULL_NAME"] != DBNull.Value)
+                        ti.full_name = record["FULL_NAME"].ToString();
+
+                    if (record["TRANSACTION_ID"] != DBNull.Value)
+                        ti.transaction_id = Convert.ToInt64(record["TRANSACTION_ID"]);
+
+                    if (record["TRANSACTION_TIME"] != DBNull.Value)
+                        ti.transaction_time = Convert.ToDateTime(record["TRANSACTION_TIME"]);
+
+                    if (record["TRANSACTION_TYPE"] != DBNull.Value)
+                        ti.transaction_type = Convert.ToInt32(record["TRANSACTION_TYPE"]);
+
+                    if (record["SUMM"] != DBNull.Value)
+                    {
+                        if (ti.transaction_type == 161)
+                            ti.bpSpented = Convert.ToDecimal(record["SUMM"]);
+                        else
+                            if (ti.transaction_type == 162)
+                                ti.bpAccrued = Convert.ToDecimal(record["SUMM"]);
+                    }
+
+                    ti.TransactionGuid = Guid.Parse(record["TRANSACT_GUID"].ToString());
+                    ti.Check.GetCheck(ti.TransactionGuid);
+
+
+                    if (record["REASON"] != DBNull.Value)
+                        ti.REASON = record["REASON"].ToString();
+
+                    if (record["NOTES"] != DBNull.Value)
+                        ti.NOTES = record["NOTES"].ToString();
+
+                    if (ti.transaction_link == null)
+                    {
+                        TransactionInfo tiSearch = Transactions.FirstOrDefault(p => p.TransactionGuid == ti.TransactionGuid);
+
+                        if (tiSearch == null)
+                            Transactions.Add(ti);
+                        else
+                            if (ti.transaction_type == 161)
+                                tiSearch.bpSpented = ti.bpSpented;
+                            else
+                                if (ti.transaction_type == 162)
+                                    tiSearch.bpAccrued = ti.bpAccrued;
+                    }
+                    else
+                    {
+                        TransactionInfo tiSearch = Transactions.FirstOrDefault(p => p.transaction_id == ti.transaction_link);
+
+                        if (tiSearch == null)
+                        {
+                            Transactions.Add(ti);
+                            ti.NOTES = "Отмена транзакции " + ti.transaction_link.ToString();
+                        }
+                        else
+                        {
+                            tiSearch.transaction_link = ti.transaction_link;
+                            tiSearch.NOTES += "\r\n" + "Отмена транзакции " + ti.transaction_link.ToString();
+                        }
+                    }
+                }
+
                 con.Close();
             }
         }
@@ -2283,7 +2618,7 @@ namespace Fusion.Models
                         ", Query.Length, Query);
 
                     TcpClient client = new TcpClient();
-                    IPAddress ip = IPAddress.Parse("10.1.0.108");
+                    IPAddress ip = IPAddress.Parse("10.1.0.90");
                     client.Connect(ip, 9191);
                     NetworkStream tcpStream = client.GetStream();
                     byte[] sendBytes = Encoding.GetEncoding(1251).GetBytes(Query);

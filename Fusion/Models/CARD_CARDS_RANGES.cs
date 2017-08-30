@@ -15,7 +15,6 @@ namespace Fusion.Models
     public partial class CARD_CARDS_RANGES
     {
         public int CARDS_RANGE_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<long> START_CODE { get; set; }
         public Nullable<long> END_CODE { get; set; }
         public Nullable<long> CURRENT_CODE { get; set; }
@@ -24,5 +23,7 @@ namespace Fusion.Models
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public Nullable<int> FLAGS { get; set; }
     }
 }

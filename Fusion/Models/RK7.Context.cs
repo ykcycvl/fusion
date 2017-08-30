@@ -27,6 +27,8 @@ namespace Fusion.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C_DEL_COMMENTPARTS> C_DEL_COMMENTPARTS { get; set; }
+        public virtual DbSet<C_DEL_LOGBOOK> C_DEL_LOGBOOK { get; set; }
         public virtual DbSet<ACTIVITYLIST> ACTIVITYLIST { get; set; }
         public virtual DbSet<ALIASES> ALIASES { get; set; }
         public virtual DbSet<ALIASLANGUAGES> ALIASLANGUAGES { get; set; }
@@ -67,7 +69,6 @@ namespace Fusion.Models
         public virtual DbSet<CLOCKRECS> CLOCKRECS { get; set; }
         public virtual DbSet<COLORMAPPINGS> COLORMAPPINGS { get; set; }
         public virtual DbSet<COLORSCHEMES> COLORSCHEMES { get; set; }
-        public virtual DbSet<COMMENTPARTS> COMMENTPARTS { get; set; }
         public virtual DbSet<CONSUMATORS> CONSUMATORS { get; set; }
         public virtual DbSet<CONSUMTYPES> CONSUMTYPES { get; set; }
         public virtual DbSet<CUBEDIALECTS> CUBEDIALECTS { get; set; }
@@ -193,7 +194,6 @@ namespace Fusion.Models
         public virtual DbSet<KURSES> KURSES { get; set; }
         public virtual DbSet<LINKEDSYSTEMSCONFS> LINKEDSYSTEMSCONFS { get; set; }
         public virtual DbSet<LINKEDSYSTEMSTYPES> LINKEDSYSTEMSTYPES { get; set; }
-        public virtual DbSet<LOGBOOK> LOGBOOK { get; set; }
         public virtual DbSet<LOGVERSION> LOGVERSION { get; set; }
         public virtual DbSet<MAKETS> MAKETS { get; set; }
         public virtual DbSet<MAKETSCHEMEDETAILS> MAKETSCHEMEDETAILS { get; set; }
@@ -366,59 +366,6 @@ namespace Fusion.Models
         public virtual DbSet<STAT_RK7_SHIFTS_REVENUE> STAT_RK7_SHIFTS_REVENUE { get; set; }
         public virtual DbSet<STAT_RK7_SHIFTS_TAXES> STAT_RK7_SHIFTS_TAXES { get; set; }
         public virtual DbSet<STAT_RK7_SHIFTS_VOIDS> STAT_RK7_SHIFTS_VOIDS { get; set; }
-        public virtual DbSet<SaleObjects> SaleObjects { get; set; }
-        public virtual DbSet<SHEXPENDSDATA> SHEXPENDSDATA { get; set; }
-        public virtual DbSet<SHMENUITEMS> SHMENUITEMS { get; set; }
-        public virtual DbSet<SHMONEYSALESDATABINDINGS> SHMONEYSALESDATABINDINGS { get; set; }
-        public virtual DbSet<SHMONEYSALESDATAMODIFIERS> SHMONEYSALESDATAMODIFIERS { get; set; }
-        public virtual DbSet<SHMONEYSALESDATAVOIDS> SHMONEYSALESDATAVOIDS { get; set; }
-        public virtual DbSet<VRK7CMCLSHIFTS> VRK7CMCLSHIFTS { get; set; }
-        public virtual DbSet<VRK7CMCLSHIFTSDETAIL> VRK7CMCLSHIFTSDETAIL { get; set; }
-        public virtual DbSet<VRK7CMCUBEVIEW2> VRK7CMCUBEVIEW2 { get; set; }
-        public virtual DbSet<VRK7CMDOCS> VRK7CMDOCS { get; set; }
-        public virtual DbSet<VRK7CMOPSHIFTS> VRK7CMOPSHIFTS { get; set; }
-        public virtual DbSet<VRK7CMOPSHIFTSDETAIL> VRK7CMOPSHIFTSDETAIL { get; set; }
-        public virtual DbSet<VRK7CMZREPORTS> VRK7CMZREPORTS { get; set; }
-        public virtual DbSet<VRK7CUBETEMP101> VRK7CUBETEMP101 { get; set; }
-        public virtual DbSet<VRK7CUBETEMP102> VRK7CUBETEMP102 { get; set; }
-        public virtual DbSet<VRK7CUBETEMP103> VRK7CUBETEMP103 { get; set; }
-        public virtual DbSet<VRK7CUBETEMP104> VRK7CUBETEMP104 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1000> VRK7CUBEVIEW1000 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1001> VRK7CUBEVIEW1001 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1002> VRK7CUBEVIEW1002 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1002795> VRK7CUBEVIEW1002795 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1003> VRK7CUBEVIEW1003 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1003303> VRK7CUBEVIEW1003303 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1003497> VRK7CUBEVIEW1003497 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1004> VRK7CUBEVIEW1004 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1004907> VRK7CUBEVIEW1004907 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1005> VRK7CUBEVIEW1005 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1006> VRK7CUBEVIEW1006 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1007> VRK7CUBEVIEW1007 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1008> VRK7CUBEVIEW1008 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW101> VRK7CUBEVIEW101 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW1010115> VRK7CUBEVIEW1010115 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW102> VRK7CUBEVIEW102 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW103> VRK7CUBEVIEW103 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW104> VRK7CUBEVIEW104 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10924> VRK7CUBEVIEW10924 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10925> VRK7CUBEVIEW10925 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10927> VRK7CUBEVIEW10927 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10932> VRK7CUBEVIEW10932 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10937> VRK7CUBEVIEW10937 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10938> VRK7CUBEVIEW10938 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10940> VRK7CUBEVIEW10940 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10943> VRK7CUBEVIEW10943 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10947> VRK7CUBEVIEW10947 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW10948> VRK7CUBEVIEW10948 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW2005> VRK7CUBEVIEW2005 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW2006> VRK7CUBEVIEW2006 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW2007> VRK7CUBEVIEW2007 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW2009> VRK7CUBEVIEW2009 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW2011> VRK7CUBEVIEW2011 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW3001> VRK7CUBEVIEW3001 { get; set; }
-        public virtual DbSet<VRK7CUBEVIEW3002> VRK7CUBEVIEW3002 { get; set; }
-        public virtual DbSet<vrk7RefItemsNames> vrk7RefItemsNames { get; set; }
     
         public virtual int AddField(string column, string table, string ftype, Nullable<int> len)
         {

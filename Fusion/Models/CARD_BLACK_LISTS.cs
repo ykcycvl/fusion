@@ -16,17 +16,17 @@ namespace Fusion.Models
     {
         public long BLACK_LIST_ID { get; set; }
         public Nullable<int> FLAGS { get; set; }
-        public string HOLDER { get; set; }
-        public string CONTACT { get; set; }
-        public string ADDRESS { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
         public Nullable<int> CLIENT_ID { get; set; }
+        public Nullable<int> USER_ID { get; set; }
+        public string HOLDER { get; set; }
+        public string CONTACT { get; set; }
+        public string ADDRESS { get; set; }
         public string REMARKS { get; set; }
         public string EXTERNAL_TYPE { get; set; }
-        public Nullable<int> USER_ID { get; set; }
     }
 }

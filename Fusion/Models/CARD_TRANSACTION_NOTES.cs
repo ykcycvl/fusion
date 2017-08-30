@@ -17,12 +17,11 @@ namespace Fusion.Models
         public Nullable<long> TRANSACTION_ID { get; set; }
         public Nullable<int> TRANSFER_REASON_ID { get; set; }
         public Nullable<int> AUTH_CODE { get; set; }
-        public Nullable<System.DateTime> AUTH_EXP_DATE { get; set; }
-        public string NOTES { get; set; }
+        public Nullable<System.DateTimeOffset> AUTH_EXP_DATE { get; set; }
         public string DOP_INFO { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
-    
-        public virtual CARD_TRANSACTIONS CARD_TRANSACTIONS { get; set; }
+        public string NOTES { get; set; }
+        public string XML_CHECK { get; set; }
     }
 }

@@ -15,16 +15,18 @@ namespace Fusion.Models
     public partial class CARD_CLIENTS
     {
         public int CLIENT_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<int> FLAGS { get; set; }
-        public string QUALIFIER { get; set; }
-        public string CLIENT_TYPE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
         public Nullable<System.DateTime> TIME_BEGIN { get; set; }
         public Nullable<System.DateTime> TIME_OFFSET { get; set; }
         public Nullable<long> RIGHTS { get; set; }
+        public string NAME { get; set; }
+        public string QUALIFIER { get; set; }
+        public string CLIENT_TYPE { get; set; }
+        public string EXTERNAL_CODE { get; set; }
+        public string EXTERNAL_CONFIG { get; set; }
     }
 }

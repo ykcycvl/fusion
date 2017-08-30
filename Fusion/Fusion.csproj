@@ -219,6 +219,7 @@
     <Compile Include="Controllers\CallbackController.cs" />
     <Compile Include="Controllers\RK7OnlineMonitorController.cs" />
     <Compile Include="Controllers\SalaryController.cs" />
+    <Compile Include="Controllers\SB_ProblemsController.cs" />
     <Compile Include="Controllers\SH4Controller.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
@@ -233,6 +234,12 @@
     </Compile>
     <Compile Include="Models\ALIASLANGUAGES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Article.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ArticleCategory.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AVAILABILITYSCHEDULES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -254,6 +261,36 @@
     </Compile>
     <Compile Include="Models\BC\BCModels.cs" />
     <Compile Include="Models\BC\BCViewModels.cs" />
+    <Compile Include="Models\bd_category.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_employee.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_measurement.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_nomenclature.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_order.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_organization.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_states.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_subdivision.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_vendor.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bitrixUser.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\BonusClub\ElasticModels.cs" />
     <Compile Include="Models\BONUSTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -339,6 +376,9 @@
     <Compile Include="Models\CARD_CLIENT_RIGHTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CARD_CLIENT_SESSIONS.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CARD_CONTACTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
@@ -402,6 +442,9 @@
     <Compile Include="Models\CARD_GROUP_PROPERTY_LINKS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Card_HasCardIdentify_Result.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CARD_HISTORY_REQUESTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
@@ -412,6 +455,12 @@
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CARD_OPERATION_PARAMS.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Card_ParseReceiptExt_Result.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Card_ParseReceipt_Result.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CARD_PEOPLES.cs">
@@ -582,9 +631,6 @@
     <Compile Include="Models\COLORSCHEMES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\COMMENTPARTS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\CONSUMATORS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -592,6 +638,9 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CRMModels.cs" />
+    <Compile Include="Models\CRMSegment.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CRMViewModels.cs" />
     <Compile Include="Models\Callback\CallbackModels.cs" />
     <Compile Include="Models\CUBEDIALECTS.cs">
@@ -607,6 +656,12 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CURRLINES.cs">
+      <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C_DEL_COMMENTPARTS.cs">
+      <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C_DEL_LOGBOOK.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\data_shcr_CatFoodCost.cs">
@@ -837,9 +892,6 @@
     <Compile Include="Models\FIAS_ADDRESS_OBJECTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FIAS_ADDRESS_OBJECTS_V.cs">
-      <DependentUpon>RKCRM.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\FILTERS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -869,6 +921,21 @@
     </Compile>
     <Compile Include="Models\FUNDSACCOUNTINGPLACES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FusionDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FusionDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FusionDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\FusionDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FusionDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\GENERATEDPROPDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -903,6 +970,12 @@
     <Compile Include="Models\HARDWAREINFO.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\host.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\hostip.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HOURLIST.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -922,6 +995,9 @@
     </Compile>
     <Compile Include="Models\INVOICES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\iptable.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IR_DATASETFIELDS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1002,9 +1078,6 @@
     <Compile Include="Models\LINKEDSYSTEMSTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LOGBOOK.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\LOGVERSION.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1059,13 +1132,13 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\mc_extra.cs">
-      <DependentUpon>Calendar.tt</DependentUpon>
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\mc_task.cs">
-      <DependentUpon>Calendar.tt</DependentUpon>
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\mc_userTask.cs">
-      <DependentUpon>Calendar.tt</DependentUpon>
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MENUITEMS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1084,6 +1157,15 @@
     </Compile>
     <Compile Include="Models\MODISCHEMES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MSG_HELPDESC_HISTORY.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MSG_HELPDESC_INCOMING.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MSG_HELPDESC_TYPES.cs">
+      <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MSG_OUTGOINGS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
@@ -1142,6 +1224,9 @@
     <Compile Include="Models\ORDER_MAP.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ortus_log.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PARAMETEREXCEPTIONS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1185,9 +1270,6 @@
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_DATABASE_GROUP.cs">
-      <DependentUpon>RKCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PLG_EMPLOYEES_ALL.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_IR_DATASETFIELDS.cs">
@@ -1245,9 +1327,6 @@
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_IR_WEBREPORTSGROUPS.cs">
-      <DependentUpon>RKCRM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PLG_OBJECTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_PLAN_PARAMETERS.cs">
@@ -1312,6 +1391,18 @@
     </Compile>
     <Compile Include="Models\PRIVILEGES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\p_status.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\p_task.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\p_taskChecklist.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\p_userTask.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RATECLASSES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1395,7 +1486,7 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RPL8_TRANSACT.cs">
-      <DependentUpon>RKCRM.tt</DependentUpon>
+      <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RPT_CUBE_DIMENSIONS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
@@ -1446,8 +1537,33 @@
     <Compile Include="Models\SALEDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\SaleObjects.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
+    <Compile Include="Models\SB.cs" />
+    <Compile Include="Models\SBModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SBModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SBModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SBModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sb_managers.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sb_problems.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sb_restaurants.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sb_rights.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SCHEDULEDREPORTRECIPIENT.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1485,6 +1601,9 @@
     <Compile Include="Models\SELECTORTYPEVSTRADEOBJ.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\server.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SERVICECHECKS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1498,22 +1617,7 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SH4\SH4Models.cs" />
-    <Compile Include="Models\SHEXPENDSDATA.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\SHIFTS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SHMENUITEMS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SHMONEYSALESDATABINDINGS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SHMONEYSALESDATAMODIFIERS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SHMONEYSALESDATAVOIDS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
@@ -1554,6 +1658,12 @@
     </Compile>
     <Compile Include="Models\STAT_RK7_SHIFTS_VOIDS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\stoplist.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\storage.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\STOREHOUSECONFIGS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1792,147 +1902,6 @@
     <Compile Include="Models\VISITS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\VRK7CMCLSHIFTS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMCLSHIFTSDETAIL.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMCUBEVIEW2.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMDOCS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMOPSHIFTS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMOPSHIFTSDETAIL.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CMZREPORTS.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBETEMP101.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBETEMP102.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBETEMP103.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBETEMP104.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1000.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1001.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1002.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1002795.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1003.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1003303.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1003497.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1004.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1004907.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1005.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1006.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1007.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1008.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW101.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW1010115.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW102.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW103.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW104.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10924.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10925.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10927.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10932.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10937.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10938.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10940.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10943.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10947.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW10948.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW2005.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW2006.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW2007.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW2009.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW2011.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW3001.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\VRK7CUBEVIEW3002.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\vrk7RefItemsNames.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\WARNGROUPS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1959,6 +1928,26 @@
   <ItemGroup>
     <Content Include="data\events.xml" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
+    <Content Include="Models\FusionDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FusionDB.edmx</DependentUpon>
+      <LastGenOutput>FusionDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\FusionDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FusionDB.edmx</DependentUpon>
+      <LastGenOutput>FusionDB.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SBModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SBModel.edmx</DependentUpon>
+      <LastGenOutput>SBModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\SBModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SBModel.edmx</DependentUpon>
+      <LastGenOutput>SBModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\chosen-sprite%402x.png" />
     <Content Include="Scripts\chosen-sprite.png" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -3339,6 +3328,20 @@
     <Content Include="Models\Calendar.edmx.diagram">
       <DependentUpon>Calendar.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="Models\FusionDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FusionDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\FusionDB.edmx.diagram">
+      <DependentUpon>FusionDB.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\SBModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SBModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\SBModel.edmx.diagram">
+      <DependentUpon>SBModel.edmx</DependentUpon>
+    </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -4503,7 +4506,6 @@
     <Content Include="Views\Shared\FusionLayout.cshtml" />
     <Content Include="Views\RK7\Menu.cshtml" />
     <Content Include="Views\Callback\viewtable.cshtml" />
-    <Content Include="Views\Callback\uniform.cshtml" />
     <Content Include="Views\Shared\_LayoutCallback.cshtml" />
     <Content Include="Views\SH4\Index.cshtml" />
     <Content Include="Views\SH4\GoodsTree.cshtml" />
@@ -4582,6 +4584,14 @@
     <Content Include="Views\Salary\AccrualsAndDetentions.cshtml" />
     <Content Include="Views\Salary\AAD.cshtml" />
     <Content Include="Views\Calendar\TestCalendar.cshtml" />
+    <Content Include="Views\IT\Index.cshtml" />
+    <Content Include="Views\Salary\Rates.cshtml" />
+    <Content Include="Views\SB_Problems\Index.cshtml" />
+    <Content Include="Views\SB_Problems\Problems.cshtml" />
+    <Content Include="Views\SB_Problems\Restaurants.cshtml" />
+    <Content Include="Views\Callback\uniform.cshtml" />
+    <Content Include="Views\CRM\Segments.cshtml" />
+    <Content Include="Views\CRM\ViewSegment.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -4617,15 +4627,6 @@
   <ItemGroup>
     <COMReference Include="Sh4Ole">
       <Guid>{95456CCB-659C-438A-8B48-C1637422941F}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="V83">
-      <Guid>{98AC3B5B-5323-418F-8F07-E32F231D2393}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>

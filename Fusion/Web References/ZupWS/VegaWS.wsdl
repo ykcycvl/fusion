@@ -7,6 +7,7 @@
           <xs:element name="Name" type="xs:string" />
           <xs:element name="Sum" type="xs:decimal" />
           <xs:element name="Code" type="xs:string" />
+          <xs:element name="Edit" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Accruals">
@@ -19,6 +20,7 @@
           <xs:element name="Name" type="xs:string" />
           <xs:element name="Sum" type="xs:decimal" />
           <xs:element name="Code" type="xs:string" />
+          <xs:element name="Edit" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Detentions">
@@ -59,6 +61,8 @@
           <xs:element name="Code" type="xs:string" />
           <xs:element name="CodeIndividual" type="xs:string" />
           <xs:element name="Rate" type="xs:string" />
+          <xs:element name="RateNew" type="xs:string" />
+          <xs:element name="Hours" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Employees">
@@ -77,6 +81,11 @@
       <xs:complexType name="Organizations">
         <xs:sequence>
           <xs:element maxOccurs="unbounded" name="Organization" type="tns:Organization" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="RateList">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Rate" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="TimeSheet">
@@ -121,6 +130,7 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -134,6 +144,7 @@
       <xs:element name="GetTimeSheetInfo">
         <xs:complexType>
           <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="НомерДокумента" nillable="true" type="xs:string" />
             <xs:element name="Год" type="xs:int" />
           </xs:sequence>
@@ -148,7 +159,9 @@
       </xs:element>
       <xs:element name="GetOrganizations">
         <xs:complexType>
-          <xs:sequence />
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+          </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="GetOrganizationsResponse">
@@ -161,6 +174,7 @@
       <xs:element name="GetAccrualsAndDetentionsCharges">
         <xs:complexType>
           <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="НомерДокумента" nillable="true" type="xs:string" />
             <xs:element name="Год" type="xs:int" />
           </xs:sequence>
@@ -200,6 +214,7 @@
       <xs:element name="SaveTimeSheet">
         <xs:complexType>
           <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="Сотрудники" type="xs:anyType" />
             <xs:element name="НомерДокумента" type="xs:string" />
             <xs:element name="Год" type="xs:int" />
@@ -216,7 +231,8 @@
       <xs:element name="GetTimeSheets">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -230,6 +246,7 @@
       <xs:element name="SaveAccrualsAndDetentions">
         <xs:complexType>
           <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="Сотрудники" type="xs:anyType" />
             <xs:element name="НомерДокумента" type="xs:string" />
             <xs:element name="Год" type="xs:int" />
@@ -246,7 +263,8 @@
       <xs:element name="GetAccrualsAndDetentionsDocuments">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -260,7 +278,8 @@
       <xs:element name="CreateTimeSheet">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="НачалоПериода" type="xs:string" />
             <xs:element name="КонецПериода" type="xs:string" />
           </xs:sequence>
@@ -276,7 +295,8 @@
       <xs:element name="CreateAccrualsAndDetentionsDocument">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="Организация" type="xs:string" />
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
             <xs:element name="МесяцНачисления" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
@@ -285,6 +305,38 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element name="return" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetListRate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="Position" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetListRateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:RateList" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveListRate">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Сотрудники" type="xs:anyType" />
+            <xs:element name="OrganizationName" type="xs:string" />
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="МесяцНачисления" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveListRateResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Employees" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -362,6 +414,18 @@
   <message name="CreateAccrualsAndDetentionsDocumentResponseMessage">
     <part name="parameters" element="tns:CreateAccrualsAndDetentionsDocumentResponse" />
   </message>
+  <message name="GetListRateRequestMessage">
+    <part name="parameters" element="tns:GetListRate" />
+  </message>
+  <message name="GetListRateResponseMessage">
+    <part name="parameters" element="tns:GetListRateResponse" />
+  </message>
+  <message name="SaveListRateRequestMessage">
+    <part name="parameters" element="tns:SaveListRate" />
+  </message>
+  <message name="SaveListRateResponseMessage">
+    <part name="parameters" element="tns:SaveListRateResponse" />
+  </message>
   <portType name="VegaWSPortType">
     <operation name="GetEmployees">
       <input message="tns:GetEmployeesRequestMessage" />
@@ -410,6 +474,14 @@
     <operation name="CreateAccrualsAndDetentionsDocument">
       <input message="tns:CreateAccrualsAndDetentionsDocumentRequestMessage" />
       <output message="tns:CreateAccrualsAndDetentionsDocumentResponseMessage" />
+    </operation>
+    <operation name="GetListRate">
+      <input message="tns:GetListRateRequestMessage" />
+      <output message="tns:GetListRateResponseMessage" />
+    </operation>
+    <operation name="SaveListRate">
+      <input message="tns:SaveListRateRequestMessage" />
+      <output message="tns:SaveListRateResponseMessage" />
     </operation>
   </portType>
   <binding name="VegaWSSoapBinding" type="tns:VegaWSPortType">
@@ -522,6 +594,24 @@
         <soapbind:body use="literal" />
       </output>
     </operation>
+    <operation name="GetListRate">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetListRate" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveListRate">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveListRate" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
   </binding>
   <binding name="VegaWSSoap12Binding" type="tns:VegaWSPortType">
     <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -626,6 +716,24 @@
     </operation>
     <operation name="CreateAccrualsAndDetentionsDocument">
       <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:CreateAccrualsAndDetentionsDocument" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetListRate">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetListRate" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="SaveListRate">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveListRate" style="document" />
       <input>
         <soap12bind:body use="literal" />
       </input>

@@ -34,9 +34,6 @@
             @Html.DropDownListFor(m => m.FullName, Model.OrganizationsSelectList, new { @class = "form-control" })
         }
     </div>
-    <div class="col-md-offset-3 right">
-        @Html.ActionLink("Создать", "TimeSheet", "Salary", new { @class = "btn btn-default" })
-    </div>
 </div>
 <br />
 
@@ -72,8 +69,8 @@
             <td>@d.Number</td>
             <td>@d.Date.ToString("dd.MM.yyyy")</td>
             <td>@d.Organization.Name</td>
-            <td>@d.TotalAccrued</td>
-            <td>@d.TotalDetended</td>
+            <td style="text-align:right;">@d.TotalAccrued.ToString("0.00")</td>
+            <td style="text-align:right;">@d.TotalDetended.ToString("0.00")</td>
             @if (d.CarriedOut)
             {
                 <td>Проведен</td>

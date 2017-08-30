@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c1e42a242b74405ea3f08d9136e27e14" Name="Diagram1">
+        <EntityTypeShape EntityType="Fusion.Model.sb_managers" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Fusion.Model.sb_problems" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Fusion.Model.sb_restaurants" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Fusion.Model.sb_rights" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <AssociationConnector Association="Fusion.Model.FK_sb_managers_restaurant_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Fusion.Model.FK_sb_office_rights" ManuallyRouted="false" />
+        <AssociationConnector Association="Fusion.Model.FK_sb_problems_mgr_id" ManuallyRouted="false" />
+        <AssociationConnector Association="Fusion.Model.FK_sb_problems_restaurant_id" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

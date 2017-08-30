@@ -16,7 +16,6 @@ namespace Fusion.Models
     {
         public int TIME_PERIOD_ID { get; set; }
         public int TIME_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<System.DateTime> DATE_START { get; set; }
         public Nullable<System.DateTime> DATE_END { get; set; }
         public Nullable<short> MONTHS { get; set; }
@@ -31,5 +30,6 @@ namespace Fusion.Models
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
         public Nullable<int> SEGMENT_ID { get; set; }
+        public string NAME { get; set; }
     }
 }

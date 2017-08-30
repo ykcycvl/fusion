@@ -16,11 +16,15 @@ namespace Fusion.Controllers
         }
         public ActionResult Articles(string id)
         {
-
             return View();
         }
 
         public ActionResult Calendar()
+        {
+            return View();
+        }
+
+        public ActionResult Tasks(int? id)
         {
             return View();
         }

@@ -15,13 +15,14 @@ namespace Fusion.Models
     public partial class CARD_SCHEMES
     {
         public int SCHEME_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<decimal> RATE { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
-        public string PASCAL_SCRIPT { get; set; }
         public Nullable<int> EXTERNAL_ID { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public string PASCAL_SCRIPT { get; set; }
+        public Nullable<int> FLAGS { get; set; }
     }
 }

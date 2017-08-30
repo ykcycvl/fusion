@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Fusion.Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sb_managers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="rights" Type="int" Nullable="false" />
+          <Property Name="restaurant_id" Type="int" />
+          <Property Name="domain_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sb_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" />
+          <Property Name="restaurant_id" Type="int" />
+          <Property Name="problem" Type="text" />
+          <Property Name="solution" Type="text" />
+          <Property Name="mgr_id" Type="int" />
+        </EntityType>
+        <EntityType Name="sb_restaurants">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="restaurant_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sb_rights">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_sb_managers_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_office_rights">
+          <End Role="sb_rights" Type="Self.sb_rights" Multiplicity="1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_rights">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="rights" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_mgr_id">
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_managers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="mgr_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FusionModelStoreContainer">
+          <EntitySet Name="sb_managers" EntityType="Self.sb_managers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_problems" EntityType="Self.sb_problems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_rights" EntityType="Self.sb_rights" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_sb_managers_restaurant_id" Association="Self.FK_sb_managers_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_office_rights" Association="Self.FK_sb_office_rights">
+            <End Role="sb_rights" EntitySet="sb_rights" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_mgr_id" Association="Self.FK_sb_problems_mgr_id">
+            <End Role="sb_managers" EntitySet="sb_managers" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_restaurant_id" Association="Self.FK_sb_problems_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Fusion.Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sb_managers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="rights" Type="Int32" Nullable="false" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <Property Name="domain_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_restaurants" Relationship="Self.FK_sb_managers_restaurant_id" FromRole="sb_managers" ToRole="sb_restaurants" />
+          <NavigationProperty Name="sb_rights" Relationship="Self.FK_sb_office_rights" FromRole="sb_managers" ToRole="sb_rights" />
+          <NavigationProperty Name="sb_problems" Relationship="Self.FK_sb_problems_mgr_id" FromRole="sb_managers" ToRole="sb_problems" />
+        </EntityType>
+        <EntityType Name="sb_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <Property Name="problem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mgr_id" Type="Int32" />
+          <NavigationProperty Name="sb_managers" Relationship="Self.FK_sb_problems_mgr_id" FromRole="sb_problems" ToRole="sb_managers" />
+          <NavigationProperty Name="sb_restaurants" Relationship="Self.FK_sb_problems_restaurant_id" FromRole="sb_problems" ToRole="sb_restaurants" />
+        </EntityType>
+        <EntityType Name="sb_restaurants">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="restaurant_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_managers" Relationship="Self.FK_sb_managers_restaurant_id" FromRole="sb_restaurants" ToRole="sb_managers" />
+          <NavigationProperty Name="sb_problems" Relationship="Self.FK_sb_problems_restaurant_id" FromRole="sb_restaurants" ToRole="sb_problems" />
+        </EntityType>
+        <EntityType Name="sb_rights">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_managers" Relationship="Self.FK_sb_office_rights" FromRole="sb_rights" ToRole="sb_managers" />
+        </EntityType>
+        <Association Name="FK_sb_managers_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_office_rights">
+          <End Role="sb_rights" Type="Self.sb_rights" Multiplicity="1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_rights">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="rights" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_mgr_id">
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_managers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="mgr_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SBEntities_F" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sb_managers" EntityType="Self.sb_managers" />
+          <EntitySet Name="sb_problems" EntityType="Self.sb_problems" />
+          <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" />
+          <EntitySet Name="sb_rights" EntityType="Self.sb_rights" />
+          <AssociationSet Name="FK_sb_managers_restaurant_id" Association="Self.FK_sb_managers_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_office_rights" Association="Self.FK_sb_office_rights">
+            <End Role="sb_rights" EntitySet="sb_rights" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_mgr_id" Association="Self.FK_sb_problems_mgr_id">
+            <End Role="sb_managers" EntitySet="sb_managers" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_restaurant_id" Association="Self.FK_sb_problems_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FusionModelStoreContainer" CdmEntityContainer="SBEntities_F">
+          <EntitySetMapping Name="sb_managers">
+            <EntityTypeMapping TypeName="Fusion.Model.sb_managers">
+              <MappingFragment StoreEntitySet="sb_managers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="rights" ColumnName="rights" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="domain_name" ColumnName="domain_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_problems">
+            <EntityTypeMapping TypeName="Fusion.Model.sb_problems">
+              <MappingFragment StoreEntitySet="sb_problems">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="problem" ColumnName="problem" />
+                <ScalarProperty Name="solution" ColumnName="solution" />
+                <ScalarProperty Name="mgr_id" ColumnName="mgr_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_restaurants">
+            <EntityTypeMapping TypeName="Fusion.Model.sb_restaurants">
+              <MappingFragment StoreEntitySet="sb_restaurants">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="restaurant_name" ColumnName="restaurant_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_rights">
+            <EntityTypeMapping TypeName="Fusion.Model.sb_rights">
+              <MappingFragment StoreEntitySet="sb_rights">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

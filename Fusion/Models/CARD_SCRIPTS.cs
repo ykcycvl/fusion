@@ -15,11 +15,11 @@ namespace Fusion.Models
     public partial class CARD_SCRIPTS
     {
         public Nullable<System.Guid> PARENT_GUID { get; set; }
-        public string PARENT_TYPE { get; set; }
-        public string SCRIPT { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string PARENT_TYPE { get; set; }
+        public string SCRIPT { get; set; }
     }
 }

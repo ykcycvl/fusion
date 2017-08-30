@@ -84,7 +84,6 @@ namespace Fusion.Controllers
                 userName = User.Identity.Name;
 
             model.userName = userName;
-            //model.GetTasks();
 
             return View(model);
         }

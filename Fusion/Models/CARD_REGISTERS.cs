@@ -14,18 +14,18 @@ namespace Fusion.Models
     
     public partial class CARD_REGISTERS
     {
-        public string REGISTER_CODE { get; set; }
         public Nullable<System.DateTime> CREATE_DATE { get; set; }
-        public string F_NAME { get; set; }
-        public string M_NAME { get; set; }
-        public string L_NAME { get; set; }
-        public string FULL_NAME { get; set; }
         public Nullable<long> CARD_CODE { get; set; }
-        public string PHONE_NUMBER { get; set; }
         public Nullable<int> CODE_TYPE { get; set; }
         public Nullable<long> PEOPLE_ID { get; set; }
         public Nullable<int> OPERATION_PARAM_ID { get; set; }
         public Nullable<int> RELATIVE_TYPE_ID { get; set; }
+        public string REGISTER_CODE { get; set; }
+        public string F_NAME { get; set; }
+        public string M_NAME { get; set; }
+        public string L_NAME { get; set; }
+        public string FULL_NAME { get; set; }
+        public string PHONE_NUMBER { get; set; }
         public string EXTENDED { get; set; }
     }
 }

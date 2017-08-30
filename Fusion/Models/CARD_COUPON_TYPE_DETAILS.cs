@@ -17,9 +17,6 @@ namespace Fusion.Models
         public int COUPON_TYPE_DETAIL_ID { get; set; }
         public Nullable<int> COUPON_TYPE_ID { get; set; }
         public Nullable<int> PARENT_ID { get; set; }
-        public string NAME { get; set; }
-        public string EXTERNAL_CODE { get; set; }
-        public string NOTES { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
@@ -31,5 +28,8 @@ namespace Fusion.Models
         public Nullable<int> EXTERNAL_ID { get; set; }
         public Nullable<decimal> DISCOUNT_LIMIT { get; set; }
         public Nullable<int> CLIENT_ID { get; set; }
+        public string NAME { get; set; }
+        public string EXTERNAL_CODE { get; set; }
+        public string NOTES { get; set; }
     }
 }

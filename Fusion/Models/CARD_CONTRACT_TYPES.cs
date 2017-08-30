@@ -15,14 +15,14 @@ namespace Fusion.Models
     public partial class CARD_CONTRACT_TYPES
     {
         public int CONTRACT_TYPE_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<System.DateTime> FROM_DATE { get; set; }
         public Nullable<System.DateTime> TO_DATE { get; set; }
-        public string DOC_BODY { get; set; }
-        public string REMARKS { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public byte[] DOC_BODY { get; set; }
+        public string REMARKS { get; set; }
     }
 }

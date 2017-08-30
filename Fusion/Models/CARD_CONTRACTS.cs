@@ -16,7 +16,6 @@ namespace Fusion.Models
     {
         public long CONTRACT_ID { get; set; }
         public Nullable<long> PEOPLE_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<int> CONTRACT_TYPE { get; set; }
@@ -24,9 +23,10 @@ namespace Fusion.Models
         public Nullable<System.DateTime> SIGNATURE { get; set; }
         public Nullable<System.DateTime> OFFERED { get; set; }
         public Nullable<System.DateTime> EXP_DATE { get; set; }
-        public string DOC_BODY { get; set; }
-        public string REMARKS { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public byte[] DOC_BODY { get; set; }
+        public string REMARKS { get; set; }
     }
 }

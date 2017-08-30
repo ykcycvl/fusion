@@ -15,13 +15,13 @@ namespace Fusion.Models
     public partial class CARD_PROPERTY_VALUES
     {
         public int PROPERTY_VALUE_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<int> PROPERTY_ID { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<decimal> VALUE_TYPE { get; set; }
-        public string VALUE_VARIANT { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public string VALUE_VARIANT { get; set; }
     }
 }

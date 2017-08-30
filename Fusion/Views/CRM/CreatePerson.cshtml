@@ -68,6 +68,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
+                        @Html.HiddenFor(m => m.Holder.Remarks)
                         @Html.LabelFor(m => m.Holder.L_Name, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(m => m.Holder.L_Name, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(m => m.Holder.L_Name, "", new { @class = "text-danger" })
@@ -118,6 +119,8 @@
                             <tr>
                                 <td>
                                     @Html.DropDownListFor(m => m.Holder.Contacts[i].Type_ID, Model.Holder.Contacts[i].ContactTypesSelectList, new { @class = "form-control" })
+                                    @Html.HiddenFor(m => m.Holder.Contacts[i].Notes)
+                                    @Html.HiddenFor(m => m.Holder.Contacts[i].Deleted)
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(m => m.Holder.Contacts[i].Value, new { @class = "form-control", @id = "phone" })

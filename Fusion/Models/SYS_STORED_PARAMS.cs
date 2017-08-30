@@ -14,15 +14,15 @@ namespace Fusion.Models
     
     public partial class SYS_STORED_PARAMS
     {
-        public string SECTION_NAME { get; set; }
-        public string PARAM_NAME { get; set; }
         public string STRING_VALUE { get; set; }
-        public Nullable<int> INTEGER_VALUE { get; set; }
+        public Nullable<long> INTEGER_VALUE { get; set; }
         public Nullable<decimal> FLOAT_VALUE { get; set; }
         public Nullable<System.DateTime> DATETIME_VALUE { get; set; }
         public Nullable<short> BOOLEAN_VALUE { get; set; }
         public Nullable<int> USER_ID { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string SECTION_NAME { get; set; }
+        public string PARAM_NAME { get; set; }
     }
 }

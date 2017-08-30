@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="~/Scripts/codebase/webix.js"></script>
+    <link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+    <script src="~/Scripts/codebase/i18n/ru.js"></script>
+    <script>
+        var kanban = webix.ui({
+            view:"kanban", 
+            type:"space",
+            cols:[
+                { header:"Backlog",
+                    body:{ view:"kanbanlist", status:"new". }},
+                { header:"In Progress",
+                    body:{ view:"kanbanlist", status:"work". }},
+                { header:"Done",
+                    body:{ view:"kanbanlist", status:"done". }}
+            ],
+            url: "tasks.php"
+        });
+    </script>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>

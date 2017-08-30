@@ -15,11 +15,11 @@ namespace Fusion.Models
     public partial class CARD_TRANSACTION_OPERATIONS
     {
         public long TRANSACTION_ID { get; set; }
-        public Nullable<int> OPERATION_TYPE { get; set; }
         public int OPERATION_PARAM_ID { get; set; }
         public Nullable<long> TRANSACTION_LINK { get; set; }
-        public string DOP_INFO { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public Nullable<short> OPERATION_TYPE { get; set; }
+        public string DOP_INFO { get; set; }
     }
 }

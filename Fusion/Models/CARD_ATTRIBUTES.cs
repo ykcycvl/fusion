@@ -17,13 +17,13 @@ namespace Fusion.Models
         public int ATTRIBUTE_ID { get; set; }
         public Nullable<long> ATTRIBUTE_A { get; set; }
         public Nullable<long> ATTRIBUTE_B { get; set; }
-        public string NAME { get; set; }
-        public string REMARKS { get; set; }
-        public byte[] CONFIGURE { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public string REMARKS { get; set; }
+        public string CONFIGURE { get; set; }
     }
 }

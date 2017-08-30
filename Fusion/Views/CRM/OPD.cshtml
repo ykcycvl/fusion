@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    a:visited {
+        color: #f00;
+    }
+</style>
+
 <h2>OPD</h2>
 <div style="margin: 10px 0; border:none;" class="alert alert-info">
     @using (Html.BeginForm("OPD", "CRM", FormMethod.Post, new { @class = "form-inline", role = "form" }))
@@ -32,6 +38,9 @@
             Владелец
         </th>
         <th>
+            История
+        </th>
+        <th>
             Карта
         </th>
         <th>
@@ -49,6 +58,7 @@
                 <td>@i.ToString()</td>
                 <td>@opd.OPD</td>
                 <td>@Html.ActionLink(@opd.FULL_NAME, "EditPerson", new { people_id = @opd.PEOPLE_ID })</td>
+                <td>@Html.ActionLink("История операций", "Transactions", new { people_id = @opd.PEOPLE_ID })</td>
                 <td>@opd.CARD_CODE</td>
                 <td>@opd.DT.ToString("dd.MM.yyyy")</td>
             </tr>

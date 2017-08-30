@@ -16,13 +16,13 @@ namespace Fusion.Models
     {
         public long METRO_STATION_ID { get; set; }
         public Nullable<long> CITY_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<int> FLAGS { get; set; }
-        public string MASK_SERIES { get; set; }
-        public string MASK_NUMBER { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
+        public string MASK_SERIES { get; set; }
+        public string MASK_NUMBER { get; set; }
     }
 }

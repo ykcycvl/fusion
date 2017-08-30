@@ -1,0 +1,129 @@
+﻿@model Fusion.Models.SB
+@{
+    ViewBag.Title = "Problems";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $('.date-picker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'd.m.yy'
+        });
+        var count = 0;
+        var tbody = document.getElementsByTagName('tbody')[0];
+        tbody = tbody.rows.length;
+        $('#addRow').click(function () {
+            count++;
+            vall = tbody + count;
+            var template = $('.records').first().clone()
+            template.find('input[type=text]').val(null)
+            template.find('#di').html(vall)
+            $.each(template.find('input[type=text]'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall-1);
+                name = name.replace('0', vall-1);
+                $(this).attr('name', name);
+                $(this).attr('id', id); 
+            });
+            $.each(template.find('input[type=date]'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall - 1);
+                name = name.replace('0', vall - 1);
+                $(this).attr('name', name);
+                $(this).attr('id', id);
+            });
+            $.each(template.find('textarea'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall - 1);
+                name = name.replace('0', vall - 1);
+                $(this).attr('name', name);
+                $(this).attr('id', id);
+            });
+            $.each(template.find('input[type=hidden]'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall-1);
+                name = name.replace('0', vall-1);
+                $(this).attr('name', name);
+                $(this).attr('id', id);
+                $(this).val(vall);
+            });
+            $.each(template.find('select'), function () {
+                var name = $(this).attr('name');
+                var id = $(this).attr('id');
+                id = id.replace('0', vall-1);
+                name = name.replace('0', vall-1);
+                $(this).attr('name', name);
+                $(this).attr('id', id)
+            });
+            $('#myTable').append(template);
+        })
+    });
+</script>
+<style>
+    th {
+        text-align: center;
+    }
+</style>
+<h2>Замечания</h2>
+
+@using (Html.BeginForm("Problems", "SB_Problems", FormMethod.Post, new { id = "Form" }))
+{
+    <div id="wrapper">
+        <table class="table table-bordered table-striped" id="myTable">
+            <thead>
+                <tr>
+                    <th style="display: none">ИД</th>
+                    <th>Дата</th>
+                    <th>Ресторан</th>
+                    <th>Замечание</th>
+                    <th>Решение</th>
+                    <th>Ответственный</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.problems.Count(); i++)
+                {
+                    Model.RestaurantName = Model.problems[i].sb_restaurants.restaurant_name;
+                    Model.ManagerName = Model.problems[i].sb_managers.name;
+                    if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin"))
+                    {
+                        <tr class="records">
+                            <td id="di" style="display: none">@Model.problems[i].id</td>
+                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @class="form-control", @required="true" })</td>
+                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new {@class="form-control" })</td>
+                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class="form-control"  })</td>
+                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new{ @class="form-control" })</td>
+                            <td>@Html.DropDownListFor(m => m.problems[i].sb_managers.id, Model.ManagersSelectList, new {@class="form-control"  })</td>
+                            @Html.HiddenFor(m => m.problems[i].id)
+                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr class="records">
+                            <td id="di" style="display: none">@Model.problems[i].id</td>
+                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
+                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @disabled = "true", @class="form-control" })</td>
+                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @disabled = "true", @class = "form-control" })</td>
+                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => m.problems[i].sb_managers.name, new { @disabled = "true", @class = "form-control" })</td>
+                            @Html.HiddenFor(m => m.problems[i].id)
+                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <input type="submit" value="Сохранить" class="btn btn-success" id="sub" />
+    if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin"))
+    {
+        <input type="text" class="btn btn-primary" id="addRow" value="Добавить замечание" />
+    }
+}

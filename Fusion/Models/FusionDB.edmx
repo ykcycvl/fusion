@@ -1,0 +1,1815 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FusionDBModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="LongTitle" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="Author" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateAuthor" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ArticleContent" Type="text" Nullable="false" />
+          <Property Name="keywords" Type="varchar" MaxLength="255" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArticleCategory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Keywords" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="bd_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_employee">
+          <Key>
+            <PropertyRef Name="domain_login" />
+          </Key>
+          <Property Name="domain_login" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="full_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="subdiv_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_measurement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_nomenclature">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="measurement_id" Type="int" Nullable="false" />
+          <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Count" Type="int" />
+        </EntityType>
+        <EntityType Name="bd_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee" Type="varchar" MaxLength="255" />
+          <Property Name="nomenclature_id" Type="int" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="count" Type="int" />
+          <Property Name="measurement_id" Type="int" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="organization_id" Type="int" />
+          <Property Name="date_end" Type="datetime" />
+          <Property Name="comment" Type="varchar" MaxLength="500" />
+          <Property Name="state" Type="int" />
+        </EntityType>
+        <EntityType Name="bd_organization">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_states">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="bd_subdivision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="20" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="phones" Type="varchar" MaxLength="255" />
+          <Property Name="INN" Type="varchar(max)" />
+          <Property Name="KPP" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <EntityType Name="bitrixUser">
+          <Key>
+            <PropertyRef Name="adlogin" />
+          </Key>
+          <Property Name="adlogin" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="bitrixId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CRMSegment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SegmentName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SegmentDescription" Type="text" Nullable="false" />
+          <Property Name="SegmentQuery" Type="text" Nullable="false" />
+          <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Creator" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="host">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hostname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fusion.dbo.hostip' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="hostip">
+          <Key>
+            <PropertyRef Name="hostip" />
+            <PropertyRef Name="ipaddressid" />
+          </Key>
+          <Property Name="hostip" Type="int" Nullable="false" />
+          <Property Name="ipaddressid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="iptable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ipv4" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ipv6" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="mc_extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="taskId" Type="int" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="extraContent" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mc_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="description" Type="text" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" Nullable="false" />
+          <Property Name="DateEnd" Type="datetime" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="mc_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="taskId" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dt" Type="datetime" Nullable="false" />
+          <Property Name="appointed" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ortus_log">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="bigint" Nullable="false" />
+          <Property Name="wait_delivery_time" Type="datetime" />
+          <Property Name="request" Type="text" Nullable="false" />
+          <Property Name="response" Type="text" Nullable="false" />
+          <Property Name="request_dt" Type="datetime" Nullable="false" />
+          <Property Name="response_dt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="p_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="p_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="StartDT" Type="datetime" Nullable="false" />
+          <Property Name="EndDT" Type="datetime" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="p_taskChecklist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Checked" Type="bit" Nullable="false" />
+          <Property Name="StartDT" Type="datetime" />
+          <Property Name="EndDT" Type="datetime" />
+          <Property Name="CheckDT" Type="datetime" />
+        </EntityType>
+        <EntityType Name="p_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskID" Type="int" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="StatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sb_managers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="rights" Type="int" Nullable="false" />
+          <Property Name="restaurant_id" Type="int" />
+          <Property Name="domain_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sb_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="date" />
+          <Property Name="restaurant_id" Type="int" />
+          <Property Name="problem" Type="text" />
+          <Property Name="solution" Type="text" />
+          <Property Name="mgr_id" Type="int" />
+        </EntityType>
+        <EntityType Name="sb_restaurants">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="restaurant_name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sb_rights">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="server">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="servername" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" Nullable="false" />
+          <Property Name="host" Type="int" Nullable="false" />
+          <Property Name="storage" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="serverip">
+          <Key>
+            <PropertyRef Name="serverid" />
+            <PropertyRef Name="ipaddressid" />
+          </Key>
+          <Property Name="serverid" Type="int" Nullable="false" />
+          <Property Name="ipaddressid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="stoplist">
+          <Key>
+            <PropertyRef Name="phone" />
+          </Key>
+          <Property Name="phone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="guest_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="reason" Type="text" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="storagename" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="description" Type="text" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Article_ArticleCategory">
+          <End Role="ArticleCategory" Type="Self.ArticleCategory" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleCategory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_employee_subdiv_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_employee">
+              <PropertyRef Name="subdiv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_vendor_id">
+          <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_employee">
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_employee">
+              <PropertyRef Name="domain_login" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_organization_id">
+          <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_state">
+          <End Role="bd_states" Type="Self.bd_states" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_states">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mc_extra_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_extra" Type="Self.mc_extra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_extra">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mc_userTask_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_userTask" Type="Self.mc_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_userTask">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_task_p_status">
+          <End Role="p_status" Type="Self.p_status" Multiplicity="1" />
+          <End Role="p_task" Type="Self.p_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_task">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_taskChecklist_p_task">
+          <End Role="p_task" Type="Self.p_task" Multiplicity="1" />
+          <End Role="p_taskChecklist" Type="Self.p_taskChecklist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_taskChecklist">
+              <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_userTask_p_status">
+          <End Role="p_status" Type="Self.p_status" Multiplicity="1" />
+          <End Role="p_userTask" Type="Self.p_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_userTask">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_userTask_p_task">
+          <End Role="p_task" Type="Self.p_task" Multiplicity="1" />
+          <End Role="p_userTask" Type="Self.p_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_userTask">
+              <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_managers_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_office_rights">
+          <End Role="sb_rights" Type="Self.sb_rights" Multiplicity="1" />
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_rights">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="rights" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_mgr_id">
+          <End Role="sb_managers" Type="Self.sb_managers" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_managers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="mgr_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="0..1" />
+          <End Role="sb_problems" Type="Self.sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_serverip_iptable">
+          <End Role="iptable" Type="Self.iptable" Multiplicity="1" />
+          <End Role="serverip" Type="Self.serverip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="iptable">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="serverip">
+              <PropertyRef Name="ipaddressid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_serverip_server">
+          <End Role="server" Type="Self.server" Multiplicity="1" />
+          <End Role="serverip" Type="Self.serverip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="server">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="serverip">
+              <PropertyRef Name="serverid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FusionDBModelsStoreContainer">
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleCategory" EntityType="Self.ArticleCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_category" EntityType="Self.bd_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_employee" EntityType="Self.bd_employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_measurement" EntityType="Self.bd_measurement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_order" EntityType="Self.bd_order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_organization" EntityType="Self.bd_organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_states" EntityType="Self.bd_states" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bitrixUser" EntityType="Self.bitrixUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRMSegment" EntityType="Self.CRMSegment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mc_task" EntityType="Self.mc_task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="mc_userTask" EntityType="Self.mc_userTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ortus_log" EntityType="Self.ortus_log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="p_status" EntityType="Self.p_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="p_task" EntityType="Self.p_task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="p_taskChecklist" EntityType="Self.p_taskChecklist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="p_userTask" EntityType="Self.p_userTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_managers" EntityType="Self.sb_managers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_problems" EntityType="Self.sb_problems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_rights" EntityType="Self.sb_rights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="server" EntityType="Self.server" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stoplist" EntityType="Self.stoplist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="hostip" EntityType="Self.hostip" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [hostip].[hostip] AS [hostip], 
+    [hostip].[ipaddressid] AS [ipaddressid]
+    FROM [dbo].[hostip] AS [hostip]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="serverip" EntityType="Self.serverip" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [serverip].[serverid] AS [serverid], 
+    [serverip].[ipaddressid] AS [ipaddressid]
+    FROM [dbo].[serverip] AS [serverip]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Article_ArticleCategory" Association="Self.FK_Article_ArticleCategory">
+            <End Role="ArticleCategory" EntitySet="ArticleCategory" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_employee_subdiv_id" Association="Self.FK_bd_employee_subdiv_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_employee" EntitySet="bd_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="Self.FK_bd_nomenclature_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="Self.FK_bd_nomenclature_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="Self.FK_bd_nomenclature_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_category_id" Association="Self.FK_bd_order_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_employee" Association="Self.FK_bd_order_employee">
+            <End Role="bd_employee" EntitySet="bd_employee" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_measurement_id" Association="Self.FK_bd_order_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="Self.FK_bd_order_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_organization_id" Association="Self.FK_bd_order_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
+            <End Role="bd_states" EntitySet="bd_states" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mc_extra_mc_task" Association="Self.FK_mc_extra_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_extra" EntitySet="mc_extra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mc_userTask_mc_task" Association="Self.FK_mc_userTask_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_userTask" EntitySet="mc_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_task_p_status" Association="Self.FK_p_task_p_status">
+            <End Role="p_status" EntitySet="p_status" />
+            <End Role="p_task" EntitySet="p_task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_taskChecklist_p_task" Association="Self.FK_p_taskChecklist_p_task">
+            <End Role="p_task" EntitySet="p_task" />
+            <End Role="p_taskChecklist" EntitySet="p_taskChecklist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_userTask_p_status" Association="Self.FK_p_userTask_p_status">
+            <End Role="p_status" EntitySet="p_status" />
+            <End Role="p_userTask" EntitySet="p_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_userTask_p_task" Association="Self.FK_p_userTask_p_task">
+            <End Role="p_task" EntitySet="p_task" />
+            <End Role="p_userTask" EntitySet="p_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_managers_restaurant_id" Association="Self.FK_sb_managers_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_office_rights" Association="Self.FK_sb_office_rights">
+            <End Role="sb_rights" EntitySet="sb_rights" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_mgr_id" Association="Self.FK_sb_problems_mgr_id">
+            <End Role="sb_managers" EntitySet="sb_managers" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_restaurant_id" Association="Self.FK_sb_problems_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_serverip_iptable" Association="Self.FK_serverip_iptable">
+            <End Role="iptable" EntitySet="iptable" />
+            <End Role="serverip" EntitySet="serverip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_serverip_server" Association="Self.FK_serverip_server">
+            <End Role="server" EntitySet="server" />
+            <End Role="serverip" EntitySet="serverip" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FusionDBModels" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LongTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Author" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateAuthor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ArticleContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="keywords" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArticleCategory" Relationship="Self.FK_Article_ArticleCategory" FromRole="Article" ToRole="ArticleCategory" />
+        </EntityType>
+        <EntityType Name="ArticleCategory">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Keywords" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Article_ArticleCategory" FromRole="ArticleCategory" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="bd_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_category_id" FromRole="bd_category" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_category_id" FromRole="bd_category" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_employee">
+          <Key>
+            <PropertyRef Name="domain_login" />
+          </Key>
+          <Property Name="domain_login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="full_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="subdiv_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bd_subdivision" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_employee" ToRole="bd_subdivision" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_employee" FromRole="bd_employee" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_measurement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_measurement_id" FromRole="bd_measurement" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_measurement_id" FromRole="bd_measurement" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_nomenclature">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="measurement_id" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Count" Type="Int32" />
+          <NavigationProperty Name="bd_category" Relationship="Self.FK_bd_nomenclature_category_id" FromRole="bd_nomenclature" ToRole="bd_category" />
+          <NavigationProperty Name="bd_measurement" Relationship="Self.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_vendor" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nomenclature_id" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="count" Type="Int32" />
+          <Property Name="measurement_id" Type="Int32" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="organization_id" Type="Int32" />
+          <Property Name="date_end" Type="DateTime" Precision="3" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="Int32" />
+          <NavigationProperty Name="bd_category" Relationship="Self.FK_bd_order_category_id" FromRole="bd_order" ToRole="bd_category" />
+          <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_order_employee" FromRole="bd_order" ToRole="bd_employee" />
+          <NavigationProperty Name="bd_measurement" Relationship="Self.FK_bd_order_measurement_id" FromRole="bd_order" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_order_nomenclature_id" FromRole="bd_order" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_organization" Relationship="Self.FK_bd_order_organization_id" FromRole="bd_order" ToRole="bd_organization" />
+          <NavigationProperty Name="bd_states" Relationship="Self.FK_bd_order_state" FromRole="bd_order" ToRole="bd_states" />
+        </EntityType>
+        <EntityType Name="bd_organization">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_organization_id" FromRole="bd_organization" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_states">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_state" FromRole="bd_states" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_subdivision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_subdivision" ToRole="bd_employee" />
+        </EntityType>
+        <EntityType Name="bd_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phones" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="INN" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="KPP" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
+        </EntityType>
+        <EntityType Name="bitrixUser">
+          <Key>
+            <PropertyRef Name="adlogin" />
+          </Key>
+          <Property Name="adlogin" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="bitrixId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="host">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hostname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="iptable">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ipv4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ipv6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="server" Relationship="Self.serverip" FromRole="iptable" ToRole="server" />
+        </EntityType>
+        <EntityType Name="mc_extra">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="taskId" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="extraContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mc_task" Relationship="Self.FK_mc_extra_mc_task" FromRole="mc_extra" ToRole="mc_task" />
+        </EntityType>
+        <EntityType Name="mc_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="mc_extra" Relationship="Self.FK_mc_extra_mc_task" FromRole="mc_task" ToRole="mc_extra" />
+          <NavigationProperty Name="mc_userTask" Relationship="Self.FK_mc_userTask_mc_task" FromRole="mc_task" ToRole="mc_userTask" />
+        </EntityType>
+        <EntityType Name="mc_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="taskId" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="appointed" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="mc_task" Relationship="Self.FK_mc_userTask_mc_task" FromRole="mc_userTask" ToRole="mc_task" />
+        </EntityType>
+        <EntityType Name="ortus_log">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int64" Nullable="false" />
+          <Property Name="wait_delivery_time" Type="DateTime" Precision="3" />
+          <Property Name="request" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="response" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="request_dt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="response_dt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="p_status">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="p_task" Relationship="Self.FK_p_task_p_status" FromRole="p_status" ToRole="p_task" />
+          <NavigationProperty Name="p_userTask" Relationship="Self.FK_p_userTask_p_status" FromRole="p_status" ToRole="p_userTask" />
+        </EntityType>
+        <EntityType Name="p_task">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="StartDT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDT" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="p_status" Relationship="Self.FK_p_task_p_status" FromRole="p_task" ToRole="p_status" />
+          <NavigationProperty Name="p_taskChecklist" Relationship="Self.FK_p_taskChecklist_p_task" FromRole="p_task" ToRole="p_taskChecklist" />
+          <NavigationProperty Name="p_userTask" Relationship="Self.FK_p_userTask_p_task" FromRole="p_task" ToRole="p_userTask" />
+        </EntityType>
+        <EntityType Name="p_taskChecklist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Checked" Type="Boolean" Nullable="false" />
+          <Property Name="StartDT" Type="DateTime" Precision="3" />
+          <Property Name="EndDT" Type="DateTime" Precision="3" />
+          <Property Name="CheckDT" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="p_task" Relationship="Self.FK_p_taskChecklist_p_task" FromRole="p_taskChecklist" ToRole="p_task" />
+        </EntityType>
+        <EntityType Name="p_userTask">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskID" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StatusID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="p_status" Relationship="Self.FK_p_userTask_p_status" FromRole="p_userTask" ToRole="p_status" />
+          <NavigationProperty Name="p_task" Relationship="Self.FK_p_userTask_p_task" FromRole="p_userTask" ToRole="p_task" />
+        </EntityType>
+        <EntityType Name="server">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="servername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="host" Type="Int32" Nullable="false" />
+          <Property Name="storage" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="iptable" Relationship="Self.serverip" FromRole="server" ToRole="iptable" />
+        </EntityType>
+        <EntityType Name="stoplist">
+          <Key>
+            <PropertyRef Name="phone" />
+          </Key>
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="guest_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="storage">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="storagename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hostip">
+          <Key>
+            <PropertyRef Name="hostip1" />
+            <PropertyRef Name="ipaddressid" />
+          </Key>
+          <Property Name="hostip1" Type="Int32" Nullable="false" />
+          <Property Name="ipaddressid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Article_ArticleCategory">
+          <End Role="ArticleCategory" Type="Self.ArticleCategory" Multiplicity="1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleCategory">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_employee_subdiv_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_employee">
+              <PropertyRef Name="subdiv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_employee">
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_employee">
+              <PropertyRef Name="domain_login" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_vendor_id">
+          <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_organization_id">
+          <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_state">
+          <End Role="bd_states" Type="Self.bd_states" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_states">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mc_extra_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_extra" Type="Self.mc_extra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_extra">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_mc_userTask_mc_task">
+          <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
+          <End Role="mc_userTask" Type="Self.mc_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="mc_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="mc_userTask">
+              <PropertyRef Name="taskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_task_p_status">
+          <End Role="p_status" Type="Self.p_status" Multiplicity="1" />
+          <End Role="p_task" Type="Self.p_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_task">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_userTask_p_status">
+          <End Role="p_status" Type="Self.p_status" Multiplicity="1" />
+          <End Role="p_userTask" Type="Self.p_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_userTask">
+              <PropertyRef Name="StatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_taskChecklist_p_task">
+          <End Role="p_task" Type="Self.p_task" Multiplicity="1" />
+          <End Role="p_taskChecklist" Type="Self.p_taskChecklist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_taskChecklist">
+              <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_p_userTask_p_task">
+          <End Role="p_task" Type="Self.p_task" Multiplicity="1" />
+          <End Role="p_userTask" Type="Self.p_userTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="p_task">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="p_userTask">
+              <PropertyRef Name="TaskID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="serverip">
+          <End Role="iptable" Type="Self.iptable" Multiplicity="*" />
+          <End Role="server" Type="Self.server" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Article" EntityType="Self.Article" />
+          <EntitySet Name="ArticleCategory" EntityType="Self.ArticleCategory" />
+          <EntitySet Name="bd_category" EntityType="Self.bd_category" />
+          <EntitySet Name="bd_employee" EntityType="Self.bd_employee" />
+          <EntitySet Name="bd_measurement" EntityType="Self.bd_measurement" />
+          <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" />
+          <EntitySet Name="bd_order" EntityType="Self.bd_order" />
+          <EntitySet Name="bd_organization" EntityType="Self.bd_organization" />
+          <EntitySet Name="bd_states" EntityType="Self.bd_states" />
+          <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" />
+          <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" />
+          <EntitySet Name="bitrixUser" EntityType="Self.bitrixUser" />
+          <EntitySet Name="host" EntityType="Self.host" />
+          <EntitySet Name="iptable" EntityType="Self.iptable" />
+          <EntitySet Name="mc_extra" EntityType="Self.mc_extra" />
+          <EntitySet Name="mc_task" EntityType="Self.mc_task" />
+          <EntitySet Name="mc_userTask" EntityType="Self.mc_userTask" />
+          <EntitySet Name="ortus_log" EntityType="Self.ortus_log" />
+          <EntitySet Name="p_status" EntityType="Self.p_status" />
+          <EntitySet Name="p_task" EntityType="Self.p_task" />
+          <EntitySet Name="p_taskChecklist" EntityType="Self.p_taskChecklist" />
+          <EntitySet Name="p_userTask" EntityType="Self.p_userTask" />
+          <EntitySet Name="server" EntityType="Self.server" />
+          <EntitySet Name="stoplist" EntityType="Self.stoplist" />
+          <EntitySet Name="storage" EntityType="Self.storage" />
+          <EntitySet Name="hostip" EntityType="Self.hostip" />
+          <AssociationSet Name="FK_Article_ArticleCategory" Association="Self.FK_Article_ArticleCategory">
+            <End Role="ArticleCategory" EntitySet="ArticleCategory" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="Self.FK_bd_nomenclature_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_category_id" Association="Self.FK_bd_order_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_employee_subdiv_id" Association="Self.FK_bd_employee_subdiv_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_employee" EntitySet="bd_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_employee" Association="Self.FK_bd_order_employee">
+            <End Role="bd_employee" EntitySet="bd_employee" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="Self.FK_bd_nomenclature_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_measurement_id" Association="Self.FK_bd_order_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="Self.FK_bd_nomenclature_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="Self.FK_bd_order_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_organization_id" Association="Self.FK_bd_order_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
+            <End Role="bd_states" EntitySet="bd_states" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mc_extra_mc_task" Association="Self.FK_mc_extra_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_extra" EntitySet="mc_extra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_mc_userTask_mc_task" Association="Self.FK_mc_userTask_mc_task">
+            <End Role="mc_task" EntitySet="mc_task" />
+            <End Role="mc_userTask" EntitySet="mc_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_task_p_status" Association="Self.FK_p_task_p_status">
+            <End Role="p_status" EntitySet="p_status" />
+            <End Role="p_task" EntitySet="p_task" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_userTask_p_status" Association="Self.FK_p_userTask_p_status">
+            <End Role="p_status" EntitySet="p_status" />
+            <End Role="p_userTask" EntitySet="p_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_taskChecklist_p_task" Association="Self.FK_p_taskChecklist_p_task">
+            <End Role="p_task" EntitySet="p_task" />
+            <End Role="p_taskChecklist" EntitySet="p_taskChecklist" />
+          </AssociationSet>
+          <AssociationSet Name="FK_p_userTask_p_task" Association="Self.FK_p_userTask_p_task">
+            <End Role="p_task" EntitySet="p_task" />
+            <End Role="p_userTask" EntitySet="p_userTask" />
+          </AssociationSet>
+          <AssociationSet Name="serverip" Association="Self.serverip">
+            <End Role="iptable" EntitySet="iptable" />
+            <End Role="server" EntitySet="server" />
+          </AssociationSet>
+          <EntitySet Name="sb_managers" EntityType="FusionDBModels.sb_managers" />
+          <EntitySet Name="sb_problems" EntityType="FusionDBModels.sb_problems" />
+          <EntitySet Name="sb_restaurants" EntityType="FusionDBModels.sb_restaurants" />
+          <EntitySet Name="sb_rights" EntityType="FusionDBModels.sb_rights" />
+          <AssociationSet Name="FK_sb_managers_restaurant_id" Association="FusionDBModels.FK_sb_managers_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_office_rights" Association="FusionDBModels.FK_sb_office_rights">
+            <End Role="sb_rights" EntitySet="sb_rights" />
+            <End Role="sb_managers" EntitySet="sb_managers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_mgr_id" Association="FusionDBModels.FK_sb_problems_mgr_id">
+            <End Role="sb_managers" EntitySet="sb_managers" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_problems_restaurant_id" Association="FusionDBModels.FK_sb_problems_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <EntitySet Name="CRMSegment" EntityType="FusionDBModels.CRMSegment" />
+        </EntityContainer>
+        <EntityType Name="sb_managers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rights" Type="Int32" Nullable="false" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <Property Name="domain_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_restaurants" Relationship="FusionDBModels.FK_sb_managers_restaurant_id" FromRole="sb_managers" ToRole="sb_restaurants" />
+          <NavigationProperty Name="sb_rights" Relationship="FusionDBModels.FK_sb_office_rights" FromRole="sb_managers" ToRole="sb_rights" />
+          <NavigationProperty Name="sb_problems" Relationship="FusionDBModels.FK_sb_problems_mgr_id" FromRole="sb_managers" ToRole="sb_problems" />
+        </EntityType>
+        <EntityType Name="sb_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <Property Name="problem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mgr_id" Type="Int32" />
+          <NavigationProperty Name="sb_managers" Relationship="FusionDBModels.FK_sb_problems_mgr_id" FromRole="sb_problems" ToRole="sb_managers" />
+          <NavigationProperty Name="sb_restaurants" Relationship="FusionDBModels.FK_sb_problems_restaurant_id" FromRole="sb_problems" ToRole="sb_restaurants" />
+        </EntityType>
+        <EntityType Name="sb_restaurants">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="restaurant_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_managers" Relationship="FusionDBModels.FK_sb_managers_restaurant_id" FromRole="sb_restaurants" ToRole="sb_managers" />
+          <NavigationProperty Name="sb_problems" Relationship="FusionDBModels.FK_sb_problems_restaurant_id" FromRole="sb_restaurants" ToRole="sb_problems" />
+        </EntityType>
+        <EntityType Name="sb_rights">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_managers" Relationship="FusionDBModels.FK_sb_office_rights" FromRole="sb_rights" ToRole="sb_managers" />
+        </EntityType>
+        <Association Name="FK_sb_managers_restaurant_id">
+          <End Type="FusionDBModels.sb_restaurants" Role="sb_restaurants" Multiplicity="0..1" />
+          <End Type="FusionDBModels.sb_managers" Role="sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_office_rights">
+          <End Type="FusionDBModels.sb_rights" Role="sb_rights" Multiplicity="1" />
+          <End Type="FusionDBModels.sb_managers" Role="sb_managers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_rights">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_managers">
+              <PropertyRef Name="rights" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_mgr_id">
+          <End Type="FusionDBModels.sb_managers" Role="sb_managers" Multiplicity="0..1" />
+          <End Type="FusionDBModels.sb_problems" Role="sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_managers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="mgr_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sb_problems_restaurant_id">
+          <End Type="FusionDBModels.sb_restaurants" Role="sb_restaurants" Multiplicity="0..1" />
+          <End Type="FusionDBModels.sb_problems" Role="sb_problems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_problems">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CRMSegment">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SegmentName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SegmentDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SegmentQuery" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Creator" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FusionDBModelsStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Article">
+            <EntityTypeMapping TypeName="FusionDBModels.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LongTitle" ColumnName="LongTitle" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="LastUpdateAuthor" ColumnName="LastUpdateAuthor" />
+                <ScalarProperty Name="ArticleContent" ColumnName="ArticleContent" />
+                <ScalarProperty Name="keywords" ColumnName="keywords" />
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArticleCategory">
+            <EntityTypeMapping TypeName="FusionDBModels.ArticleCategory">
+              <MappingFragment StoreEntitySet="ArticleCategory">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_category">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_category">
+              <MappingFragment StoreEntitySet="bd_category">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_employee">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_employee">
+              <MappingFragment StoreEntitySet="bd_employee">
+                <ScalarProperty Name="domain_login" ColumnName="domain_login" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="subdiv_id" ColumnName="subdiv_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_measurement">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_measurement">
+              <MappingFragment StoreEntitySet="bd_measurement">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_nomenclature">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_nomenclature">
+              <MappingFragment StoreEntitySet="bd_nomenclature">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_order">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_order">
+              <MappingFragment StoreEntitySet="bd_order">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="employee" ColumnName="employee" />
+                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="organization_id" ColumnName="organization_id" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="state" ColumnName="state" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_organization">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_organization">
+              <MappingFragment StoreEntitySet="bd_organization">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_states">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_states">
+              <MappingFragment StoreEntitySet="bd_states">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_subdivision">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_subdivision">
+              <MappingFragment StoreEntitySet="bd_subdivision">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_vendor">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_vendor">
+              <MappingFragment StoreEntitySet="bd_vendor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phones" ColumnName="phones" />
+                <ScalarProperty Name="INN" ColumnName="INN" />
+                <ScalarProperty Name="KPP" ColumnName="KPP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bitrixUser">
+            <EntityTypeMapping TypeName="FusionDBModels.bitrixUser">
+              <MappingFragment StoreEntitySet="bitrixUser">
+                <ScalarProperty Name="adlogin" ColumnName="adlogin" />
+                <ScalarProperty Name="bitrixId" ColumnName="bitrixId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="host">
+            <EntityTypeMapping TypeName="FusionDBModels.host">
+              <MappingFragment StoreEntitySet="host">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="hostname" ColumnName="hostname" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="iptable">
+            <EntityTypeMapping TypeName="FusionDBModels.iptable">
+              <MappingFragment StoreEntitySet="iptable">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ipv4" ColumnName="ipv4" />
+                <ScalarProperty Name="ipv6" ColumnName="ipv6" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mc_extra">
+            <EntityTypeMapping TypeName="FusionDBModels.mc_extra">
+              <MappingFragment StoreEntitySet="mc_extra">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="extraContent" ColumnName="extraContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mc_task">
+            <EntityTypeMapping TypeName="FusionDBModels.mc_task">
+              <MappingFragment StoreEntitySet="mc_task">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="deleted" ColumnName="deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="mc_userTask">
+            <EntityTypeMapping TypeName="FusionDBModels.mc_userTask">
+              <MappingFragment StoreEntitySet="mc_userTask">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="taskId" ColumnName="taskId" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="dt" ColumnName="dt" />
+                <ScalarProperty Name="appointed" ColumnName="appointed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ortus_log">
+            <EntityTypeMapping TypeName="FusionDBModels.ortus_log">
+              <MappingFragment StoreEntitySet="ortus_log">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="wait_delivery_time" ColumnName="wait_delivery_time" />
+                <ScalarProperty Name="request" ColumnName="request" />
+                <ScalarProperty Name="response" ColumnName="response" />
+                <ScalarProperty Name="request_dt" ColumnName="request_dt" />
+                <ScalarProperty Name="response_dt" ColumnName="response_dt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="p_status">
+            <EntityTypeMapping TypeName="FusionDBModels.p_status">
+              <MappingFragment StoreEntitySet="p_status">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="p_task">
+            <EntityTypeMapping TypeName="FusionDBModels.p_task">
+              <MappingFragment StoreEntitySet="p_task">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StartDT" ColumnName="StartDT" />
+                <ScalarProperty Name="EndDT" ColumnName="EndDT" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="p_taskChecklist">
+            <EntityTypeMapping TypeName="FusionDBModels.p_taskChecklist">
+              <MappingFragment StoreEntitySet="p_taskChecklist">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Checked" ColumnName="Checked" />
+                <ScalarProperty Name="StartDT" ColumnName="StartDT" />
+                <ScalarProperty Name="EndDT" ColumnName="EndDT" />
+                <ScalarProperty Name="CheckDT" ColumnName="CheckDT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="p_userTask">
+            <EntityTypeMapping TypeName="FusionDBModels.p_userTask">
+              <MappingFragment StoreEntitySet="p_userTask">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="server">
+            <EntityTypeMapping TypeName="FusionDBModels.server">
+              <MappingFragment StoreEntitySet="server">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="servername" ColumnName="servername" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="host" ColumnName="host" />
+                <ScalarProperty Name="storage" ColumnName="storage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stoplist">
+            <EntityTypeMapping TypeName="FusionDBModels.stoplist">
+              <MappingFragment StoreEntitySet="stoplist">
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="guest_name" ColumnName="guest_name" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="storage">
+            <EntityTypeMapping TypeName="FusionDBModels.storage">
+              <MappingFragment StoreEntitySet="storage">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="storagename" ColumnName="storagename" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hostip">
+            <EntityTypeMapping TypeName="FusionDBModels.hostip">
+              <MappingFragment StoreEntitySet="hostip">
+                <ScalarProperty Name="hostip1" ColumnName="hostip" />
+                <ScalarProperty Name="ipaddressid" ColumnName="ipaddressid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="serverip" TypeName="FusionDBModels.serverip" StoreEntitySet="serverip">
+            <EndProperty Name="iptable">
+              <ScalarProperty Name="id" ColumnName="ipaddressid" />
+            </EndProperty>
+            <EndProperty Name="server">
+              <ScalarProperty Name="id" ColumnName="serverid" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="sb_managers">
+            <EntityTypeMapping TypeName="FusionDBModels.sb_managers">
+              <MappingFragment StoreEntitySet="sb_managers">
+                <ScalarProperty Name="domain_name" ColumnName="domain_name" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="rights" ColumnName="rights" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_problems">
+            <EntityTypeMapping TypeName="FusionDBModels.sb_problems">
+              <MappingFragment StoreEntitySet="sb_problems">
+                <ScalarProperty Name="mgr_id" ColumnName="mgr_id" />
+                <ScalarProperty Name="solution" ColumnName="solution" />
+                <ScalarProperty Name="problem" ColumnName="problem" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_restaurants">
+            <EntityTypeMapping TypeName="FusionDBModels.sb_restaurants">
+              <MappingFragment StoreEntitySet="sb_restaurants">
+                <ScalarProperty Name="restaurant_name" ColumnName="restaurant_name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_rights">
+            <EntityTypeMapping TypeName="FusionDBModels.sb_rights">
+              <MappingFragment StoreEntitySet="sb_rights">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRMSegment">
+            <EntityTypeMapping TypeName="FusionDBModels.CRMSegment">
+              <MappingFragment StoreEntitySet="CRMSegment">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="SegmentQuery" ColumnName="SegmentQuery" />
+                <ScalarProperty Name="SegmentDescription" ColumnName="SegmentDescription" />
+                <ScalarProperty Name="SegmentName" ColumnName="SegmentName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

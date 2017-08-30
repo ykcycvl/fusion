@@ -8,50 +8,108 @@
 
     string TableData = "";
     string SpansData = "";
-    string aadcolumns = "";
+    string accColumns = "";
+    string detColumns = "";
     string aadsum = "";
+    string totalaccsum = "";
+    string totaldetsum = "";
+    Decimal acsum = 0;
+    Decimal detsum = 0;
+    string rules = "";
 
+    var numberFormatInfo = new System.Globalization.CultureInfo("en-Us", false).NumberFormat;
+    numberFormatInfo.NumberGroupSeparator = " ";
+    
     foreach (var subdivision in Model.Subdivisions)
     {
-        TableData += "{ id: \"sub" + subdivision.FullName + "\", Position: \"" + subdivision.FullName + "\", $css:\"subhighlight\" },\r\n";
+        TableData += "{ id: \"sub" + subdivision.FullName + "\", Position: \"" + subdivision.FullName + "\", $css:\"subhighlight\"";
+
+        if (subdivision.Employees != null)
+        {
+            foreach (var e in subdivision.Employees)
+            {
+                foreach (var a in e.Accruals)
+                {
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)) + "\"";
+                    acsum += subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum));
+                    rules += "\"_ACCCODE_" + a.Code.Trim() + "\":IsNumber,";
+                }
+
+                foreach (var d in e.Detentions)
+                {
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)) + "\"";
+                    detsum += subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum));
+                    rules += "\"_DETCODE_" + d.Code.Trim() + "\":IsNumber,";
+                }
+                
+                break;
+            }
+        }
+
+        TableData += "}, \r\n";
 
         foreach (var e in subdivision.Employees)
         {
-            aadcolumns = "";
-            aadsum = "{ id: 'aadsum', header: 'Итого', width: 80, math: '";
+            accColumns = "";
+            detColumns = "";
+            aadsum = "{ id: 'aadsum', header: 'Сумма к выдаче', adjust: true, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), css:\"itogcss\", math: '";
+            totaldetsum = "{ id: 'totaldetsum', header: 'Итого удержано', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogdetcss\", math: '";
+            totalaccsum = "{ id: 'totalaccsum', header: 'Итого начислено', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogacccss\", math: '";
             j++;
             TableData += "{ Code: \"" + e.Code + "\", Organization: \""
                 + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
                 + Model.DocNumber + "\", Date: \"" + Model.Date.ToString("yyyy-MM-dd") + "\", Position: \""
                 + e.Position + "\", FullName: \""
-                + e.FullName + "\", Rate: \"" + e.Rate + "\"";
+                + e.FullName + "\", Rate: \"" + e.Rate + "\", Hours: \"" + e.Hours + "\"";
 
             foreach (var a in e.Accruals)
             {
-                aadcolumns += "{ id: '_ACCCODE_" + a.Code.Trim() + "', header: '" + a.Name + " (+)" + "', width: 160, editor: 'text', batch: 2 },\r\n";
+                string editor = "";
+                string css = "readonly";
+
+                if (a.Edit)
+                {
+                    editor = "text";
+                    css = "accrcss";
+                }
+
+                accColumns += "{ id: '_ACCCODE_" + a.Code.Trim() + "', header: '" + a.Name + "', adjust:\"all\",  format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
 
                 if (a.Sum != 0)
                 {
-                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + a.Sum.ToString("0.00") + "\"";
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + a.Sum + "\"";
                 }
-                
+
                 aadsum += " + [$r, _ACCCODE_" + a.Code.Trim() + "]";
+                totalaccsum += " + [$r, _ACCCODE_" + a.Code.Trim() + "]";
             }
 
             foreach (var d in e.Detentions)
             {
-                aadcolumns += "{ id: '_DETCODE_" + d.Code.Trim() + "', header: '" + d.Name + " (-)" + "', width: 160, editor: 'text', batch: 2 },\r\n";
+                string editor = "";
+                string css = "readonly";
+
+                if (d.Edit)
+                {
+                    editor = "text";
+                    css = "detcss";
+                }
+
+                detColumns += "{ id: '_DETCODE_" + d.Code.Trim() + "', header: '" + d.Name + "', adjust:\"all\", format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
 
                 if (d.Sum != 0)
                 {
-                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + d.Sum.ToString("0.00") + "\""; 
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + d.Sum + "\""; 
                 }
                 
                 aadsum += " - [$r, _DETCODE_" + d.Code.Trim() + "]";
+                totaldetsum += " - [$r, _DETCODE_" + d.Code.Trim() + "]";
             }
 
             aadsum += "' },";
             TableData += "},";
+            totalaccsum += "'},";
+            totaldetsum += "' },";
         }
     }
 
@@ -70,23 +128,37 @@
 
 <h2>@ViewBag.Title</h2>
 <div class="row">
-    <div class="col-md-3 text-center">
-        <div class=" alert alert-info">
-            Месяц: <b>@Model.Period.ToString("MMMM yyyy")</b>
+    <div class="col-md-4">
+        <div class="alert alert-info">
+            <table style="width: 100%">
+                <tbody>
+                    <tr>
+                        <td style="text-align:left">Итого начислено:</td>
+                        <td style="text-align:right"><b>@acsum.ToString("N", numberFormatInfo) руб.</b></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">Итого удержано:</td>
+                        <td style="text-align:right"><b>@detsum.ToString("N", numberFormatInfo) руб.</b></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left">Итого к выдаче:</td>
+                        <td style="text-align:right"><b>@((acsum - detsum).ToString("N", numberFormatInfo)) руб.</b></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="col-md-3 text-center">
-        <div class=" alert alert-info">
+    <div class="col-md-4 text-center">
+        <div class="alert alert-info">
+            Месяц: <b>@Model.Period.ToString("MMMM yyyy")</b>
+            <br />
             Организация: <b>@Model.FullName</b>
         </div>
     </div>
-    <div class="col-md-3 text-center">
-        <div class=" alert alert-info">
+    <div class="col-md-4 text-center">
+        <div class="alert alert-info">
             Номер: <b>@Model.DocNumber</b>
-        </div>
-    </div>
-    <div class="col-md-3 text-center">
-        <div class=" alert alert-info">
+            <br />
             Дата: <b>@Model.Date.ToString("dd.MM.yyyy")</b>
         </div>
     </div>
@@ -104,38 +176,78 @@
 <script src="~/Scripts/codebase/i18n/ru.js"></script>
 
 <style>
+    .webix_dtable .webix_ss_left .webix_column.webix_last > div {
+        border: 1px solid #c3c3c3;
+        border-top: none;
+    }
+    .webix_view  {
+        font-size: 12px !important;
+    }
+    .webix_column > div, .webix_table_cell {
+        padding: 0 3px !important;
+    }
+    .webix_table_cell {
+        padding: 0 3px !important;
+    }
+    .readonly {
+        text-align: right;
+    }
+    .accrcss {
+        background-color: #c9e6c9;
+        text-align: right;
+    }
+    .detcss {
+        background-color: #e8d7d7;
+        text-align: right;
+    }
+    .itogcss {
+        background-color: #e6e7f9;
+        text-align: right;
+        font-weight: bold;
+        color: #000;
+    }
+    .itogdetcss {
+        background-color: #f9e6ee;
+        text-align: right;
+        font-weight: bold;
+        color: #000;
+    }
+    .itogacccss {
+        font-weight: bold;
+        color: #000;
+        text-align: right;
+    }
+    .webix_hcell {
+        word-wrap: break-word;
+        line-height: 15px !important;
+        text-align: center;
+        padding: 0 5px !important;
+    }
     .webix_ss_center_scroll {
         cursor: cell !important;
     }
-
     .mystyle1 {
         font-weight: bold;
         color: #B51454;
         background-color: #FFAAAA;
     }
-
     .mystyle2 {
         font-weight: bold;
         background-color: #AFA;
     }
-
     .weekend {
         background: #f00;
     }
-
     #grid {
         margin-left: 0px;
     }
-
     .subhighlight {
         background-color: #edf4f9;
         font-weight: bold;
     }
-
     .ui-datepicker-calendar {
         display: none;
     }
-
     .ui-datepicker {
         z-index: 9999 !important;
     }
@@ -179,6 +291,10 @@
 
         if ((docnumber == null || docnumber == ''))
             DocParameters.show();
+
+        $(window).resize(function () {
+
+        });
     });
 
     function ApplyDocParameters() {
@@ -192,28 +308,34 @@
             container: "tabl",
             id: "grid",
             view: "datatable",
-            leftSplit: 9,
+            leftSplit: 8,
             rowHeight: 23,
-            padding: 5,
+            padding: 1,
+            headermenu: true,
+            resizeColumn: true,
             columns: [
               { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
               { id: "DocNumber", header: "DocNumber", hidden: "true" },
               { id: "Period", header: "Period", hidden: "true" },
               { id: "Organization", header: "Organization", hidden: "true" },
               { id: "Code", header: "Code", hidden: "true" },
-              { id: "Position", header: "Должность", width: 150 },
-              { id: "FullName", header: "ФИО", width: 230 },
-              { id: "Rate", header: "Оклад" },
+              { id: "Position", header: "Должность", width: 130 },
+              { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 210 },
+              { id: "Rate", header: "Оклад", width: 60 },
+              { id: "Hours", header: "Итого часы", css:"readonly", width: 50 },
+              @Html.Raw(accColumns)
+              @Html.Raw(totalaccsum)
+              @Html.Raw(detColumns)
+              @Html.Raw(totaldetsum)
               @Html.Raw(aadsum)
-              @Html.Raw(aadcolumns)
             ],
+            rules:{
+                @Html.Raw(rules)
+            },
             spans: true,
             data: {
                 data: [
-                    @Html.Raw(TableData)
-                ],
-                spans: [
-                    @Html.Raw(SpansData)
+                @Html.Raw(TableData)
                 ]
             },
             editable: true,
@@ -238,6 +360,15 @@
     });
 
     function Save() {
+        var grid = $$("grid");
+        var filter = grid.getFilter("FullName").value;
+
+        if(filter != "")
+        {
+            alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
+            return;
+        }
+
         webix.message({ type: "default", text: "Сохранение ведомости..." });
         $("#loader").show();
         var grid = $$("grid");
@@ -251,7 +382,31 @@
         return false;
     }
 
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
     function AutoSave() {
+        var carriedOut = @Model.CarriedOut.ToString().ToLower();
+
+        if(carriedOut)
+            return;
+
+        var grid = $$("grid");
+        var filter = grid.getFilter("FullName").value;
+
+        if(filter != "")
+        {
+            webix.message({
+                type: "error",
+                text: "Автосохранение не возможно. Установлен фильтр!"
+            });
+            return;
+        }
+
         webix.message({
             type: "default",
             text: "Автосохранение..."
@@ -285,4 +440,7 @@
 </div>
 
 <br />
-<input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+@if (!Model.CarriedOut)
+{
+    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+}

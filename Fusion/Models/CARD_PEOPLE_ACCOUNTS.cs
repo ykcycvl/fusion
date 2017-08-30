@@ -28,7 +28,5 @@ namespace Fusion.Models
         public Nullable<short> AUTO_CHANGE_LEVELS { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
-    
-        public virtual CARD_PEOPLES CARD_PEOPLES { get; set; }
     }
 }

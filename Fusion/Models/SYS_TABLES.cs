@@ -15,13 +15,9 @@ namespace Fusion.Models
     public partial class SYS_TABLES
     {
         public int TABLE_ID { get; set; }
-        public Nullable<short> DELETED { get; set; }
-        public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public string NAME { get; set; }
         public string TABLE_NAME { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public string NOTES { get; set; }
-        public System.Guid GUID { get; set; }
-        public System.Guid TRANSACT_GUID { get; set; }
     }
 }

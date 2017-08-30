@@ -1,0 +1,25 @@
+﻿@model Fusion.Models.SB
+@{
+    ViewBag.Title = "Restaurants";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>Restaurants</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ИД</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var it in Model.restaurants)
+            {
+                <tr>
+                    <td>@it.id</td>
+                    <td>@it.restaurant_name</td>
+                </tr>
+            }
+        </tbody>
+    </table>

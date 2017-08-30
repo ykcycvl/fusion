@@ -20,11 +20,11 @@ namespace Fusion.Models
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<short> BLOCKED { get; set; }
         public Nullable<int> DOCUMENT_TYPE { get; set; }
-        public string SERIES { get; set; }
-        public string DOC_NUMBER { get; set; }
         public Nullable<System.DateTime> OFFERED { get; set; }
-        public string PRODUCED { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string SERIES { get; set; }
+        public string DOC_NUMBER { get; set; }
+        public string PRODUCED { get; set; }
     }
 }

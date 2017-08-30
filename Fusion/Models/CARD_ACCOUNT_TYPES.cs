@@ -16,7 +16,6 @@ namespace Fusion.Models
     {
         public int ACCOUNT_TYPE_ID { get; set; }
         public Nullable<int> PARENT_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<short> ACCOUNT_CLASS { get; set; }
@@ -26,11 +25,12 @@ namespace Fusion.Models
         public Nullable<short> IS_ACTIVE { get; set; }
         public Nullable<System.DateTime> SUBSCRIBE_DATE_FROM { get; set; }
         public Nullable<System.DateTime> SUBSCRIBE_DATE_TO { get; set; }
-        public string SCRIPT_FILENAME { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
         public Nullable<int> TIME_LIFE { get; set; }
         public Nullable<int> TIME_DELAY { get; set; }
+        public string NAME { get; set; }
+        public string SCRIPT_FILENAME { get; set; }
     }
 }

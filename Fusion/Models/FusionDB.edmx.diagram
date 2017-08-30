@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="76b99e2d78ed4ba4bda89c52469b6478" Name="Diagram1">
+        <EntityTypeShape EntityType="FusionDBModels.Article" Width="1.5" PointX="8" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.ArticleCategory" Width="1.5" PointX="5.75" PointY="13.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_employee" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_organization" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_states" Width="1.5" PointX="3" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_subdivision" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_vendor" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.host" Width="1.5" PointX="10.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.iptable" Width="1.5" PointX="12.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_extra" Width="1.5" PointX="10" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_task" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_userTask" Width="1.5" PointX="10" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.ortus_log" Width="1.5" PointX="12.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.p_status" Width="1.5" PointX="5.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.p_task" Width="1.5" PointX="8" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.p_taskChecklist" Width="1.5" PointX="10.25" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.p_userTask" Width="1.5" PointX="13.25" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.server" Width="1.5" PointX="15" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.stoplist" Width="1.5" PointX="14.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.storage" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FusionDBModels.hostip" Width="1.5" PointX="15.75" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="FusionDBModels.FK_Article_ArticleCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_category_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_category_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_employee_subdiv_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_employee" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_measurement_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_measurement_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_vendor_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_state" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_mc_extra_mc_task" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_mc_userTask_mc_task" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_p_task_p_status" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_p_userTask_p_status" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_p_taskChecklist_p_task" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.FK_p_userTask_p_task" ManuallyRouted="false" />
+        <AssociationConnector Association="FusionDBModels.serverip" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_managers" Width="1.5" PointX="14.625" PointY="16" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_problems" Width="1.5" PointX="16.875" PointY="16" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_restaurants" Width="1.5" PointX="12.375" PointY="16.375" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_rights" Width="1.5" PointX="12.375" PointY="19.375" />
+        <AssociationConnector Association="FusionDBModels.FK_sb_managers_restaurant_id" />
+        <AssociationConnector Association="FusionDBModels.FK_sb_office_rights" />
+        <AssociationConnector Association="FusionDBModels.FK_sb_problems_mgr_id" />
+        <AssociationConnector Association="FusionDBModels.FK_sb_problems_restaurant_id" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="17.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

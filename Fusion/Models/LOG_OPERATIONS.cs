@@ -18,9 +18,10 @@ namespace Fusion.Models
         public Nullable<long> RECORD_ID { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<short> OP_TYPE { get; set; }
-        public string HOST_IP { get; set; }
         public Nullable<int> USER_ID { get; set; }
         public Nullable<int> UNIT_ID { get; set; }
         public Nullable<int> TABLE_ID { get; set; }
+        public Nullable<int> CLIENT_ID { get; set; }
+        public string HOST_IP { get; set; }
     }
 }

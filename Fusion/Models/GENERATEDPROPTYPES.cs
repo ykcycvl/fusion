@@ -27,5 +27,6 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<short> UCSPRESET { get; set; }
+        public Nullable<short> SHOWONFORM { get; set; }
     }
 }

@@ -25,5 +25,6 @@ namespace Fusion.Models
         public Nullable<int> EXTERNAL_ID { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public Nullable<int> FLAGS { get; set; }
     }
 }

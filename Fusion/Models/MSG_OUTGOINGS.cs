@@ -14,9 +14,8 @@ namespace Fusion.Models
     
     public partial class MSG_OUTGOINGS
     {
-        public int OUTGOING_ID { get; set; }
+        public long OUTGOING_ID { get; set; }
         public Nullable<short> MESSAGE_TYPE { get; set; }
-        public string MESSAGE_TEXT { get; set; }
         public Nullable<System.DateTime> DATE_FROM { get; set; }
         public Nullable<System.DateTime> DATE_TO { get; set; }
         public Nullable<short> STATUS { get; set; }
@@ -26,5 +25,7 @@ namespace Fusion.Models
         public Nullable<long> VALUE_ID { get; set; }
         public Nullable<long> FIELD_EDIT { get; set; }
         public Nullable<int> USER_ID { get; set; }
+        public string MESSAGE_TEXT { get; set; }
+        public Nullable<int> OPERATION_PARAM_ID { get; set; }
     }
 }

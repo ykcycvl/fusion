@@ -15,46 +15,48 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Hosting;
+using System.Net.Mail;
 
 namespace Fusion.Models
 {
     public class RKCRM
     {
-        static IPAddress ip = IPAddress.Parse("10.1.0.108");
+        static IPAddress ip = IPAddress.Parse("10.1.0.90");
         static string Terminal_Type = "239487KJT3asf";
-        static string Global_Type = "kN3uF2TTVtmpp1Gb25Mj";
+        static string Global_Type = "";
         public class CRMResponse
         {
             public string Message = "";
             public string MessageType = "";
         }
-        public static CRMResponse Query(string query)
+        public static CRMResponse Query(string query, string MessageID)
         {
+            query = query.Trim();
+            byte[] queryBytes = Encoding.UTF8.GetBytes(query);
             CRMResponse response = new CRMResponse();
 
-            query = String.Format(@"Message-ID: 1
-                        Message-Type: Request
-                        Time: '2016-10-04 13:42:12'
-                        Terminal-Type: 25
-                        Content-Length: {0}
+            query = String.Format(@"Message-ID: {4}
+Message-Type: Request
+Time: {2}
+Terminal-Type: {3}
+Content-Length: {0}
 
-                        {1}
-                        ", query.Length, query);
+{1}", queryBytes.Length, query, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), Terminal_Type, MessageID);
 
             TcpClient client = new TcpClient();
             client.SendTimeout = 120000;
-            client.ReceiveTimeout = 120000;
+            client.ReceiveTimeout = 240000;
             client.ReceiveBufferSize = 5242880;
 
             client.Connect(ip, 9191);
             NetworkStream tcpStream = client.GetStream();
-            byte[] sendBytes = Encoding.GetEncoding(1251).GetBytes(query);
+            byte[] sendBytes = Encoding.UTF8.GetBytes(query);
             tcpStream.Write(sendBytes, 0, sendBytes.Length);
             byte[] bytes = new byte[client.ReceiveBufferSize];
             int bytesRead = tcpStream.Read(bytes, 0, client.ReceiveBufferSize);
             client.Close();
 
-            string returnData = Encoding.GetEncoding(1251).GetString(bytes).Replace("\0", "");
+            string returnData = Encoding.UTF8.GetString(bytes).Replace("\0", "");
 
             Match m = Regex.Match(returnData, "^Message-Type:(?<val>.*?)$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
@@ -74,6 +76,8 @@ namespace Fusion.Models
         }
         public class APIMessage
         {
+            [XmlAttribute("Reserved_A")]
+            public string Reserved_A { get; set; }
             [XmlAttribute("Action")]
             public string Action { get; set; }
 
@@ -89,24 +93,25 @@ namespace Fusion.Models
             public APIMessage()
             {
                 Terminal_Type = "239487KJT3asf";
-                Global_Type = "kN3uF2TTVtmpp1Gb25Mj";
+                Global_Type = "";
             }
         }
         public static List<Holder> SearchHoldersByPhone(string phone)
         {
-            string query = String.Format(@"<?xml version=""1.0"" standalone=""yes"" ?>
+            string query = String.Format(@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes"" ?>
 <Message Action=""Search holders"" Terminal_Type=""{0}"" Global_Type=""{1}"">
-	<Include>Account, Holder_Card, Holder_Contact</Include>
-	<Count>25</Count>
-	<Index>1</Index>
-	<Item Mode=""Clear""/>
-	<Item Mode=""Add"">
-	<Contacts>
-		<Phone Value=""{2}"" IsNumber=""True""/>
-	</Contacts>
-	</Item>
+<Include>Account, Holder_Card, Holder_Contact</Include>
+<Count>25</Count>
+<Index>1</Index>
+<Item Mode=""Clear""/>
+<Item Mode=""Add"">
+<Contacts>
+	<Phone Value=""{2}"" IsNumber=""True""/>
+</Contacts>
+</Item>
+<Item Mode=""Clear""/>
 </Message>", Terminal_Type, Global_Type, phone);
-            CRMResponse r = Query(query);
+            CRMResponse r = Query(query, "1");
             Holder m = new Holder();
 
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Holder>), new XmlRootAttribute("Holders"));
@@ -130,7 +135,7 @@ namespace Fusion.Models
 	</Contacts>
 	</Item>
 </Message>", Terminal_Type, Global_Type, email);
-            CRMResponse r = Query(query);
+            CRMResponse r = Query(query, "1");
             Holder m = new Holder();
 
             XmlSerializer deserializer = new XmlSerializer(typeof(List<Holder>), new XmlRootAttribute("Holders"));
@@ -400,7 +405,7 @@ namespace Fusion.Models
                                 </Message>", Card_Code, "Заблокирована пользователем " + UserName, 1);
                             }
 
-                    return RKCRM.Query(cardXML);
+                    return RKCRM.Query(cardXML, "1");
                 }
             }
             public class AccountInfo
@@ -525,19 +530,29 @@ namespace Fusion.Models
         {
             [XmlElement("Holder")]
             public Holder Holder { get; set; }
+            [XmlElement("Reserved_A")]
+            public string Reserved_A_EL { get; set; }
             [XmlIgnore]
             public List<RKCRM.Holder> Holders;
             public string Serialize()
             {
-                using (MemoryStream memoryStream = new MemoryStream())
+                XmlWriterSettings settings = new XmlWriterSettings()
                 {
-                    var xmlSerializer = new XmlSerializer(typeof(AddHoldersModel));
-                    xmlSerializer.Serialize(memoryStream, this);
-                    memoryStream.Position = 0;
-                    TextReader reader = new StreamReader(memoryStream);
+                    Indent = true,
+                    OmitXmlDeclaration = false,
+                    NewLineHandling = NewLineHandling.None
+                };
 
-                    return reader.ReadToEnd();
+                var stream = new MemoryStream();
+                using (XmlWriter xw = XmlWriter.Create(stream, settings))
+                {
+                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces(new[] { XmlQualifiedName.Empty });
+                    XmlSerializer x = new XmlSerializer(GetType(), "");
+                    x.Serialize(xw, this, ns);
                 }
+
+                string s = Encoding.UTF8.GetString(stream.ToArray()).Substring(1);
+                return s;
             }
             public bool AddHolder()
             {
@@ -548,91 +563,22 @@ namespace Fusion.Models
                 if (contact != null)
                 {
                     Action = "Add holders";
-
                     Holders = RKCRM.SearchHoldersByPhone(contact.Value);
+                    this.Include = "Holder_Contact";
 
-                    if (Holders.Count > 0)
-                    {
-                        ///
-                        /// Вот тут я решил закоментить, потому что не помню, что делал до этого и это, что закоменчено, может быть пригодится мне в будущем. Хотя очень надеюсь что нет ¯\_(ツ)_/¯
-                        /// В общем, если через месяц мне эта херь не понадобится, я ее удалю :) Сегодня 14/12/2016))
+                    if (string.IsNullOrEmpty(this.Holder.F_Name))
+                        this.Holder.F_Name = "";
 
-                        /*Holders[0].L_Name = Holder.L_Name;
-                        Holders[0].F_Name = Holder.F_Name;
-                        Holders[0].M_Name = Holder.M_Name;
-                        Holders[0].Full_Name = null;
-                        Holders[0].Birth = Holder.Birth;
-                        Holders[0].Cards = Holder.Cards;
-                        Holder = Holders[0];
+                    if (string.IsNullOrEmpty(this.Holder.L_Name))
+                        this.Holder.L_Name = "";
 
-                        if (Holder.Contacts != null)
-                        {
-                            for (int i = Holder.Contacts.Count - 1; i >= 0; i--)
-                            {
-                                if (Holder.Contacts[i].Type_ID == "254")
-                                    Holder.Contacts.Remove(Holder.Contacts[i]);
-                            }
-                        }
+                    if (string.IsNullOrEmpty(this.Holder.M_Name))
+                        this.Holder.M_Name = "";
 
-                        if (Holders[0].Holders_Contacts != null)
-                        {
-                            for (int i = 0; i < Holders[0].Holders_Contacts.Contacts.Count; i++)
-                            {
-                                Holder.Contacts.Add(Holders[0].Holders_Contacts.Contacts[i]);
-                            }
-                        }
-
-                        Holder.Group_ID = "45";
-                        Holder.Division_ID = "1";
-
-                        bool bonus = false;
-                        bool discont = false;
-                        bool potr = false;
-
-                        if (Holder.Accounts != null)
-                        {
-                            for (int i = Holder.Accounts.Count - 1; i >= 0; i--)
-                            {
-                                if (Holder.Accounts[i].Account_Type_ID == "16")
-                                    bonus = true;
-
-                                if (Holder.Accounts[i].Account_Type_ID == "18")
-                                    discont = true;
-
-                                if (Holder.Accounts[i].Account_Type_ID == "11")
-                                    potr = true;
-
-                                if (Holder.Accounts[i].Account_Type_ID != "16" && Holder.Accounts[i].Account_Type_ID != "18" && Holder.Accounts[i].Account_Type_ID != "11")
-                                {
-                                    RKCRM.Query("<?xml version=\"1.0\" encoding=\"Windows-1251\" standalone=\"yes\" ?><Message Action=\"Account block\" Terminal_Type=\"2\" Global_Type=\"kN3uF2TTVtmpp1Gb25Mj\"><Account_Number>" + Holder.Accounts[i].Account_Number + "</Account_Number><Remarks>Блокировка счета по причине перехода на бонусную систему</Remarks> </Message>");
-                                    Holder.Accounts.Remove(Holder.Accounts[i]);
-                                }
-                            }
-                        }
-
-                        if (Holder.Accounts == null)
-                        {
-                            Holder.Accounts = new List<Holder.AccountInfo>();
-                        }
-
-                        if (!bonus)
-                            Holder.Accounts.Add(new Holder.AccountInfo() { Account_Type_ID = "16", Auto_Change_Levels = "false", Account_Level_ID = "15" });
-
-                        if (!discont)
-                            Holder.Accounts.Add(new Holder.AccountInfo() { Account_Type_ID = "18", Auto_Change_Levels = "false", Account_Level_ID = "22" });
-
-                        if (!potr)
-                            Holder.Accounts.Add(new Holder.AccountInfo() { Account_Type_ID = "11", Auto_Change_Levels = "false" });
-
-                        Holder.Holders_Cards = null;
-                        Holder.Holders_Contacts = null;
-                        Holder.Holders_Properties = null;
-
-                        Action = "Edit holders";*/
-                    }
+                    this.Holder.Full_Name = (this.Holder.L_Name + " " + this.Holder.F_Name + " " + this.Holder.M_Name).Trim();
 
                     string s = Serialize();
-                    RKCRM.CRMResponse r = RKCRM.Query(s);
+                    RKCRM.CRMResponse r = RKCRM.Query(s, "1");
 
                     if (r.MessageType == "Error")
                     {
@@ -697,7 +643,7 @@ namespace Fusion.Models
                 s = Regex.Replace(s, "<Birth>.*?</Birth>", "");
                 s = s.Replace("<Holder>", "");
                 s = s.Replace("</Holder>", "");
-                RKCRM.CRMResponse r = RKCRM.Query(s);
+                RKCRM.CRMResponse r = RKCRM.Query(s, "1");
 
                 if (r.MessageType == "Response")
                 {
@@ -727,7 +673,7 @@ namespace Fusion.Models
                     }
 
                 if (Holder.Accounts != null)
-                    for (int i = Holder.Accounts.Count - 1; i > 0; i--)
+                    for (int i = Holder.Accounts.Count - 1; i >= 0; i--)
                     {
                         if (Holder.Accounts[i].Account_Type_ID != null && Holder.Accounts[i].Account_Type_ID == "16")
                             Holder.Accounts[i].Account_Level_ID = "15";
@@ -752,7 +698,7 @@ namespace Fusion.Models
                     Holder.L_Name = "";
 
                 string query = Serialize();
-                CRMResponse response = Query(query);
+                CRMResponse response = Query(query, "1");
 
                 if (response.MessageType == "Error")
                 {
@@ -805,7 +751,7 @@ namespace Fusion.Models
             {
                 Action = "Transaction";
                 string query = Serialize();
-                CRMResponse r = Query(query);
+                CRMResponse r = Query(query, "1");
 
                 if (r.MessageType == "Error")
                 {
@@ -899,7 +845,7 @@ namespace Fusion.Models
 
                         if (Holder.Accounts[i].Account_Type_ID != "16" && Holder.Accounts[i].Account_Type_ID != "18" && Holder.Accounts[i].Account_Type_ID != "11")
                         {
-                            RKCRM.Query("<?xml version=\"1.0\" encoding=\"Windows-1251\" standalone=\"yes\" ?><Message Action=\"Account block\" Terminal_Type=\"2\" Global_Type=\"kN3uF2TTVtmpp1Gb25Mj\"><Account_Number>" + Holder.Accounts[i].Account_Number + "</Account_Number><Remarks>Блокировка счета по причине перехода на бонусную систему</Remarks> </Message>");
+                            RKCRM.Query("<?xml version=\"1.0\" encoding=\"Windows-1251\" standalone=\"yes\" ?><Message Action=\"Account block\" Terminal_Type=\"2\" Global_Type=\"kN3uF2TTVtmpp1Gb25Mj\"><Account_Number>" + Holder.Accounts[i].Account_Number + "</Account_Number><Remarks>Блокировка счета по причине перехода на бонусную систему</Remarks> </Message>", "1");
                             Holder.Accounts.Remove(Holder.Accounts[i]);
                         }
                     }
@@ -924,7 +870,7 @@ namespace Fusion.Models
                 Holder.Holders_Properties = null;
 
                 string s = Serialize();
-                RKCRM.CRMResponse r = RKCRM.Query(s);
+                RKCRM.CRMResponse r = RKCRM.Query(s, "1");
 
                 if (r.MessageType == "Error")
                 {
@@ -936,6 +882,84 @@ namespace Fusion.Models
                     //Holder = Holder.Deserialize(r.Message);
                     return true;
                 }
+            }
+        }
+    }
+    public class CRMTools
+    {
+        private static SqlConnection GetConnection()
+        {
+            string connectionString = WebConfigurationManager.ConnectionStrings["crmConnectionString"].ConnectionString;
+            SqlConnection dbConnection = new SqlConnection(connectionString);
+            dbConnection.Open();
+            return dbConnection;
+        }
+
+        private Entities db = new Entities();
+        public List<CRMSegment> Segments { get; set; }
+        public string Exception { get; set; }
+        public CRMSegment Segment { get; set; }
+        [Required]
+        [Display(Name="Тема письма")]
+        public string MailTitle { get; set; }
+        [Required]
+        [Display(Name = "Текст письма")]
+        public string MailText { get; set; }
+        public List<CRMSegment> GetSegments()
+        {
+            return db.CRMSegment.Where(p => p.IsActive == true).ToList();
+        }
+        public CRMSegment GetSegment(int id)
+        {
+            return db.CRMSegment.FirstOrDefault(p => p.id == id);
+        }
+        public bool SendMail()
+        {
+            try
+            {
+                if (this.Segment != null && !String.IsNullOrEmpty(this.Segment.SegmentQuery))
+                {
+                    SqlConnection con = GetConnection();
+                    SqlCommand cmd = new SqlCommand(this.Segment.SegmentQuery, con);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    List<string> mailList = new List<string>();
+
+                    while (rdr.Read())
+                    {
+                        if (rdr["email"] != DBNull.Value && rdr["email"].ToString().Trim() != "")
+                            mailList.Add(rdr["email"].ToString().Trim());
+                    }
+
+                    foreach (var m in mailList)
+                    {
+                        MailMessage mail = new MailMessage();
+                        string FROM = "noreply@tokyo-bar.ru";
+                        string TO = m;
+                        mail.Body = this.MailText;
+                        mail.From = new MailAddress(FROM);
+                        mail.To.Add(new MailAddress(TO));
+                        mail.Subject = this.MailTitle;
+                        mail.SubjectEncoding = Encoding.UTF8;
+                        mail.BodyEncoding = Encoding.UTF8;
+                        mail.IsBodyHtml = true;
+                        SmtpClient client = new SmtpClient();
+                        client.Host = "srv-ex00.fg.local";
+                        client.Port = 587;
+                        client.EnableSsl = true;
+                        client.Credentials = new NetworkCredential("noreply", "123456zZ");
+                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        client.Send(mail);
+                        mail.Dispose();
+                    }
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex; 
             }
         }
     }

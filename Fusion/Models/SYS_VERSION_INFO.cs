@@ -14,10 +14,10 @@ namespace Fusion.Models
     
     public partial class SYS_VERSION_INFO
     {
-        public string PRODUCT_ID { get; set; }
         public Nullable<short> MAJOR_VERSION { get; set; }
         public Nullable<short> MINOR_VERSION { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string PRODUCT_ID { get; set; }
     }
 }

@@ -78,6 +78,24 @@ namespace Fusion.Controllers
             model.Search();
             return View(model);
         }
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult OPDT()
+        {
+            ReportViewModels.OPDViewModel model = new ReportViewModels.OPDViewModel();
+            model.count = 2;
+            model.StartDateTime = DateTime.Today.AddDays(-10);
+            model.EndDateTime = DateTime.Today.AddDays(1);
+            model.SearchWT();
+            return View(model);
+        }
+        [HttpPost]
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult OPDT(ReportViewModels.OPDViewModel model)
+        {
+            model.EndDateTime = model.EndDateTime.AddDays(1);
+            model.SearchWT();
+            return View(model);
+        }
 
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
         public ActionResult OPM()
@@ -265,6 +283,40 @@ namespace Fusion.Controllers
                 ViewBag.ErrorMessage += model.LastResult;
 
             return View("Notification/DefaultNotification");
+        }
+
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult Segments()
+        {
+            CRMTools model = new CRMTools();
+            model.Segments = model.GetSegments();
+            return View(model);
+        }
+
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult ViewSegment(int id)
+        {
+            CRMTools model = new CRMTools();
+            model.Segment = model.GetSegment(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        public ActionResult ViewSegment(CRMTools model)
+        {
+            try
+            {
+                if (model.SendMail())
+                    return RedirectToAction("MailSended");
+                else
+                    return View(model);
+            }
+            catch(Exception ex)
+            {
+                model.Exception = ex.Message;
+                return View(model);
+            }    
         }
 
         public ActionResult Import(string filename)

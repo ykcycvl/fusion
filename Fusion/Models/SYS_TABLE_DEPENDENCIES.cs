@@ -15,14 +15,14 @@ namespace Fusion.Models
     public partial class SYS_TABLE_DEPENDENCIES
     {
         public int TABLE_DEPENDENCY_ID { get; set; }
-        public string TABLE_NAME { get; set; }
-        public string KEY_NAME { get; set; }
-        public string DEPENDENCY_TABLE { get; set; }
-        public string DEPENDENCY_FIELD_NAME { get; set; }
         public Nullable<short> HAVE_DELETED { get; set; }
         public string SHOW_MESSAGE { get; set; }
         public string DEPENDENCY_WHERE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string TABLE_NAME { get; set; }
+        public string KEY_NAME { get; set; }
+        public string DEPENDENCY_TABLE { get; set; }
+        public string DEPENDENCY_FIELD_NAME { get; set; }
     }
 }

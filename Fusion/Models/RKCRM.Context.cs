@@ -37,6 +37,7 @@ namespace Fusion.Models
         public virtual DbSet<CARD_CARDS_RANGES> CARD_CARDS_RANGES { get; set; }
         public virtual DbSet<CARD_CITIES> CARD_CITIES { get; set; }
         public virtual DbSet<CARD_CLIENT_ACCOUNT_LEVELS> CARD_CLIENT_ACCOUNT_LEVELS { get; set; }
+        public virtual DbSet<CARD_CLIENT_SESSIONS> CARD_CLIENT_SESSIONS { get; set; }
         public virtual DbSet<CARD_CLIENTS> CARD_CLIENTS { get; set; }
         public virtual DbSet<CARD_CONTACT_TYPES> CARD_CONTACT_TYPES { get; set; }
         public virtual DbSet<CARD_CONTACTS> CARD_CONTACTS { get; set; }
@@ -85,6 +86,9 @@ namespace Fusion.Models
         public virtual DbSet<IR_SENDING_TYPE> IR_SENDING_TYPE { get; set; }
         public virtual DbSet<IR_SETTINGS_MAILING> IR_SETTINGS_MAILING { get; set; }
         public virtual DbSet<LOG_OPERATIONS> LOG_OPERATIONS { get; set; }
+        public virtual DbSet<MSG_HELPDESC_HISTORY> MSG_HELPDESC_HISTORY { get; set; }
+        public virtual DbSet<MSG_HELPDESC_INCOMING> MSG_HELPDESC_INCOMING { get; set; }
+        public virtual DbSet<MSG_HELPDESC_TYPES> MSG_HELPDESC_TYPES { get; set; }
         public virtual DbSet<MSG_OUTGOINGS> MSG_OUTGOINGS { get; set; }
         public virtual DbSet<PLG_ACC_ACCOUNTS> PLG_ACC_ACCOUNTS { get; set; }
         public virtual DbSet<PLG_ACC_MAPS> PLG_ACC_MAPS { get; set; }
@@ -132,8 +136,6 @@ namespace Fusion.Models
         public virtual DbSet<RPT_TEMPLATES> RPT_TEMPLATES { get; set; }
         public virtual DbSet<SYS_GENERATORS> SYS_GENERATORS { get; set; }
         public virtual DbSet<SYS_TABLE_DEPENDENCIES> SYS_TABLE_DEPENDENCIES { get; set; }
-        public virtual DbSet<SYS_TABLE_FIELDS> SYS_TABLE_FIELDS { get; set; }
-        public virtual DbSet<SYS_TABLES> SYS_TABLES { get; set; }
         public virtual DbSet<SYS_USER_RIGHTS> SYS_USER_RIGHTS { get; set; }
         public virtual DbSet<SYS_USER_ROLES> SYS_USER_ROLES { get; set; }
         public virtual DbSet<SYS_USERS> SYS_USERS { get; set; }
@@ -173,12 +175,11 @@ namespace Fusion.Models
         public virtual DbSet<RPT_PIVOT_FIELDS> RPT_PIVOT_FIELDS { get; set; }
         public virtual DbSet<RPT_REPORT_JOBS> RPT_REPORT_JOBS { get; set; }
         public virtual DbSet<SYS_STORED_PARAMS> SYS_STORED_PARAMS { get; set; }
+        public virtual DbSet<SYS_TABLE_FIELDS> SYS_TABLE_FIELDS { get; set; }
+        public virtual DbSet<SYS_TABLES> SYS_TABLES { get; set; }
         public virtual DbSet<SYS_USER_RIGHTS_LINKS> SYS_USER_RIGHTS_LINKS { get; set; }
         public virtual DbSet<SYS_USER_ROLE_RIGHTS> SYS_USER_ROLE_RIGHTS { get; set; }
         public virtual DbSet<SYS_VERSION_INFO> SYS_VERSION_INFO { get; set; }
-        public virtual DbSet<FIAS_ADDRESS_OBJECTS_V> FIAS_ADDRESS_OBJECTS_V { get; set; }
-        public virtual DbSet<PLG_EMPLOYEES_ALL> PLG_EMPLOYEES_ALL { get; set; }
-        public virtual DbSet<PLG_OBJECTS> PLG_OBJECTS { get; set; }
     
         public virtual int AddCoupon(Nullable<long> peopleID, Nullable<int> couponDelay, Nullable<int> couponDelta, Nullable<int> couponTypeID, string couponNotes, Nullable<int> couponStatus, Nullable<int> divisionID, Nullable<int> actionID, Nullable<int> actionType, Nullable<long> clientID, Nullable<byte> notime)
         {
@@ -683,6 +684,603 @@ namespace Fusion.Models
                 new ObjectParameter("Right_ID", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SYS_User_Right_CsDel", right_IDParameter);
+        }
+    
+        public virtual int Card_AddCoupon(Nullable<long> peopleID, Nullable<int> couponDelay, Nullable<int> couponDelta, Nullable<int> couponTypeID, string couponNotes, Nullable<int> couponStatus, Nullable<int> divisionID, Nullable<int> actionID, Nullable<int> actionType, Nullable<long> clientID, Nullable<byte> notime, Nullable<long> transaction_Link, Nullable<long> card_Code, Nullable<int> unit_Id, Nullable<int> user_Id, Nullable<long> external_Id, Nullable<int> external_Index, ObjectParameter couponFrom, ObjectParameter couponTo, ObjectParameter couponID, ObjectParameter transactionID)
+        {
+            var peopleIDParameter = peopleID.HasValue ?
+                new ObjectParameter("PeopleID", peopleID) :
+                new ObjectParameter("PeopleID", typeof(long));
+    
+            var couponDelayParameter = couponDelay.HasValue ?
+                new ObjectParameter("CouponDelay", couponDelay) :
+                new ObjectParameter("CouponDelay", typeof(int));
+    
+            var couponDeltaParameter = couponDelta.HasValue ?
+                new ObjectParameter("CouponDelta", couponDelta) :
+                new ObjectParameter("CouponDelta", typeof(int));
+    
+            var couponTypeIDParameter = couponTypeID.HasValue ?
+                new ObjectParameter("CouponTypeID", couponTypeID) :
+                new ObjectParameter("CouponTypeID", typeof(int));
+    
+            var couponNotesParameter = couponNotes != null ?
+                new ObjectParameter("CouponNotes", couponNotes) :
+                new ObjectParameter("CouponNotes", typeof(string));
+    
+            var couponStatusParameter = couponStatus.HasValue ?
+                new ObjectParameter("CouponStatus", couponStatus) :
+                new ObjectParameter("CouponStatus", typeof(int));
+    
+            var divisionIDParameter = divisionID.HasValue ?
+                new ObjectParameter("DivisionID", divisionID) :
+                new ObjectParameter("DivisionID", typeof(int));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var actionTypeParameter = actionType.HasValue ?
+                new ObjectParameter("ActionType", actionType) :
+                new ObjectParameter("ActionType", typeof(int));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(long));
+    
+            var notimeParameter = notime.HasValue ?
+                new ObjectParameter("Notime", notime) :
+                new ObjectParameter("Notime", typeof(byte));
+    
+            var transaction_LinkParameter = transaction_Link.HasValue ?
+                new ObjectParameter("Transaction_Link", transaction_Link) :
+                new ObjectParameter("Transaction_Link", typeof(long));
+    
+            var card_CodeParameter = card_Code.HasValue ?
+                new ObjectParameter("Card_Code", card_Code) :
+                new ObjectParameter("Card_Code", typeof(long));
+    
+            var unit_IdParameter = unit_Id.HasValue ?
+                new ObjectParameter("Unit_Id", unit_Id) :
+                new ObjectParameter("Unit_Id", typeof(int));
+    
+            var user_IdParameter = user_Id.HasValue ?
+                new ObjectParameter("User_Id", user_Id) :
+                new ObjectParameter("User_Id", typeof(int));
+    
+            var external_IdParameter = external_Id.HasValue ?
+                new ObjectParameter("External_Id", external_Id) :
+                new ObjectParameter("External_Id", typeof(long));
+    
+            var external_IndexParameter = external_Index.HasValue ?
+                new ObjectParameter("External_Index", external_Index) :
+                new ObjectParameter("External_Index", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_AddCoupon", peopleIDParameter, couponDelayParameter, couponDeltaParameter, couponTypeIDParameter, couponNotesParameter, couponStatusParameter, divisionIDParameter, actionIDParameter, actionTypeParameter, clientIDParameter, notimeParameter, transaction_LinkParameter, card_CodeParameter, unit_IdParameter, user_IdParameter, external_IdParameter, external_IndexParameter, couponFrom, couponTo, couponID, transactionID);
+        }
+    
+        public virtual int Card_AddOperation(Nullable<long> accountID, Nullable<decimal> summ, Nullable<int> divisionID, Nullable<int> actionID, Nullable<long> clientID, Nullable<long> card_Code, Nullable<short> actionType, Nullable<long> transaction_Link, string transaction_Notes, Nullable<long> external_ID, Nullable<int> external_Index, Nullable<System.DateTime> external_Date, Nullable<int> unit_Id, Nullable<int> user_Id, Nullable<short> operation_Type, Nullable<int> transactionType, ObjectParameter transactionID)
+        {
+            var accountIDParameter = accountID.HasValue ?
+                new ObjectParameter("AccountID", accountID) :
+                new ObjectParameter("AccountID", typeof(long));
+    
+            var summParameter = summ.HasValue ?
+                new ObjectParameter("Summ", summ) :
+                new ObjectParameter("Summ", typeof(decimal));
+    
+            var divisionIDParameter = divisionID.HasValue ?
+                new ObjectParameter("DivisionID", divisionID) :
+                new ObjectParameter("DivisionID", typeof(int));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(long));
+    
+            var card_CodeParameter = card_Code.HasValue ?
+                new ObjectParameter("Card_Code", card_Code) :
+                new ObjectParameter("Card_Code", typeof(long));
+    
+            var actionTypeParameter = actionType.HasValue ?
+                new ObjectParameter("ActionType", actionType) :
+                new ObjectParameter("ActionType", typeof(short));
+    
+            var transaction_LinkParameter = transaction_Link.HasValue ?
+                new ObjectParameter("Transaction_Link", transaction_Link) :
+                new ObjectParameter("Transaction_Link", typeof(long));
+    
+            var transaction_NotesParameter = transaction_Notes != null ?
+                new ObjectParameter("Transaction_Notes", transaction_Notes) :
+                new ObjectParameter("Transaction_Notes", typeof(string));
+    
+            var external_IDParameter = external_ID.HasValue ?
+                new ObjectParameter("External_ID", external_ID) :
+                new ObjectParameter("External_ID", typeof(long));
+    
+            var external_IndexParameter = external_Index.HasValue ?
+                new ObjectParameter("External_Index", external_Index) :
+                new ObjectParameter("External_Index", typeof(int));
+    
+            var external_DateParameter = external_Date.HasValue ?
+                new ObjectParameter("External_Date", external_Date) :
+                new ObjectParameter("External_Date", typeof(System.DateTime));
+    
+            var unit_IdParameter = unit_Id.HasValue ?
+                new ObjectParameter("Unit_Id", unit_Id) :
+                new ObjectParameter("Unit_Id", typeof(int));
+    
+            var user_IdParameter = user_Id.HasValue ?
+                new ObjectParameter("User_Id", user_Id) :
+                new ObjectParameter("User_Id", typeof(int));
+    
+            var operation_TypeParameter = operation_Type.HasValue ?
+                new ObjectParameter("Operation_Type", operation_Type) :
+                new ObjectParameter("Operation_Type", typeof(short));
+    
+            var transactionTypeParameter = transactionType.HasValue ?
+                new ObjectParameter("TransactionType", transactionType) :
+                new ObjectParameter("TransactionType", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_AddOperation", accountIDParameter, summParameter, divisionIDParameter, actionIDParameter, clientIDParameter, card_CodeParameter, actionTypeParameter, transaction_LinkParameter, transaction_NotesParameter, external_IDParameter, external_IndexParameter, external_DateParameter, unit_IdParameter, user_IdParameter, operation_TypeParameter, transactionTypeParameter, transactionID);
+        }
+    
+        public virtual int Card_AddPeriod(Nullable<int> periodBegin, Nullable<int> period, Nullable<int> periodValue, Nullable<System.DateTimeOffset> clientTime, Nullable<int> accountTypeLook, Nullable<int> accountTypeEdit, Nullable<int> actionID, Nullable<System.DateTime> actionFrom, Nullable<System.DateTime> actionTo)
+        {
+            var periodBeginParameter = periodBegin.HasValue ?
+                new ObjectParameter("PeriodBegin", periodBegin) :
+                new ObjectParameter("PeriodBegin", typeof(int));
+    
+            var periodParameter = period.HasValue ?
+                new ObjectParameter("Period", period) :
+                new ObjectParameter("Period", typeof(int));
+    
+            var periodValueParameter = periodValue.HasValue ?
+                new ObjectParameter("PeriodValue", periodValue) :
+                new ObjectParameter("PeriodValue", typeof(int));
+    
+            var clientTimeParameter = clientTime.HasValue ?
+                new ObjectParameter("ClientTime", clientTime) :
+                new ObjectParameter("ClientTime", typeof(System.DateTimeOffset));
+    
+            var accountTypeLookParameter = accountTypeLook.HasValue ?
+                new ObjectParameter("AccountTypeLook", accountTypeLook) :
+                new ObjectParameter("AccountTypeLook", typeof(int));
+    
+            var accountTypeEditParameter = accountTypeEdit.HasValue ?
+                new ObjectParameter("AccountTypeEdit", accountTypeEdit) :
+                new ObjectParameter("AccountTypeEdit", typeof(int));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var actionFromParameter = actionFrom.HasValue ?
+                new ObjectParameter("ActionFrom", actionFrom) :
+                new ObjectParameter("ActionFrom", typeof(System.DateTime));
+    
+            var actionToParameter = actionTo.HasValue ?
+                new ObjectParameter("ActionTo", actionTo) :
+                new ObjectParameter("ActionTo", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_AddPeriod", periodBeginParameter, periodParameter, periodValueParameter, clientTimeParameter, accountTypeLookParameter, accountTypeEditParameter, actionIDParameter, actionFromParameter, actionToParameter);
+        }
+    
+        [DbFunction("CARD_SYSTEMEntities", "Card_HasCardIdentify")]
+        public virtual IQueryable<Card_HasCardIdentify_Result> Card_HasCardIdentify(string value)
+        {
+            var valueParameter = value != null ?
+                new ObjectParameter("Value", value) :
+                new ObjectParameter("Value", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Card_HasCardIdentify_Result>("[CARD_SYSTEMEntities].[Card_HasCardIdentify](@Value)", valueParameter);
+        }
+    
+        public virtual int Card_HasCheckTime(Nullable<short> transactionTimeType, Nullable<int> actionID, Nullable<long> clientID, Nullable<System.DateTimeOffset> clientTime, ObjectParameter openTime, ObjectParameter closeTime)
+        {
+            var transactionTimeTypeParameter = transactionTimeType.HasValue ?
+                new ObjectParameter("TransactionTimeType", transactionTimeType) :
+                new ObjectParameter("TransactionTimeType", typeof(short));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(long));
+    
+            var clientTimeParameter = clientTime.HasValue ?
+                new ObjectParameter("ClientTime", clientTime) :
+                new ObjectParameter("ClientTime", typeof(System.DateTimeOffset));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasCheckTime", transactionTimeTypeParameter, actionIDParameter, clientIDParameter, clientTimeParameter, openTime, closeTime);
+        }
+    
+        public virtual int Card_HasCouponExternal(Nullable<long> couponID, Nullable<int> couponTypeID, Nullable<short> couponStatus, Nullable<int> actionID, Nullable<byte> mode, Nullable<short> externalCouponType, ObjectParameter extCode, ObjectParameter couponID_Out)
+        {
+            var couponIDParameter = couponID.HasValue ?
+                new ObjectParameter("CouponID", couponID) :
+                new ObjectParameter("CouponID", typeof(long));
+    
+            var couponTypeIDParameter = couponTypeID.HasValue ?
+                new ObjectParameter("CouponTypeID", couponTypeID) :
+                new ObjectParameter("CouponTypeID", typeof(int));
+    
+            var couponStatusParameter = couponStatus.HasValue ?
+                new ObjectParameter("CouponStatus", couponStatus) :
+                new ObjectParameter("CouponStatus", typeof(short));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var modeParameter = mode.HasValue ?
+                new ObjectParameter("Mode", mode) :
+                new ObjectParameter("Mode", typeof(byte));
+    
+            var externalCouponTypeParameter = externalCouponType.HasValue ?
+                new ObjectParameter("ExternalCouponType", externalCouponType) :
+                new ObjectParameter("ExternalCouponType", typeof(short));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasCouponExternal", couponIDParameter, couponTypeIDParameter, couponStatusParameter, actionIDParameter, modeParameter, externalCouponTypeParameter, extCode, couponID_Out);
+        }
+    
+        public virtual int Card_HasCouponExternalExt(Nullable<int> couponTypeID, Nullable<int> couponsCount, Nullable<short> couponStatus, Nullable<int> actionID, Nullable<short> actionType, Nullable<int> clientID, Nullable<long> transactionParentID, Nullable<System.Guid> transactGUID)
+        {
+            var couponTypeIDParameter = couponTypeID.HasValue ?
+                new ObjectParameter("CouponTypeID", couponTypeID) :
+                new ObjectParameter("CouponTypeID", typeof(int));
+    
+            var couponsCountParameter = couponsCount.HasValue ?
+                new ObjectParameter("CouponsCount", couponsCount) :
+                new ObjectParameter("CouponsCount", typeof(int));
+    
+            var couponStatusParameter = couponStatus.HasValue ?
+                new ObjectParameter("CouponStatus", couponStatus) :
+                new ObjectParameter("CouponStatus", typeof(short));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var actionTypeParameter = actionType.HasValue ?
+                new ObjectParameter("ActionType", actionType) :
+                new ObjectParameter("ActionType", typeof(short));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(int));
+    
+            var transactionParentIDParameter = transactionParentID.HasValue ?
+                new ObjectParameter("TransactionParentID", transactionParentID) :
+                new ObjectParameter("TransactionParentID", typeof(long));
+    
+            var transactGUIDParameter = transactGUID.HasValue ?
+                new ObjectParameter("TransactGUID", transactGUID) :
+                new ObjectParameter("TransactGUID", typeof(System.Guid));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasCouponExternalExt", couponTypeIDParameter, couponsCountParameter, couponStatusParameter, actionIDParameter, actionTypeParameter, clientIDParameter, transactionParentIDParameter, transactGUIDParameter);
+        }
+    
+        public virtual int Card_HasExit(Nullable<int> actionID, Nullable<int> actionType, Nullable<long> clientID, Nullable<System.DateTimeOffset> clientTime, ObjectParameter prefID, ObjectParameter divisionID, ObjectParameter actionFrom, ObjectParameter actionTo)
+        {
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var actionTypeParameter = actionType.HasValue ?
+                new ObjectParameter("ActionType", actionType) :
+                new ObjectParameter("ActionType", typeof(int));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(long));
+    
+            var clientTimeParameter = clientTime.HasValue ?
+                new ObjectParameter("ClientTime", clientTime) :
+                new ObjectParameter("ClientTime", typeof(System.DateTimeOffset));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasExit", actionIDParameter, actionTypeParameter, clientIDParameter, clientTimeParameter, prefID, divisionID, actionFrom, actionTo);
+        }
+    
+        public virtual int Card_HasFilter(string filter, string table, Nullable<int> levelNo)
+        {
+            var filterParameter = filter != null ?
+                new ObjectParameter("Filter", filter) :
+                new ObjectParameter("Filter", typeof(string));
+    
+            var tableParameter = table != null ?
+                new ObjectParameter("Table", table) :
+                new ObjectParameter("Table", typeof(string));
+    
+            var levelNoParameter = levelNo.HasValue ?
+                new ObjectParameter("LevelNo", levelNo) :
+                new ObjectParameter("LevelNo", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasFilter", filterParameter, tableParameter, levelNoParameter);
+        }
+    
+        public virtual int Card_HasNotificationEvent(Nullable<byte> eventType, Nullable<int> actionID, Nullable<byte> hasUseActionTransactions, Nullable<int> transaction_Time_Show, string accountTypeIds, Nullable<System.DateTimeOffset> actionFrom, Nullable<System.DateTimeOffset> actionTo, ObjectParameter eventCursor)
+        {
+            var eventTypeParameter = eventType.HasValue ?
+                new ObjectParameter("EventType", eventType) :
+                new ObjectParameter("EventType", typeof(byte));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var hasUseActionTransactionsParameter = hasUseActionTransactions.HasValue ?
+                new ObjectParameter("hasUseActionTransactions", hasUseActionTransactions) :
+                new ObjectParameter("hasUseActionTransactions", typeof(byte));
+    
+            var transaction_Time_ShowParameter = transaction_Time_Show.HasValue ?
+                new ObjectParameter("Transaction_Time_Show", transaction_Time_Show) :
+                new ObjectParameter("Transaction_Time_Show", typeof(int));
+    
+            var accountTypeIdsParameter = accountTypeIds != null ?
+                new ObjectParameter("AccountTypeIds", accountTypeIds) :
+                new ObjectParameter("AccountTypeIds", typeof(string));
+    
+            var actionFromParameter = actionFrom.HasValue ?
+                new ObjectParameter("ActionFrom", actionFrom) :
+                new ObjectParameter("ActionFrom", typeof(System.DateTimeOffset));
+    
+            var actionToParameter = actionTo.HasValue ?
+                new ObjectParameter("ActionTo", actionTo) :
+                new ObjectParameter("ActionTo", typeof(System.DateTimeOffset));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasNotificationEvent", eventTypeParameter, actionIDParameter, hasUseActionTransactionsParameter, transaction_Time_ShowParameter, accountTypeIdsParameter, actionFromParameter, actionToParameter, eventCursor);
+        }
+    
+        public virtual int Card_HasPeriod(Nullable<System.DateTimeOffset> currentTime, Nullable<int> period, Nullable<int> value, Nullable<int> isCurrent, Nullable<int> isCalendar, Nullable<int> isTime, Nullable<System.TimeSpan> workTime, Nullable<int> actionID, ObjectParameter from, ObjectParameter to)
+        {
+            var currentTimeParameter = currentTime.HasValue ?
+                new ObjectParameter("CurrentTime", currentTime) :
+                new ObjectParameter("CurrentTime", typeof(System.DateTimeOffset));
+    
+            var periodParameter = period.HasValue ?
+                new ObjectParameter("Period", period) :
+                new ObjectParameter("Period", typeof(int));
+    
+            var valueParameter = value.HasValue ?
+                new ObjectParameter("Value", value) :
+                new ObjectParameter("Value", typeof(int));
+    
+            var isCurrentParameter = isCurrent.HasValue ?
+                new ObjectParameter("IsCurrent", isCurrent) :
+                new ObjectParameter("IsCurrent", typeof(int));
+    
+            var isCalendarParameter = isCalendar.HasValue ?
+                new ObjectParameter("IsCalendar", isCalendar) :
+                new ObjectParameter("IsCalendar", typeof(int));
+    
+            var isTimeParameter = isTime.HasValue ?
+                new ObjectParameter("IsTime", isTime) :
+                new ObjectParameter("IsTime", typeof(int));
+    
+            var workTimeParameter = workTime.HasValue ?
+                new ObjectParameter("WorkTime", workTime) :
+                new ObjectParameter("WorkTime", typeof(System.TimeSpan));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasPeriod", currentTimeParameter, periodParameter, valueParameter, isCurrentParameter, isCalendarParameter, isTimeParameter, workTimeParameter, actionIDParameter, from, to);
+        }
+    
+        public virtual int Card_HasReceipt(string checkData, string checkXML, Nullable<int> actionID, Nullable<int> actionType, Nullable<byte> mode, ObjectParameter summ, ObjectParameter summ_PaymentDetails, ObjectParameter summ_PaymentDetails_Count, ObjectParameter summ_PaymentFull, ObjectParameter summ_PaymentCurrency, ObjectParameter summ_DiscountFull, ObjectParameter summ_DiscountCurrency)
+        {
+            var checkDataParameter = checkData != null ?
+                new ObjectParameter("CheckData", checkData) :
+                new ObjectParameter("CheckData", typeof(string));
+    
+            var checkXMLParameter = checkXML != null ?
+                new ObjectParameter("CheckXML", checkXML) :
+                new ObjectParameter("CheckXML", typeof(string));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var actionTypeParameter = actionType.HasValue ?
+                new ObjectParameter("ActionType", actionType) :
+                new ObjectParameter("ActionType", typeof(int));
+    
+            var modeParameter = mode.HasValue ?
+                new ObjectParameter("Mode", mode) :
+                new ObjectParameter("Mode", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasReceipt", checkDataParameter, checkXMLParameter, actionIDParameter, actionTypeParameter, modeParameter, summ, summ_PaymentDetails, summ_PaymentDetails_Count, summ_PaymentFull, summ_PaymentCurrency, summ_DiscountFull, summ_DiscountCurrency);
+        }
+    
+        public virtual int Card_HasSegments(Nullable<long> peopleID, string segmentIDs, Nullable<int> required, Nullable<int> actionID)
+        {
+            var peopleIDParameter = peopleID.HasValue ?
+                new ObjectParameter("PeopleID", peopleID) :
+                new ObjectParameter("PeopleID", typeof(long));
+    
+            var segmentIDsParameter = segmentIDs != null ?
+                new ObjectParameter("SegmentIDs", segmentIDs) :
+                new ObjectParameter("SegmentIDs", typeof(string));
+    
+            var requiredParameter = required.HasValue ?
+                new ObjectParameter("Required", required) :
+                new ObjectParameter("Required", typeof(int));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasSegments", peopleIDParameter, segmentIDsParameter, requiredParameter, actionIDParameter);
+        }
+    
+        public virtual int Card_HasSegmentsEx(string segmentIDs, Nullable<byte> mode, Nullable<int> actionID)
+        {
+            var segmentIDsParameter = segmentIDs != null ?
+                new ObjectParameter("SegmentIDs", segmentIDs) :
+                new ObjectParameter("SegmentIDs", typeof(string));
+    
+            var modeParameter = mode.HasValue ?
+                new ObjectParameter("Mode", mode) :
+                new ObjectParameter("Mode", typeof(byte));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasSegmentsEx", segmentIDsParameter, modeParameter, actionIDParameter);
+        }
+    
+        public virtual int Card_HasTime(Nullable<System.DateTime> currentTime, Nullable<System.DateTime> birthday, string timeIDs, Nullable<int> actionID, ObjectParameter result, ObjectParameter hasBirthday)
+        {
+            var currentTimeParameter = currentTime.HasValue ?
+                new ObjectParameter("CurrentTime", currentTime) :
+                new ObjectParameter("CurrentTime", typeof(System.DateTime));
+    
+            var birthdayParameter = birthday.HasValue ?
+                new ObjectParameter("Birthday", birthday) :
+                new ObjectParameter("Birthday", typeof(System.DateTime));
+    
+            var timeIDsParameter = timeIDs != null ?
+                new ObjectParameter("TimeIDs", timeIDs) :
+                new ObjectParameter("TimeIDs", typeof(string));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasTime", currentTimeParameter, birthdayParameter, timeIDsParameter, actionIDParameter, result, hasBirthday);
+        }
+    
+        public virtual int Card_HasVisit(Nullable<long> peopleID, Nullable<System.DateTimeOffset> from, Nullable<System.DateTimeOffset> to, Nullable<byte> visitType, string clientIds, string accountTypeIds, Nullable<byte> workTime, Nullable<int> actionID, ObjectParameter visitsCount, ObjectParameter visitsSumm)
+        {
+            var peopleIDParameter = peopleID.HasValue ?
+                new ObjectParameter("PeopleID", peopleID) :
+                new ObjectParameter("PeopleID", typeof(long));
+    
+            var fromParameter = from.HasValue ?
+                new ObjectParameter("From", from) :
+                new ObjectParameter("From", typeof(System.DateTimeOffset));
+    
+            var toParameter = to.HasValue ?
+                new ObjectParameter("To", to) :
+                new ObjectParameter("To", typeof(System.DateTimeOffset));
+    
+            var visitTypeParameter = visitType.HasValue ?
+                new ObjectParameter("VisitType", visitType) :
+                new ObjectParameter("VisitType", typeof(byte));
+    
+            var clientIdsParameter = clientIds != null ?
+                new ObjectParameter("ClientIds", clientIds) :
+                new ObjectParameter("ClientIds", typeof(string));
+    
+            var accountTypeIdsParameter = accountTypeIds != null ?
+                new ObjectParameter("AccountTypeIds", accountTypeIds) :
+                new ObjectParameter("AccountTypeIds", typeof(string));
+    
+            var workTimeParameter = workTime.HasValue ?
+                new ObjectParameter("WorkTime", workTime) :
+                new ObjectParameter("WorkTime", typeof(byte));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_HasVisit", peopleIDParameter, fromParameter, toParameter, visitTypeParameter, clientIdsParameter, accountTypeIdsParameter, workTimeParameter, actionIDParameter, visitsCount, visitsSumm);
+        }
+    
+        [DbFunction("CARD_SYSTEMEntities", "Card_ParseReceipt")]
+        public virtual IQueryable<Card_ParseReceipt_Result> Card_ParseReceipt(string xml, Nullable<short> lineType)
+        {
+            var xmlParameter = xml != null ?
+                new ObjectParameter("Xml", xml) :
+                new ObjectParameter("Xml", typeof(string));
+    
+            var lineTypeParameter = lineType.HasValue ?
+                new ObjectParameter("LineType", lineType) :
+                new ObjectParameter("LineType", typeof(short));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Card_ParseReceipt_Result>("[CARD_SYSTEMEntities].[Card_ParseReceipt](@Xml, @LineType)", xmlParameter, lineTypeParameter);
+        }
+    
+        [DbFunction("CARD_SYSTEMEntities", "Card_ParseReceiptExt")]
+        public virtual IQueryable<Card_ParseReceiptExt_Result> Card_ParseReceiptExt(Nullable<short> lineType)
+        {
+            var lineTypeParameter = lineType.HasValue ?
+                new ObjectParameter("LineType", lineType) :
+                new ObjectParameter("LineType", typeof(short));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Card_ParseReceiptExt_Result>("[CARD_SYSTEMEntities].[Card_ParseReceiptExt](@LineType)", lineTypeParameter);
+        }
+    
+        public virtual int Card_Script_WriteLog(Nullable<long> actionID, string text, Nullable<byte> sysEmailFlag, Nullable<byte> logRate)
+        {
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(long));
+    
+            var textParameter = text != null ?
+                new ObjectParameter("Text", text) :
+                new ObjectParameter("Text", typeof(string));
+    
+            var sysEmailFlagParameter = sysEmailFlag.HasValue ?
+                new ObjectParameter("SysEmailFlag", sysEmailFlag) :
+                new ObjectParameter("SysEmailFlag", typeof(byte));
+    
+            var logRateParameter = logRate.HasValue ?
+                new ObjectParameter("LogRate", logRate) :
+                new ObjectParameter("LogRate", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_Script_WriteLog", actionIDParameter, textParameter, sysEmailFlagParameter, logRateParameter);
+        }
+    
+        public virtual int Card_SendSYSLogEmail(string subject, string action_Name, Nullable<int> clientID, Nullable<int> actionID, Nullable<byte> log_level, Nullable<byte> mode)
+        {
+            var subjectParameter = subject != null ?
+                new ObjectParameter("Subject", subject) :
+                new ObjectParameter("Subject", typeof(string));
+    
+            var action_NameParameter = action_Name != null ?
+                new ObjectParameter("Action_Name", action_Name) :
+                new ObjectParameter("Action_Name", typeof(string));
+    
+            var clientIDParameter = clientID.HasValue ?
+                new ObjectParameter("ClientID", clientID) :
+                new ObjectParameter("ClientID", typeof(int));
+    
+            var actionIDParameter = actionID.HasValue ?
+                new ObjectParameter("ActionID", actionID) :
+                new ObjectParameter("ActionID", typeof(int));
+    
+            var log_levelParameter = log_level.HasValue ?
+                new ObjectParameter("log_level", log_level) :
+                new ObjectParameter("log_level", typeof(byte));
+    
+            var modeParameter = mode.HasValue ?
+                new ObjectParameter("mode", mode) :
+                new ObjectParameter("mode", typeof(byte));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Card_SendSYSLogEmail", subjectParameter, action_NameParameter, clientIDParameter, actionIDParameter, log_levelParameter, modeParameter);
+        }
+    
+        [DbFunction("CARD_SYSTEMEntities", "Card_Split_Str")]
+        public virtual IQueryable<Nullable<int>> Card_Split_Str(string inputString, string delimiter)
+        {
+            var inputStringParameter = inputString != null ?
+                new ObjectParameter("InputString", inputString) :
+                new ObjectParameter("InputString", typeof(string));
+    
+            var delimiterParameter = delimiter != null ?
+                new ObjectParameter("Delimiter", delimiter) :
+                new ObjectParameter("Delimiter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<int>>("[CARD_SYSTEMEntities].[Card_Split_Str](@InputString, @Delimiter)", inputStringParameter, delimiterParameter);
         }
     }
 }

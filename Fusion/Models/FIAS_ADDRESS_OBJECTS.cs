@@ -17,16 +17,16 @@ namespace Fusion.Models
         public long ADDRESS_OBJECT_ID { get; set; }
         public Nullable<System.Guid> AOGUID { get; set; }
         public Nullable<System.Guid> AOID { get; set; }
-        public string FORMALNAME { get; set; }
-        public string REGIONCODE { get; set; }
-        public string POSTALCODE { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATEDATE { get; set; }
-        public string SHORTNAME { get; set; }
         public Nullable<short> AOLEVEL { get; set; }
         public Nullable<long> PARENT_ID { get; set; }
         public Nullable<int> POPULARITY { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string FORMALNAME { get; set; }
+        public string REGIONCODE { get; set; }
+        public string POSTALCODE { get; set; }
+        public string SHORTNAME { get; set; }
     }
 }

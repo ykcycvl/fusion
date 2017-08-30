@@ -15,11 +15,11 @@ namespace Fusion.Models
     public partial class CARD_RELATIVE_TYPES
     {
         public int RELATIVE_TYPE_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
     }
 }

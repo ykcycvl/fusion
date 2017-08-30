@@ -16,12 +16,11 @@ namespace Fusion.Models
     {
         public int SENT_ID { get; set; }
         public Nullable<short> MESSAGE_TYPE { get; set; }
-        public string MESSAGE_TEXT { get; set; }
         public Nullable<System.DateTime> DATE_SENT { get; set; }
         public Nullable<System.DateTime> DATE_APPROVED { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<short> EXTERNAL_STATUS { get; set; }
-        public Nullable<long> EXTERNAL_ID { get; set; }
+        public string EXTERNAL_ID { get; set; }
         public Nullable<short> PACKAGE_COUNT { get; set; }
         public Nullable<long> CONTACT_ID { get; set; }
         public Nullable<int> CLIENT_ID { get; set; }
@@ -30,5 +29,6 @@ namespace Fusion.Models
         public Nullable<long> VALUE_ID { get; set; }
         public Nullable<long> FIELD_EDIT { get; set; }
         public Nullable<int> USER_ID { get; set; }
+        public string MESSAGE_TEXT { get; set; }
     }
 }

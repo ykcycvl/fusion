@@ -6,9 +6,12 @@
 
     int daysCount = DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month);
     string monthColumn = "";
-
+    string rules = "";
+    
     for (int i = 1; i <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); i++)
     {
+        rules += "\"d" + i.ToString() + "\":IsNumber,";
+        
         if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Вс")
         {
             monthColumn += "{ id: 'd" + i.ToString() + "', header: '" + i.ToString() + " " + System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) + "', width: 60, editor: 'text', batch: 2, css:{'background': '#fbfafa'} },\r\n";
@@ -186,7 +189,7 @@
             container: "tabl",
             id: "grid",
             view: "datatable",
-            leftSplit: 8,
+            leftSplit: 10,
             rowHeight: 23,
             padding: 5,
             columns: [
@@ -197,11 +200,14 @@
               { id: "Organization", header: "Organization", hidden: "true" },
               { id: "Code", header: "Code", hidden: "true" },
               { id: "Position", header: "Должность", width: 150 },
-              { id: "FullName", header: "ФИО", width: 230 },
+              { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 230 },
               { id: "Rate", header: "Оклад" },
               { id: "hours", header: "Итого", width: 50, math: "[$r,d1] + [$r,d2]+ [$r,d3]+ [$r,d4]+ [$r,d5]+ [$r,d6]+ [$r,d7]+ [$r,d8]+ [$r,d9]+ [$r,d10]+ [$r,d11]+ [$r,d12]+ [$r,d13]+ [$r,d14]+ [$r,d15]+ [$r,d16]+ [$r,d17]+ [$r,d18]+ [$r,d19]+ [$r,d20]+ [$r,d21]+ [$r,d22]+ [$r,d23]+ [$r,d24]+ [$r,d25]+ [$r,d26]+ [$r,d27]+ [$r,d28]+ [$r,d29]+ [$r,d30]+ [$r,d31]" },
               @Html.Raw(monthColumn)
             ],
+            rules:{
+                @Html.Raw(rules)
+            },
             spans: true,
             data: {
                 data: [
@@ -236,7 +242,27 @@
         });
     });
 
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
     function Save() {
+        var grid = $$("grid");
+        var filter = grid.getFilter("FullName").value;
+        var carriedOut = @Model.CarriedOut.ToString().ToLower();
+
+        if(carriedOut)
+            return;
+
+        if(filter != "")
+        {
+            alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
+            return;
+        }
+
         webix.message({ type: "default", text: "Сохранение ведомости..." });
         $("#loader").show();
         var grid = $$("grid");
@@ -251,6 +277,23 @@
     }
 
     function AutoSave() {
+        var carriedOut = @Model.CarriedOut.ToString().ToLower();
+
+        if(carriedOut)
+            return;
+
+        var grid = $$("grid");
+        var filter = grid.getFilter("FullName").value;
+
+        if(filter != "")
+        {
+            webix.message({
+                type: "error",
+                text: "Автосохранение не возможно. Установлен фильтр!"
+            });
+            return;
+        }
+
         webix.message({
             type: "default",
             text: "Автосохранение..."

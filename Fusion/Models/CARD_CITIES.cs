@@ -17,10 +17,10 @@ namespace Fusion.Models
         public long CITY_ID { get; set; }
         public Nullable<long> CITY_MID { get; set; }
         public Nullable<int> COUNTRY_ID { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
     }
 }

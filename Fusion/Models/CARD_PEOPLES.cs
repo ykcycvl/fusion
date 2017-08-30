@@ -14,11 +14,6 @@ namespace Fusion.Models
     
     public partial class CARD_PEOPLES
     {
-        public CARD_PEOPLES()
-        {
-            this.CARD_PEOPLE_ACCOUNTS = new HashSet<CARD_PEOPLE_ACCOUNTS>();
-        }
-    
         public long PEOPLE_ID { get; set; }
         public Nullable<int> DIVISION_ID { get; set; }
         public Nullable<short> SEX { get; set; }
@@ -26,26 +21,24 @@ namespace Fusion.Models
         public Nullable<int> LANG { get; set; }
         public Nullable<System.DateTime> BIRTHDAY { get; set; }
         public byte[] PHOTO { get; set; }
-        public string SOURCE { get; set; }
-        public string NOTES { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
-        public string F_NAME { get; set; }
-        public string M_NAME { get; set; }
-        public string L_NAME { get; set; }
-        public string FULL_NAME { get; set; }
-        public string INN { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public Nullable<short> DELETED { get; set; }
-        public string LOGIN { get; set; }
-        public string TEXT_PASSWORD { get; set; }
-        public string EXTERNAL_CODE { get; set; }
         public Nullable<int> GROUP_ID { get; set; }
         public Nullable<int> UNPAY_TYPE_ID { get; set; }
         public Nullable<long> ATTRIBUTE_A { get; set; }
         public Nullable<long> ATTRIBUTE_B { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
-    
-        public virtual ICollection<CARD_PEOPLE_ACCOUNTS> CARD_PEOPLE_ACCOUNTS { get; set; }
+        public string SOURCE { get; set; }
+        public string NOTES { get; set; }
+        public string F_NAME { get; set; }
+        public string M_NAME { get; set; }
+        public string L_NAME { get; set; }
+        public string FULL_NAME { get; set; }
+        public string INN { get; set; }
+        public string LOGIN { get; set; }
+        public string TEXT_PASSWORD { get; set; }
+        public string EXTERNAL_CODE { get; set; }
     }
 }

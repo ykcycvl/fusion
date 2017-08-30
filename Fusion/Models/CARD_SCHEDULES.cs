@@ -17,11 +17,11 @@ namespace Fusion.Models
         public int SCHEDULE_ID { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
-        public string NAME { get; set; }
         public Nullable<short> SCHEDULE_TYPE { get; set; }
         public Nullable<int> INTEGER_VALUE { get; set; }
         public Nullable<System.DateTime> DATETIME_VALUE { get; set; }
         public System.Guid GUID { get; set; }
         public System.Guid TRANSACT_GUID { get; set; }
+        public string NAME { get; set; }
     }
 }

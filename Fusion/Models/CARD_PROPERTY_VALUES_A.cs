@@ -16,17 +16,17 @@ namespace Fusion.Models
     {
         public int PROPERTY_VALUE_ID { get; set; }
         public Nullable<int> PROPERTY_ID { get; set; }
-        public string NAME_VALUE { get; set; }
-        public string CODE_VALUE { get; set; }
         public Nullable<short> DELETED { get; set; }
         public Nullable<System.DateTime> UPDATE_DATE { get; set; }
-        public string STRING_VALUE { get; set; }
         public Nullable<long> INTEGER_VALUE { get; set; }
         public Nullable<decimal> FLOAT_VALUE { get; set; }
         public Nullable<short> BOOLEAN_VALUE { get; set; }
         public Nullable<System.DateTime> DATETIME_VALUE { get; set; }
         public Nullable<System.DateTime> DATE_VALUE { get; set; }
         public Nullable<System.DateTime> TIME_VALUE { get; set; }
+        public string NAME_VALUE { get; set; }
+        public string CODE_VALUE { get; set; }
+        public string STRING_VALUE { get; set; }
         public string MEMO_VALUE { get; set; }
     }
 }

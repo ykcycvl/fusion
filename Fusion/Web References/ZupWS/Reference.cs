@@ -53,6 +53,10 @@ namespace Fusion.ZupWS {
         
         private System.Threading.SendOrPostCallback CreateAccrualsAndDetentionsDocumentOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetListRateOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback SaveListRateOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -128,27 +132,35 @@ namespace Fusion.ZupWS {
         public event CreateAccrualsAndDetentionsDocumentCompletedEventHandler CreateAccrualsAndDetentionsDocumentCompleted;
         
         /// <remarks/>
+        public event GetListRateCompletedEventHandler GetListRateCompleted;
+        
+        /// <remarks/>
+        public event SaveListRateCompletedEventHandler SaveListRateCompleted;
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetEmployees", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("return", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://srv-1c_g/autozup", IsNullable=false)]
-        public Employee[] GetEmployees(string OrganizationName) {
+        public Employee[] GetEmployees(string OrganizationName, string UserName) {
             object[] results = this.Invoke("GetEmployees", new object[] {
-                        OrganizationName});
+                        OrganizationName,
+                        UserName});
             return ((Employee[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetEmployeesAsync(string OrganizationName) {
-            this.GetEmployeesAsync(OrganizationName, null);
+        public void GetEmployeesAsync(string OrganizationName, string UserName) {
+            this.GetEmployeesAsync(OrganizationName, UserName, null);
         }
         
         /// <remarks/>
-        public void GetEmployeesAsync(string OrganizationName, object userState) {
+        public void GetEmployeesAsync(string OrganizationName, string UserName, object userState) {
             if ((this.GetEmployeesOperationCompleted == null)) {
                 this.GetEmployeesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetEmployeesOperationCompleted);
             }
             this.InvokeAsync("GetEmployees", new object[] {
-                        OrganizationName}, this.GetEmployeesOperationCompleted, userState);
+                        OrganizationName,
+                        UserName}, this.GetEmployeesOperationCompleted, userState);
         }
         
         private void OnGetEmployeesOperationCompleted(object arg) {
@@ -161,24 +173,26 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetTimeSheetInfo", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Document GetTimeSheetInfo([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string НомерДокумента, int Год) {
+        public Document GetTimeSheetInfo(string UserName, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string НомерДокумента, int Год) {
             object[] results = this.Invoke("GetTimeSheetInfo", new object[] {
+                        UserName,
                         НомерДокумента,
                         Год});
             return ((Document)(results[0]));
         }
         
         /// <remarks/>
-        public void GetTimeSheetInfoAsync(string НомерДокумента, int Год) {
-            this.GetTimeSheetInfoAsync(НомерДокумента, Год, null);
+        public void GetTimeSheetInfoAsync(string UserName, string НомерДокумента, int Год) {
+            this.GetTimeSheetInfoAsync(UserName, НомерДокумента, Год, null);
         }
         
         /// <remarks/>
-        public void GetTimeSheetInfoAsync(string НомерДокумента, int Год, object userState) {
+        public void GetTimeSheetInfoAsync(string UserName, string НомерДокумента, int Год, object userState) {
             if ((this.GetTimeSheetInfoOperationCompleted == null)) {
                 this.GetTimeSheetInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetTimeSheetInfoOperationCompleted);
             }
             this.InvokeAsync("GetTimeSheetInfo", new object[] {
+                        UserName,
                         НомерДокумента,
                         Год}, this.GetTimeSheetInfoOperationCompleted, userState);
         }
@@ -194,22 +208,24 @@ namespace Fusion.ZupWS {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetOrganizations", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("return", IsNullable=true)]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://srv-1c_g/autozup", IsNullable=false)]
-        public Organization[] GetOrganizations() {
-            object[] results = this.Invoke("GetOrganizations", new object[0]);
+        public Organization[] GetOrganizations(string UserName) {
+            object[] results = this.Invoke("GetOrganizations", new object[] {
+                        UserName});
             return ((Organization[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetOrganizationsAsync() {
-            this.GetOrganizationsAsync(null);
+        public void GetOrganizationsAsync(string UserName) {
+            this.GetOrganizationsAsync(UserName, null);
         }
         
         /// <remarks/>
-        public void GetOrganizationsAsync(object userState) {
+        public void GetOrganizationsAsync(string UserName, object userState) {
             if ((this.GetOrganizationsOperationCompleted == null)) {
                 this.GetOrganizationsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrganizationsOperationCompleted);
             }
-            this.InvokeAsync("GetOrganizations", new object[0], this.GetOrganizationsOperationCompleted, userState);
+            this.InvokeAsync("GetOrganizations", new object[] {
+                        UserName}, this.GetOrganizationsOperationCompleted, userState);
         }
         
         private void OnGetOrganizationsOperationCompleted(object arg) {
@@ -222,24 +238,26 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsCharges", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Document GetAccrualsAndDetentionsCharges([System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string НомерДокумента, int Год) {
+        public Document GetAccrualsAndDetentionsCharges(string UserName, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string НомерДокумента, int Год) {
             object[] results = this.Invoke("GetAccrualsAndDetentionsCharges", new object[] {
+                        UserName,
                         НомерДокумента,
                         Год});
             return ((Document)(results[0]));
         }
         
         /// <remarks/>
-        public void GetAccrualsAndDetentionsChargesAsync(string НомерДокумента, int Год) {
-            this.GetAccrualsAndDetentionsChargesAsync(НомерДокумента, Год, null);
+        public void GetAccrualsAndDetentionsChargesAsync(string UserName, string НомерДокумента, int Год) {
+            this.GetAccrualsAndDetentionsChargesAsync(UserName, НомерДокумента, Год, null);
         }
         
         /// <remarks/>
-        public void GetAccrualsAndDetentionsChargesAsync(string НомерДокумента, int Год, object userState) {
+        public void GetAccrualsAndDetentionsChargesAsync(string UserName, string НомерДокумента, int Год, object userState) {
             if ((this.GetAccrualsAndDetentionsChargesOperationCompleted == null)) {
                 this.GetAccrualsAndDetentionsChargesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAccrualsAndDetentionsChargesOperationCompleted);
             }
             this.InvokeAsync("GetAccrualsAndDetentionsCharges", new object[] {
+                        UserName,
                         НомерДокумента,
                         Год}, this.GetAccrualsAndDetentionsChargesOperationCompleted, userState);
         }
@@ -312,8 +330,9 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:SaveTimeSheet", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Document SaveTimeSheet(object Сотрудники, string НомерДокумента, int Год) {
+        public Document SaveTimeSheet(string UserName, object Сотрудники, string НомерДокумента, int Год) {
             object[] results = this.Invoke("SaveTimeSheet", new object[] {
+                        UserName,
                         Сотрудники,
                         НомерДокумента,
                         Год});
@@ -321,16 +340,17 @@ namespace Fusion.ZupWS {
         }
         
         /// <remarks/>
-        public void SaveTimeSheetAsync(object Сотрудники, string НомерДокумента, int Год) {
-            this.SaveTimeSheetAsync(Сотрудники, НомерДокумента, Год, null);
+        public void SaveTimeSheetAsync(string UserName, object Сотрудники, string НомерДокумента, int Год) {
+            this.SaveTimeSheetAsync(UserName, Сотрудники, НомерДокумента, Год, null);
         }
         
         /// <remarks/>
-        public void SaveTimeSheetAsync(object Сотрудники, string НомерДокумента, int Год, object userState) {
+        public void SaveTimeSheetAsync(string UserName, object Сотрудники, string НомерДокумента, int Год, object userState) {
             if ((this.SaveTimeSheetOperationCompleted == null)) {
                 this.SaveTimeSheetOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveTimeSheetOperationCompleted);
             }
             this.InvokeAsync("SaveTimeSheet", new object[] {
+                        UserName,
                         Сотрудники,
                         НомерДокумента,
                         Год}, this.SaveTimeSheetOperationCompleted, userState);
@@ -347,24 +367,26 @@ namespace Fusion.ZupWS {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetTimeSheets", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("return")]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://srv-1c_g/autozup", IsNullable=false)]
-        public Document[] GetTimeSheets(string Организация) {
+        public Document[] GetTimeSheets(string OrganizationName, string UserName) {
             object[] results = this.Invoke("GetTimeSheets", new object[] {
-                        Организация});
+                        OrganizationName,
+                        UserName});
             return ((Document[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetTimeSheetsAsync(string Организация) {
-            this.GetTimeSheetsAsync(Организация, null);
+        public void GetTimeSheetsAsync(string OrganizationName, string UserName) {
+            this.GetTimeSheetsAsync(OrganizationName, UserName, null);
         }
         
         /// <remarks/>
-        public void GetTimeSheetsAsync(string Организация, object userState) {
+        public void GetTimeSheetsAsync(string OrganizationName, string UserName, object userState) {
             if ((this.GetTimeSheetsOperationCompleted == null)) {
                 this.GetTimeSheetsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetTimeSheetsOperationCompleted);
             }
             this.InvokeAsync("GetTimeSheets", new object[] {
-                        Организация}, this.GetTimeSheetsOperationCompleted, userState);
+                        OrganizationName,
+                        UserName}, this.GetTimeSheetsOperationCompleted, userState);
         }
         
         private void OnGetTimeSheetsOperationCompleted(object arg) {
@@ -377,8 +399,9 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:SaveAccrualsAndDetentions", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Document SaveAccrualsAndDetentions(object Сотрудники, string НомерДокумента, int Год) {
+        public Document SaveAccrualsAndDetentions(string UserName, object Сотрудники, string НомерДокумента, int Год) {
             object[] results = this.Invoke("SaveAccrualsAndDetentions", new object[] {
+                        UserName,
                         Сотрудники,
                         НомерДокумента,
                         Год});
@@ -386,16 +409,17 @@ namespace Fusion.ZupWS {
         }
         
         /// <remarks/>
-        public void SaveAccrualsAndDetentionsAsync(object Сотрудники, string НомерДокумента, int Год) {
-            this.SaveAccrualsAndDetentionsAsync(Сотрудники, НомерДокумента, Год, null);
+        public void SaveAccrualsAndDetentionsAsync(string UserName, object Сотрудники, string НомерДокумента, int Год) {
+            this.SaveAccrualsAndDetentionsAsync(UserName, Сотрудники, НомерДокумента, Год, null);
         }
         
         /// <remarks/>
-        public void SaveAccrualsAndDetentionsAsync(object Сотрудники, string НомерДокумента, int Год, object userState) {
+        public void SaveAccrualsAndDetentionsAsync(string UserName, object Сотрудники, string НомерДокумента, int Год, object userState) {
             if ((this.SaveAccrualsAndDetentionsOperationCompleted == null)) {
                 this.SaveAccrualsAndDetentionsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveAccrualsAndDetentionsOperationCompleted);
             }
             this.InvokeAsync("SaveAccrualsAndDetentions", new object[] {
+                        UserName,
                         Сотрудники,
                         НомерДокумента,
                         Год}, this.SaveAccrualsAndDetentionsOperationCompleted, userState);
@@ -412,24 +436,26 @@ namespace Fusion.ZupWS {
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetAccrualsAndDetentionsDocuments", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlArrayAttribute("return")]
         [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://srv-1c_g/autozup", IsNullable=false)]
-        public Document[] GetAccrualsAndDetentionsDocuments(string Организация) {
+        public Document[] GetAccrualsAndDetentionsDocuments(string OrganizationName, string UserName) {
             object[] results = this.Invoke("GetAccrualsAndDetentionsDocuments", new object[] {
-                        Организация});
+                        OrganizationName,
+                        UserName});
             return ((Document[])(results[0]));
         }
         
         /// <remarks/>
-        public void GetAccrualsAndDetentionsDocumentsAsync(string Организация) {
-            this.GetAccrualsAndDetentionsDocumentsAsync(Организация, null);
+        public void GetAccrualsAndDetentionsDocumentsAsync(string OrganizationName, string UserName) {
+            this.GetAccrualsAndDetentionsDocumentsAsync(OrganizationName, UserName, null);
         }
         
         /// <remarks/>
-        public void GetAccrualsAndDetentionsDocumentsAsync(string Организация, object userState) {
+        public void GetAccrualsAndDetentionsDocumentsAsync(string OrganizationName, string UserName, object userState) {
             if ((this.GetAccrualsAndDetentionsDocumentsOperationCompleted == null)) {
                 this.GetAccrualsAndDetentionsDocumentsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAccrualsAndDetentionsDocumentsOperationCompleted);
             }
             this.InvokeAsync("GetAccrualsAndDetentionsDocuments", new object[] {
-                        Организация}, this.GetAccrualsAndDetentionsDocumentsOperationCompleted, userState);
+                        OrganizationName,
+                        UserName}, this.GetAccrualsAndDetentionsDocumentsOperationCompleted, userState);
         }
         
         private void OnGetAccrualsAndDetentionsDocumentsOperationCompleted(object arg) {
@@ -442,26 +468,28 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:CreateTimeSheet", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Document CreateTimeSheet(string Организация, string НачалоПериода, string КонецПериода) {
+        public Document CreateTimeSheet(string OrganizationName, string UserName, string НачалоПериода, string КонецПериода) {
             object[] results = this.Invoke("CreateTimeSheet", new object[] {
-                        Организация,
+                        OrganizationName,
+                        UserName,
                         НачалоПериода,
                         КонецПериода});
             return ((Document)(results[0]));
         }
         
         /// <remarks/>
-        public void CreateTimeSheetAsync(string Организация, string НачалоПериода, string КонецПериода) {
-            this.CreateTimeSheetAsync(Организация, НачалоПериода, КонецПериода, null);
+        public void CreateTimeSheetAsync(string OrganizationName, string UserName, string НачалоПериода, string КонецПериода) {
+            this.CreateTimeSheetAsync(OrganizationName, UserName, НачалоПериода, КонецПериода, null);
         }
         
         /// <remarks/>
-        public void CreateTimeSheetAsync(string Организация, string НачалоПериода, string КонецПериода, object userState) {
+        public void CreateTimeSheetAsync(string OrganizationName, string UserName, string НачалоПериода, string КонецПериода, object userState) {
             if ((this.CreateTimeSheetOperationCompleted == null)) {
                 this.CreateTimeSheetOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCreateTimeSheetOperationCompleted);
             }
             this.InvokeAsync("CreateTimeSheet", new object[] {
-                        Организация,
+                        OrganizationName,
+                        UserName,
                         НачалоПериода,
                         КонецПериода}, this.CreateTimeSheetOperationCompleted, userState);
         }
@@ -476,25 +504,27 @@ namespace Fusion.ZupWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:CreateAccrualsAndDetentionsDocument", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return")]
-        public Document CreateAccrualsAndDetentionsDocument(string Организация, string МесяцНачисления) {
+        public Document CreateAccrualsAndDetentionsDocument(string OrganizationName, string UserName, string МесяцНачисления) {
             object[] results = this.Invoke("CreateAccrualsAndDetentionsDocument", new object[] {
-                        Организация,
+                        OrganizationName,
+                        UserName,
                         МесяцНачисления});
             return ((Document)(results[0]));
         }
         
         /// <remarks/>
-        public void CreateAccrualsAndDetentionsDocumentAsync(string Организация, string МесяцНачисления) {
-            this.CreateAccrualsAndDetentionsDocumentAsync(Организация, МесяцНачисления, null);
+        public void CreateAccrualsAndDetentionsDocumentAsync(string OrganizationName, string UserName, string МесяцНачисления) {
+            this.CreateAccrualsAndDetentionsDocumentAsync(OrganizationName, UserName, МесяцНачисления, null);
         }
         
         /// <remarks/>
-        public void CreateAccrualsAndDetentionsDocumentAsync(string Организация, string МесяцНачисления, object userState) {
+        public void CreateAccrualsAndDetentionsDocumentAsync(string OrganizationName, string UserName, string МесяцНачисления, object userState) {
             if ((this.CreateAccrualsAndDetentionsDocumentOperationCompleted == null)) {
                 this.CreateAccrualsAndDetentionsDocumentOperationCompleted = new System.Threading.SendOrPostCallback(this.OnCreateAccrualsAndDetentionsDocumentOperationCompleted);
             }
             this.InvokeAsync("CreateAccrualsAndDetentionsDocument", new object[] {
-                        Организация,
+                        OrganizationName,
+                        UserName,
                         МесяцНачисления}, this.CreateAccrualsAndDetentionsDocumentOperationCompleted, userState);
         }
         
@@ -502,6 +532,76 @@ namespace Fusion.ZupWS {
             if ((this.CreateAccrualsAndDetentionsDocumentCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.CreateAccrualsAndDetentionsDocumentCompleted(this, new CreateAccrualsAndDetentionsDocumentCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetListRate", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("return")]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute("Rate", Namespace="http://srv-1c_g/autozup", IsNullable=false)]
+        public string[] GetListRate(string OrganizationName, string Position) {
+            object[] results = this.Invoke("GetListRate", new object[] {
+                        OrganizationName,
+                        Position});
+            return ((string[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetListRateAsync(string OrganizationName, string Position) {
+            this.GetListRateAsync(OrganizationName, Position, null);
+        }
+        
+        /// <remarks/>
+        public void GetListRateAsync(string OrganizationName, string Position, object userState) {
+            if ((this.GetListRateOperationCompleted == null)) {
+                this.GetListRateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetListRateOperationCompleted);
+            }
+            this.InvokeAsync("GetListRate", new object[] {
+                        OrganizationName,
+                        Position}, this.GetListRateOperationCompleted, userState);
+        }
+        
+        private void OnGetListRateOperationCompleted(object arg) {
+            if ((this.GetListRateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetListRateCompleted(this, new GetListRateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:SaveListRate", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("return")]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://srv-1c_g/autozup", IsNullable=false)]
+        public Employee[] SaveListRate(object Сотрудники, string OrganizationName, string UserName, string МесяцНачисления) {
+            object[] results = this.Invoke("SaveListRate", new object[] {
+                        Сотрудники,
+                        OrganizationName,
+                        UserName,
+                        МесяцНачисления});
+            return ((Employee[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void SaveListRateAsync(object Сотрудники, string OrganizationName, string UserName, string МесяцНачисления) {
+            this.SaveListRateAsync(Сотрудники, OrganizationName, UserName, МесяцНачисления, null);
+        }
+        
+        /// <remarks/>
+        public void SaveListRateAsync(object Сотрудники, string OrganizationName, string UserName, string МесяцНачисления, object userState) {
+            if ((this.SaveListRateOperationCompleted == null)) {
+                this.SaveListRateOperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveListRateOperationCompleted);
+            }
+            this.InvokeAsync("SaveListRate", new object[] {
+                        Сотрудники,
+                        OrganizationName,
+                        UserName,
+                        МесяцНачисления}, this.SaveListRateOperationCompleted, userState);
+        }
+        
+        private void OnSaveListRateOperationCompleted(object arg) {
+            if ((this.SaveListRateCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.SaveListRateCompleted(this, new SaveListRateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -551,6 +651,10 @@ namespace Fusion.ZupWS {
         private string codeIndividualField;
         
         private string rateField;
+        
+        private string rateNewField;
+        
+        private string hoursField;
         
         /// <remarks/>
         public string Name {
@@ -651,6 +755,26 @@ namespace Fusion.ZupWS {
             }
             set {
                 this.rateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string RateNew {
+            get {
+                return this.rateNewField;
+            }
+            set {
+                this.rateNewField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Hours {
+            get {
+                return this.hoursField;
+            }
+            set {
+                this.hoursField = value;
             }
         }
     }
@@ -1261,6 +1385,8 @@ namespace Fusion.ZupWS {
         
         private string codeField;
         
+        private bool editField;
+        
         /// <remarks/>
         public string Name {
             get {
@@ -1288,6 +1414,16 @@ namespace Fusion.ZupWS {
             }
             set {
                 this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool Edit {
+            get {
+                return this.editField;
+            }
+            set {
+                this.editField = value;
             }
         }
     }
@@ -1306,6 +1442,8 @@ namespace Fusion.ZupWS {
         
         private string codeField;
         
+        private bool editField;
+        
         /// <remarks/>
         public string Name {
             get {
@@ -1333,6 +1471,16 @@ namespace Fusion.ZupWS {
             }
             set {
                 this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool Edit {
+            get {
+                return this.editField;
+            }
+            set {
+                this.editField = value;
             }
         }
     }
@@ -1645,6 +1793,58 @@ namespace Fusion.ZupWS {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((Document)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    public delegate void GetListRateCompletedEventHandler(object sender, GetListRateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetListRateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetListRateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    public delegate void SaveListRateCompletedEventHandler(object sender, SaveListRateCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.1055.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class SaveListRateCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal SaveListRateCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Employee[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Employee[])(this.results[0]));
             }
         }
     }
