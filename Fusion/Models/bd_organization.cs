@@ -12,16 +12,18 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sb_problems
+    public partial class bd_organization
     {
-        public int id { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public Nullable<int> restaurant_id { get; set; }
-        public string problem { get; set; }
-        public string solution { get; set; }
-        public Nullable<int> mgr_id { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public bd_organization()
+        {
+            this.bd_order = new HashSet<bd_order>();
+        }
     
-        public virtual sb_managers sb_managers { get; set; }
-        public virtual sb_restaurants sb_restaurants { get; set; }
+        public int id { get; set; }
+        public string name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<bd_order> bd_order { get; set; }
     }
 }

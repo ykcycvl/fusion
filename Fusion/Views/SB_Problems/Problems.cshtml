@@ -3,6 +3,14 @@
     ViewBag.Title = "Problems";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
+<style>
+    .monthpicker > .ui-datepicker-calendar {
+        display: none;
+    }
+    .monthpicker > .ui-datepicker {
+        z-index: 9999 !important;
+    }
+</style>
 <script>
     $(document).ready(function () {
         $('.date-picker').datepicker({
@@ -10,6 +18,16 @@
             changeYear: true,
             showButtonPanel: true,
             dateFormat: 'd.m.yy'
+        });
+        $('.monthpicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: '0m.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                window.location.href = '/SB_Problems/Problems?period=' + $("#Period").val();
+            }
         });
         var count = 0;
         var tbody = document.getElementsByTagName('tbody')[0];
@@ -75,6 +93,7 @@
 @using (Html.BeginForm("Problems", "SB_Problems", FormMethod.Post, new { id = "Form" }))
 {
     <div id="wrapper">
+        @Html.TextBoxFor(m => m.Period, new { @class = "monthpicker form-control", @style = "width: 100px; text-align:center;" })
         <table class="table table-bordered table-striped" id="myTable">
             <thead>
                 <tr>
@@ -89,33 +108,67 @@
             <tbody>
                 @for (int i = 0; i < Model.problems.Count(); i++)
                 {
+                    string color = "";
+                    string adminColor = "";
+                    if (Model.problems[i].sb_managers.domain_name == Model.username && (Model.problems[i].solution == null || Model.problems[i].solution == ""))
+                    {
+                        color = "#d9534f";
+                    }
+                    else if (Model.problems[i].sb_managers.domain_name == Model.username && (Model.problems[i].solution != null || Model.problems[i].solution != ""))
+                    {
+                        color = "#5cb85c";
+                    }
+                    else
+                    {
+                        color = "";
+                    }
+                    if (Model.problems[i].solution != "" && Model.problems[i].solution != null)
+                    {
+                        adminColor = "#5cb85c";
+                    }
+                    else
+                    {
+                        adminColor = "#d9534f";
+                    }
                     Model.RestaurantName = Model.problems[i].sb_restaurants.restaurant_name;
                     Model.ManagerName = Model.problems[i].sb_managers.name;
                     if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin"))
                     {
-                        <tr class="records">
-                            <td id="di" style="display: none">@Model.problems[i].id</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @class="form-control", @required="true" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new {@class="form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class="form-control"  })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new{ @class="form-control" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].sb_managers.id, Model.ManagersSelectList, new {@class="form-control"  })</td>
-                            @Html.HiddenFor(m => m.problems[i].id)
-                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                        <tr style="display: none;">
+                            <td>@Html.HiddenFor(m => m.problems[i].id)</td>
                         </tr>
+                        if (Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year == Model.Period.Month + Model.Period.Year)
+                        {
+                            <tr class="records" style="background-color: @adminColor">
+                                <td id="di" style="display: none">@Model.problems[i].id</td>
+                                <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @class = "form-control", @required = "true" })</td>
+                                <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })</td>
+                                <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class = "form-control" })</td>
+                                <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
+                                <td>@Html.DropDownListFor(m => m.problems[i].sb_managers.id, Model.ManagersSelectList, new { @class = "form-control" })</td>
+                                @Html.HiddenFor(m => m.problems[i].id)
+                                @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                            </tr>
+                        }
                     }
                     else
                     {
-                        <tr class="records">
-                            <td id="di" style="display: none">@Model.problems[i].id</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
-                            <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @disabled = "true", @class="form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @disabled = "true", @class = "form-control" })</td>
-                            <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
-                            <td>@Html.TextBoxFor(m => m.problems[i].sb_managers.name, new { @disabled = "true", @class = "form-control" })</td>
-                            @Html.HiddenFor(m => m.problems[i].id)
-                            @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                        <tr style="display: none;">
+                            <td>@Html.HiddenFor(m => m.problems[i].id)</td>
                         </tr>
+                        if (Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year == Model.Period.Month + Model.Period.Year)
+                        {
+                            <tr class="records" style="background-color: @color">
+                                <td id="di" style="display: none">@Model.problems[i].id</td>
+                                <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
+                                <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @disabled = "true", @class = "form-control" })</td>
+                                <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @disabled = "true", @class = "form-control" })</td>
+                                <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
+                                <td>@Html.TextBoxFor(m => m.problems[i].sb_managers.name, new { @disabled = "true", @class = "form-control" })</td>
+                                @Html.HiddenFor(m => m.problems[i].id)
+                                @Html.HiddenFor(m => m.problems[i].sb_managers.name)
+                            </tr>
+                        }
                     }
                 }
             </tbody>

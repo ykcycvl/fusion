@@ -13,10 +13,10 @@ namespace Fusion.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ZakupEntities2 : DbContext
+    public partial class ZakupEntities3 : DbContext
     {
-        public ZakupEntities2()
-            : base("name=ZakupEntities2")
+        public ZakupEntities3()
+            : base("name=ZakupEntities3")
         {
         }
     
@@ -29,9 +29,10 @@ namespace Fusion.Models
         public virtual DbSet<bd_employee> bd_employee { get; set; }
         public virtual DbSet<bd_measurement> bd_measurement { get; set; }
         public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
+        public virtual DbSet<bd_order> bd_order { get; set; }
         public virtual DbSet<bd_organization> bd_organization { get; set; }
         public virtual DbSet<bd_subdivision> bd_subdivision { get; set; }
         public virtual DbSet<bd_vendor> bd_vendor { get; set; }
-        public virtual DbSet<bd_order> bd_order { get; set; }
+        public virtual DbSet<bd_states> bd_states { get; set; }
     }
 }

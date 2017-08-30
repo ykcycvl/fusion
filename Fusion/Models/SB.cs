@@ -20,6 +20,7 @@ namespace Fusion.Models
         public string RestaurantName { get; set; }
         public string username { get; set; }
         public string ManagerName { get; set; }
+        public DateTime Period { get; set; }
         public class rests
         {
             public string name;

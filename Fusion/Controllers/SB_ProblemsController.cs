@@ -17,7 +17,7 @@ namespace Fusion.Controllers
         {
             return View();
         }
-        public ActionResult Problems()
+        public ActionResult Problems(string period)
         {
             SB model = new SB();
             model.username = User.Identity.GetUserName();
@@ -27,6 +27,10 @@ namespace Fusion.Controllers
             }
             else if (LoginViewModel.IsMemberOf(model.username, "SB_Admin") || LoginViewModel.IsMemberOf(model.username, "SB_User"))
             {
+                if (period == null || period == "")
+                    model.Period = DateTime.Today;
+                else
+                    model.Period = DateTime.Parse(period);
                 model.getProblems();
                 return View(model);
             }

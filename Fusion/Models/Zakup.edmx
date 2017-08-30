@@ -1,0 +1,661 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Zakup.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="bd_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_employee">
+          <Key>
+            <PropertyRef Name="domain_login" />
+          </Key>
+          <Property Name="domain_login" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="full_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="subdiv_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_measurement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_nomenclature">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="category_id" Type="int" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="measurement_id" Type="int" Nullable="false" />
+          <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Count" Type="int" />
+        </EntityType>
+        <EntityType Name="bd_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="employee" Type="varchar" MaxLength="255" />
+          <Property Name="nomenclature_id" Type="int" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="count" Type="int" />
+          <Property Name="measurement_id" Type="int" />
+          <Property Name="category_id" Type="int" />
+          <Property Name="organization_id" Type="int" />
+          <Property Name="date_end" Type="datetime" />
+          <Property Name="comment" Type="varchar" MaxLength="500" />
+          <Property Name="state" Type="int" />
+        </EntityType>
+        <EntityType Name="bd_organization">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_states">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="bd_subdivision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="code" Type="varchar" MaxLength="20" />
+          <Property Name="name" Type="varchar(max)" Nullable="false" />
+          <Property Name="phones" Type="varchar" MaxLength="255" />
+          <Property Name="INN" Type="varchar(max)" />
+          <Property Name="KPP" Type="varchar" MaxLength="40" />
+        </EntityType>
+        <Association Name="FK_bd_employee_subdiv_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_employee">
+              <PropertyRef Name="subdiv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_vendor_id">
+          <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_employee">
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_employee">
+              <PropertyRef Name="domain_login" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_organization_id">
+          <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_state">
+          <End Role="bd_states" Type="Self.bd_states" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_states">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZakupStoreContainer">
+          <EntitySet Name="bd_category" EntityType="Self.bd_category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_employee" EntityType="Self.bd_employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_measurement" EntityType="Self.bd_measurement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_order" EntityType="Self.bd_order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_organization" EntityType="Self.bd_organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_states" EntityType="Self.bd_states" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_bd_employee_subdiv_id" Association="Self.FK_bd_employee_subdiv_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_employee" EntitySet="bd_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="Self.FK_bd_nomenclature_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="Self.FK_bd_nomenclature_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="Self.FK_bd_nomenclature_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_category_id" Association="Self.FK_bd_order_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_employee" Association="Self.FK_bd_order_employee">
+            <End Role="bd_employee" EntitySet="bd_employee" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_measurement_id" Association="Self.FK_bd_order_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="Self.FK_bd_order_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_organization_id" Association="Self.FK_bd_order_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
+            <End Role="bd_states" EntitySet="bd_states" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Zakup" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="bd_category">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_category_id" FromRole="bd_category" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_category_id" FromRole="bd_category" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_employee">
+          <Key>
+            <PropertyRef Name="domain_login" />
+          </Key>
+          <Property Name="domain_login" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="full_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="subdiv_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bd_subdivision" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_employee" ToRole="bd_subdivision" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_employee" FromRole="bd_employee" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_measurement">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_measurement_id" FromRole="bd_measurement" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_measurement_id" FromRole="bd_measurement" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_nomenclature">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="measurement_id" Type="Byte" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Count" Type="Int32" />
+          <NavigationProperty Name="bd_category" Relationship="Self.FK_bd_nomenclature_category_id" FromRole="bd_nomenclature" ToRole="bd_category" />
+          <NavigationProperty Name="bd_measurement" Relationship="Self.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_vendor" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nomenclature_id" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="count" Type="Int32" />
+          <Property Name="measurement_id" Type="Byte" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="organization_id" Type="Int32" />
+          <Property Name="date_end" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="bd_category" Relationship="Self.FK_bd_order_category_id" FromRole="bd_order" ToRole="bd_category" />
+          <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_order_employee" FromRole="bd_order" ToRole="bd_employee" />
+          <NavigationProperty Name="bd_measurement" Relationship="Self.FK_bd_order_measurement_id" FromRole="bd_order" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_order_nomenclature_id" FromRole="bd_order" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_organization" Relationship="Self.FK_bd_order_organization_id" FromRole="bd_order" ToRole="bd_organization" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="Int32" />
+          <NavigationProperty Name="bd_states" Relationship="Zakup.FK_bd_order_state" FromRole="bd_order" ToRole="bd_states" />
+        </EntityType>
+        <EntityType Name="bd_organization">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_organization_id" FromRole="bd_organization" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_subdivision">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_subdivision" ToRole="bd_employee" />
+        </EntityType>
+        <EntityType Name="bd_vendor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phones" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="INN" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="KPP" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
+        </EntityType>
+        <Association Name="FK_bd_nomenclature_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_category_id">
+          <End Role="bd_category" Type="Self.bd_category" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_employee_subdiv_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_employee">
+              <PropertyRef Name="subdiv_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_employee">
+          <End Role="bd_employee" Type="Self.bd_employee" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_employee">
+              <PropertyRef Name="domain_login" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_measurement_id">
+          <End Role="bd_measurement" Type="Self.bd_measurement" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_vendor_id">
+          <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_organization_id">
+          <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
+          <End Role="bd_order" Type="Self.bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ZakupEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="bd_category" EntityType="Self.bd_category" />
+          <EntitySet Name="bd_employee" EntityType="Self.bd_employee" />
+          <EntitySet Name="bd_measurement" EntityType="Self.bd_measurement" />
+          <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" />
+          <EntitySet Name="bd_order" EntityType="Self.bd_order" />
+          <EntitySet Name="bd_organization" EntityType="Self.bd_organization" />
+          <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" />
+          <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" />
+          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="Self.FK_bd_nomenclature_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_category_id" Association="Self.FK_bd_order_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_employee_subdiv_id" Association="Self.FK_bd_employee_subdiv_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_employee" EntitySet="bd_employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_employee" Association="Self.FK_bd_order_employee">
+            <End Role="bd_employee" EntitySet="bd_employee" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="Self.FK_bd_nomenclature_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_measurement_id" Association="Self.FK_bd_order_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="Self.FK_bd_nomenclature_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="Self.FK_bd_order_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_organization_id" Association="Self.FK_bd_order_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <EntitySet Name="bd_states" EntityType="Zakup.bd_states" />
+          <AssociationSet Name="FK_bd_order_state" Association="Zakup.FK_bd_order_state">
+            <End Role="bd_states" EntitySet="bd_states" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="bd_states">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_order" Relationship="Zakup.FK_bd_order_state" FromRole="bd_states" ToRole="bd_order" />
+        </EntityType>
+        <Association Name="FK_bd_order_state">
+          <End Type="Zakup.bd_states" Role="bd_states" Multiplicity="0..1" />
+          <End Type="Zakup.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_states">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ZakupStoreContainer" CdmEntityContainer="ZakupEntities3">
+          <EntitySetMapping Name="bd_category">
+            <EntityTypeMapping TypeName="Zakup.bd_category">
+              <MappingFragment StoreEntitySet="bd_category">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_employee">
+            <EntityTypeMapping TypeName="Zakup.bd_employee">
+              <MappingFragment StoreEntitySet="bd_employee">
+                <ScalarProperty Name="domain_login" ColumnName="domain_login" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="subdiv_id" ColumnName="subdiv_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_measurement">
+            <EntityTypeMapping TypeName="Zakup.bd_measurement">
+              <MappingFragment StoreEntitySet="bd_measurement">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_nomenclature">
+            <EntityTypeMapping TypeName="Zakup.bd_nomenclature">
+              <MappingFragment StoreEntitySet="bd_nomenclature">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_order">
+            <EntityTypeMapping TypeName="Zakup.bd_order">
+              <MappingFragment StoreEntitySet="bd_order">
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="employee" ColumnName="employee" />
+                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="organization_id" ColumnName="organization_id" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_organization">
+            <EntityTypeMapping TypeName="Zakup.bd_organization">
+              <MappingFragment StoreEntitySet="bd_organization">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_subdivision">
+            <EntityTypeMapping TypeName="Zakup.bd_subdivision">
+              <MappingFragment StoreEntitySet="bd_subdivision">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_vendor">
+            <EntityTypeMapping TypeName="Zakup.bd_vendor">
+              <MappingFragment StoreEntitySet="bd_vendor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phones" ColumnName="phones" />
+                <ScalarProperty Name="INN" ColumnName="INN" />
+                <ScalarProperty Name="KPP" ColumnName="KPP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_states">
+            <EntityTypeMapping TypeName="Zakup.bd_states">
+              <MappingFragment StoreEntitySet="bd_states">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
