@@ -17,24 +17,20 @@ namespace Fusion.Controllers
         {
             return View();
         }
+         [MyAuthorize(Roles = "SB_Admin, SB_User")]
         public ActionResult Problems(string period)
         {
             SB model = new SB();
             model.username = User.Identity.GetUserName();
-            if (model.username == null || model.username == "")
-            {
-                return Redirect("~/Home");
-            }
-            else if (LoginViewModel.IsMemberOf(model.username, "SB_Admin") || LoginViewModel.IsMemberOf(model.username, "SB_User"))
-            {
-                if (period == null || period == "")
-                    model.Period = DateTime.Today;
-                else
-                    model.Period = DateTime.Parse(period);
-                model.getProblems();
-                return View(model);
-            }
-            else return Redirect("~/Home");
+             if(period != "" && period != null) {
+                 model.Period = DateTime.Parse(period);
+             }
+             else
+             {
+                 model.Period = DateTime.Today;
+             }
+             model.getProblems();
+            return View(model);
         }
         [HttpPost]
         public ActionResult Problems(SB model)
@@ -49,6 +45,18 @@ namespace Fusion.Controllers
             SB model = new SB();
             model.getProblems();
             return View(model);
+        }
+        public ActionResult SendProblem()
+        {
+            SB model = new SB();
+            model.getProblems();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult SendProblem(SB model)
+        {
+            model.sendSingleProblem();
+            return Redirect("/SB_problems/Problems");
         }
     }
 }

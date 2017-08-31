@@ -1,0 +1,34 @@
+﻿@model Fusion.Models.SB
+@{
+    ViewBag.Title = "SendProblem";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+} 
+
+<h2>SendProblem</h2>
+@using (Html.BeginForm("SendProblem", "SB_Problems", FormMethod.Post, new { id = "Form" }))
+{
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.TextBoxFor(m => m.problem.date, new { @type="date" })</td>
+                    <td>@Html.TextAreaFor(m => m.problem.problem)</td>
+                    <td>@Html.TextAreaFor(m => m.problem.solution)</td>
+                    <td>@Html.DropDownListFor(m => m.problem.restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })</td>
+                    <td>@Html.DropDownListFor(m => m.problem.manager_id, Model.ManagersSelectList, new { @class = "form-control" })</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <input type="submit" value="save" />
+}
+
