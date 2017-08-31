@@ -14,7 +14,6 @@ namespace Fusion.Models
     
     public partial class bd_nomenclature
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public bd_nomenclature()
         {
             this.bd_order = new HashSet<bd_order>();
@@ -24,14 +23,13 @@ namespace Fusion.Models
         public string name { get; set; }
         public int category_id { get; set; }
         public int vendor_id { get; set; }
-        public byte measurement_id { get; set; }
+        public int measurement_id { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> Count { get; set; }
     
         public virtual bd_category bd_category { get; set; }
         public virtual bd_measurement bd_measurement { get; set; }
         public virtual bd_vendor bd_vendor { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<bd_order> bd_order { get; set; }
     }
 }

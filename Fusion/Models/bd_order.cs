@@ -19,7 +19,7 @@ namespace Fusion.Models
         public Nullable<int> nomenclature_id { get; set; }
         public Nullable<System.DateTime> date { get; set; }
         public Nullable<int> count { get; set; }
-        public Nullable<byte> measurement_id { get; set; }
+        public Nullable<int> measurement_id { get; set; }
         public Nullable<int> category_id { get; set; }
         public Nullable<int> organization_id { get; set; }
         public Nullable<System.DateTime> date_end { get; set; }

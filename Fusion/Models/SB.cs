@@ -15,7 +15,7 @@ namespace Fusion.Models
         public List<Models.sb_problems> problems { get; set; }
         public List<Models.sb_managers> managers { get; set; }
         public List<Models.sb_rights> rights { get; set; }
-        public SBEntities list = new SBEntities();
+        public Entities list = new Entities();
         
         public string RestaurantName { get; set; }
         public string username { get; set; }

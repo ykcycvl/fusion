@@ -43,7 +43,7 @@ namespace Fusion.Models
         public string measurementName { get; set; }
         public List<ZakupModel.vendors1> vendors { get; set; }
         public List<Models.bd_vendor> vendorList { get; set; }
-        public ZakupEntities3 list = new ZakupEntities3();
+        public Entities list = new Entities();
         public IEnumerable<SelectListItem> catListFull { get; set; }
         public IEnumerable<SelectListItem> statesSelect { get; set; }
         public List<Models.bd_order> orders { get; set; }

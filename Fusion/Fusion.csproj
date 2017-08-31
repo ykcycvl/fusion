@@ -222,6 +222,7 @@
     <Compile Include="Controllers\SB_ProblemsController.cs" />
     <Compile Include="Controllers\SH4Controller.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\ZakupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1538,21 +1539,6 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SB.cs" />
-    <Compile Include="Models\SBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SBModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\SBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SBModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\sb_managers.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -1905,6 +1891,7 @@
     <Compile Include="Models\WARNGROUPS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ZakupModel.cs" />
     <Compile Include="Models\ZREPORTDATA.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1937,16 +1924,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FusionDB.edmx</DependentUpon>
       <LastGenOutput>FusionDB.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\SBModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SBModel.edmx</DependentUpon>
-      <LastGenOutput>SBModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\SBModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SBModel.edmx</DependentUpon>
-      <LastGenOutput>SBModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\chosen-sprite%402x.png" />
     <Content Include="Scripts\chosen-sprite.png" />
@@ -3334,13 +3311,6 @@
     </EntityDeploy>
     <Content Include="Models\FusionDB.edmx.diagram">
       <DependentUpon>FusionDB.edmx</DependentUpon>
-    </Content>
-    <EntityDeploy Include="Models\SBModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SBModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\SBModel.edmx.diagram">
-      <DependentUpon>SBModel.edmx</DependentUpon>
     </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
