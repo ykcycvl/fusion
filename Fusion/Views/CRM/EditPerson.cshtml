@@ -48,7 +48,7 @@
             return false;
         });
         $("#AddAccountBtn").click(function () {
-            $('#accountstable > tbody:last').append('<tr><input id="Holder_Accounts_' + ac + '__Auto_Change_Levels" name="Holder.Accounts[' + ac + '].Auto_Change_Levels" type="hidden" value="False"><td>-</td><td><select class="form-control" id="Holder_Accounts_' + ac + '__Account_Type_ID" name="Holder.Accounts[' + ac + '].Account_Type_ID"><option value="16">Бонусный</option><option value="11">Потраты</option><option value="18">Дисконтный</option></select></td><td colspan="4">&nbsp;</td></tr>');
+            $('#accountstable > tbody:last').append('<tr><input id="Holder_Accounts_' + ac + '__Auto_Change_Levels" name="Holder.Accounts[' + ac + '].Auto_Change_Levels" type="hidden" value="False"><td>-</td><td><select class="form-control" id="Holder_Accounts_' + ac + '__Account_Type_ID" name="Holder.Accounts[' + ac + '].Account_Type_ID"><option value="16">Море плюсов (бонусный)</option><option value="72">SaintFish (бонусный)</option><option value="74">SaintFish Дисконт</option><option value="11">Потраты</option><option value="18">Дисконтный</option></select></td><td colspan="4">&nbsp;</td></tr>');
             ac++;
             return false;
         });
@@ -89,7 +89,6 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => Model.Holder.Holder_ID)
     @Html.HiddenFor(m => Model.Holder.External_Code)
-    @Html.HiddenFor(m => Model.Holder.Group_ID)
     @Html.HiddenFor(m => Model.Holder.Unpay_Type_ID)
 
     <div class="row">
@@ -100,6 +99,11 @@
                     Основные данные
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Holder.Group_ID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.Holder.Group_ID, Model.Holder.GroupSelectList, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Holder.Group_ID, "", new { @class = "text-danger" })
+                    </div>
                     <div class="form-group">
                         @Html.LabelFor(m => Model.Holder.L_Name, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(m => Model.Holder.L_Name, new { htmlAttributes = new { @class = "form-control" } })

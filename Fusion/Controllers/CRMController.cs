@@ -303,6 +303,7 @@ namespace Fusion.Controllers
 
         [HttpPost]
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
+        [ValidateInput(false)]
         public ActionResult ViewSegment(CRMTools model)
         {
             try

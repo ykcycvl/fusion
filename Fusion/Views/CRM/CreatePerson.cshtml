@@ -58,7 +58,6 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Holder.Group_ID)
     <div class="row">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="col-xs-6 col-md-4">
@@ -67,6 +66,11 @@
                     Основные данные
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Holder.Group_ID, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(m => m.Holder.Group_ID, Model.Holder.GroupSelectList, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Holder.Group_ID, "", new { @class = "text-danger" })
+                    </div>
                     <div class="form-group">
                         @Html.HiddenFor(m => m.Holder.Remarks)
                         @Html.LabelFor(m => m.Holder.L_Name, htmlAttributes: new { @class = "control-label" })

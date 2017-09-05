@@ -383,6 +383,9 @@ namespace Fusion.Models
             public Decimal? TotalBP { get; set; }
             public int TotalPersons { get; set; }
             public int VacantCardsAmount { get; set; }
+            public Decimal? TotalBPSF { get; set; }
+            public int TotalPersonsSF { get; set; }
+            public int VacantCardsAmountSF { get; set; }
             public OverallViewModel()
             {
                 TotalBP = db.CARD_PEOPLE_ACCOUNTS.Where(p => p.ACCOUNT_TYPE_ID == 16).Sum(p => p.BALANCE);
@@ -401,7 +404,16 @@ namespace Fusion.Models
 
                     if (g.GROUP_ID == 44)
                         VacantCardsAmount = oci.VacantCardsAmount;
+
+                    if (g.GROUP_ID == 100)
+                        VacantCardsAmountSF = oci.VacantCardsAmount;
                 }
+
+                TotalBPSF = db.CARD_PEOPLE_ACCOUNTS.Where(p => p.ACCOUNT_TYPE_ID == 72).Sum(p => p.BALANCE);
+                TotalPersonsSF = db.CARD_PEOPLES.Where(p => p.GROUP_ID == 99).Count();
+
+                if (TotalBPSF == null)
+                    TotalBPSF = 0;
             }
         }
         public class GuestViewModel
@@ -956,7 +968,7 @@ namespace Fusion.Models
 	                                cp.F_NAME,
 	                                cp.M_NAME,
 	                                cp.FULL_NAME,
-	                                MAX(Case when cpa.ACCOUNT_TYPE_ID = 16 then cpa.BALANCE End) as BALANCE,
+	                                MAX(Case when (cpa.ACCOUNT_TYPE_ID = 16 OR cpa.ACCOUNT_TYPE_ID = 72) then cpa.BALANCE End) as BALANCE,
 		                            cc.CARD_CODE,
 		                            cphone.CONTACT_VALUE as phone,
 		                            cemail.CONTACT_VALUE as email,

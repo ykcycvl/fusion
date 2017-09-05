@@ -154,6 +154,16 @@ Content-Length: {0}
             [Display(Name = "ID группы")]
             [XmlElement("Group_ID")]
             public string Group_ID { get; set; }
+            public IEnumerable<SelectListItem> GroupSelectList
+            {
+                get
+                {
+                    List<SelectListItem> Groups = new List<SelectListItem>();
+                    Groups.Add(new SelectListItem() { Text = "Море плюсов", Value = "45" });
+                    Groups.Add(new SelectListItem() { Text = "SaintFish", Value = "99" });
+                    return Groups;
+                }
+            }
 
             [Display(Name = "Группа")]
             [XmlElement("Group_Name")]
