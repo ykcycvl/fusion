@@ -37,16 +37,16 @@
             $.each(template.find('input[type=text]'), function () {
                 var name = $(this).attr('name');
                 var id = $(this).attr('id');
-                id = id.replace('0', vall-1);
-                name = name.replace('0', vall-1);
+                id = id.replace('0', vall - 1);
+                name = name.replace('0', vall - 1);
                 $(this).attr('name', name);
                 $(this).attr('id', id)
             });
             $.each(template.find('input[type=hidden]'), function () {
                 var name = $(this).attr('name');
                 var id = $(this).attr('id');
-                id = id.replace('0', vall-1);
-                name = name.replace('0', vall-1);
+                id = id.replace('0', vall - 1);
+                name = name.replace('0', vall - 1);
                 $(this).attr('name', name);
                 $(this).attr('id', id);
                 $(this).val(vall);
@@ -59,7 +59,7 @@
 @using (Html.BeginForm("Vendors", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
     <div id="filters">
-        <input id="namef" placeholder="Наименование..."/>
+        <input id="namef" placeholder="Наименование..." />
     </div>
     <table class="table table-stripped table-bordered" id="mytable">
         <thead>
@@ -68,8 +68,8 @@
                 <td>Код</td>
                 <td>Наименование</td>
                 <td>Телефон</td>
-                <td>ИНН</td>
-                <td>КПП</td>
+                <td>E-mail</td>
+                <td>Отправить сообщение</td>
             </tr>
         </thead>
 
@@ -82,17 +82,17 @@
                         @Model.vendorList[i].id
                         @Html.HiddenFor(m => m.vendorList[i].id)
                     </td>
-                    <td>@Html.TextBoxFor(m => m.vendorList[i].code, new { @style="width: 50px;" })</td>
+                    <td>@Html.TextBoxFor(m => m.vendorList[i].code, new { @style = "width: 50px;" })</td>
                     <td style="width: 500px;">@Html.TextBoxFor(m => m.vendorList[i].name, new { })</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].phones)</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].INN)</td>
-                    <td>@Html.TextBoxFor(m => m.vendorList[i].KPP)</td>
+                    <td><a href="mailto:@Model.vendorList[i].INN" class="btn btn-success">Отправить</a></td>
                 </tr>
             }
         </tbody>
     </table>
-<input type="button" class="btn btn-primary" id="addRow" value="Добавить поставщика"/>
-<input type="submit" value="Сохранить" class="btn btn-success"/>
+    <input type="button" class="btn btn-primary" id="addRow" value="Добавить поставщика" />
+    <input type="submit" value="Сохранить" class="btn btn-success" />
 }
 @** скрипт для фильтров *@
 <script>

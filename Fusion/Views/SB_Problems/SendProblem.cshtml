@@ -2,33 +2,37 @@
 @{
     ViewBag.Title = "SendProblem";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
-} 
-
+}
+<style>
+    textarea {
+        height: 200px !important;
+    }
+</style>
 <h2>SendProblem</h2>
 @using (Html.BeginForm("SendProblem", "SB_Problems", FormMethod.Post, new { id = "Form" }))
 {
     <div>
-        <table>
+        <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>1</th>
-                    <th>2</th>
-                    <th>3</th>
-                    <th>4</th>
-                    <th>5</th>
+                    <th>Дата</th>
+                    <th>Проблема</th>
+                    <th>Решение</th>
+                    <th>Ресторан</th>
+                    <th>Ответственный</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>@Html.TextBoxFor(m => m.problem.date, new { @type="date" })</td>
-                    <td>@Html.TextAreaFor(m => m.problem.problem)</td>
-                    <td>@Html.TextAreaFor(m => m.problem.solution)</td>
+                <tr style="height: 200px;">
+                    <td>@Html.TextBoxFor(m => m.problem.date, new { @type = "date", @class = "form-control" })</td>
+                    <td>@Html.TextAreaFor(m => m.problem.problem, new { @class = "form-control" })</td>
+                    <td>@Html.TextAreaFor(m => m.problem.solution, new { @class = "form-control" })</td>
                     <td>@Html.DropDownListFor(m => m.problem.restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })</td>
                     <td>@Html.DropDownListFor(m => m.problem.manager_id, Model.ManagersSelectList, new { @class = "form-control" })</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <input type="submit" value="save" />
+    <input type="submit" value="Сохранить" class="btn btn-primary" />
 }
 

@@ -7,6 +7,7 @@ using Fusion.Models;
 using Microsoft.AspNet.Identity;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
+using Jitbit.Utils;
 
 namespace Fusion.Controllers
 {
@@ -14,24 +15,14 @@ namespace Fusion.Controllers
     {
         //
         // GET: /Zakup/
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
         public ActionResult Index(ZakupModel model)
         {
             string name = User.Identity.GetUserName();
             model.username = name;
-            if (name == null || name == "")
-            {
-                return Redirect("~/Home");
-            }
-            if ((LoginViewModel.IsMemberOf(name, "ZakupAdmin")))
-            {
-                return View();
-            }
-            else if ((LoginViewModel.IsMemberOf(name, "ZakupUser")))
-            {
-                return Redirect("~/Zakup/Orders");
-            }
-            else return Redirect("~/Home");
+            return View();
         }
+        [MyAuthorize(Roles = "ZakupAdmin")]
         public ActionResult Nomenclatures()
         {
             ZakupModel model = new ZakupModel();
@@ -50,6 +41,7 @@ namespace Fusion.Controllers
             //model.getList();
             return View(model);
         }
+        [MyAuthorize(Roles = "ZakupAdmin")]
         public ActionResult Vendors()
         {
             Models.ZakupModel model = new Models.ZakupModel();
@@ -63,6 +55,7 @@ namespace Fusion.Controllers
             model.getVendors();
             return View(model);
         }
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
         public ActionResult orders(string period)
         {
             ZakupModel model = new ZakupModel();
@@ -84,6 +77,7 @@ namespace Fusion.Controllers
             model.getOrders();
             return View(model);
         }
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
         public ActionResult CreateOrder(int catId)
         {
             ZakupModel model = new ZakupModel();
@@ -111,6 +105,50 @@ namespace Fusion.Controllers
             model.getNomenclatures();
             model.categoryId = 1;
             return View(model);
+        }
+        public ActionResult Export()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Export(ZakupModel model)
+        {
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            CsvExport Export = new CsvExport();
+            if (model.export.date != null && model.export.date.Year.ToString() != "1")
+            {
+                foreach (var it in model.orders.Where(c => c.bd_nomenclature.vendor_id == model.export.VendorName && c.date.Value.Year + c.date.Value.Month == model.export.date.Year + model.export.date.Month))
+                {
+                    Export.AddRow();
+                    Export["Наименование"] = it.bd_nomenclature.name;
+                    Export["Количество"] = it.count;
+                    Export["Сумма"] = it.count * it.bd_nomenclature.Price;
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
+                    Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
+                    Export["Дата"] = it.date;
+                }
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + ".csv");
+            }
+            else
+            {
+                foreach (var it in model.orders.Where(c => c.bd_nomenclature.vendor_id == model.export.VendorName))
+                {
+                    Export.AddRow();
+                    Export["Наименование"] = it.bd_nomenclature.name;
+                    Export["Количество"] = it.count;
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
+                    Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
+                    Export["Дата"] = it.date;
+                }
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время.csv");
+            }
+            return View();
         }
     }
 }

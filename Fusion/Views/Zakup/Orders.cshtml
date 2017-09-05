@@ -41,19 +41,6 @@
                 window.location.href = '/Zakup/Orders?period=' + $("#Period").val();
             }
         });
-        $('#mytable').DataTable({
-            "paging": true,
-            "ordering": true,
-            "info": true,
-            "language": {
-                "lengthMenu": "Показывать _MENU_ на странице",
-                "zeroRecords": "Ничего не нашли - сорян!",
-                "info": "Страница _PAGE_ из _PAGES_",
-                "infoEmpty": "Ноу рекордс эвейлбл",
-                "infoFiltered": "(фильтрануто _MAX_ записей)",
-                "sSearch": "<span>Фильтрануть</span> _INPUT_",
-            }
-        });
     });
 </script>
 <h2>Заказы за @Model.Period.ToString("MM.yyyy")</h2>
@@ -63,6 +50,7 @@
     if (LoginViewModel.IsMemberOf(Model.username, "ZakupAdmin"))
     {
         <input type="submit" value="Сохранить" class="btn btn-success" />
+        @Html.ActionLink("Экспорт заявок", "Export", new { }, new { @class="btn btn-danger" })
     }
 <div>
     @Html.TextBoxFor(m => m.Period, new { @class = "date-picker form-control", @style = "width: 100px; text-align:center;" })

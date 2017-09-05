@@ -1,0 +1,16 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Export";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+@using (Html.BeginForm("Export", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    <table class="table table-stripped table-bordered">
+        <tr>
+            <td>@Html.DropDownListFor(m => m.export.VendorName, Model.vendorsSelectList, new { @class="form-control" })</td>
+            <td>@Html.TextBoxFor(m => m.export.date, new { @type = "date", @class = "form-control" })</td>
+        </tr>
+    </table>
+    <input type="submit" value="Экспорт" class="btn btn-danger" />
+    @Html.ActionLink("Обратно к списку", "Orders", new { }, new { @class="btn btn-success" })
+}

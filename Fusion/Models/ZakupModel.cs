@@ -6,6 +6,7 @@ using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Jitbit.Utils;
 
 
 namespace Fusion.Models
@@ -31,6 +32,13 @@ namespace Fusion.Models
             public int id { get; set; }
             public decimal? price { get; set; }
         }
+        public class ExportData
+        {
+            public int VendorName { get; set; }
+            public DateTime date { get; set; }
+            public int RestaurantName { get; set; }
+        }
+        public ExportData export { get; set; }
         public List<items1> listItem { get; set; }
         public List<Models.bd_nomenclature> items { get; set; }
         public List<Models.bd_measurement> maesurements { get; set; }
