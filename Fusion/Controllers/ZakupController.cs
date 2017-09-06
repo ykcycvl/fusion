@@ -126,12 +126,13 @@ namespace Fusion.Controllers
                 foreach (var it in model.orders.Where(c => c.bd_nomenclature.vendor_id == model.export.VendorName && c.date.Value.Year + c.date.Value.Month == model.export.date.Year + model.export.date.Month))
                 {
                     Export.AddRow();
+                    Export["Дата"] = it.date;
                     Export["Наименование"] = it.bd_nomenclature.name;
+                    Export["Ед. измерения"] = it.bd_nomenclature.bd_measurement.name;
                     Export["Количество"] = it.count;
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
-                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
-                    Export["Дата"] = it.date;
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;  
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + ".csv");
             }
@@ -140,15 +141,17 @@ namespace Fusion.Controllers
                 foreach (var it in model.orders.Where(c => c.bd_nomenclature.vendor_id == model.export.VendorName))
                 {
                     Export.AddRow();
-                    Export["Наименование"] = it.bd_nomenclature.name;
-                    Export["Количество"] = it.count;
-                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
-                    Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Дата"] = it.date;
+                    Export["Наименование"] = it.bd_nomenclature.name;
+                    Export["Ед. измерения"] = it.bd_nomenclature.bd_measurement.name;
+                    Export["Количество"] = it.count;
+                    Export["Сумма"] = it.count * it.bd_nomenclature.Price;
+                    Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;   
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время.csv");
             }
-            return View();
+
         }
     }
 }

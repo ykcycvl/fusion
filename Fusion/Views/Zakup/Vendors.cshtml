@@ -4,6 +4,8 @@
     ViewBag.Title = "Vendors";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
+<link rel="stylesheet" type="text/css" href="~/Content/tabsort0.css">
+<script type="text/javascript" src="~/Content/tabsort0.js"></script> @*скрипт для сортировки*@
 <script type="text/javascript" src="~/Content/filterTable.v1.0.min.js"></script> @*скрипт для фильтрации*@
 <style>
     thead {
@@ -70,6 +72,8 @@
                 <td>Телефон</td>
                 <td>E-mail</td>
                 <td>Отправить сообщение</td>
+                <td hidden></td>
+                <td hidden></td>
             </tr>
         </thead>
 
@@ -80,13 +84,13 @@
                     <td hidden>@Model.vendorList[i].name</td>
                     <td id="di">
                         @Model.vendorList[i].id
-                        @Html.HiddenFor(m => m.vendorList[i].id)
                     </td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].code, new { @style = "width: 50px;" })</td>
                     <td style="width: 500px;">@Html.TextBoxFor(m => m.vendorList[i].name, new { })</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].phones)</td>
                     <td>@Html.TextBoxFor(m => m.vendorList[i].INN)</td>
                     <td><a href="mailto:@Model.vendorList[i].INN" class="btn btn-success">Отправить</a></td>
+                    <td hidden>@Html.HiddenFor(m => m.vendorList[i].id)</td>
                 </tr>
             }
         </tbody>

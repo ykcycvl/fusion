@@ -44,6 +44,10 @@
     });
 </script>
 <h2>Заказы за @Model.Period.ToString("MM.yyyy")</h2>
+@if (LoginViewModel.IsMemberOf(Model.username, "ZakupUser"))
+{
+    <h3>@Model.orders.FirstOrDefault(m => m.bd_employee.domain_login == Model.username).bd_employee.bd_subdivision.name</h3>
+}
 @Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
 @using (Html.BeginForm("orders", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
@@ -59,7 +63,6 @@
             <tr>
                 <th>Сотрудник</th>
                 <th>Ресторан</th>
-                <th>Организация</th>
                 <th>Категория</th>
                 <th>Номенклатура</th>
                 <th>Поставщик</th>
@@ -102,6 +105,7 @@
                         @Html.HiddenFor(m => m.orders[i].id)  
                     </td>
                 </tr>
+
                 decimal? sum = 0;
                 if ((Model.orders[i].date.Value.Month + Model.orders[i].date.Value.Year) == Model.Period.Month + Model.Period.Year)
                 {
@@ -111,7 +115,6 @@
                         <tr style="background-color: @colorName; color: @textColor">
                             <td>@Model.orders[i].bd_employee.full_name</td>
                             <td>@Model.orders[i].bd_employee.bd_subdivision.name</td>
-                            <td>@Model.orders[i].bd_organization.name</td>
                             <td>@Model.orders[i].bd_category.name</td>
                             <td>@Model.orders[i].bd_nomenclature.name</td>
                             <td>@Model.orders[i].bd_nomenclature.bd_vendor.name</td>
@@ -130,10 +133,9 @@
                     }
                     else if (Model.username == Model.orders[i].bd_employee.domain_login)
                     {
-                        <tr style="background-color: @colorName">
+                        <tr style="background-color: @colorName; color: @textColor">
                             <td>@Model.orders[i].bd_employee.full_name</td>
                             <td>@Model.orders[i].bd_employee.bd_subdivision.name</td>
-                            <td>@Model.orders[i].bd_organization.name</td>
                             <td>@Model.orders[i].bd_category.name</td>
                             <td>@Model.orders[i].bd_nomenclature.name</td>
                             <td>@Model.orders[i].bd_nomenclature.bd_vendor.name</td>
@@ -144,6 +146,7 @@
                             <td>@Model.orders[i].date.Value.ToString("dd.MM.yyyy")</td>
                             <td>@Model.orders[i].date_end</td>
                             <td>@Model.orders[i].state</td>
+                            <td>@Model.orders[i].comment</td>
                             @Html.HiddenFor(m => m.orders[i].state)
                             @Html.HiddenFor(m => m.orders[i].id)
                             @Html.HiddenFor(m => m.orders[i].date_end)
@@ -154,4 +157,5 @@
         </tbody>
     </table>
 </div>
+    
 }
