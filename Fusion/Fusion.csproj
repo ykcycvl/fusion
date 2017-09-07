@@ -644,6 +644,7 @@
     </Compile>
     <Compile Include="Models\CRMViewModels.cs" />
     <Compile Include="Models\Callback\CallbackModels.cs" />
+    <Compile Include="Models\CsvExport.cs" />
     <Compile Include="Models\CUBEDIALECTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -4647,6 +4648,7 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <Content Include="Views\Zakup\Export.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
