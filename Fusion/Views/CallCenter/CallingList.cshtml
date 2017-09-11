@@ -25,6 +25,7 @@
         <table class="table table-striped table-bordered table-hover" style="font-size:10px!important">
             <tr>
                 <th>№ заказа</th>
+                <th>Сумма</th>
                 <th>Имя гостя</th>
                 <th>Ресторан</th>
                 <th>Адрес</th>
@@ -40,6 +41,7 @@
                 {
                     <tr>
                         <td>@o.order_num</td>
+                        <td style="text-align: right">@o.OrderSum</td>
                         <td>@o.full_name</td>
                         <td>@o.restaurant</td>
                         <td>@o.address</td>
