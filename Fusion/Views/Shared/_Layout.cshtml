@@ -125,6 +125,12 @@
             <div class="container body-content">
                 <ul class="breadcrumb">@Html.MvcSiteMap().SiteMapPath()</ul>
                 @RenderBody()
+                <hr />
+                <footer class="bd-footer text-muted">
+                    <div class="container">
+                        <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио.</p>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>

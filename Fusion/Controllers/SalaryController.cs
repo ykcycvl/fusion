@@ -75,7 +75,10 @@ namespace Fusion.Controllers
             model.GetOrganizationList(User.Identity.Name);
 
             if (!String.IsNullOrEmpty(number) && year != null)
+            {
                 model.GetDocument(number, (int)year, User.Identity.Name);
+
+            }
             else
                 if (!String.IsNullOrEmpty(orgname) && !String.IsNullOrEmpty(period))
                 {
