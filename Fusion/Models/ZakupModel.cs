@@ -38,7 +38,18 @@ namespace Fusion.Models
             public DateTime date { get; set; }
             public int RestaurantName { get; set; }
         }
+        public class vendor_for_send
+        {
+            public DateTime date_end { get; set; }
+            public DateTime date_from { get; set; }
+            public int id { get; set; }
+            public string name { get; set; }
+        }
+        public string vendor_name { get; set; }
+        public DateTime? date_end { get; set; }
+        public DateTime? date_from { get; set; }
         public ExportData export { get; set; }
+        public vendor_for_send vendor_for_send_item { get; set; }
         public List<items1> listItem { get; set; }
         public List<Models.bd_nomenclature> items { get; set; }
         public List<Models.bd_measurement> maesurements { get; set; }

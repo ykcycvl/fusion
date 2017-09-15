@@ -1,0 +1,57 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "OrdersList";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>@Model.vendor_name</h2>
+
+@using (Html.BeginForm("OrdersList", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    @Html.HiddenFor(m => m.vendor_name)
+<table class="table">
+    <thead>
+        <tr>
+            <th>Дата создания заявки</th>
+            <th>Дата прихода товара</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+            @Html.TextBoxFor(m => m.vendor_for_send_item.date_from, new { @type = "date", @required = "true", @class = "form-control" })
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.vendor_for_send_item.date_end, new { @type = "date", @required = "true", @class = "form-control" })
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <input type="submit" class="btn btn-primary" value="Сохранить" />
+<table class="table">
+    <thead>
+        <tr>
+            <th>Наименование</th>
+            <th>Ресторан</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Дата создания</th>
+            <th>Дата прихода</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var it in Model.orders.Where(m => m.bd_nomenclature.bd_vendor.name == Model.vendor_name).OrderByDescending(m => m.date))
+        {
+            <tr>
+                <td>@it.bd_nomenclature.name</td>
+                <td>@it.bd_employee.bd_subdivision.name</td>
+                <td>@it.count</td>
+                <td>@it.bd_nomenclature.Price</td>
+                <td>@it.date</td>
+                <td>@it.date_end</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+}

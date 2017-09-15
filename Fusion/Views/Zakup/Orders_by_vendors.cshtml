@@ -1,0 +1,25 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Orders_by_vendors";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<h2>Заявки по поставщикам</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Поставщики</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var it in Model.orders.GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key }))
+        {
+            <tr>
+                <td>
+                   @Html.ActionLink(it.name, "OrdersList", new { @vendor_name = it.name})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

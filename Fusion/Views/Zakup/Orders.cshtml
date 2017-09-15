@@ -3,8 +3,7 @@
     ViewBag.Title = "Orders";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
-<link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+
 <style>
     thead {
         background-color: #DBEAF9;
@@ -123,7 +122,14 @@
                             <td>@Model.orders[i].count</td>
                             <td>@sum</td>
                             <td>@Model.orders[i].date.Value.ToString("dd.MM.yyyy")</td>
-                            <td>@Html.TextBoxFor(m => m.orders[i].date_end, new { @type="date", @style = "color: black" })</td>
+                            @if (Model.orders[i].date_end != null)
+                            {
+                                <td>@Html.TextBoxFor(m => m.orders[i].date_end, new { @type = "date", @style = "color: black", @Value = Model.orders[i].date_end.Value.ToString("yyyy-MM-dd") })</td>
+                            }
+                            else
+                            {
+                                <td>@Html.TextBoxFor(m => m.orders[i].date_end, new { @type = "date", @style = "color: black" })</td>
+                            }
                             <td>@Html.DropDownListFor(m => m.orders[i].state, Model.stateSelectList, new { @style = "color: " + textColor + "; background-color:" + colorName + "" })</td>
                             <td>@Html.TextAreaFor(m => m.orders[i].comment, new { @style = "color: black" })</td>
                             @Html.HiddenFor(m => m.orders[i].state)

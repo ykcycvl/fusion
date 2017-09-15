@@ -134,7 +134,7 @@ namespace Fusion.Controllers
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;  
                 }
-                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + ".csv");
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для "+ model.export.VendorName +".csv");
             }
             else
             {
@@ -149,9 +149,47 @@ namespace Fusion.Controllers
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;   
                 }
-                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время.csv");
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время для " + model.export.VendorName + ".csv");
             }
 
+        }
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        public ActionResult Orders_by_vendors(int? vendor_id)
+        {
+            ZakupModel model = new ZakupModel();
+            if (model.date_from == null)
+            {
+                model.date_from = DateTime.Today;
+            }
+            model.getVendors();
+            model.getOrders();
+            return View(model);
+        }
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        public ActionResult OrdersList(string vendor_name, DateTime? date_from)
+        {
+            ZakupModel model = new ZakupModel();
+            model.vendor_name = vendor_name;
+            model.date_from = date_from;
+            model.getVendors();
+            model.getNomenclatures();
+            model.getOrders();
+            return View(model);
+        }
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [HttpPost]
+        public ActionResult OrdersList(ZakupModel model) 
+        {
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            model.vendor_for_send_item.name = model.vendor_name;
+            foreach (var it in model.list.bd_order.Where(m => m.bd_nomenclature.bd_vendor.name == model.vendor_for_send_item.name && m.date == model.vendor_for_send_item.date_from))
+            {
+                it.date_end = model.vendor_for_send_item.date_end;
+            }
+            model.list.SaveChanges();
+            return Redirect("~/Zakup/Orders_by_vendors");
         }
     }
 }
