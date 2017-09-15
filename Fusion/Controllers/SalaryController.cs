@@ -146,7 +146,7 @@ namespace Fusion.Controllers
             model.GetEmployeesDetentionsType(User.Identity.Name);
             return View();
         }*/
-        [MyAuthorize(Roles = "VegaCMAdmin, ZUP")]
+        [MyAuthorize(Roles = "SuperAdmin")]
         public ActionResult Rates(string orgname, string period)
         {
             SalaryModels.Vega1CWS.EmployeesRateModel model = new SalaryModels.Vega1CWS.EmployeesRateModel();
@@ -163,6 +163,7 @@ namespace Fusion.Controllers
             return View(model);
         }
         [HttpPost]
+        [MyAuthorize(Roles = "SuperAdmin")]
         public ActionResult Rates(SalaryModels.Vega1CWS.EmployeesRateModel model)
         {
             model.Save(User.Identity.Name);
