@@ -13,6 +13,7 @@
     string aadsum = "";
     string totalaccsum = "";
     string totaldetsum = "";
+    Decimal topaysum = 0;
     Decimal acsum = 0;
     Decimal detsum = 0;
     string rules = "";
@@ -22,7 +23,7 @@
     
     foreach (var subdivision in Model.Subdivisions)
     {
-        TableData += "{ id: \"sub" + subdivision.FullName + "\", Position: \"" + subdivision.FullName + "\", $css:\"subhighlight\"";
+        TableData += "{ id: \"sub" + subdivision.FullName + "\", subdiv: \"" + subdivision.FullName + "\", $css:\"subhighlight\"";
 
         if (subdivision.Employees != null)
         {
@@ -30,15 +31,22 @@
             {
                 foreach (var a in e.Accruals)
                 {
-                    TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)) + "\"";
-                    acsum += subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum));
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum))) + "\"";
+
+                    if (a.Code.Trim() != "SALDO")
+                    {
+                        acsum += Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)));
+                    }
+
+                    topaysum += Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)));
                     rules += "\"_ACCCODE_" + a.Code.Trim() + "\":IsNumber,";
                 }
 
                 foreach (var d in e.Detentions)
                 {
-                    TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)) + "\"";
-                    detsum += subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum));
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum))) + "\"";
+                    detsum += Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
+                    topaysum -= Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
                     rules += "\"_DETCODE_" + d.Code.Trim() + "\":IsNumber,";
                 }
                 
@@ -52,14 +60,14 @@
         {
             accColumns = "";
             detColumns = "";
-            aadsum = "{ id: 'aadsum', header: 'Сумма к выдаче', adjust: true, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), css:\"itogcss\", math: '";
+            aadsum = "{ id: 'aadsum', header: 'Сумма к выдаче', adjust: true, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogcss\", math: '";
             totaldetsum = "{ id: 'totaldetsum', header: 'Итого удержано', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogdetcss\", math: '";
             totalaccsum = "{ id: 'totalaccsum', header: 'Итого начислено', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogacccss\", math: '";
             j++;
             TableData += "{ Code: \"" + e.Code + "\", Organization: \""
                 + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
                 + Model.DocNumber + "\", Date: \"" + Model.Date.ToString("yyyy-MM-dd") + "\", Position: \""
-                + e.Position + "\", FullName: \""
+                + e.Position + "\", subdiv: \"" + subdivision.FullName + "\", FullName: \""
                 + e.FullName + "\", Rate: \"" + e.Rate + "\", Hours: \"" + e.Hours + "\"";
 
             foreach (var a in e.Accruals)
@@ -77,11 +85,15 @@
 
                 if (a.Sum != 0)
                 {
-                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + a.Sum + "\"";
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + Math.Truncate(a.Sum).ToString() + "\"";
+                }
+
+                if (a.Code.Trim() != "SALDO")
+                {
+                    totalaccsum += " + [$r, _ACCCODE_" + a.Code.Trim() + "]";
                 }
 
                 aadsum += " + [$r, _ACCCODE_" + a.Code.Trim() + "]";
-                totalaccsum += " + [$r, _ACCCODE_" + a.Code.Trim() + "]";
             }
 
             foreach (var d in e.Detentions)
@@ -99,7 +111,7 @@
 
                 if (d.Sum != 0)
                 {
-                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + d.Sum + "\""; 
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + Math.Truncate(d.Sum).ToString() + "\""; 
                 }
                 
                 aadsum += " - [$r, _DETCODE_" + d.Code.Trim() + "]";
@@ -142,7 +154,7 @@
                     </tr>
                     <tr>
                         <td style="text-align:left">Итого к выдаче:</td>
-                        <td style="text-align:right"><b>@((acsum - detsum).ToString("N", numberFormatInfo)) руб.</b></td>
+                        <td style="text-align:right"><b>@topaysum.ToString("N", numberFormatInfo) руб.</b></td>
                     </tr>
                 </tbody>
             </table>
@@ -306,47 +318,73 @@
     webix.ready(function () {
         grid = webix.ui({
             container: "tabl",
-            id: "grid",
-            view: "datatable",
-            leftSplit: 8,
-            rowHeight: 23,
-            padding: 1,
-            headermenu: true,
-            resizeColumn: true,
-            columns: [
-              { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
-              { id: "DocNumber", header: "DocNumber", hidden: "true" },
-              { id: "Period", header: "Period", hidden: "true" },
-              { id: "Organization", header: "Organization", hidden: "true" },
-              { id: "Code", header: "Code", hidden: "true" },
-              { id: "Position", header: "Должность", width: 130 },
-              { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 210 },
-              { id: "Rate", header: "Оклад", width: 60 },
-              { id: "Hours", header: "Итого часы", css:"readonly", width: 50 },
-              @Html.Raw(accColumns)
-              @Html.Raw(totalaccsum)
-              @Html.Raw(detColumns)
-              @Html.Raw(totaldetsum)
-              @Html.Raw(aadsum)
-            ],
-            rules:{
-                @Html.Raw(rules)
-            },
-            spans: true,
-            data: {
-                data: [
-                @Html.Raw(TableData)
-                ]
-            },
-            editable: true,
-            select: "cell",
-            multiselect: true,
-            blockselect: true,
-            clipboard: "block",
-            navigation: "true",
-            editaction: "dblclick",
-            height: 500,
-            math: true
+            rows: [
+				{
+				    id: "grid",
+                    view: "datatable",
+                    leftSplit: 9,
+                    rowHeight: 23,
+                    padding: 1,
+                    headermenu: true,
+                    resizeColumn: true,
+                    columns: [
+                      { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
+                      { id: "DocNumber", header: "DocNumber", hidden: "true" },
+                      { id: "Period", header: "Period", hidden: "true" },
+                      { id: "Organization", header: "Organization", hidden: "true" },
+                      { id: "Code", header: "Code", hidden: "true" },
+                      { id: "subdiv", header: [{ text: "Подразд." }, { content: "selectFilter" }], width: 80 },
+                      { id: "Position", header: "Должность", width: 130 },
+                      { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 210 },
+                      { id: "Rate", header: "Оклад", width: 60 },
+                      { id: "Hours", header: "Итого часы", css:"readonly", width: 50 },
+                      @Html.Raw(accColumns)
+                      @Html.Raw(totalaccsum)
+                      @Html.Raw(detColumns)
+                      @Html.Raw(totaldetsum)
+                      @Html.Raw(aadsum)
+                    ],
+                    rules:{
+                        @Html.Raw(rules)
+                    },
+                    spans: true,
+                    data: {
+                        data: [
+                        @Html.Raw(TableData)
+                        ]
+                    },
+                    editable: true,
+                    select: "cell",
+                    multiselect: true,
+                    blockselect: true,
+                    clipboard: "block",
+                    navigation: "true",
+                    editaction: "dblclick",
+                    height: 500,
+                    math: true
+				},
+				{
+				    view: "form",
+				    css: "toolbar",
+				    paddingY: 5,
+				    paddingX: 10,
+				    cols:[
+						{
+						    view: "label", label: "Экспорт в Excel"
+						},
+						{
+						    view: "button", label: "Скачать", width: 95, click:function(){
+						        webix.toExcel($$("grid"), {
+						            filename: "Ведомость",
+						            name: "Ведомость",
+						            spans:true
+						        });
+						    }
+						}
+				    ]
+
+				}
+            ]
         });
 
         webix.UIManager.addHotKey("any", function (view) {

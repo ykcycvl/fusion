@@ -251,7 +251,7 @@ namespace Fusion.Controllers
             }
         }
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
-        public ActionResult AddTransaction(string CardCode, Decimal bp)
+        public ActionResult AddTransaction(string CardCode, Decimal bp, string accountTypeId)
         {
             RKCRM.Transaction model = new RKCRM.Transaction();
             model.transaction = new RKCRM.Transaction.TransactionInfo();
@@ -261,7 +261,7 @@ namespace Fusion.Controllers
             model.transaction.Transaction_Time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " +10:00";
             model.transaction.External_Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             model.transaction.Card_Code = CardCode;
-            model.transaction.Account_Type_ID = "16";
+            model.transaction.Account_Type_ID = accountTypeId;
 
             if (bp >= 0)
             {

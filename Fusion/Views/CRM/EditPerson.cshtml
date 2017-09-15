@@ -55,7 +55,7 @@
         $("#AddTransactionDialog").dialog({
             buttons: {
                 "ОК": function () {
-                    $("#TransactionResult").load("/CRM/AddTransaction", "CardCode=" + $("#CardCode").val() + "&bp=" + $("#BP").val());
+                    $("#TransactionResult").load("/CRM/AddTransaction", "CardCode=" + $("#CardCode").val() + "&bp=" + $("#BP").val() + "&accountTypeId=" + $("#accountTypeId").val());
                     $(".ui-dialog-buttonpane button:contains('ОК')").button("disable");
                 },
                 "Закрыть": function () {
@@ -280,13 +280,14 @@
                                         @Model.Holder.Accounts[i].Balance
                                     </td>
                                     <td>
-                                        @if (@Model.Holder.Accounts[i].Account_Type_ID == "16")
+                                        @if (Model.Holder.Accounts[i].Account_Type_ID == "16" || Model.Holder.Accounts[i].Account_Type_ID == "72")
                                         {
                                             <a href="#" id="AddTransactionBtn">Пополнение/Списание</a>
 
                                             <script>
                                                 $(function () {
                                                     $("#AddTransactionBtn").click(function () {
+                                                        $("#accountTypeId").val(@Model.Holder.Accounts[i].Account_Type_ID);
                                                         $("#AddTransactionDialog").dialog("open");
                                                         return false;
                                                     });
@@ -312,6 +313,7 @@
     <div class="form-horizontal">
         <div id="AddTransactionDialog" title="Ручное списание/начисление баллов">
             <div class="form-group">
+                <input type="hidden" name="accountTypeId" id="accountTypeId" />
                 <div class="col-md-10">
                     <label>Выберите карту</label>
                     <select id="CardCode">

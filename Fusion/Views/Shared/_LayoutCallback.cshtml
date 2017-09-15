@@ -41,8 +41,10 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year – приложение ASP.NET</p>
+        <footer class="bd-footer text-muted">
+            <div class="container">
+                <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио.</p>
+            </div>
         </footer>
     </div>
 

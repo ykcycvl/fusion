@@ -29,7 +29,7 @@
 
     foreach (var subdivision in Model.Subdivisions)
     {
-        TableData += "{ id: \"sub" + subdivision.FullName + "\", Position: \"" + subdivision.FullName + "\", $css:\"subhighlight\" },\r\n";
+        TableData += "{ id: \"sub" + subdivision.FullName + "\", subdiv: \"" + subdivision.FullName + "\", $css:\"subhighlight\" },\r\n";
 
         foreach (var e in subdivision.Employees)
         {
@@ -37,7 +37,7 @@
             TableData += "{ Code: \"" + e.Code + "\", Organization: \""
                 + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
                 + Model.DocNumber + "\", Date: \"" + Model.Date.ToString("yyyy-MM-dd") + "\", Position: \""
-                + e.Position + "\", FullName: \""
+                + e.Position + "\", subdiv: \"" + subdivision.FullName + "\", FullName: \""
                 + e.FullName + "\", Rate: \"" + e.Rate + "\"";
 
             for (int i = 0; i < e.TimeSheet.Count; i++)
@@ -51,7 +51,7 @@
 
     foreach (var subdivision in Model.Subdivisions)
     {
-        SpansData += "[ \"sub" + subdivision.Code + "\", \"Position\", 2, 1, null, \"subhighlight\" ],\r\n";
+        SpansData += "[ \"sub" + subdivision.Code + "\", \"subdiv\", 2, 1, null, \"subhighlight\" ],\r\n";
     }
 }
 
@@ -189,7 +189,7 @@
             container: "tabl",
             id: "grid",
             view: "datatable",
-            leftSplit: 10,
+            leftSplit: 11,
             rowHeight: 23,
             padding: 5,
             columns: [
@@ -199,7 +199,8 @@
               { id: "Period", header: "Period", hidden: "true" },
               { id: "Organization", header: "Organization", hidden: "true" },
               { id: "Code", header: "Code", hidden: "true" },
-              { id: "Position", header: "Должность", width: 150 },
+              { id: "subdiv", header: [{ text: "Подразд." }, { content: "selectFilter" }], width: 80 },
+              { id: "Position", header: "Должность", width: 150},
               { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 230 },
               { id: "Rate", header: "Оклад" },
               { id: "hours", header: "Итого", width: 50, math: "[$r,d1] + [$r,d2]+ [$r,d3]+ [$r,d4]+ [$r,d5]+ [$r,d6]+ [$r,d7]+ [$r,d8]+ [$r,d9]+ [$r,d10]+ [$r,d11]+ [$r,d12]+ [$r,d13]+ [$r,d14]+ [$r,d15]+ [$r,d16]+ [$r,d17]+ [$r,d18]+ [$r,d19]+ [$r,d20]+ [$r,d21]+ [$r,d22]+ [$r,d23]+ [$r,d24]+ [$r,d25]+ [$r,d26]+ [$r,d27]+ [$r,d28]+ [$r,d29]+ [$r,d30]+ [$r,d31]" },

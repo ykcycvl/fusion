@@ -71,6 +71,8 @@ namespace Fusion.Models.CallCenter
             public DateTime end_dt { get; set; }
             [DisplayName("Номер заказа")]
             public string order_num { get; set; }
+            [DisplayName("Сумма")]
+            public Decimal OrderSum { get; set; }
             [DisplayName("Имя гостя")]
             public string full_name { get; set; }
             [DisplayName("Ресторан")]
@@ -136,7 +138,7 @@ namespace Fusion.Models.CallCenter
                 fbcon.Open();
 
                 FbCommand fbcmd = new FbCommand(String.Format(@"select o.order_id, o.work_time, o.status, o.dlv_type, o.order_num, c.l_name, c.f_name, c.m_name, p.phone_number,
-                                                    s.street_name, a.house, a.building, a.flat, r.restaurant_name, o.adv_info
+                                                    s.street_name, a.house, a.building, a.flat, r.restaurant_name, o.adv_info, o.summ_wcd
                                                 FROM
                                                 dlv_orders o
                                                 INNER JOIN dlv_restaurants r ON o.restaurant_id = r.restaurant_id
@@ -165,6 +167,9 @@ namespace Fusion.Models.CallCenter
 
                         if (rdr["adv_info"] != DBNull.Value)
                             order.adv_info = Encoding.GetEncoding(1251).GetString((byte[])rdr["adv_info"]);
+
+                        if (rdr["summ_wcd"] != DBNull.Value)
+                            order.OrderSum = Convert.ToDecimal(rdr["summ_wcd"]);
 
                         Orders.Add(order);
                     }
