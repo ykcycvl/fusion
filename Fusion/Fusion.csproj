@@ -4649,6 +4649,8 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Views\Zakup\Export.cshtml" />
+    <Content Include="Views\Zakup\OrdersList.cshtml" />
+    <Content Include="Views\Zakup\Orders_by_vendors.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
