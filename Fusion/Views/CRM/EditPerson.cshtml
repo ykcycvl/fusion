@@ -282,11 +282,11 @@
                                     <td>
                                         @if (Model.Holder.Accounts[i].Account_Type_ID == "16" || Model.Holder.Accounts[i].Account_Type_ID == "72")
                                         {
-                                            <a href="#" id="AddTransactionBtn">Пополнение/Списание</a>
+                                            <a href="#" id="AddTransactionBtn" class="addbpbtn">Пополнение/Списание</a>
 
                                             <script>
                                                 $(function () {
-                                                    $("#AddTransactionBtn").click(function () {
+                                                    $(".addbpbtn").click(function () {
                                                         $("#accountTypeId").val(@Model.Holder.Accounts[i].Account_Type_ID);
                                                         $("#AddTransactionDialog").dialog("open");
                                                         return false;

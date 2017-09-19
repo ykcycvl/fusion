@@ -13,14 +13,17 @@
     string aadsum = "";
     string totalaccsum = "";
     string totaldetsum = "";
+    string totalRow = "";
     Decimal topaysum = 0;
     Decimal acsum = 0;
     Decimal detsum = 0;
     string rules = "";
-
+    List<Fusion.ZupWS.Accrual> accList = new List<Fusion.ZupWS.Accrual>();
+    List<Fusion.ZupWS.Detention> detList = new List<Fusion.ZupWS.Detention>();
+    
     var numberFormatInfo = new System.Globalization.CultureInfo("en-Us", false).NumberFormat;
     numberFormatInfo.NumberGroupSeparator = " ";
-    
+
     foreach (var subdivision in Model.Subdivisions)
     {
         TableData += "{ id: \"sub" + subdivision.FullName + "\", subdiv: \"" + subdivision.FullName + "\", $css:\"subhighlight\"";
@@ -31,6 +34,13 @@
             {
                 foreach (var a in e.Accruals)
                 {
+                    Fusion.ZupWS.Accrual accrl = accList.FirstOrDefault(p => p.Code == a.Code);
+
+                    if (accrl == null)
+                    {
+                        accList.Add(new Fusion.ZupWS.Accrual() { Code = a.Code, Name = a.Name, Edit = a.Edit, Sum = 0 }); 
+                    }
+
                     TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum))) + "\"";
 
                     if (a.Code.Trim() != "SALDO")
@@ -44,6 +54,13 @@
 
                 foreach (var d in e.Detentions)
                 {
+                    Fusion.ZupWS.Detention detntn = detList.FirstOrDefault(p => p.Code == d.Code);
+
+                    if (detntn == null)
+                    {
+                        detList.Add(new Fusion.ZupWS.Detention() { Code = d.Code, Name = d.Name, Edit = d.Edit, Sum = 0 }); 
+                    }
+                    
                     TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum))) + "\"";
                     detsum += Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
                     topaysum -= Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
@@ -125,10 +142,24 @@
         }
     }
 
-    foreach (var subdivision in Model.Subdivisions)
+    totalRow += "{ id: \"TotalRow\", subdiv: \"ИТОГО\", $css:\"subhighlight\" ";
+    
+    foreach (var a in accList)
     {
+        totalRow += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Accruals.Where(p2 => p2.Code == a.Code).Sum(p3 => p3.Sum)))) + "\"";
+    }
+
+    foreach (var d in detList)
+    {
+        totalRow += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Accruals.Where(p2 => p2.Code == d.Code).Sum(p3 => p3.Sum)))) + "\"";
+    }
+    
+    foreach (var subdivision in Model.Subdivisions)
+    {        
         SpansData += "[ \"sub" + subdivision.FullName + "\", \"Position\", 2, 1, null, \"subhighlight\" ],\r\n";
     }
+    
+    TableData = totalRow + " },\r\n" + TableData;
 }
 
 <link href="~/Scripts/css/fixed_table_rc.css" rel="stylesheet" />
