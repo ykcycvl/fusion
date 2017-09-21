@@ -308,7 +308,7 @@ namespace Fusion.Controllers
         {
             try
             {
-                if (model.SendMail())
+                if (model.Prepare())
                     return RedirectToAction("MailSended");
                 else
                     return View(model);
