@@ -30,7 +30,7 @@ namespace Fusion.Controllers
             model.getNomenclatures();
             return View(model);
         }
-
+        /*
         [HttpPost]
         public ActionResult Nomenclatures(ZakupModel model)
         {
@@ -41,6 +41,7 @@ namespace Fusion.Controllers
             //model.getList();
             return View(model);
         }
+         * */
         [MyAuthorize(Roles = "ZakupAdmin")]
         public ActionResult Vendors()
         {
@@ -121,6 +122,7 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             CsvExport Export = new CsvExport();
+            model.export.VendorName_Name = model.vendorList.FirstOrDefault(m => m.id == model.export.VendorName).name;
             if (model.export.date != null && model.export.date.Year.ToString() != "1")
             {
                 foreach (var it in model.orders.Where(c => c.bd_nomenclature.vendor_id == model.export.VendorName && c.date.Value.Year + c.date.Value.Month == model.export.date.Year + model.export.date.Month))
@@ -134,7 +136,7 @@ namespace Fusion.Controllers
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;  
                 }
-                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для "+ model.export.VendorName +".csv");
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для "+ model.export.VendorName_Name +".csv");
             }
             else
             {
@@ -149,7 +151,7 @@ namespace Fusion.Controllers
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;   
                 }
-                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время для " + model.export.VendorName + ".csv");
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время для " + model.export.VendorName_Name + ".csv");
             }
 
         }
@@ -190,6 +192,32 @@ namespace Fusion.Controllers
             }
             model.list.SaveChanges();
             return Redirect("~/Zakup/Orders_by_vendors");
+        }
+        
+        [HttpPost]
+        public ContentResult SaveNomenclatureAjax(string data)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            try
+            {
+                if (model.SaveDocument(data))
+                {
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"" }";
+                }
+                else
+                {
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+                }
+            }
+           catch (Exception ex) 
+           {
+               result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+           }
+            return result;
         }
     }
 }

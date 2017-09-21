@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Jitbit.Utils;
+using System.Web.Script.Serialization;
 
 
 namespace Fusion.Models
@@ -27,8 +28,11 @@ namespace Fusion.Models
         {
             public string name { get; set; }
             public string vendor_name { get; set; }
-            public string measurement { get; set; }
-            public string category { get; set; }
+            public int vendor_id { get; set; }
+            public string measurement_name { get; set; }
+            public int measurement_id { get; set; }
+            public string category_name { get; set; }
+            public int category_id { get; set; }
             public int id { get; set; }
             public decimal? price { get; set; }
         }
@@ -37,6 +41,7 @@ namespace Fusion.Models
             public int VendorName { get; set; }
             public DateTime date { get; set; }
             public int RestaurantName { get; set; }
+            public string VendorName_Name { get; set; }
         }
         public class vendor_for_send
         {
@@ -262,6 +267,66 @@ namespace Fusion.Models
                 list.bd_order.FirstOrDefault(m => m.id == it.id).comment = it.comment;
             }
             list.SaveChanges();
+        }
+        public bool SaveDocument(string JSONString)
+        {
+            var serializer = new JavaScriptSerializer();
+            var heapdata = serializer.DeserializeObject(JSONString);
+            List<items1> listItems = new List<items1>();
+            foreach (var undata in (Array)heapdata)
+            {
+                var r = (Dictionary<string, object>)undata;
+
+                object id = null;
+                r.TryGetValue("id", out id);
+                object name = null;
+                r.TryGetValue("name", out name);
+                object vendor_name = null;
+                r.TryGetValue("vendor_name", out vendor_name);
+                object category_name = null;
+                r.TryGetValue("category_name", out category_name);
+                object measurement_name = null;
+                r.TryGetValue("measurement_name", out measurement_name);
+                object price = null;
+                r.TryGetValue("price", out price);
+
+                items1 item = new items1();
+                item.id = Int32.Parse(id.ToString());
+                item.name = name.ToString();
+                item.price = Int32.Parse(price.ToString());
+                item.vendor_name = vendor_name.ToString();
+                item.vendor_id = vendorList.FirstOrDefault(m => m.name == item.vendor_name).id;
+                item.measurement_name = measurement_name.ToString();
+                item.measurement_id = maesurements.FirstOrDefault(m => m.name == item.measurement_name).id;
+                item.category_name = category_name.ToString();
+                item.category_id = categ.FirstOrDefault(m => m.name == item.category_name).id;
+                listItems.Add(item);
+            }
+            foreach (var p in listItems)
+            {
+                if (p.id == 874)
+                {
+                    int i = 0;
+                    i++;
+                }
+                if (list.bd_nomenclature.Where(m => m.id == p.id).Count() != 0)
+                {
+                    if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id)
+                    {
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).name = p.name;
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).Price = p.price;
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).vendor_id = p.vendor_id;
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).measurement_id = p.measurement_id;
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).category_id = p.category_id;
+                    }
+                }
+                else
+                {
+                    list.bd_nomenclature.Add(new bd_nomenclature { name = p.name, vendor_id = p.vendor_id, Price = p.price, id = p.id, category_id = p.category_id, measurement_id = p.measurement_id });
+                }
+            }
+            list.SaveChanges();
+          return true;
         }
     }
 }

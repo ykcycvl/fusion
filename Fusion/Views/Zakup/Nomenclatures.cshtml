@@ -1,139 +1,114 @@
 ﻿@model Fusion.Models.ZakupModel
 
-
 @{
-    ViewBag.Title = "Nomenclatures";
+    ViewBag.Title = "Номенклатуры";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    string TableData = "";
+    string selectVendor = "";
+    string selectcategory = "";
+    string selectMeasurement = "";
+    foreach (var it in Model.items)
+    {
+        TableData += "{id: \"" + it.id + "\", vendor_id: \"" + it.vendor_id + "\", name: \"" + it.name.Replace('"', ' ').Trim() + "\", vendor_name: \"" + it.bd_vendor.name + "\", category_name: \"" + it.bd_category.name + "\", measurement_name: \"" + it.bd_measurement.name + "\",price: \"" + it.Price + "\",";
+        TableData += "}, \r\n";
+    }
+    foreach (var it in Model.vendorList)
+    {
+        selectVendor += " \"" + it.name + "\", ";
+    }
+    foreach (var it in Model.MeasurementSelectList)
+    {
+        selectMeasurement += " \"" + it.Text + "\",";
+    }
+    foreach (var it in Model.Categories)
+    {
+        selectcategory += " \"" + it.name + "\",";
+    }
 }
-<script type="text/javascript" src="~/Content/filterTable.v1.0.min.js"></script> @*скрипт для фильтрации*@
-
-<style>
-    thead {
-        background-color: #DBEAF9;
-    }
-
-    input[type="text"]:focus {
-        cursor: text;
-        outline: none;
-    }
-
-    input[type="text"] {
-        width: 100%;
-        padding: 0px;
-        outline: none !important;
-        border: 0px;
-        cursor: cell;
-    }
-</style>
-@{
-    var j = Model.items.Count() + 1;
-}
-<link href="~/Scripts/chosen.min.css" rel="stylesheet" />
-<script src="~/Scripts/chosen.jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        //Загрузочный экран
-        $('#loader').css('display', 'none');
-        //щикарные селекты со встроенным поиском
-        $(".chosen").chosen({
-            search_contains: true
-        });
-
-        var count = $('#rowsCount').val();
-        var tbody = document.getElementsByTagName('tbody')[0];
-        tbody = tbody.rows.length;
-        $('#addRow').click(function () {
-            count++;
-            vall = 1 + count;
-            var template = $('.records').first().clone()
-            template.find('input[type=text]').val(null)
-            template.find('#di').html(vall)
-            $.each(template.find('input[type=text]'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace('0', vall-1);
-                name = name.replace('0', vall-1);
-                $(this).attr('name', name);
-                $(this).attr('id', id)
-            });
-            $.each(template.find('input[type=hidden]'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace('0', vall-1);
-                name = name.replace('0', vall-1);
-                $(this).attr('name', name);
-                $(this).attr('id', id);
-                $(this).val(vall);
-            });
-            $.each(template.find('select'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace('0', vall-1);
-                name = name.replace('0', vall-1);
-                $(this).attr('name', name);
-                $(this).attr('id', id)
-            });
-            $("date-picker").datepicker();
-            $('#mytable').append(template);
-        })
-    });
-</script>
-<h2>Номенклатуры</h2>
-<input  style="display: none;" id="rowsCount" value="@Model.list.bd_nomenclature.Count()"/>
-<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw; background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: block;z-index:9999;opacity:0.8;" id="loader">
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
     <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
 </div>
-@using (Html.BeginForm("Nomenclatures", "Zakup", FormMethod.Post, new { id = "Form" }))
-{
-    <div id="wrapper">
-        <table class="table table-bordered sortable" id="mytable">
-            <thead>
-                <tr>
-                    <th>ИД</th>
-                    <th>Наименование</th>
-                    <th>Категория</th>
-                    <th>Поставщик</th>
-                    <th width="168px">Единица измерения</th>
-                    <th width="100px">Цена</th>
-                </tr>
-            </thead>
 
-            <tbody id="target">
-                @for (int i = 0; i < Model.items.Count(); i++)
-                {
-                    Model.vendorName = Model.items[i].bd_vendor.name;
-                    Model.categoryName = Model.items[i].bd_category.name;
-                    Model.measurementName = Model.items[i].bd_measurement.name;
-                    <tr class="records">
-                        <td hidden>@Model.items[i].name</td>
-                        <td id="di">@Model.items[i].id</td>
-                        <td>@Html.TextBoxFor(m => m.items[i].name)</td>
-                        <td>@Html.DropDownListFor(m => m.items[i].category_id, Model.CategoriesSelectList, new { @class = "form-control" })</td>
-                        <td>@Html.DropDownListFor(m => m.items[i].vendor_id, Model.vendorsSelectList, new { @class = "form-control chosen" })</td>
-                        <td>@Html.DropDownListFor(m => m.items[i].measurement_id, Model.MeasurementSelectList, new { @class = "form-control chosen" })</td>
-                        <td>
-                            @Html.HiddenFor(m => m.items[i].id)
-                            @Html.TextBoxFor(m => m.items[i].Price)
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <input type="button" value="Добавить товар" class="btn btn-primary"  id="addRow"/>
-<input type="submit" value="Сохранить" class="btn btn-success" />
-}
-@** скрипт для фильтров *@
+<h2>Test</h2>
+<div id="tabl"></div>
+<div id="paging_here"></div>
+<input type="button" onclick="Save()" class="btn btn-success" value="Сохранить" />
+<input type="button" class="btn btn-primary" value="Добавить строку" onclick="addRow()" />
 <script>
-    filterTable(document.getElementById("target"), {
-        0: new filterTable.Filter(document.getElementById("namef"),
-        /* Коллбэк ф-ция валидации */
-        function (value, filters, i) {
-            var c_value = value.toLowerCase(),
-                f_value = filters[i].value.toLowerCase();
-            return c_value.indexOf(f_value) === 0;
-        },
-        "onkeyup"
-    )
+    webix.ready(function () {
+        grid = webix.ui({
+            container: "tabl",
+            rows: [
+				{
+				    id: "grid",
+				    view: "datatable",
+				    padding: 1,
+				    resizeColumn: true,
+				    columns: [
+                      { id: "id", sort: "int" },
+                      { id: "vendor_id", hidden: "true" },
+                      { id: "name", header: ["Наименование", { content: "textFilter" }], editor: "text", width: 300, sort: "string" },
+                      { id: "vendor_name", header: ["Поставщик", { content: "textFilter" }], editor: "select", options: [@Html.Raw(selectVendor)], width: 300, sort: "string" },
+                      { id: "category_name", header: "Категория", editor: "select", options: [@Html.Raw(selectcategory)], width: 300 },
+                      { id: "measurement_name", header: "Ед. измерения", editor: "select", options: [@Html.Raw(selectMeasurement)], width: 100 },
+                      { id: "price", header: "Цена", editor: "text", width: 100 }
+				    ],
+				    data: {
+				        data: [
+                        @Html.Raw(TableData)
+				        ]
+				    },
+				    editable: true,
+				    select: "cell",
+				    multiselect: true,
+				    blockselect: true,
+				    clipboard: "block",
+				    navigation: "true",
+				    editaction: "dblclick",
+				    autoheight: true,
+				    autowidth: true,
+				    height: 500,
+				    math: true,
+				    yCount: 19, scrollY: false,
+				    pager: {
+				        template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()}",
+				        container: "paging_here",
+				        size: 19,
+				        group: 10
+				    }
+				},
+            ]
+
+        });
     });
+    function Save() {
+
+        var grid = $$("grid");
+        var filter = grid.getFilter("name").value;
+        var filter1 = grid.getFilter("vendor_name").value;
+        if (filter != "") {
+            alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение номенклатур..." });
+        $("#loader").show();
+        var grid = $$("grid");
+        var serializedData = grid.serialize();
+        webix.ajax().post("/Zakup/SaveNomenclatureAjax", { data: serializedData }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result);
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+    function addRow() {
+        var rowCount = $$("grid").count();
+        var row_id = $$("grid").add({ id: rowCount + 1 });
+        $$("grid").editRow(row_id);
+    }
 </script>

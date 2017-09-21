@@ -3,8 +3,27 @@
     ViewBag.Title = "OrdersList";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
-
+<link href="~/Scripts/chosen.min.css" rel="stylesheet" />
+<script src="~/Scripts/chosen.jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#export_VendorName").chosen({
+            search_contains: true
+        });
+    });
+</script>
 <h2>@Model.vendor_name</h2>
+@using (Html.BeginForm("Export", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    <table class="table table-stripped table-bordered">
+        <tr>
+            <td>@Html.DropDownListFor(m => m.export.VendorName, Model.vendorsSelectList, new { @class = "form-control col-md-6" })</td>
+            <td>@Html.TextBoxFor(m => m.export.date, new { @type = "date", @class = "form-control col-md-6" })</td>
+        </tr>
+    </table>
+    <input type="submit" value="Экспорт" class="btn btn-danger" />
+    @Html.ActionLink("Обратно к списку", "Orders_by_vendors", new { }, new { @class = "btn btn-success" })
+}
 
 @using (Html.BeginForm("OrdersList", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
@@ -28,7 +47,7 @@
     </tbody>
 </table>
     <input type="submit" class="btn btn-primary" value="Сохранить" />
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Наименование</th>
