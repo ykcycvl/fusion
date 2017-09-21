@@ -151,7 +151,7 @@
 
     foreach (var d in detList)
     {
-        totalRow += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Accruals.Where(p2 => p2.Code == d.Code).Sum(p3 => p3.Sum)))) + "\"";
+        totalRow += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Detentions.Where(p2 => p2.Code == d.Code).Sum(p3 => p3.Sum)))) + "\"";
     }
     
     foreach (var subdivision in Model.Subdivisions)

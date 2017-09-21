@@ -58,6 +58,8 @@
         <AssociationConnector Association="FusionDBModels.FK_sb_problems_mgr_id" />
         <AssociationConnector Association="FusionDBModels.FK_sb_problems_restaurant_id" />
         <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMSended" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="2.75" PointY="17.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

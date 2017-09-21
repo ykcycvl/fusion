@@ -923,7 +923,7 @@ Content-Length: {0}
         {
             return db.CRMSegment.FirstOrDefault(p => p.id == id);
         }
-        public bool SendMail()
+        public bool Prepare()
         {
             try
             {

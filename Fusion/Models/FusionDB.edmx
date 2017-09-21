@@ -133,6 +133,30 @@
           <Property Name="Creator" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="CRMSended">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="MailSubject" Type="text" Nullable="false" />
+          <Property Name="MailBody" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CRMToSend">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastUpdateDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="MailSubject" Type="text" Nullable="false" />
+          <Property Name="MailBody" Type="text" Nullable="false" />
+        </EntityType>
         <EntityType Name="host">
           <Key>
             <PropertyRef Name="id" />
@@ -604,6 +628,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bitrixUser" EntityType="Self.bitrixUser" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRMSegment" EntityType="Self.CRMSegment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRMSended" EntityType="Self.CRMSended" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CRMToSend" EntityType="Self.CRMToSend" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
@@ -1344,6 +1370,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="sb_problems" EntitySet="sb_problems" />
           </AssociationSet>
           <EntitySet Name="CRMSegment" EntityType="FusionDBModels.CRMSegment" />
+          <EntitySet Name="CRMSended" EntityType="FusionDBModels.CRMSended" />
+          <EntitySet Name="CRMToSend" EntityType="FusionDBModels.CRMToSend" />
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1447,6 +1475,30 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creator" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CRMSended">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="MailSubject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MailBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CRMToSend">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastUpdateDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="MailSubject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MailBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1785,6 +1837,32 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="SegmentQuery" ColumnName="SegmentQuery" />
                 <ScalarProperty Name="SegmentDescription" ColumnName="SegmentDescription" />
                 <ScalarProperty Name="SegmentName" ColumnName="SegmentName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRMSended">
+            <EntityTypeMapping TypeName="FusionDBModels.CRMSended">
+              <MappingFragment StoreEntitySet="CRMSended">
+                <ScalarProperty Name="MailBody" ColumnName="MailBody" />
+                <ScalarProperty Name="MailSubject" ColumnName="MailSubject" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastUpdateDateTime" ColumnName="LastUpdateDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CRMToSend">
+            <EntityTypeMapping TypeName="FusionDBModels.CRMToSend">
+              <MappingFragment StoreEntitySet="CRMToSend">
+                <ScalarProperty Name="MailBody" ColumnName="MailBody" />
+                <ScalarProperty Name="MailSubject" ColumnName="MailSubject" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastUpdateDateTime" ColumnName="LastUpdateDateTime" />
+                <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
