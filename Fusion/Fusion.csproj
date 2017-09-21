@@ -642,6 +642,12 @@
     <Compile Include="Models\CRMSegment.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CRMSended.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CRMToSend.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CRMViewModels.cs" />
     <Compile Include="Models\Callback\CallbackModels.cs" />
     <Compile Include="Models\CsvExport.cs" />
