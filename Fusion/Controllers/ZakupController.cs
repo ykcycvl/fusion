@@ -219,5 +219,43 @@ namespace Fusion.Controllers
            }
             return result;
         }
+        public ActionResult TestOrders(string period)
+        {
+            ZakupModel model = new ZakupModel();
+            string name = User.Identity.GetUserName();
+            model.username = name;
+            if (period == null || period == "")
+                model.Period = DateTime.Today;
+            else
+                model.Period = DateTime.Parse(period);
+            model.getOrders();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult SaveOrdersAjax(string data)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getOrders();
+            try
+            {
+                if (model.SaveOrders(data))
+                {
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"" }";
+                }
+                else
+                {
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+            }
+            return result;
+        }
     }
 }
