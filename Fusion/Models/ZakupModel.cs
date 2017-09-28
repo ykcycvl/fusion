@@ -50,6 +50,15 @@ namespace Fusion.Models
             public int id { get; set; }
             public string name { get; set; }
         }
+        public class order
+        {
+            public int id { get; set; }
+            public DateTime date_start { get; set; }
+            public DateTime? date_end { get; set; }
+            public string comment { get; set; }
+            public string state { get; set; }
+            public int state_id { get; set; }
+        }
         public string vendor_name { get; set; }
         public DateTime? date_end { get; set; }
         public DateTime? date_from { get; set; }
@@ -268,6 +277,54 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        public bool SaveOrders(string JSONString)
+        {
+            var serializer = new JavaScriptSerializer();
+            var heapdata = serializer.DeserializeObject(JSONString);
+            List<order> listOrders = new List<order>();
+            foreach (var undata in (Array)heapdata)
+            {
+                var r = (Dictionary<string, object>)undata;
+
+                object id = null;
+                r.TryGetValue("id", out id);
+                object date_start = null;
+                r.TryGetValue("date_from", out date_start);
+                object date_end = null;
+                r.TryGetValue("date_end", out date_end);
+                object state = null;
+                r.TryGetValue("state", out state);
+                object comment = null;
+                r.TryGetValue("comment", out comment);
+
+                order order = new order();
+                order.id = Int32.Parse(id.ToString());
+                order.date_start = DateTime.Parse(date_start.ToString());
+                if (date_end == "")
+                {
+                    order.date_end = null;
+                }
+                else
+                {
+                    order.date_end = DateTime.Parse(date_end.ToString());
+                }
+                order.comment = comment.ToString();
+                order.state_id = states.FirstOrDefault(m => m.name == state.ToString()).id;
+                listOrders.Add(order);
+            }
+            foreach (var p in listOrders)
+            {
+                if (orders.FirstOrDefault(m => m.id == p.id).state != p.state_id || orders.FirstOrDefault(m => m.id == p.id).comment != p.comment || orders.FirstOrDefault(m => m.id == p.id).date_end != p.date_end) 
+                {
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).state = p.state_id;
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).comment = p.comment;
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).date_end = p.date_end;
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).date = p.date_start;
+                }
+            }
+            list.SaveChanges();
+            return true;
+        }
         public bool SaveDocument(string JSONString)
         {
             var serializer = new JavaScriptSerializer();
@@ -304,11 +361,6 @@ namespace Fusion.Models
             }
             foreach (var p in listItems)
             {
-                if (p.id == 874)
-                {
-                    int i = 0;
-                    i++;
-                }
                 if (list.bd_nomenclature.Where(m => m.id == p.id).Count() != 0)
                 {
                     if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id)
