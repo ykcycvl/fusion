@@ -183,7 +183,7 @@ namespace Fusion.Controllers
             list.Columns.Add("Должность", typeof(string));
             list.Columns.Add("Ф.И.О.", typeof(string));
             list.Columns.Add("Оклад", typeof(string));
-            list.Columns.Add("Часы", typeof(int));
+            list.Columns.Add("Часы", typeof(string));
             list.Columns.Add("Начислено", typeof(string));
             list.Columns.Add("Удержано", typeof(string));
             list.Columns.Add("Сумма к выдаче", typeof(string));
@@ -196,14 +196,14 @@ namespace Fusion.Controllers
             {
                 var r = (Dictionary<string, object>)undata;
 
-                if (r.Keys.Contains("id") && r["id"].ToString().Trim() == "TotalRow")
+                if (r.Keys.Contains("id") && r["id"].ToString().Trim() != "" && !r.Keys.Contains("Code"))
                 {
                     object Subdiv = null;
                     r.TryGetValue("subdiv", out Subdiv);
                     string position = "";
                     string FullName = "";
                     string Rate = "";
-                    int Hours = 0;
+                    string Hours = "";
                     object totaldetsumObj = null;
                     r.TryGetValue("totaldetsum", out totaldetsumObj);
                     object aadsumObj = null;
@@ -287,6 +287,18 @@ namespace Fusion.Controllers
                     continue;
                 }
 
+                if (grid.Rows[i].Cells[2].Text.Trim() == "&nbsp;")
+                {
+                    for (int j = 0; j < grid.Rows[i].Cells.Count; j++)
+                    {
+                        grid.Rows[i].Cells[j].BackColor = Color.FromArgb(189, 215, 238);
+                        grid.Rows[i].Cells[j].Font.Bold = true;
+                    }
+                    
+                    chet = false;
+                    continue;
+                }
+
                 if (chet)
                     for (int j = 0; j < grid.Rows[i].Cells.Count; j++)
                         grid.Rows[i].Cells[j].BackColor = Color.FromArgb(230, 230, 230);
@@ -296,7 +308,7 @@ namespace Fusion.Controllers
 
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=" + DocNumber + "_ведомость.xls");
+            Response.AddHeader("content-disposition", "attachment; filename=Ведомость_" + DocNumber + ".xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";
