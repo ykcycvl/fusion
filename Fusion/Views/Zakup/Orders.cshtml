@@ -29,7 +29,16 @@
         selectState += " \"" + it.Text + "\", "; ;
     }
 }
-
+<style>
+    .highlight_red {
+        background-color: #fb541e;
+        color: white;
+    }
+    .highlight_green {
+        background-color: #669966;
+        color: white;
+    }
+</style>
 <script src="~/Scripts/codebase/webix.js"></script>
 <link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
 <script src="~/Scripts/codebase/i18n/ru.js"></script>
@@ -41,8 +50,9 @@
 @if (LoginViewModel.IsMemberOf(Model.username, "ZakupUser"))
 {
     <h3>@Model.orders.FirstOrDefault(m => m.bd_employee.domain_login == Model.username).bd_employee.bd_subdivision.name</h3>
+    @Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
 }
-@Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
+
 <div id="tabl"></div>
 <div id="paging_here"></div>
 <input type="button" onclick="Save()" class="btn btn-success" value="Сохранить" />
@@ -80,6 +90,14 @@
 				        ]
 				    },
 				    editable: true,
+				    scheme: {
+				        $change: function (item) {
+				            if (item.state == "Прибыл")
+				                item.$css = "highlight_red";
+				            if (item.state == "Ожидается")
+				                item.$css = "highlight_green";
+				        }
+				    },
 				    select: "cell",
 				    multiselect: true,
 				    blockselect: true,
@@ -89,11 +107,11 @@
 				    autoheight: true,
 
 				    math: true,
-				    yCount: 19, scrollY: false,
+				    yCount: 13, scrollY: false,
 				    pager: {
 				        template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()}",
 				        container: "paging_here",
-				        size: 19,
+				        size: 13,
 				        group: 10
 				    }
 				},
