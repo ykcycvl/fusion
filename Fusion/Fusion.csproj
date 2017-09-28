@@ -226,6 +226,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccessSchedule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccessSchedule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccessSchedule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ACTIVITYLIST.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -253,6 +262,15 @@
     </Compile>
     <Compile Include="Models\AWARDSPENALTIESTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BackupInfo.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BackupInfo_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BackupInfo_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\BANDEDPROPSRIGHTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -288,6 +306,21 @@
     </Compile>
     <Compile Include="Models\bd_vendor.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BioTime.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BioTime.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BioTime.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BioTime.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BioTime.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\bitrixUser.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
@@ -605,6 +638,15 @@
     <Compile Include="Models\CATEGLIST.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Category.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Category_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CHANGEABLEORDERTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -638,6 +680,15 @@
     <Compile Include="Models\CONSUMTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Credential.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Credential_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Credential_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CRMModels.cs" />
     <Compile Include="Models\CRMSegment.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
@@ -665,6 +716,15 @@
     </Compile>
     <Compile Include="Models\CURRLINES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomField.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomField_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CustomField_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C_DEL_COMMENTPARTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -807,6 +867,60 @@
     <Compile Include="Models\DELIVERYZONES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Department.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPolicy.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPolicy_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPolicy_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPosition.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPosition_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentPosition_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSchedule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSchedule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSchedule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSmsAlertSettings.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSmsAlertSettings_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentSmsAlertSettings_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentStaff.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentStaff_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DepartmentStaff_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Department_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Department_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DEPARTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -867,11 +981,50 @@
     <Compile Include="Models\DRAWERLOG.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Employee.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeDepartmentSecurityRole.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeDepartmentSecurityRole_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeDepartmentSecurityRole_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeGroup.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EMPLOYEEGROUPDETAILS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EMPLOYEEGROUPS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeGroup_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeGroup_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeePermission.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeePermission_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeePermission_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeRate1.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeRate1_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeRate1_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EMPLOYEEROLES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -879,14 +1032,83 @@
     <Compile Include="Models\EMPLOYEES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmployeeSecurityRole.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeSecurityRole_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeSecurityRole_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkPlacePlan.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkPlacePlan_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkPlacePlan_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkRole.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkRole_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmployeeWorkRole_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entrance.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ENTRANCECARDTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceGroup.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceGroup_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceGroup_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceRule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceRule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EntranceRule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entrance_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entrance_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ENUMSTYPESDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ENUMSTYPESINFOS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Event.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Event_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Event_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EXTBASECONFIGS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -978,6 +1200,15 @@
     <Compile Include="Models\HARDWAREINFO.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HolidayShift.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HolidayShift_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HolidayShift_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\host.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -998,6 +1229,24 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InternetOrders.cs" />
+    <Compile Include="Models\Interval.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IntervalType.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IntervalType_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IntervalType_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interval_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Interval_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\INTFTRANSACTIONS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1086,6 +1335,18 @@
     <Compile Include="Models\LINKEDSYSTEMSTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Location.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Location_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Location_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Log.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LOGVERSION.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1154,6 +1415,15 @@
     <Compile Include="Models\MESSAGES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MissedClassInQueue.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MissedClassInQueue_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MissedClassInQueue_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MODIFIERS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1180,6 +1450,33 @@
     </Compile>
     <Compile Include="Models\MSG_SENTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Occupation.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationPolicy.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationPolicy_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationPolicy_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationSchedule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationSchedule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OccupationSchedule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Occupation_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Occupation_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OLAPCUBEEXTENDEDFIELDS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1264,6 +1561,24 @@
     </Compile>
     <Compile Include="Models\PERIODS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Personalization.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonalizationKey.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonalizationKey_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PersonalizationKey_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Personalization_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Personalization_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PLG_ACC_ACCOUNTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
@@ -1367,6 +1682,24 @@
     <Compile Include="Models\PLG_USE_OBJECT_BY_DB.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Policy.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Policy_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Policy_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Position.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Position_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Position_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PRICECONSTANTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1430,15 +1763,33 @@
     <Compile Include="Models\REGISTRATIONS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Report.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\REPORTINGSERVERS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ReportModels.cs" />
+    <Compile Include="Models\ReportOption.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportOption_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ReportOption_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\REPORTSERVERGROUPS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\REPORTSERVERSYNCITEMS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Report_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Report_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RESTAURANTCONCEPTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1558,6 +1909,9 @@
     <Compile Include="Models\sb_rights.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Schedule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SCHEDULEDREPORTRECIPIENT.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1567,6 +1921,21 @@
     <Compile Include="Models\scheduler.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ScheduleWorkPlace.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScheduleWorkPlace_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScheduleWorkPlace_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Schedule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Schedule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SCRIPTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1575,6 +1944,24 @@
     </Compile>
     <Compile Include="Models\SearchPeople_Result.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRole.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRoleReport.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRoleReport_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRoleReport_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRole_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SecurityRole_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SELECTORDETAILS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1594,6 +1981,15 @@
     <Compile Include="Models\SELECTORTYPEVSTRADEOBJ.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sender.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sender_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sender_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\server.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -1609,9 +2005,27 @@
     <Compile Include="Models\SESSIONDISHES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Setting.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Setting_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Setting_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SH4\SH4Models.cs" />
     <Compile Include="Models\SHIFTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmsMessageStatus.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmsMessageStatus_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SmsMessageStatus_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1621,6 +2035,15 @@
     </Compile>
     <Compile Include="Models\SQLCONSTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StaffSchedule.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StaffSchedule_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\StaffSchedule_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\statistics.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -1661,11 +2084,41 @@
     <Compile Include="Models\STOREHOUSECONFIGS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SyncCommitment.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncCommitment_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncCommitment_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SYNCDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SyncIteration.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncIterationChunk.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncIterationChunk_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncIterationChunk_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncIteration_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SyncIteration_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SystemSequence.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SYS_GENERATORS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
@@ -1889,6 +2342,9 @@
     <Compile Include="Models\UNCHANGEABLEORDERTYPES.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserActionHistory.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VISITGUESTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -1897,6 +2353,60 @@
     </Compile>
     <Compile Include="Models\WARNGROUPS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlace.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlacePosition.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlacePosition_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlacePosition_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlace_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkPlace_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRole.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleRate1.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleRate1_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleRate1_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleSubstitution.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleSubstitution_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRoleSubstitution_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRole_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WorkRole_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YearSpecialDays.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YearSpecialDays_Deleted.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YearSpecialDays_Stat.cs">
+      <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ZakupModel.cs" />
     <Compile Include="Models\ZREPORTDATA.cs">
@@ -1922,6 +2432,16 @@
   <ItemGroup>
     <Content Include="data\events.xml" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
+    <Content Include="Models\BioTime.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BioTime.edmx</DependentUpon>
+      <LastGenOutput>BioTime.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\BioTime.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BioTime.edmx</DependentUpon>
+      <LastGenOutput>BioTime.cs</LastGenOutput>
+    </Content>
     <Content Include="Models\FusionDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FusionDB.edmx</DependentUpon>
@@ -3318,6 +3838,13 @@
     </EntityDeploy>
     <Content Include="Models\FusionDB.edmx.diagram">
       <DependentUpon>FusionDB.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\BioTime.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BioTime.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\BioTime.edmx.diagram">
+      <DependentUpon>BioTime.edmx</DependentUpon>
     </Content>
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>

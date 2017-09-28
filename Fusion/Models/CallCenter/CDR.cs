@@ -522,7 +522,10 @@ namespace Fusion.Models.CallCenter
                         if (acdr != null)
                         {
                             acdr.OnlineTime = new TimeSpan(0, 0, Convert.ToInt32(record["onlinetime"]));
-                            acdr.RestTime = new TimeSpan(0, 0, Convert.ToInt32(record["resttime"]));
+
+                            if (record["resttime"] != DBNull.Value)
+                                acdr.RestTime = new TimeSpan(0, 0, Convert.ToInt32(record["resttime"]));
+
                             acdr.InternetTime = new TimeSpan(0, 0, Convert.ToInt32(record["internettime"]));
                             acdr.RegisteredTime = new TimeSpan(0, 0, Convert.ToInt32(record["registeredtime"]));
                             acdr.FreeTime = acdr.OnlineTime - acdr.TotalTalkTime;

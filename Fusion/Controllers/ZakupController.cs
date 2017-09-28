@@ -15,7 +15,7 @@ namespace Fusion.Controllers
     {
         //
         // GET: /Zakup/
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult Index(ZakupModel model)
         {
             string name = User.Identity.GetUserName();
@@ -56,7 +56,7 @@ namespace Fusion.Controllers
             model.getVendors();
             return View(model);
         }
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult orders(string period)
         {
             ZakupModel model = new ZakupModel();
@@ -78,7 +78,7 @@ namespace Fusion.Controllers
             model.getOrders();
             return View(model);
         }
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult CreateOrder(int catId)
         {
             ZakupModel model = new ZakupModel();
@@ -155,7 +155,7 @@ namespace Fusion.Controllers
             }
 
         }
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult Orders_by_vendors(int? vendor_id)
         {
             ZakupModel model = new ZakupModel();
@@ -167,7 +167,7 @@ namespace Fusion.Controllers
             model.getOrders();
             return View(model);
         }
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult OrdersList(string vendor_name, DateTime? date_from)
         {
             ZakupModel model = new ZakupModel();
@@ -178,7 +178,7 @@ namespace Fusion.Controllers
             model.getOrders();
             return View(model);
         }
-        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         [HttpPost]
         public ActionResult OrdersList(ZakupModel model) 
         {

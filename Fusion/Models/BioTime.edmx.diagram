@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a380573cd75f4acb94518890bdca8fec" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="BioTimeModel.AccessSchedule" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.AccessSchedule_Deleted" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.BackupInfo" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.BackupInfo_Deleted" Width="1.5" PointX="4.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Category" Width="1.5" PointX="0.75" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Category_Deleted" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Credential" Width="1.5" PointX="5.25" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Credential_Deleted" Width="1.5" PointX="6.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.CustomField" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.CustomField_Deleted" Width="1.5" PointX="9.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Department" Width="1.5" PointX="5.25" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Department_Deleted" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPolicy" Width="1.5" PointX="7.5" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPolicy_Deleted" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPosition" Width="1.5" PointX="10.5" PointY="36.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPosition_Deleted" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSchedule" Width="1.5" PointX="7.5" PointY="40.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSchedule_Deleted" Width="1.5" PointX="11.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSmsAlertSettings" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSmsAlertSettings_Deleted" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentStaff" Width="1.5" PointX="8.5" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentStaff_Deleted" Width="1.5" PointX="12.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Employee" Width="1.5" PointX="3.375" PointY="28.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Employee_Deleted" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeDepartmentSecurityRole" Width="1.5" PointX="11.5" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeDepartmentSecurityRole_Deleted" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeGroup" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeGroup_Deleted" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeePermission" Width="1.5" PointX="5.25" PointY="41.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeePermission_Deleted" Width="1.5" PointX="13.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeRate1" Width="1.5" PointX="5.25" PointY="45" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeRate1_Deleted" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeSecurityRole" Width="1.5" PointX="8.25" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeSecurityRole_Deleted" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkPlacePlan" Width="1.5" PointX="14.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkPlacePlan_Deleted" Width="1.5" PointX="12.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkRole" Width="1.5" PointX="8.25" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkRole_Deleted" Width="1.5" PointX="14.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Entrance" Width="1.5" PointX="6" PointY="30.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Entrance_Deleted" Width="1.5" PointX="15.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGroup" Width="1.5" PointX="5.25" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGroup_Deleted" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceRule" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceRule_Deleted" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Event" Width="1.5" PointX="11.25" PointY="27.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Event_Deleted" Width="1.5" PointX="2.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.HolidayShift" Width="1.5" PointX="16.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.HolidayShift_Deleted" Width="1.5" PointX="16.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Interval" Width="1.5" PointX="13.25" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Interval_Deleted" Width="1.5" PointX="16.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.IntervalType" Width="1.5" PointX="11" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.IntervalType_Deleted" Width="1.5" PointX="14.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Location" Width="1.5" PointX="3.75" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Location_Deleted" Width="1.5" PointX="16.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Log" Width="1.5" PointX="17.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.MissedClassInQueue" Width="1.5" PointX="10.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.MissedClassInQueue_Deleted" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Occupation" Width="1.5" PointX="13.75" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Occupation_Deleted" Width="1.5" PointX="18.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationPolicy" Width="1.5" PointX="16" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationPolicy_Deleted" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationSchedule" Width="1.5" PointX="19" PointY="31.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationSchedule_Deleted" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Personalization" Width="1.5" PointX="18.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Personalization_Deleted" Width="1.5" PointX="0.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.PersonalizationKey" Width="1.5" PointX="19.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.PersonalizationKey_Deleted" Width="1.5" PointX="12.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Policy" Width="1.5" PointX="5.25" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Policy_Deleted" Width="1.5" PointX="14.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Position" Width="1.5" PointX="8.25" PointY="44.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Position_Deleted" Width="1.5" PointX="16.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Report" Width="1.5" PointX="6" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Report_Deleted" Width="1.5" PointX="18.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ReportOption" Width="1.5" PointX="20.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ReportOption_Deleted" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Schedule" Width="1.5" PointX="16.75" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Schedule_Deleted" Width="1.5" PointX="20.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ScheduleWorkPlace" Width="1.5" PointX="20.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ScheduleWorkPlace_Deleted" Width="1.5" PointX="20.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRole" Width="1.5" PointX="6" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRole_Deleted" Width="1.5" PointX="20.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRoleReport" Width="1.5" PointX="8.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRoleReport_Deleted" Width="1.5" PointX="21.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Sender" Width="1.5" PointX="0.75" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Sender_Deleted" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Setting_Deleted" Width="1.5" PointX="0.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SmsMessageStatus" Width="1.5" PointX="22.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SmsMessageStatus_Deleted" Width="1.5" PointX="10.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.StaffSchedule" Width="1.5" PointX="7.5" PointY="55.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.StaffSchedule_Deleted" Width="1.5" PointX="22.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncCommitment" Width="1.5" PointX="12.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncCommitment_Deleted" Width="1.5" PointX="14.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIteration" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIteration_Deleted" Width="1.5" PointX="22.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIterationChunk" Width="1.5" PointX="10" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIterationChunk_Deleted" Width="1.5" PointX="16.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.sysdiagrams" Width="1.5" PointX="22.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.UserActionHistory" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlace" Width="1.5" PointX="23.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlace_Deleted" Width="1.5" PointX="18.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlacePosition" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlacePosition_Deleted" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRole" Width="1.5" PointX="6" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRole_Deleted" Width="1.5" PointX="24.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleRate1" Width="1.5" PointX="8.25" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleRate1_Deleted" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleSubstitution" Width="1.5" PointX="24.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleSubstitution_Deleted" Width="1.5" PointX="24.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.YearSpecialDays" Width="1.5" PointX="24.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.YearSpecialDays_Deleted" Width="1.5" PointX="24.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.AccessSchedule_Stat" Width="1.5" PointX="25.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.BackupInfo_Stat" Width="1.5" PointX="13.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Category_Stat" Width="1.5" PointX="20.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Credential_Stat" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.CustomField_Stat" Width="1.5" PointX="26.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Department_Stat" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPolicy_Stat" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentPosition_Stat" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSchedule_Stat" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentSmsAlertSettings_Stat" Width="1.5" PointX="26.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.DepartmentStaff_Stat" Width="1.5" PointX="26.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Employee_Stat" Width="1.5" PointX="27.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeDepartmentSecurityRole_Stat" Width="1.5" PointX="22.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeGroup_Stat" Width="1.5" PointX="24.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeePermission_Stat" Width="1.5" PointX="26.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeRate1_Stat" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeSecurityRole_Stat" Width="1.5" PointX="28.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkPlacePlan_Stat" Width="1.5" PointX="28.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EmployeeWorkRole_Stat" Width="1.5" PointX="28.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Entrance_Stat" Width="1.5" PointX="13.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGroup_Stat" Width="1.5" PointX="28.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceRule_Stat" Width="1.5" PointX="28.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Event_Stat" Width="1.5" PointX="18.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.HolidayShift_Stat" Width="1.5" PointX="28.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Interval_Stat" Width="1.5" PointX="28.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.IntervalType_Stat" Width="1.5" PointX="28.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Location_Stat" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.MissedClassInQueue_Stat" Width="1.5" PointX="30.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Occupation_Stat" Width="1.5" PointX="30.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationPolicy_Stat" Width="1.5" PointX="30.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.OccupationSchedule_Stat" Width="1.5" PointX="30.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Personalization_Stat" Width="1.5" PointX="30.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.PersonalizationKey_Stat" Width="1.5" PointX="30.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Policy_Stat" Width="1.5" PointX="30.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Position_Stat" Width="1.5" PointX="21.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Report_Stat" Width="1.5" PointX="23.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ReportOption_Stat" Width="1.5" PointX="30.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Schedule_Stat" Width="1.5" PointX="25.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.ScheduleWorkPlace_Stat" Width="1.5" PointX="30.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRole_Stat" Width="1.5" PointX="27.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SecurityRoleReport_Stat" Width="1.5" PointX="29.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Sender_Stat" Width="1.5" PointX="31.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Setting" Width="1.5" PointX="31.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.Setting_Stat" Width="1.5" PointX="32.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SmsMessageStatus_Stat" Width="1.5" PointX="32.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.StaffSchedule_Stat" Width="1.5" PointX="32.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncCommitment_Stat" Width="1.5" PointX="32.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIteration_Stat" Width="1.5" PointX="32.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SyncIterationChunk_Stat" Width="1.5" PointX="32.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.SystemSequence" Width="1.5" PointX="32.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlace_Stat" Width="1.5" PointX="32.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkPlacePosition_Stat" Width="1.5" PointX="32.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRole_Stat" Width="1.5" PointX="33.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleRate1_Stat" Width="1.5" PointX="21.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.WorkRoleSubstitution_Stat" Width="1.5" PointX="23.75" PointY="33.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BioTimeModel.YearSpecialDays_Stat" Width="1.5" PointX="25.75" PointY="33.75" IsExpanded="true" />
+        <AssociationConnector Association="BioTimeModel.FK_EntranceRule_AccessSchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Employee_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Credential_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Department_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Department_Employee_Head" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentPolicyHistory_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentPosition_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentScheduleHistory_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentStaff_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeDepartmentSecurityRole_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_StaffSchedule_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentPolicyHistory_Policy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentPosition_Position" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupation_DepartmentPosition" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentScheduleHistory_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_DepartmentStaff_WorkRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Employee_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Employee_Sender" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeDepartmentSecurityRole_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupation_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeePermission_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeRate1_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeSecurityRole_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeWorkRole_Employee" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Event_Employee_EmployeeId" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Interval_Employee_EmployeeId" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeDepartmentSecurityRole_SecurityRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeGroup_EntranceRule" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeSecurityRole_SecurityRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeWorkRole_WorkRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Entrance_Location" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Entrance_Sender" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EntranceGroup_EntranceRule" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Event_Sender_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Event_Sender_DeletedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Interval_IntervalType" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Interval_Sender_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_Interval_Sender_DeletedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupationPolicyHistory_EmployeeOccupation" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupationScheduleHistory_EmployeeOccupation" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupationPolicyHistory_Policy" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_EmployeeOccupationScheduleHistory_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_SecurityRoleReport_Report" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_SecurityRoleReport_SecurityRole" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_SyncIterationChunk_SyncIteration" ManuallyRouted="false" />
+        <AssociationConnector Association="BioTimeModel.FK_WorkRoleRate1_WorkRole" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

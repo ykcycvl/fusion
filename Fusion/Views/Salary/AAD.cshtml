@@ -41,14 +41,14 @@
                         accList.Add(new Fusion.ZupWS.Accrual() { Code = a.Code, Name = a.Name, Edit = a.Edit, Sum = 0 }); 
                     }
 
-                    TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum))) + "\"";
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => Math.Round(p2.Sum))) + "\"";
 
                     if (a.Code.Trim() != "SALDO")
                     {
-                        acsum += Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)));
+                        acsum += subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => Math.Round(p2.Sum)));
                     }
 
-                    topaysum += Math.Truncate(subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => p2.Sum)));
+                    topaysum += subdivision.Employees.Sum(p => p.Accruals.Where(p1 => p1.Code == a.Code).Sum(p2 => Math.Round(p2.Sum)));
                     rules += "\"_ACCCODE_" + a.Code.Trim() + "\":IsNumber,";
                 }
 
@@ -58,12 +58,12 @@
 
                     if (detntn == null)
                     {
-                        detList.Add(new Fusion.ZupWS.Detention() { Code = d.Code, Name = d.Name, Edit = d.Edit, Sum = 0 }); 
+                        detList.Add(new Fusion.ZupWS.Detention() { Code = d.Code, Name = d.Name, Edit = d.Edit, Sum = 0 });
                     }
-                    
-                    TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum))) + "\"";
-                    detsum += Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
-                    topaysum -= Math.Truncate(subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => p2.Sum)));
+
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ":\"" + subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => Math.Round(p2.Sum))) + "\"";
+                    detsum += subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => Math.Round(p2.Sum)));
+                    topaysum -= subdivision.Employees.Sum(p => p.Detentions.Where(p1 => p1.Code == d.Code).Sum(p2 => Math.Round(p2.Sum)));
                     rules += "\"_DETCODE_" + d.Code.Trim() + "\":IsNumber,";
                 }
                 
@@ -77,9 +77,9 @@
         {
             accColumns = "";
             detColumns = "";
-            aadsum = "{ id: 'aadsum', header: 'Сумма к выдаче', adjust: true, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogcss\", math: '";
-            totaldetsum = "{ id: 'totaldetsum', header: 'Итого удержано', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogdetcss\", math: '";
-            totalaccsum = "{ id: 'totalaccsum', header: 'Итого начислено', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), css:\"itogacccss\", math: '";
+            aadsum = "{ id: 'aadsum', header: 'Сумма к выдаче', adjust: true, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), css:\"itogcss\", math: '";
+            totaldetsum = "{ id: 'totaldetsum', header: 'Итого удержано', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), css:\"itogdetcss\", math: '";
+            totalaccsum = "{ id: 'totalaccsum', header: 'Итого начислено', adjust: false, format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), css:\"itogacccss\", math: '";
             j++;
             TableData += "{ Code: \"" + e.Code + "\", Organization: \""
                 + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
@@ -98,11 +98,11 @@
                     css = "accrcss";
                 }
 
-                accColumns += "{ id: '_ACCCODE_" + a.Code.Trim() + "', header: '" + a.Name + "', adjust:\"all\",  format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
+                accColumns += "{ id: '_ACCCODE_" + a.Code.Trim() + "', header: '" + a.Name + "', adjust:\"all\",  format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
 
                 if (a.Sum != 0)
                 {
-                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + Math.Truncate(a.Sum).ToString() + "\"";
+                    TableData += ", _ACCCODE_" + a.Code.Trim() + ": \"" + Math.Round(a.Sum).ToString() + "\"";
                 }
 
                 if (a.Code.Trim() != "SALDO")
@@ -124,11 +124,11 @@
                     css = "detcss";
                 }
 
-                detColumns += "{ id: '_DETCODE_" + d.Code.Trim() + "', header: '" + d.Name + "', adjust:\"all\", format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:0 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
+                detColumns += "{ id: '_DETCODE_" + d.Code.Trim() + "', header: '" + d.Name + "', adjust:\"all\", format:webix.Number.numToStr({ groupDelimiter:\" \", groupSize:3, decimalDelimiter: \".\", decimalSize:2 }), editor: '" + editor + "', batch: 2, css:\"" + css + "\" },\r\n";
 
                 if (d.Sum != 0)
                 {
-                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + Math.Truncate(d.Sum).ToString() + "\""; 
+                    TableData += ", _DETCODE_" + d.Code.Trim() + ": \"" + Math.Round(d.Sum).ToString() + "\""; 
                 }
                 
                 aadsum += " - [$r, _DETCODE_" + d.Code.Trim() + "]";
@@ -146,12 +146,12 @@
     
     foreach (var a in accList)
     {
-        totalRow += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Accruals.Where(p2 => p2.Code == a.Code).Sum(p3 => p3.Sum)))) + "\"";
+        totalRow += ", _ACCCODE_" + a.Code.Trim() + ":\"" + Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Accruals.Where(p2 => p2.Code == a.Code).Sum(p3 => Math.Round(p3.Sum)))) + "\"";
     }
 
     foreach (var d in detList)
     {
-        totalRow += ", _DETCODE_" + d.Code.Trim() + ":\"" + Math.Truncate(Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Detentions.Where(p2 => p2.Code == d.Code).Sum(p3 => p3.Sum)))) + "\"";
+        totalRow += ", _DETCODE_" + d.Code.Trim() + ":\"" + Model.Subdivisions.Sum(p => p.Employees.Sum(p1 => p1.Detentions.Where(p2 => p2.Code == d.Code).Sum(p3 => Math.Round(p3.Sum)))) + "\"";
     }
     
     foreach (var subdivision in Model.Subdivisions)
@@ -347,6 +347,7 @@
     }
 
     webix.ready(function () {
+        var hours_format = 
         grid = webix.ui({
             container: "tabl",
             rows: [
@@ -378,7 +379,14 @@
                     rules:{
                         @Html.Raw(rules)
                     },
-                    spans: true,
+				    spans: true,
+				    scheme:{
+				        $init:function(obj){
+				            obj.Hours = Number.parseInt(obj.Hours) || 0;
+				            obj.totaldetsum = Number.parseInt(obj.totalaccsum) || 0;
+				            obj.totaldetsum = Number.parseInt(obj.totaldetsum) || 0;
+				        }
+				    },
                     data: {
                         data: [
                         @Html.Raw(TableData)
@@ -403,15 +411,11 @@
 						{
 						    view: "label", label: "Экспорт в Excel"
 						},
-						{
-						    view: "button", label: "Скачать", width: 95, click:function(){
-						        webix.toExcel($$("grid"), {
-						            filename: "Ведомость",
-						            name: "Ведомость",
-						            spans:true
-						        });
-						    }
-						}
+                        {
+                            view: "button", label: "Скачать", width: 150, click:function(){
+                                ExportToExcel();
+                            }
+                        }
 				    ]
 
 				}
@@ -448,6 +452,23 @@
             webix.message({ type: response.result, text: response.message });
         });
 
+        return false;
+    }
+
+    function ExportToExcel() {
+        var grid = $$("grid");
+        var filter = grid.getFilter("FullName").value;
+
+        if(filter != "")
+        {
+            alert("Экспорт невозможен, так как установлен фильтр! Перед экспортом удалите, пожалуйста, фильтр!");
+            return;
+        }
+
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        var serializedData = JSON.stringify(grid.serialize());
+        $("#tableData").val(serializedData);
+        $("#excelForm").submit();
         return false;
     }
 
@@ -513,3 +534,7 @@
 {
     <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
 }
+
+<form action="ExportToExcel" method="post" target="_blank" id="excelForm">
+    <input type="hidden" name="data" id="tableData" />
+</form>

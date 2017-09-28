@@ -7,6 +7,11 @@ using Fusion.Models;
 using System.Web.Configuration;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Web.UI.WebControls;
+using System.IO;
+using System.Web.UI;
+using System.Web.Script.Serialization;
+using System.Drawing;
 
 namespace Fusion.Controllers
 {
@@ -168,6 +173,143 @@ namespace Fusion.Controllers
         {
             model.Save(User.Identity.Name);
             return RedirectToAction("Rates", new { orgname = model.FullName, period = model.Period });
+        }
+
+        public ActionResult ExportToExcel(string data)
+        {
+            string DocNumber = "";
+            var list = new System.Data.DataTable("teste");
+            list.Columns.Add("Подразделение", typeof(string));
+            list.Columns.Add("Должность", typeof(string));
+            list.Columns.Add("Ф.И.О.", typeof(string));
+            list.Columns.Add("Оклад", typeof(string));
+            list.Columns.Add("Часы", typeof(int));
+            list.Columns.Add("Начислено", typeof(string));
+            list.Columns.Add("Удержано", typeof(string));
+            list.Columns.Add("Сумма к выдаче", typeof(string));
+            list.Columns.Add("Подпись", typeof(string));
+
+            var serializer = new JavaScriptSerializer();
+            var heapdata = serializer.DeserializeObject(data);
+
+            foreach (var undata in (Array)heapdata)
+            {
+                var r = (Dictionary<string, object>)undata;
+
+                if (r.Keys.Contains("id") && r["id"].ToString().Trim() == "TotalRow")
+                {
+                    object Subdiv = null;
+                    r.TryGetValue("subdiv", out Subdiv);
+                    string position = "";
+                    string FullName = "";
+                    string Rate = "";
+                    int Hours = 0;
+                    object totaldetsumObj = null;
+                    r.TryGetValue("totaldetsum", out totaldetsumObj);
+                    object aadsumObj = null;
+                    r.TryGetValue("aadsum", out aadsumObj);
+                    object totalaccsumObj = null;
+                    r.TryGetValue("totalaccsum", out totalaccsumObj);
+
+                    Decimal totaldetsum = 0;
+                    Decimal aadsum = 0;
+                    Decimal totalaccsum = 0;
+
+                    Decimal.TryParse(totaldetsumObj.ToString(), out totaldetsum);
+                    Decimal.TryParse(aadsumObj.ToString(), out aadsum);
+                    Decimal.TryParse(totalaccsumObj.ToString(), out totalaccsum);
+
+                    var numberFormatInfo = new System.Globalization.CultureInfo("en-Us", false).NumberFormat;
+                    numberFormatInfo.NumberGroupSeparator = " ";
+                    numberFormatInfo.NumberDecimalSeparator = ",";
+
+                    list.Rows.Add(Subdiv, position, FullName, Rate, Hours, totalaccsum.ToString("N", numberFormatInfo), totaldetsum.ToString("N", numberFormatInfo), aadsum.ToString("N", numberFormatInfo), "");
+                }
+
+                if (r.Keys.Contains("Code") && r.Keys.Contains("DocNumber") && r.Keys.Contains("Date"))
+                {
+                    object Subdiv = null;
+                    r.TryGetValue("subdiv", out Subdiv);
+                    object position = null;
+                    r.TryGetValue("Position", out position);
+                    object FullName = null;
+                    r.TryGetValue("FullName", out FullName);
+                    object Rate = null;
+                    r.TryGetValue("Rate", out Rate);
+                    object Hours = null;
+                    r.TryGetValue("Hours", out Hours);
+                    object totaldetsumObj = null;
+                    r.TryGetValue("totaldetsum", out totaldetsumObj);
+                    object aadsumObj = null;
+                    r.TryGetValue("aadsum", out aadsumObj);
+                    object totalaccsumObj = null;
+                    r.TryGetValue("totalaccsum", out totalaccsumObj);
+                    object docNum = null;
+                    r.TryGetValue("DocNumber", out docNum);
+
+                    if(docNum != null)
+                        DocNumber = docNum.ToString();
+
+                    Decimal totaldetsum = 0;
+                    Decimal aadsum = 0;
+                    Decimal totalaccsum = 0;
+
+                    Decimal.TryParse(totaldetsumObj.ToString(), out totaldetsum);
+                    Decimal.TryParse(aadsumObj.ToString(), out aadsum);
+                    Decimal.TryParse(totalaccsumObj.ToString(), out totalaccsum);
+
+                    var numberFormatInfo = new System.Globalization.CultureInfo("en-Us", false).NumberFormat;
+                    numberFormatInfo.NumberGroupSeparator = " ";
+                    numberFormatInfo.NumberDecimalSeparator = ",";
+
+                    list.Rows.Add(Subdiv, position, FullName, Rate, Hours, totalaccsum.ToString("N", numberFormatInfo), totaldetsum.ToString("N", numberFormatInfo), aadsum.ToString("N", numberFormatInfo), "");
+                }
+            }
+
+            var grid = new GridView();
+            grid.DataSource = list;
+            grid.DataBind();
+
+            bool chet = false;
+
+            for (int i = 0; i < grid.Rows.Count; i++)
+            {
+                grid.Rows[i].Cells[8].Width = 150;
+
+                if (i == 0)
+                {
+                    for (int j = 0; j < grid.Rows[i].Cells.Count; j++)
+                    {
+                        grid.Rows[i].Cells[j].BackColor = Color.FromArgb(189, 215, 238);
+                        grid.Rows[i].Cells[j].Font.Bold = true;
+                    }
+
+                    continue;
+                }
+
+                if (chet)
+                    for (int j = 0; j < grid.Rows[i].Cells.Count; j++)
+                        grid.Rows[i].Cells[j].BackColor = Color.FromArgb(230, 230, 230);
+
+                chet = !chet;
+            }
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=" + DocNumber + "_ведомость.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return View("MyView");
         }
     }
 }
