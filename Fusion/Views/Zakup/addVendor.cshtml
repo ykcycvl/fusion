@@ -1,0 +1,36 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "addVendor";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 col-md-push-3">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <h3 class="panel-title">Добавить поставщика</h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("addVendor", "Zakup", FormMethod.Post, new { id = "Form" }))
+                {
+                    <div class="form-group">
+                        <label for=@Model.vendor.name>Имя</label>
+                        @Html.TextBoxFor(m => m.vendor.name, new { @class = "form-control", @required = "true" })
+                    </div>
+                    <div class="form-group">
+                        <label for=@Model.vendor.phones>Телефон</label>
+                        @Html.TextBoxFor(m => m.vendor.phones, new { @class = "form-control", @required = "true" })
+                    </div>
+                    <div class="form-group">
+                        <label for=@Model.vendor.INN>E-mail</label>
+                        @Html.TextBoxFor(m => m.vendor.INN, new { @class = "form-control", @required = "true" })
+                    </div>
+                    <div class="form-group">
+                        <label for=@Model.vendor.code>Код</label>
+                        @Html.TextBoxFor(m => m.vendor.code, new { @class = "form-control", @required = "true" })
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Сохранить" />
+                }
+            </div>
+        </div>
+    </div>
+</div>

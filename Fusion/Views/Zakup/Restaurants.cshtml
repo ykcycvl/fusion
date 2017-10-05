@@ -1,0 +1,39 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Restaurants";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Рестораны</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Restaurants", "Zakup", FormMethod.Post, new { id = "Form" }))
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th hidden>id</th>
+                        <th>Название</th>
+                        <th>Адрес</th>
+                        <th>Организация</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.restaurantsList.Count(); i++)
+                    {
+                        Model.organizationName = Model.restaurantsList[i].bd_organization.name;
+                        <tr>
+                            <td hidden>@Html.HiddenFor(m => m.restaurantsList[i].id)</td>
+                            <td>@Html.TextBoxFor(m => m.restaurantsList[i].name, new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => Model.restaurantsList[i].address, new { @class = "form-control" })</td>
+                            <td>@Html.DropDownListFor(m => Model.restaurantsList[i].organization_id, Model.organizationSelectList, new { @class = "form-control" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-success" value="Сохранить" id="submitt" />
+        }
+    </div>
+</div>

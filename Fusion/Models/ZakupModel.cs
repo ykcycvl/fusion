@@ -59,6 +59,7 @@ namespace Fusion.Models
             public string state { get; set; }
             public int state_id { get; set; }
         }
+        public bd_vendor vendor { get; set; }
         public string vendor_name { get; set; }
         public DateTime? date_end { get; set; }
         public DateTime? date_from { get; set; }
@@ -68,11 +69,16 @@ namespace Fusion.Models
         public List<Models.bd_nomenclature> items { get; set; }
         public List<Models.bd_measurement> maesurements { get; set; }
         public List<Models.bd_category> categ { get; set; }
+        public List<Models.bd_employee> usersList { get; set; }
+        public List<Models.bd_organization> organizationList { get; set; }
+        public List<Models.bd_subdivision> restaurantsList { get; set; }
         public string categoryName { get; set; }
         public string CategoryName1 { get; set; }
+        public string organizationName { get; set; }
         public int categoryId { get; set; }
         public string vendorName { get; set; }
         public string stateName { get; set; }
+        public DateTime dateExportForEmployee { get; set; }
         public string measurementName { get; set; }
         public List<ZakupModel.vendors1> vendors { get; set; }
         public List<Models.bd_vendor> vendorList { get; set; }
@@ -85,6 +91,10 @@ namespace Fusion.Models
         public DateTime Period { get; set; }
         public List<categs> Categories { get; set; }
         public string username { get; set; }
+        public void createVendor()
+        {
+            vendor = new bd_vendor();
+        }
         public void getList()
         {
             vendorList = list.bd_vendor.ToList();
@@ -213,6 +223,27 @@ namespace Fusion.Models
         {
             vendorList = list.bd_vendor.ToList();
         }
+        public void getUsers()
+        {
+            usersList = list.bd_employee.ToList();
+            restaurantsList = list.bd_subdivision.ToList();
+            organizationList = list.bd_organization.ToList();
+        }
+        public IEnumerable<SelectListItem> organizationSelectList
+        {
+            get
+            {
+                List<SelectListItem> orgs = new List<SelectListItem>();
+                foreach (var it in organizationList)
+                {
+                    orgs.Add(new SelectListItem() { Text = it.name, Value = it.id.ToString() });
+                }
+                SelectListItem sli = orgs.FirstOrDefault(m => m.Text == organizationName);
+                if (sli != null)
+                    sli.Selected = true;
+                return orgs;
+            }
+        }
         public void PostNom()
         {
             foreach (var it in items)
@@ -257,6 +288,16 @@ namespace Fusion.Models
                 {
                     list.bd_order.Add(new bd_order { count = it.Count, category_id = it.category_id, date = DateTime.Today, id = orders.Count + 1, measurement_id = it.measurement_id, nomenclature_id = it.id, organization_id = 1, employee = username, state = 1 });
                 }
+            }
+            list.SaveChanges();
+        }
+        public void postOrganizations()
+        {
+            foreach (var it in restaurantsList)
+            {
+                list.bd_subdivision.FirstOrDefault(m => m.id == it.id).name = it.name;
+                list.bd_subdivision.FirstOrDefault(m => m.id == it.id).organization_id = it.organization_id;
+                list.bd_subdivision.FirstOrDefault(m => m.id == it.id).address = it.address;
             }
             list.SaveChanges();
         }
