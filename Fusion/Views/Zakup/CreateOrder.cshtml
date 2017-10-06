@@ -16,57 +16,77 @@
         });
     });
 </script>
-<h2>Заявка</h2>
 
-@Html.DropDownListFor(m => m.categoryId, Model.CategoriesSelectList, new { @class = "form-control"})
-@using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" }))
-{
-    <input type="submit" class="btn btn-success" id="sub" value="Сохранить" />
-    @Html.ActionLink("Перейти к списку", "Orders", null, new { @class = "btn btn-primary" })
-    <div id="filters">
-        <input id="namef" placeholder="Наименование..." />
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Заявка</h3>
     </div>
-<table class="table table-bordered table-condensed table-responsive" id="mytable">
-    <thead>
-        <tr>
-            <th>Наименование</th>
-            <th>Поставщик</th>
-            <th width="150px">Кол-во</th>
-        </tr>
-    </thead>
-    <tbody id="target">
-        @for (int i = 0; i < Model.items.Count(); i++ )
+    <div class="panel-body">
+        
+        @using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" }))
         {
-            <tr>
-                
-                @if (Model.items[i].category_id == Model.categoryId)
-                {
-                    <td>
-                        @Model.items[i].name
-                        @Html.HiddenFor(m => m.items[i].id)
-                        @Html.HiddenFor(m => m.items[i].name)
-                        @Html.HiddenFor(m => m.items[i].category_id)
-                        @Html.HiddenFor(m => m.items[i].measurement_id)
-                        @Html.HiddenFor(m => m.items[i].vendor_id)
-                    </td>
-                    <td>
-                        @Model.items[i].bd_vendor.name
-                    </td>
-                    <td>@Html.TextBoxFor(m => m.items[i].Count)</td>
-                }
-                else
-                {
-                    @Html.HiddenFor(m => m.items[i].id)
-                    @Html.HiddenFor(m => m.items[i].name)
-                    @Html.HiddenFor(m => m.items[i].category_id)
-                    @Html.HiddenFor(m => m.items[i].measurement_id)
-                    @Html.HiddenFor(m => m.items[i].vendor_id)
-                }
-            </tr>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div id="filters">
+                        <input id="namef" placeholder="Поиск по наименованию..." class="form-control" style="width: 200px" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    @Html.ActionLink("Перейти к списку", "Orders", null, new { @class = "btn btn-primary" })
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" class="btn btn-success" id="sub" value="Сохранить" />
+                </div>
+            </div>
+
+            <br />
+            @Html.DropDownListFor(m => m.categoryId, Model.CategoriesSelectList, new { @class = "form-control" })
+            <br />
+            <table class="table table-bordered table-condensed table-responsive" id="mytable">
+                <thead>
+                    <tr class="success">
+                        <th>Наименование</th>
+                        <th>Поставщик</th>
+                        <th width="150px">Кол-во</th>
+                    </tr>
+                </thead>
+                <tbody id="target">
+                    @for (int i = 0; i < Model.items.Count(); i++)
+                    {
+                        <tr>
+
+                            @if (Model.items[i].category_id == Model.categoryId)
+                            {
+                                <td>
+                                    @Model.items[i].name
+                                    @Html.HiddenFor(m => m.items[i].id)
+                                    @Html.HiddenFor(m => m.items[i].name)
+                                    @Html.HiddenFor(m => m.items[i].category_id)
+                                    @Html.HiddenFor(m => m.items[i].measurement_id)
+                                    @Html.HiddenFor(m => m.items[i].vendor_id)
+                                </td>
+                                <td>
+                                    @Model.items[i].bd_vendor.name
+                                </td>
+                                <td>@Html.TextBoxFor(m => m.items[i].Count, new { @class="form-control" })</td>
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(m => m.items[i].id)
+                                @Html.HiddenFor(m => m.items[i].name)
+                                @Html.HiddenFor(m => m.items[i].category_id)
+                                @Html.HiddenFor(m => m.items[i].measurement_id)
+                                @Html.HiddenFor(m => m.items[i].vendor_id)
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
-    </tbody>
-</table>
-    }
+    </div>
+</div>
+
 @** скрипт для фильтров *@
 <script>
     filterTable(document.getElementById("target"), {

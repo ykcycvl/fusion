@@ -22,7 +22,7 @@ namespace Fusion.Controllers
             model.username = name;
             return View();
         }
-        [MyAuthorize(Roles = "ZakupAdmin")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Nomenclatures()
         {
             ZakupModel model = new ZakupModel();
@@ -134,6 +134,7 @@ namespace Fusion.Controllers
                     Export["Количество"] = it.count;
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
+                    Export["Юр. лицо"] = it.bd_organization.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;  
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для "+ model.export.VendorName_Name +".csv");
@@ -149,6 +150,7 @@ namespace Fusion.Controllers
                     Export["Количество"] = it.count;
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
+                    Export["Юр. лицо"] = it.bd_organization.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;   
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время для " + model.export.VendorName_Name + ".csv");
@@ -256,6 +258,83 @@ namespace Fusion.Controllers
                 result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
             }
             return result;
+        }
+        [HttpPost]
+        public ActionResult ExportOrders(ZakupModel model)
+        {
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            CsvExport export = new CsvExport();
+            if (model.dateExportForEmployee != null)
+            {
+                foreach (var it in model.orders.Where(m => m.date == model.dateExportForEmployee && m.employee == model.username).OrderBy(m => m.bd_nomenclature.vendor_id))
+                {
+                    export.AddRow();
+                    export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
+                    export["Наиименование"] = it.bd_nomenclature.name;
+                    export["Количество"] = it.count;
+                    export["Ед. Измерения"] = it.bd_measurement.name;
+                    export["Цена"] = it.bd_nomenclature.Price;
+                    export["Дата прихода"] = it.date_end;
+                }
+                return File(export.ExportToBytesWin(), "text/csv", "Заявки за " + model.dateExportForEmployee + ".csv");
+            }
+            else return View();
+            
+        }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult Restaurants()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getUsers();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Restaurants(ZakupModel model)
+        {
+            model.postOrganizations();
+            model.getUsers();
+            return View(model);
+        }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult Users()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getUsers();
+            return View(model);
+        }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult addVendor()
+        {
+            ZakupModel model = new ZakupModel();
+            model.createVendor();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult addVendor(ZakupModel model)
+        {
+            model.list.bd_vendor.Add(new bd_vendor { name = model.vendor.name, code = model.vendor.code, phones = model.vendor.phones, INN = model.vendor.INN });
+            model.list.SaveChanges();
+            return Redirect("~/Zakup/Vendors");
+        }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult Analytics(string period)
+        {
+            ZakupModel model = new ZakupModel();
+            if (period == null)
+            {
+                model.analyticsDate = DateTime.Today;
+            }
+            else
+            {
+                model.analyticsDate = DateTime.Parse(period);
+            }
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            return View(model);
         }
     }
 }

@@ -46,9 +46,32 @@
     <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
 </div>
 
-<h2>Заказы за @Model.Period.ToString("MM.yyyy")</h2>
 @if (LoginViewModel.IsMemberOf(Model.username, "ZakupUser"))
 {
+    
+    using (Html.BeginForm("ExportOrders", "Zakup", FormMethod.Post, new { id = "Form" }))
+    {
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Заказы за @Model.Period.ToString("MM.yyyy")</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a class="btn btn-success" href="~/Files/Пустой бланк.xlsx">Скачать пустой бланк</a>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.TextBoxFor(m => m.dateExportForEmployee, new { @type = "date", @required = "true", @class = "form-control", @style = "width: 200px" })
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" class="btn btn-primary" value="Скачать заявки за выбранную дату" />
+                    </div>
+                </div>
+                @Html.HiddenFor(m => m.username)
+            </div>
+        </div>
+    }
+
     <h3>@Model.orders.FirstOrDefault(m => m.bd_employee.domain_login == Model.username).bd_employee.bd_subdivision.name</h3>
     @Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
 }
@@ -56,6 +79,7 @@
 <div id="tabl"></div>
 <div id="paging_here"></div>
 <input type="button" onclick="Save()" class="btn btn-success" value="Сохранить" />
+
 <script>
     webix.ready(function () {
         webix.i18n.parseFormat = "%d.%m.%Y";
@@ -91,11 +115,11 @@
 				    },
 				    editable: true,
 				    scheme: {
-				        $change: function (item) {
+                        $change: function (item) { 
 				            if (item.state == "Прибыл")
-				                item.$css = "highlight_red";
+                                item.$css = "highlight_green";
 				            if (item.state == "Ожидается")
-				                item.$css = "highlight_green";
+                                item.$css = "highlight_red";
 				        }
 				    },
 				    select: "cell",
@@ -120,7 +144,7 @@
         });
     });
     function Save() {
-
+        
         var grid = $$("grid");
 
 

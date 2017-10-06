@@ -12,65 +12,80 @@
         });
     });
 </script>
-<h2>@Model.vendor_name</h2>
-@using (Html.BeginForm("Export", "Zakup", FormMethod.Post, new { id = "Form" }))
-{
-    <table class="table table-stripped table-bordered">
-        <tr>
-            <td>@Html.DropDownListFor(m => m.export.VendorName, Model.vendorsSelectList, new { @class = "form-control col-md-6" })</td>
-            <td>@Html.TextBoxFor(m => m.export.date, new { @type = "date", @class = "form-control col-md-6" })</td>
-        </tr>
-    </table>
-    <input type="submit" value="Экспорт" class="btn btn-danger" />
-    @Html.ActionLink("Обратно к списку", "Orders_by_vendors", new { }, new { @class = "btn btn-success" })
-}
-
-@using (Html.BeginForm("OrdersList", "Zakup", FormMethod.Post, new { id = "Form" }))
-{
-    @Html.HiddenFor(m => m.vendor_name)
-<table class="table">
-    <thead>
-        <tr>
-            <th>Дата создания заявки</th>
-            <th>Дата прихода товара</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-            @Html.TextBoxFor(m => m.vendor_for_send_item.date_from, new { @type = "date", @required = "true", @class = "form-control" })
-            </td>
-            <td>
-                @Html.TextBoxFor(m => m.vendor_for_send_item.date_end, new { @type = "date", @required = "true", @class = "form-control" })
-            </td>
-        </tr>
-    </tbody>
-</table>
-    <input type="submit" class="btn btn-primary" value="Сохранить" />
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Наименование</th>
-            <th>Ресторан</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th>Дата создания</th>
-            <th>Дата прихода</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var it in Model.orders.Where(m => m.bd_nomenclature.bd_vendor.name == Model.vendor_name).OrderByDescending(m => m.date))
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h2 class="panel-title">Экспорт заявок по поставщикам</h2>
+    </div> 
+    <div class="panel-body">
+        <div class="alert alert-info">Это список поставщиков. Если вы хотите экспортировать заявки определенного поставщика в Excel, выберите дату и наименование поставщика, затем нажмите "Экспорт". Если вы не выберете дату, будет выгружен список заявок по поставщику за все время.</div>
+        @using (Html.BeginForm("Export", "Zakup", FormMethod.Post, new { id = "Form" }))
         {
-            <tr>
-                <td>@it.bd_nomenclature.name</td>
-                <td>@it.bd_employee.bd_subdivision.name</td>
-                <td>@it.count</td>
-                <td>@it.bd_nomenclature.Price</td>
-                <td>@it.date</td>
-                <td>@it.date_end</td>
-            </tr>
+            <table class="table table-stripped table-bordered">
+                <tr>
+                    <td>@Html.DropDownListFor(m => m.export.VendorName, Model.vendorsSelectList, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.export.date, new { @type = "date", @class = "form-control" })</td>
+                </tr>
+            </table>
+            <input type="submit" value="Экспорт" class="btn btn-danger" />
+            @Html.ActionLink("Обратно к списку", "Orders_by_vendors", new { }, new { @class = "btn btn-success" })
         }
-    </tbody>
-</table>
+    </div>
+</div>
+<br /><br />
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">@Model.vendor_name</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("OrdersList", "Zakup", FormMethod.Post, new { id = "Form" }))
+        {
+            @Html.HiddenFor(m => m.vendor_name)
+            <div class="alert alert-info">Это список заявок по определенным поставщикам. Если вы хотите автоматически проставить дату прихода определенным заявкам, выберите дату созадния заявок и дату прихода, затем нажмите "Сохранить"</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Дата создания заявки</th>
+                        <th>Дата прихода товара</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.TextBoxFor(m => m.vendor_for_send_item.date_from, new { @type = "date", @required = "true", @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.vendor_for_send_item.date_end, new { @type = "date", @required = "true", @class = "form-control" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-primary" value="Сохранить" />
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Наименование</th>
+                        <th>Ресторан</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Дата создания</th>
+                        <th>Дата прихода</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var it in Model.orders.Where(m => m.bd_nomenclature.bd_vendor.name == Model.vendor_name).OrderByDescending(m => m.date))
+                {
+                        <tr>
+                            <td>@it.bd_nomenclature.name</td>
+                            <td>@it.bd_employee.bd_subdivision.name</td>
+                            <td>@it.count</td>
+                            <td>@it.bd_nomenclature.Price</td>
+                            <td>@it.date</td>
+                            <td>@it.date_end</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-}
+        }
+    </div>
+</div>

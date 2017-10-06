@@ -4,22 +4,27 @@
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
 
-<h2>Заявки по поставщикам</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>Поставщики</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var it in Model.orders.GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key }))
-        {
-            <tr>
-                <td>
-                   @Html.ActionLink(it.name, "OrdersList", new { @vendor_name = it.name})
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Заявки по поставщикам</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr class="success">
+                    <th>Поставщики</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var it in Model.orders.GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key }))
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(it.name, "OrdersList", new { @vendor_name = it.name })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Analytics";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    int  i = 1;
+    int j = 1;
+    int k = 1;
+    decimal? vendSum = 0;
+    int vendCount = 0;
+}
+<style>
+    .wrapper_orders a:hover {
+        color: white !important;
+    }
+    .wrapper_orders a:active {
+        color: white !important;
+    }
+    .wrapper_orders a:visited {
+        color: white !important;
+    }
+    .wrapper_orders a:focus {
+        color: white !important;
+    }
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker {
+        z-index: 9999 !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.monthpicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'm.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                window.location.href = '/Zakup/Analytics?period=' + $("#analyticsDate").val();
+            }
+        });
+    });
+</script>
+<p class="alert alert-info">Выберите месяц, за которую нужно вывести данные. По умолчанию выставлена сегодняшняя дата</p>
+@Html.TextBoxFor(m => m.analyticsDate, new { @class="monthpicker from-control" })
+<div class="wrapper_orders">
+    <br />
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <a class="panel-title" data-toggle="collapse" href="#orders_by_restaurant">Количество заявок по ресторанам</a>
+        </div>
+        <div class="panel-collapse collapse" id="orders_by_restaurant">
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="info">
+                            <th>Название ресторана</th>
+                            <th>Кол-во заявок</th>
+                            <th>Общая сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                        {
+                            if (i != Model.orders.Count())
+                            {
+                                <tr>
+                                    <td>@it.name</td>
+                                    <td>@it.count</td>
+                                    <td>@it.summ</td>
+                                </tr>
+                                i++;
+                                vendCount += it.count;
+                                vendSum += it.summ;
+                            }
+                            else
+                            {
+                                <tr class="panel-footer">
+                                    <td>Итого: </td>
+                                    <td>@vendCount</td>
+                                    <td>@vendSum</td>
+                                </tr>
+                            }
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <a class="panel-title" data-toggle="collapse" href="#orders_by_vendors">Кол-во заявок по постащикам</a>
+        </div>
+        <div class="panel-collapse collapse" id="orders_by_vendors">
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="info">
+                            <th>Название</th>
+                            <th>Кол-во заявок</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                        {
+
+                            <tr>
+                                <td>@it.name</td>
+                                <td>@it.count</td>
+                                <td>@it.summ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <a class="panel-title" data-toggle="collapse" href="#orders_by_nomenclatures">По номенклатурам</a>
+        </div>
+        <div class="panel-collapse collapse" id="orders_by_nomenclatures">
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="info">
+                            <th>Наименование</th>
+                            <th>Кол-во заказанных номенклатур</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price) })) 
+                            {
+                              <tr>
+                                  <td>@it.name</td>
+                                  <td>@it.count</td>
+                                  <td>@it.summ</td>
+                              </tr>  
+                            }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
