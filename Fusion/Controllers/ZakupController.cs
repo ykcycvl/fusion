@@ -22,7 +22,7 @@ namespace Fusion.Controllers
             model.username = name;
             return View();
         }
-        [MyAuthorize(Roles = "ZakupAdmin")]
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Nomenclatures()
         {
             ZakupModel model = new ZakupModel();
@@ -283,6 +283,7 @@ namespace Fusion.Controllers
             else return View();
             
         }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Restaurants()
         {
             ZakupModel model = new ZakupModel();
@@ -296,6 +297,7 @@ namespace Fusion.Controllers
             model.getUsers();
             return View(model);
         }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Users()
         {
             ZakupModel model = new ZakupModel();
