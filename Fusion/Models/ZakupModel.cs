@@ -64,6 +64,7 @@ namespace Fusion.Models
         public DateTime? date_end { get; set; }
         public DateTime? date_from { get; set; }
         public ExportData export { get; set; }
+        public DateTime analyticsDate { get; set; }
         public vendor_for_send vendor_for_send_item { get; set; }
         public List<items1> listItem { get; set; }
         public List<Models.bd_nomenclature> items { get; set; }

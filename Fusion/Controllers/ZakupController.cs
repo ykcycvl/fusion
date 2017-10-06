@@ -316,5 +316,23 @@ namespace Fusion.Controllers
             model.list.SaveChanges();
             return Redirect("~/Zakup/Vendors");
         }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult Analytics(string period)
+        {
+            ZakupModel model = new ZakupModel();
+            if (period == null)
+            {
+                model.analyticsDate = DateTime.Today;
+            }
+            else
+            {
+                model.analyticsDate = DateTime.Parse(period);
+            }
+            model.getOrders();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            return View(model);
+        }
     }
 }
