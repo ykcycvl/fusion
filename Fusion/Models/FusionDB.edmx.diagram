@@ -60,6 +60,8 @@
         <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="17.375" PointY="0.75" />
         <EntityTypeShape EntityType="FusionDBModels.CRMSended" Width="1.5" PointX="0.75" PointY="17.75" />
         <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="FusionDBModels.DLVOrder" Width="1.5" PointX="17.375" PointY="4.75" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_subdivision_organization_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

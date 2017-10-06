@@ -304,7 +304,7 @@
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
-            dateFormat: '0m.yy',
+            dateFormat: 'm.yy',
             onClose: function (dateText, inst) {
                 $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
                 blur();
@@ -434,9 +434,10 @@
 
     function Save() {
         var grid = $$("grid");
-        var filter = grid.getFilter("FullName").value;
+        var fioFilter = grid.getFilter("FullName").value;
+        var subdivFilter = grid.getFilter("subdiv").value;
 
-        if(filter != "")
+        if(fioFilter != "" || subdivFilter != "")
         {
             alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
             return;
@@ -457,14 +458,6 @@
 
     function ExportToExcel() {
         var grid = $$("grid");
-        var filter = grid.getFilter("FullName").value;
-
-        if(filter != "")
-        {
-            alert("Экспорт невозможен, так как установлен фильтр! Перед экспортом удалите, пожалуйста, фильтр!");
-            return;
-        }
-
         webix.message({ type: "default", text: "Подготовка данных..." });
         var serializedData = JSON.stringify(grid.serialize());
         $("#tableData").val(serializedData);
@@ -487,8 +480,9 @@
 
         var grid = $$("grid");
         var filter = grid.getFilter("FullName").value;
+        var subdivFilter = grid.getFilter("subdiv").value;
 
-        if(filter != "")
+        if (filter != "" || subdivFilter != "")
         {
             webix.message({
                 type: "error",

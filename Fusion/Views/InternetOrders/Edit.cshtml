@@ -11,6 +11,11 @@
 
 @Html.ActionLink("Выполнить и напечатать заказ", "Print", new { @id = Model.id }, new { @class = "btn btn-default" })
 
+@if (!Model.Canceled)
+{
+    <a href="/InternetOrders/SendToDelivery/@Model.id" class="btn btn-danger" style="float:right">В деливери</a>
+}
+
 @if (Model.EmployeeLocked != null && Model.DateLocked >= DateTime.Now.AddMinutes(-30) && Model.EmployeeLocked.id != Model.BitrixUserID)
 {
     <div class="adm-info-message-wrap adm-info-message-red">

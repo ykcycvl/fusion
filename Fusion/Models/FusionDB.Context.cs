@@ -58,5 +58,6 @@ namespace Fusion.Models
         public virtual DbSet<CRMSegment> CRMSegment { get; set; }
         public virtual DbSet<CRMSended> CRMSended { get; set; }
         public virtual DbSet<CRMToSend> CRMToSend { get; set; }
+        public virtual DbSet<DLVOrder> DLVOrder { get; set; }
     }
 }

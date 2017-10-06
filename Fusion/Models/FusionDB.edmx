@@ -102,6 +102,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="address" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="organization_id" Type="int" />
         </EntityType>
         <EntityType Name="bd_vendor">
           <Key>
@@ -156,6 +157,14 @@
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="MailSubject" Type="text" Nullable="false" />
           <Property Name="MailBody" Type="text" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DLVOrder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteOrderID" Type="int" Nullable="false" />
+          <Property Name="SendDateTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="host">
           <Key>
@@ -470,6 +479,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bd_subdivision_organization_id">
+          <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_subdivision">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_mc_extra_mc_task">
           <End Role="mc_task" Type="Self.mc_task" Multiplicity="1" />
           <End Role="mc_extra" Type="Self.mc_extra" Multiplicity="*" />
@@ -630,6 +651,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="CRMSegment" EntityType="Self.CRMSegment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRMSended" EntityType="Self.CRMSended" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRMToSend" EntityType="Self.CRMToSend" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DLVOrder" EntityType="Self.DLVOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
@@ -702,6 +724,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
             <End Role="bd_states" EntitySet="bd_states" />
             <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_subdivision_organization_id" Association="Self.FK_bd_subdivision_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
           </AssociationSet>
           <AssociationSet Name="FK_mc_extra_mc_task" Association="Self.FK_mc_extra_mc_task">
             <End Role="mc_task" EntitySet="mc_task" />
@@ -857,6 +883,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_organization_id" FromRole="bd_organization" ToRole="bd_order" />
+          <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_subdivision_organization_id" FromRole="bd_organization" ToRole="bd_subdivision" />
         </EntityType>
         <EntityType Name="bd_states">
           <Key>
@@ -874,6 +901,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_subdivision" ToRole="bd_employee" />
+          <Property Name="organization_id" Type="Int32" />
+          <NavigationProperty Name="bd_organization" Relationship="FusionDBModels.FK_bd_subdivision_organization_id" FromRole="bd_subdivision" ToRole="bd_organization" />
         </EntityType>
         <EntityType Name="bd_vendor">
           <Key>
@@ -1372,6 +1401,11 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="CRMSegment" EntityType="FusionDBModels.CRMSegment" />
           <EntitySet Name="CRMSended" EntityType="FusionDBModels.CRMSended" />
           <EntitySet Name="CRMToSend" EntityType="FusionDBModels.CRMToSend" />
+          <EntitySet Name="DLVOrder" EntityType="FusionDBModels.DLVOrder" />
+          <AssociationSet Name="FK_bd_subdivision_organization_id" Association="FusionDBModels.FK_bd_subdivision_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1500,6 +1534,26 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="MailSubject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="MailBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="DLVOrder">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteOrderID" Type="Int32" Nullable="false" />
+          <Property Name="SendDateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_bd_subdivision_organization_id">
+          <End Type="FusionDBModels.bd_organization" Role="bd_organization" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_subdivision" Role="bd_subdivision" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_subdivision">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1608,6 +1662,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySetMapping Name="bd_subdivision">
             <EntityTypeMapping TypeName="FusionDBModels.bd_subdivision">
               <MappingFragment StoreEntitySet="bd_subdivision">
+                <ScalarProperty Name="organization_id" ColumnName="organization_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="address" ColumnName="address" />
@@ -1863,6 +1918,15 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="LastUpdateDateTime" ColumnName="LastUpdateDateTime" />
                 <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DLVOrder">
+            <EntityTypeMapping TypeName="FusionDBModels.DLVOrder">
+              <MappingFragment StoreEntitySet="DLVOrder">
+                <ScalarProperty Name="SendDateTime" ColumnName="SendDateTime" />
+                <ScalarProperty Name="SiteOrderID" ColumnName="SiteOrderID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

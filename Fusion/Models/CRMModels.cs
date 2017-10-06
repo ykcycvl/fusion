@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Hosting;
 using System.Net.Mail;
+using System.ComponentModel;
 
 namespace Fusion.Models
 {
@@ -264,6 +265,10 @@ Content-Length: {0}
             [XmlArray("Contacts"), XmlArrayItem("Contact")]
             public List<ContactInfo> Contacts { get; set; }
 
+            [Display(Name = "Адреса")]
+            [XmlArray("Addresses"), XmlArrayItem("Address")]
+            public List<AddressInfo> Addresses { get; set; }
+
             [XmlElement("Holders_Cards")]
             public CRMHolderCardsInfo Holders_Cards { get; set; }
 
@@ -510,6 +515,77 @@ Content-Length: {0}
                     }
                 }
             }
+            public class AddressInfo
+            {
+                [Display(Name = "Тип")]
+                [XmlElement("Type_ID")]
+                [Required]
+                public string Type_ID { get; set; }
+
+                [Display(Name = "Страна")]
+                [XmlElement("Country_ID")]
+                [Required]
+                public string Country_ID { get; set; }
+
+                [Display(Name = "Почтовый индекс")]
+                [XmlElement("ZIP")]
+                public string ZIP { get; set; }
+
+                [Display(Name = "Регион")]
+                [XmlElement("Region")]
+                public string Region { get; set; }
+
+                [Display(Name = "Город")]
+                [XmlElement("City_ID")]
+                [Required]
+                public string City_ID { get; set; }
+
+                [Display(Name = "Улица")]
+                [XmlElement("Street_ID")]
+                [Required]
+                public string Street_ID { get; set; }
+
+                [Display(Name = "Дом")]
+                [XmlElement("House")]
+                [Required]
+                public string House { get; set; }
+
+                [Display(Name = "Строение")]
+                [XmlElement("Building")]
+                public string Building { get; set; }
+
+                [Display(Name = "Подъезд")]
+                [XmlElement("Entry")]
+                public string Entry { get; set; }
+
+                [Display(Name = "Этаж")]
+                [XmlElement("Floor")]
+                public string Floor { get; set; }
+
+                [Display(Name = "Квартира")]
+                [XmlElement("Apartments")]
+                public string Apartments { get; set; }
+
+                [Display(Name = "Домофон")]
+                [XmlElement("Entry_Code")]
+                public string Entry_Code { get; set; }
+
+                [Display(Name = "Доп. инфо")]
+                [XmlElement("DopInfo")]
+                public string DopInfo { get; set; }
+
+                [Display(Name = "Удален")]
+                [XmlElement("Deleted")]
+                public string Deleted { get; set; }
+
+                [Display(Name = "Широта")]
+                [XmlElement("LAT")]
+                public string LAT { get; set; }
+                [Display(Name = "Долгота")]
+                [XmlElement("LNG")]
+                public string LNG { get; set; }
+
+            }
             public class CRMHolderContactsInfo
             {
                 [XmlArray("Holder_Contact"), XmlArrayItem("Contact")]
@@ -711,13 +787,7 @@ Content-Length: {0}
                 CRMResponse response = Query(query, "1");
 
                 if (response.MessageType == "Error")
-                {
                     LastResult = response.Message;
-
-                    /*Holder = Holder.Deserialize(response.Message);
-                    Holder.Cards = Holder.Holders_Cards.Cards;
-                    Holder.Contacts = Holder.Holders_Contacts.Contacts;*/
-                }
 
                 Holder = GetHolderInfo(Holder.Holder_ID);
 
@@ -923,6 +993,27 @@ Content-Length: {0}
         {
             return db.CRMSegment.FirstOrDefault(p => p.id == id);
         }
+
+        private void SendCompletedCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            String token = (string)e.UserState;
+
+            if (e.Cancelled)
+            {
+                //MessageBox.Show("Canceled");
+            }
+            if (e.Error != null)
+            {
+                //textBox1.Text += String.Format("[{0}] {1}\r\n", token, e.Error.ToString());
+            }
+            else
+            {
+                //textBox1.Text += "Message sent\r\n";
+            }
+
+            //mailSent = true;
+        }
+
         public bool Prepare()
         {
             try
@@ -940,7 +1031,7 @@ Content-Length: {0}
                             mailList.Add(rdr["email"].ToString().Trim());
                     }
 
-                    for (int i = 0; i < 1000; i++)
+                    for (int i = 0; i < 100; i++)
                     {
                         mailList.Add("ykcycvl@gmail.com");
                         mailList.Add("ivermak@tokyo-bar.ru");
@@ -949,30 +1040,27 @@ Content-Length: {0}
 
                     foreach (var m in mailList)
                     {
-                        MailMessage mail = new MailMessage();
-                        string FROM = "noreply@tokyo-bar.ru";
-                        string TO = m;
-                        mail.Body = this.MailText;
-                        mail.From = new MailAddress(FROM);
-                        mail.To.Add(new MailAddress(TO));
-                        mail.Subject = this.MailTitle;
-                        mail.SubjectEncoding = Encoding.UTF8;
-                        mail.BodyEncoding = Encoding.UTF8;
-                        mail.IsBodyHtml = true;
                         SmtpClient client = new SmtpClient();
                         client.Host = "srv-ex00.fg.local";
-                        client.Port = 587;
-                        client.EnableSsl = true;
+                        client.Port = 2525;
+                        client.EnableSsl = false;
                         client.Credentials = new NetworkCredential("noreply", "123456zZ");
                         client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        client.SendCompleted += (s, e) => {
-                            SmtpClient callbackClient = s as SmtpClient;
-                            MailMessage callbackMailMessage = e.UserState as MailMessage;
-                            callbackClient.Dispose();
-                            callbackMailMessage.Dispose();
-                        };
-                        client.SendAsync(mail, mail);
-                        mail.Dispose();
+
+                        MailAddress from = new MailAddress("noreply@tokyo-bar.ru", "Кристина из Токио",
+                        System.Text.Encoding.UTF8);
+
+                        MailAddress to = new MailAddress(m);
+
+                        MailMessage message = new MailMessage(from, to);
+                        message.IsBodyHtml = true;
+                        message.Body = this.MailText;
+                        message.BodyEncoding = System.Text.Encoding.UTF8;
+                        message.Subject = this.MailTitle;
+                        message.SubjectEncoding = System.Text.Encoding.UTF8;
+                        client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                        string userState = "Тестовая рассылка! " + m;
+                        client.SendAsync(message, userState);
                     }
 
                     return true;

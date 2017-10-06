@@ -11,6 +11,11 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Data.SqlClient;
 using Microsoft.AspNet.Identity;
+using System.Net;
+using System.Text;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml.Serialization;
 
 namespace Fusion.Models
 {
@@ -30,6 +35,13 @@ namespace Fusion.Models
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             return con;
+        }
+
+        public class SODresponse
+        {
+            public int OrderID { get; set; }
+            public bool Success { get; set; }
+            public string Message { get; set; }
         }
 
         public class OrderInfo
@@ -58,7 +70,8 @@ namespace Fusion.Models
                 public Decimal Quantity { get; set; }
                 [Display(Name="Название")]
                 public string ProductName { get; set; }
-
+                [Display(Name = "Код RK7")]
+                public string RKCode { get; set; }
             }
             public class EmployeeInfo
             {
@@ -342,7 +355,7 @@ WHERE bso.ID = {0}", id), con);
                 #endregion
 
                 #region FillItems
-                com.CommandText = String.Format(@"select * FROM b_sale_basket bsb where bsb.ORDER_ID = {0}", id);
+                com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb INNER JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID = 76 where bsb.ORDER_ID = {0}", id);
                 rdr = com.ExecuteReader();
 
                 if (rdr.HasRows)
@@ -357,6 +370,12 @@ WHERE bso.ID = {0}", id), con);
                         oii.Price = Convert.ToDecimal(rdr["PRICE"]);
                         oii.Quantity = Convert.ToDecimal(rdr["QUANTITY"]);
                         oii.ProductName = Convert.ToString(rdr["NAME"]);
+
+                        if (rdr["RKCODE"] != DBNull.Value)
+                            oii.RKCode = Convert.ToString(rdr["RKCODE"]);
+                        else
+                            oii.RKCode = "";
+
                         this.Items.Add(oii);
                     }
                 }
@@ -365,6 +384,297 @@ WHERE bso.ID = {0}", id), con);
                 #endregion
 
                 con.Close();
+            }
+            public SODresponse SendOrderToDelivery(string UserName)
+            {
+                SODresponse result = new SODresponse() { OrderID = this.id };
+                List<RKCRM.Holder.AddressInfo> addressInfo = null;
+
+                #region Prepare
+                string comment = "", name = "", phone = "";
+                int guestCount = 0, orderType = 3;
+                DateTime deliveryTime = DateTime.Now;
+
+                int defaultCookTime = Convert.ToInt32(WebConfigurationManager.AppSettings["DefaultCookTime"]);
+                int defaultWayTime = Convert.ToInt32(WebConfigurationManager.AppSettings["DefaultWayTime"]);
+
+                if (this.DeliveryName == "Забрать самостоятельно")
+                    orderType = 2;
+
+                string[] nameParts = this.Guest.Name.Trim().Split(' ');
+                name = nameParts[0];
+                phone = this.Guest.phone.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
+
+                var propsDeliveryTime = this.Properties.FirstOrDefault(p => p.OrderPropsId == 4);
+                var propsGuestCount = this.Properties.FirstOrDefault(p => p.OrderPropsId == 8);
+                var propsSdacha = this.Properties.FirstOrDefault(p => p.OrderPropsId == 9);
+                var propsRestId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 22);
+                var propsCityId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 24);
+                var propsStreetId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 25);
+                var propsHouse = this.Properties.FirstOrDefault(p => p.OrderPropsId == 26);
+                var propsBuilding = this.Properties.FirstOrDefault(p => p.OrderPropsId == 27);
+                var propsEntry = this.Properties.FirstOrDefault(p => p.OrderPropsId == 28);
+                var propsFloor = this.Properties.FirstOrDefault(p => p.OrderPropsId == 29);
+                var propsAppt = this.Properties.FirstOrDefault(p => p.OrderPropsId == 30);
+                var propsEntryCode = this.Properties.FirstOrDefault(p => p.OrderPropsId == 31);
+
+                string ordercategoryID = "0", restID = "0";
+
+                if (orderType == 2)
+                {
+                    switch (propsRestId.Value)
+                    {
+                        case "1002128":
+                            // Гайдамак
+                            ordercategoryID = "1002069";
+                            restID = "1002128";
+                            break;
+                        case "1003172":
+                            // Киото
+                            ordercategoryID = "1002070";
+                            restID = "1003172";
+                            break;
+                        case "1":
+                            // Хоум
+                            ordercategoryID = "1002068";
+                            restID = "1";
+                            break;
+                        case "1002257":
+                            // Каваи
+                            ordercategoryID = "1003468";
+                            restID = "1002257";
+                            break;
+                        case "1008008":
+                            // Мауро
+                            ordercategoryID = "1010099";
+                            restID = "1008008";
+                            break;
+                        case "1005896":
+                            // Уссурийск
+                            ordercategoryID = "1005921";
+                            restID = "1005896";
+                            break;
+                        case "1009190":
+                            // Находка 1 этаж
+                            ordercategoryID = "1010100";
+                            restID = "1009190";
+                            break;
+                        default:
+                            // Хуй пойми чо
+                            ordercategoryID = "1002069";
+                            restID = "1002128";
+                            break;
+                    }
+                }
+
+                if (orderType == 3)
+                {
+                    addressInfo = new List<RKCRM.Holder.AddressInfo>();
+
+                    addressInfo.Add(new RKCRM.Holder.AddressInfo()
+                    {
+                        Type_ID = "250",
+                        Country_ID = "1",
+                        ZIP = "",
+                        Region = "",
+                        City_ID = propsCityId.Value,
+                        Street_ID = propsStreetId.Value,
+                        House = propsHouse.Value,
+                        Building = propsBuilding.Value,
+                        Entry = propsEntry.Value,
+                        Floor = propsFloor.Value,
+                        Apartments = propsAppt.Value,
+                        Entry_Code = propsEntryCode.Value,
+                        DopInfo = "",
+                        Deleted = "False",
+                        LAT = "000.000000000",
+                        LNG = "000.000000000",
+                    });
+                }
+
+                if (propsGuestCount != null)
+                {
+                    Int32.TryParse(propsGuestCount.Value, out guestCount);
+
+                    if (guestCount == 0)
+                        guestCount = 1;
+                }
+
+                if (propsDeliveryTime == null || propsDeliveryTime.Value.Trim() == "Ближайшее")
+                {
+                    if (orderType == 2)
+                    {
+                        deliveryTime = DateTime.Now.AddMinutes(defaultCookTime);
+                    }
+                    else
+                    {
+                        if (orderType == 3)
+                        {
+                            deliveryTime = DateTime.Now.AddMinutes(defaultCookTime + defaultWayTime);
+                        }
+                    }
+                }
+                else
+                {
+                    deliveryTime = DateTime.Parse(propsDeliveryTime.Value.Trim());
+                    comment += " Время: " + deliveryTime.ToString("dd.MM.yyyy HH:mm");
+                }
+
+                if (propsSdacha != null && propsSdacha.Value.Trim() != "")
+                    comment += String.Format(" Сдача с {0}р. ", propsSdacha.Value);
+
+                if (this.Payed)
+                    comment += String.Format(" {0} ОПЛАЧЕН ", this.id);
+
+                comment += this.Comment;
+
+                string contactPhone = String.Format(@"<Contact><Type_ID>254</Type_ID><Value>{0}</Value><Dispatch>True</Dispatch></Contact>", phone);
+
+                List<RKCRM.Holder> holders = RKCRM.SearchHoldersByPhone(phone);
+
+                if (holders != null && holders.Count > 0)
+                {
+                    RKCRM.EditHoldersModel editHolders = new RKCRM.EditHoldersModel();
+                    holders[0].F_Name = name;
+                    holders[0].L_Name = "";
+                    holders[0].M_Name = "";
+
+                    if (addressInfo != null)
+                        holders[0].Addresses = addressInfo;
+
+                    editHolders.Holder = holders[0];
+                    editHolders.EditHolder(UserName);
+                }
+                else
+                {
+                    RKCRM.AddHoldersModel addHolders = new RKCRM.AddHoldersModel();
+                    addHolders.Holder = new RKCRM.Holder() {
+                        Group_ID = "4",
+                        F_Name = name,
+                        Contacts = new List<RKCRM.Holder.ContactInfo>(),
+                        Addresses = addressInfo
+                    };
+
+                    addHolders.Holder.Contacts.Add(new RKCRM.Holder.ContactInfo() {
+                        Type_ID = "254",
+                        Value = phone,
+                        Dispatch = "True"
+                    });
+
+                    addHolders.AddHolder();
+                }
+
+                string guests = "";
+
+                for (int i = 1; i < guestCount; i++)
+                    guests += String.Format(@"<Guest GuestLabel=""{0}"" />", (i + 1));
+                #endregion
+
+                #region RK7Block
+                string rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+	<RK7CMD CMD=""CreateOrder"">
+	<Order persistentComment=""{0}"" nonPersistentComment=""Internet"" extSource=""31"" extID=""256"">
+		<Table code=""60"" />
+		<OrderType code=""{1}"" />
+		<GuestType id=""1"" />
+		<OrderCategory id=""{2}"" />
+		<Guests>
+		<Item clientID=""{3}"" />
+		{4}
+		</Guests>
+	</Order>
+	</RK7CMD>
+</RK7Query>", comment, orderType, ordercategoryID, holders[0].Holder_ID, guests);
+
+                string s = RK7APIModels.HttpPost(rkQuery);
+
+                string status = "";
+                string guid = "";
+
+                Match m = Regex.Match(s, @"guid=\""(?<val>.*?)\""");
+
+                if (m.Success)
+                    guid = m.Groups["val"].Value;
+
+                m = Regex.Match(s, @"Status=\""(?<val>.*?)\""");
+
+                if (m.Success)
+                    status = m.Groups["val"].Value;
+
+                if (status != "Ok")
+                {
+                    result.Message = "[CreateOrder] " + s;
+                    result.Success = false;
+                    return result;
+                }
+
+                string deliveryBlock = String.Format(@"<DeliveryBlock deliveryTime=""{0}"" minCookTime=""1899-12-30T01:00:00"" />", deliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"));
+
+                rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
+<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <RK7CMD CMD=""DeliveryUpdateStatus"">
+	<Order guid=""{0}"" />
+	{1}
+	<Restaurant id=""{2}"" />
+  </RK7CMD>
+</RK7Query>", guid, deliveryBlock, restID);
+
+                s = RK7APIModels.HttpPost(rkQuery);
+
+                m = Regex.Match(s, @"Status=\""(?<val>.*?)\""");
+
+                if (m.Success)
+                    status = m.Groups["val"].Value;
+
+                if (status != "Ok")
+                {
+                    result.Message = "[DeliveryUpdateStatus] " + s;
+                    result.Success = false;
+                    return result;
+                }
+
+                string dishes = "";
+
+                foreach (var dish in this.Items)
+                {
+                    if (dish.RKCode != "")
+                        dishes += String.Format(@"
+<Dish code=""{0}"" quantity=""{1}"" />", dish.RKCode, dish.Quantity * 1000);
+                }
+
+                if (this.PriceDelivery > 0 && orderType == 3)
+                    dishes += String.Format(@"
+<Dish code=""322"" quantity=""1000"" />");
+
+                rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <RK7CMD CMD=""SaveOrder"" deferred=""1"" dontcheckLicense=""1"">
+	<Order guid=""{0}"" />
+	<Session>
+	  {1}
+	</Session>
+  </RK7CMD>
+</RK7Query>", guid, dishes);
+
+                s = RK7APIModels.HttpPost(rkQuery);
+
+                m = Regex.Match(s, @"Status=\""(?<val>.*?)\""");
+
+                if (m.Success)
+                    status = m.Groups["val"].Value;
+
+                if (status != "Ok")
+                {
+                    result.Message = "[SaveOrder] " + s;
+                    result.Success = false;
+                    return result;
+                }
+                #endregion
+
+                result.Success = true;
+                result.Message = "Заказ успешно сохранен";
+                return result;
             }
         }
 

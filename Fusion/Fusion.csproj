@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -968,6 +969,9 @@
     </Compile>
     <Compile Include="Models\DISPLAYRESOLUTIONS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DLVOrder.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DOCUMENTMAKETSCHEMELINKS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
@@ -5184,6 +5188,8 @@
     <Content Include="Views\Zakup\Export.cshtml" />
     <Content Include="Views\Zakup\OrdersList.cshtml" />
     <Content Include="Views\Zakup\Orders_by_vendors.cshtml" />
+    <Content Include="Views\CRM\MailSended.cshtml" />
+    <Content Include="Views\InternetOrders\SendToDelivery.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

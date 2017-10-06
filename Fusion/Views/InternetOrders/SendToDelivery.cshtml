@@ -1,0 +1,18 @@
+﻿@model Fusion.Models.InternetOrders.SODresponse
+@{
+    ViewBag.Title = "Отправка заказа в Деливери";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Результат сохранения заказа</h2>
+
+<div class="row">
+    @if (Model.Success)
+    {
+        <p style="color: #1ba41b">@Model.Message</p>
+    }
+    else
+    {
+        <p style="color: #d90808">@Model.Message</p>
+    }
+</div>

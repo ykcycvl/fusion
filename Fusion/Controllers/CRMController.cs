@@ -320,6 +320,11 @@ namespace Fusion.Controllers
             }    
         }
 
+        public ActionResult MailSended()
+        {
+            return View();
+        }
+
         public ActionResult Import(string filename)
         {
             string[] sdata = System.IO.File.ReadAllLines("/WorkPrograms/Fusion/Fusion/tmp/" + filename);

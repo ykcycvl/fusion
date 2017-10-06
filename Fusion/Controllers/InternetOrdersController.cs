@@ -9,6 +9,8 @@ namespace Fusion.Controllers
 {
     public class InternetOrdersController : Controller
     {
+        Entities db = new Entities();
+
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
         // GET: InternetOrders
         public ActionResult Index(string[] filter_status)
@@ -63,11 +65,31 @@ namespace Fusion.Controllers
         }
 
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
-        public ActionResult SendToRkeeper(int id)
-        { 
-            InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
-            model.GetOrder(id, User.Identity.Name.ToString());
-            return View(model);
+        public ActionResult SendToDelivery(int id)
+        {
+            var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
+
+            if (order == null)
+            {
+                InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
+                model.GetOrder(id, User.Identity.Name.ToString());
+                model.SetStatus('F');
+
+                InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString());
+
+                if (response.Success)
+                {
+                    db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now });
+                    db.SaveChanges();
+                }
+
+                return View(response);
+            }
+            else
+            {
+                InternetOrders.SODresponse response = new InternetOrders.SODresponse() { OrderID = id, Success = false, Message = "Этот заказ уже был отправлен в деливери. Повторная отправка невозможна." };
+                return View(response);
+            }
         }
     }
 }

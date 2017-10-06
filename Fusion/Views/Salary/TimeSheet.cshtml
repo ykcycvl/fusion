@@ -7,11 +7,11 @@
     int daysCount = DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month);
     string monthColumn = "";
     string rules = "";
-    
+
     for (int i = 1; i <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); i++)
     {
         rules += "\"d" + i.ToString() + "\":IsNumber,";
-        
+
         if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Вс")
         {
             monthColumn += "{ id: 'd" + i.ToString() + "', header: '" + i.ToString() + " " + System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) + "', width: 60, editor: 'text', batch: 2, css:{'background': '#fbfafa'} },\r\n";
@@ -144,7 +144,7 @@
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
-            dateFormat: '0m.yy',
+            dateFormat: 'm.yy',
             onClose: function (dateText, inst) {
                 $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
                 blur();
@@ -253,12 +253,13 @@
     function Save() {
         var grid = $$("grid");
         var filter = grid.getFilter("FullName").value;
+		var subdivFilter = grid.getFilter("subdiv").value;
         var carriedOut = @Model.CarriedOut.ToString().ToLower();
 
         if(carriedOut)
             return;
 
-        if(filter != "")
+        if(filter != "" || subdivFilter != "")
         {
             alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
             return;
@@ -285,8 +286,9 @@
 
         var grid = $$("grid");
         var filter = grid.getFilter("FullName").value;
+        var subdivFilter = grid.getFilter("subdiv").value;
 
-        if(filter != "")
+        if (filter != "" || subdivFilter != "")
         {
             webix.message({
                 type: "error",
@@ -328,7 +330,8 @@
 </div>
 
 <br />
+
 @if (!Model.CarriedOut)
 {
     <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
-}    
+}

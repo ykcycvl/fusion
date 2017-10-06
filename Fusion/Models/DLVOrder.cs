@@ -12,19 +12,10 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class bd_subdivision
+    public partial class DLVOrder
     {
-        public bd_subdivision()
-        {
-            this.bd_employee = new HashSet<bd_employee>();
-        }
-    
         public int id { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public Nullable<int> organization_id { get; set; }
-    
-        public virtual ICollection<bd_employee> bd_employee { get; set; }
-        public virtual bd_organization bd_organization { get; set; }
+        public int SiteOrderID { get; set; }
+        public System.DateTime SendDateTime { get; set; }
     }
 }

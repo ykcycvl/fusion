@@ -94,6 +94,52 @@ namespace Fusion.Models
                 return HttpPost(query);
             }
         }
+
+        [XmlRoot("RK7Query")]
+        public class RK7Query
+        {
+            [XmlElement("RK7CMD")]
+            public CreateOrder asef { get; set; }
+            public class CreateOrder
+            {
+                [XmlAttribute("CMD")]
+                public string CMD = "CreateOrder";
+                [XmlElement("Order")]
+                public OrderInfo Order { get; set; }
+                public class OrderInfo
+                {
+                    [XmlAttribute("persistentComment")]
+                    public string persistentComment { get; set; }
+                    [XmlAttribute("nonPersistentComment")]
+                    public string nonPersistentComment { get; set; }
+                    [XmlAttribute("extSource")]
+                    public string extSource { get; set; }
+                    [XmlAttribute("extID")]
+                    public string extID { get; set; }
+                    [XmlElement("Table")]
+                    public OrderAttribute Table { get; set; }
+                    [XmlElement("OrderType")]
+                    public OrderAttribute OrderType { get; set; }
+                    [XmlElement("GuestType")]
+                    public OrderAttribute GuestType { get; set; }
+                    [XmlElement("OrderCategory")]
+                    public OrderAttribute OrderCategory { get; set; }
+
+                    public class OrderAttribute 
+                    {
+                        [XmlAttribute("code")]
+                        public string Code { get; set; }
+                        [XmlAttribute("id")]
+                        public string id { get; set; }
+                    }
+
+                    public class Guest
+                    { 
+
+                    }
+                }
+            }
+        }
     }
 
     [XmlRoot("RK7QueryResult")]
