@@ -355,7 +355,7 @@ WHERE bso.ID = {0}", id), con);
                 #endregion
 
                 #region FillItems
-                com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb INNER JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID = 76 where bsb.ORDER_ID = {0}", id);
+                com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb LEFT JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID = 76 where bsb.ORDER_ID = {0}", id);
                 rdr = com.ExecuteReader();
 
                 if (rdr.HasRows)
@@ -517,11 +517,11 @@ WHERE bso.ID = {0}", id), con);
                 else
                 {
                     deliveryTime = DateTime.Parse(propsDeliveryTime.Value.Trim());
-                    comment += " Время: " + deliveryTime.ToString("dd.MM.yyyy HH:mm");
+                    comment += " " + deliveryTime.ToString("dd.MM.yyyy HH:mm");
                 }
 
                 if (propsSdacha != null && propsSdacha.Value.Trim() != "")
-                    comment += String.Format(" Сдача с {0}р. ", propsSdacha.Value);
+                    comment += String.Format(" {0}р", propsSdacha.Value);
 
                 if (this.Payed)
                     comment += String.Format(" {0} ОПЛАЧЕН ", this.id);

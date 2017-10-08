@@ -3850,6 +3850,7 @@
     <Content Include="Models\BioTime.edmx.diagram">
       <DependentUpon>BioTime.edmx</DependentUpon>
     </Content>
+    <Content Include="Files\Пустой бланк.xlsx" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -5190,6 +5191,10 @@
     <Content Include="Views\Zakup\Orders_by_vendors.cshtml" />
     <Content Include="Views\CRM\MailSended.cshtml" />
     <Content Include="Views\InternetOrders\SendToDelivery.cshtml" />
+    <Content Include="Views\Zakup\addVendor.cshtml" />
+    <Content Include="Views\Zakup\Analytics.cshtml" />
+    <Content Include="Views\Zakup\Restaurants.cshtml" />
+    <Content Include="Views\Zakup\Users.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
