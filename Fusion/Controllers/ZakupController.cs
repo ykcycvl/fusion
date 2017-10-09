@@ -336,5 +336,38 @@ namespace Fusion.Controllers
             model.getUsers();
             return View(model);
         }
+        public ActionResult Remnants(int GroupID, int storehouse_name)
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            if (model.Open() == 0)
+            {
+                model.getRemnants(GroupID, storehouse_name);
+                model.Close();
+            }
+            return View(model);
+        }
+        public ActionResult Storehouses()
+        {
+            ZakupModel model = new ZakupModel();
+            if(model.Open() == 0)
+            {
+                model.getStorehouses();
+                model.Close();
+            }
+            return View(model);
+        }
+        public ActionResult GoodsTree_remnants(int storehouse_name)
+        {
+            ZakupModel model = new ZakupModel();
+            model.sh_id = storehouse_name;
+            if (model.Open() == 0)
+            {
+                model.GetGoodsTree(null);
+                model.Close();
+            }
+            return View(model);
+        }
     }
 }
