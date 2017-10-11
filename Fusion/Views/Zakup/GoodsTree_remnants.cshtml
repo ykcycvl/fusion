@@ -19,7 +19,7 @@
                     if (confirm("Загрузка перечня всех товаров с остатками может занять ОЧЕНЬ длительное время. Вы уверены, что хотите загрузить все товары с остатками?")) {
                         $("#GoodsData").hide();
                         $("#preloader").show();
-                        $("#GoodsData").load(("/Zakup/Remnants/?GroupID=" + data.node.id +"&storehouse_name=@Model.sh_id"), function () {
+                        $("#GoodsData").load(("/Zakup/Remnants/?storehouse_name=@Model.sh_id"), function () {
                             $("#preloader").hide();
                             $("#GoodsData").show();
                             $('#Table').DataTable({

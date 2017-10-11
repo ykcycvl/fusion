@@ -336,14 +336,18 @@ namespace Fusion.Controllers
             model.getUsers();
             return View(model);
         }
-        public ActionResult Remnants(int GroupID, int storehouse_name)
+        public ActionResult Remnants(int? GroupID, int storehouse_name)
         {
             ZakupModel model = new ZakupModel();
             model.getVendors();
             model.getNomenclatures();
             if (model.Open() == 0)
             {
-                model.getRemnants(GroupID, storehouse_name);
+                if (GroupID != null)
+                {
+                    model.getRemnants(GroupID, storehouse_name);
+                }
+                else model.getRemnants(null, storehouse_name);
                 model.Close();
             }
             return View(model);

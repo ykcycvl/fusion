@@ -206,12 +206,15 @@ namespace Fusion.Models
                 sh4.CloseQuery(res);
             }
         }
-        public void getRemnants(int GroupID, int storehouse)
+        public void getRemnants(int? GroupID, int storehouse)
         {
             remnantsList = new List<remnants>();
             int res = sh4.pr_CreateProc("GsRemns");
             sh4.pr_SetValByName(res, 0, "0.1.0", DateTime.Today.ToOADate());
-            sh4.pr_SetValByName(res, 0, "209.1.5", GroupID);      // RID Товарной группы (null -по всем)
+            if(GroupID != null)
+            {
+                sh4.pr_SetValByName(res, 0, "209.1.5", GroupID);      // RID Товарной группы (null -по всем)
+            }
             //sh4.pr_SetValByName(res, 0, "102.1.6", null);       // RID Скла да (null -по всем)
             sh4.pr_SetValByName(res, 0, "101.1.7", storehouse);       // RID Группы складов (null -по всем)
             //sh4.pr_SetValByName(res, 0, "208.1.8", null);       // RID Основные Категории товаров (null -по всем)
