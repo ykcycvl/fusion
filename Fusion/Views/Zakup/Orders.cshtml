@@ -38,6 +38,10 @@
         background-color: #669966;
         color: white;
     }
+    .highlight_blue {
+        background-color: #337ab7;
+        color: white;
+    }
 </style>
 <script src="~/Scripts/codebase/webix.js"></script>
 <link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
@@ -48,7 +52,6 @@
 
 @if (LoginViewModel.IsMemberOf(Model.username, "ZakupUser"))
 {
-    
     using (Html.BeginForm("ExportOrders", "Zakup", FormMethod.Post, new { id = "Form" }))
     {
         <div class="panel panel-danger">
@@ -58,21 +61,40 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <a class="btn btn-success" href="~/Files/Пустой бланк.xlsx">Скачать пустой бланк</a>
-                    </div>
-                    <div class="col-md-4">
                         @Html.TextBoxFor(m => m.dateExportForEmployee, new { @type = "date", @required = "true", @class = "form-control", @style = "width: 200px" })
                     </div>
                     <div class="col-md-4">
                         <input type="submit" class="btn btn-primary" value="Скачать заявки за выбранную дату" />
                     </div>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Список пустых бланков <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu success">
+                                <li>
+                                    <a  href="~/Files/Кухня.xlsx">Кухня</a>
+                                </li>
+                                <li>
+                                    <a  href="~/Files/Хозы.xlsx">Хозы</a>
+                                </li>
+                                <li>
+                                    <a  href="~/Files/Бар.xlsx">Бар</a>
+                                </li>
+                                <li>
+                                    <a  href="~/Files/Фабрика.xlsx">Фабрика</a>
+                                </li>
+                            </ul>
+                        </div>
+                       </div>
                 </div>
                 @Html.HiddenFor(m => m.username)
             </div>
         </div>
     }
 
-    <h3>@Model.orders.FirstOrDefault(m => m.bd_employee.domain_login == Model.username).bd_employee.bd_subdivision.name</h3>
+    <h3>@Model.list.bd_employee.FirstOrDefault(m => m.domain_login == Model.username).bd_subdivision.name</h3>
+
     @Html.ActionLink("Создать заказ", "CreateOrder", new { @catId = 1 }, new { @class = "btn btn-primary" })
 }
 
@@ -120,6 +142,8 @@
                                 item.$css = "highlight_green";
 				            if (item.state == "Ожидается")
                                 item.$css = "highlight_red";
+                            if (item.state == "Принят")
+                                item.$css = "highlight_blue";
 				        }
 				    },
 				    select: "cell",

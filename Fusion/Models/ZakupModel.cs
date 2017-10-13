@@ -16,6 +16,7 @@ namespace Fusion.Models
 {
     public class ZakupModel
     {
+        //классы для сторхауса
         public class GoodsTreeItem
         {
             [Display(Name = "ID")]
@@ -50,6 +51,21 @@ namespace Fusion.Models
             public double NDS { get; set; }
             public double NSP { get; set; }
         }
+        public class remnants
+        {
+            public int RID { get; set; }
+            public string name { get; set; }
+            public string measurements { get; set; }
+            public dynamic quantity { get; set; }
+            public double vat { get; set; }
+            public string storehouse { get; set; }
+        }
+        public class storehouses
+        {
+            public double id { get; set; }
+            public string name { get; set; }
+        }
+        //классы для селектов, экспорта в эксель и пр.
         public class vendors1
         {
             public string name { get; set; }
@@ -95,20 +111,6 @@ namespace Fusion.Models
             public string state { get; set; }
             public int state_id { get; set; }
         }
-        public class remnants
-        {
-            public int RID { get; set; }
-            public string name { get; set; }
-            public string measurements { get; set; }
-            public dynamic quantity { get; set; }
-            public double vat { get; set; }
-            public string storehouse { get; set; }
-        }
-        public class storehouses
-        {
-            public double id { get; set; }
-            public string name { get; set; }
-        }
         /*Здесь будут переменные*/
         public List<GoodsTreeItem> GoodsTree = new List<GoodsTreeItem>();
         public List<Good> Goods = new List<Good>();
@@ -149,6 +151,8 @@ namespace Fusion.Models
         public DateTime Period { get; set; }
         public string username { get; set; }
         public int sh_id { get; set; }
+
+        //методы для сторхауса
         Sh4Ole.SH4App sh4 = new SH4App();
         public int Open()
         {
@@ -208,6 +212,7 @@ namespace Fusion.Models
         }
         public void getRemnants(int? GroupID, int storehouse)
         {
+            //получение остатков на основа id склада и товарной группы, если товарная группа пустая - выгружаем все номенклатуры
             remnantsList = new List<remnants>();
             int res = sh4.pr_CreateProc("GsRemns");
             sh4.pr_SetValByName(res, 0, "0.1.0", DateTime.Today.ToOADate());
@@ -399,6 +404,7 @@ namespace Fusion.Models
                 return orgs;
             }
         }
+        //старый метод для сохранения номенклатур, сейчас не используется
         public void PostNom()
         {
             foreach (var it in items)
@@ -417,6 +423,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //старый метод для сохранения поставщиков, сейчас не используется
         public void PostVen()
         {
             foreach (var it in vendorList)
@@ -435,6 +442,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //метод для создания заказов от товароведа
         public void sendOrder( string username)
         {
             foreach (var it in items)
@@ -446,6 +454,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //мето для сохранения списка ресторанов с организациями
         public void postOrganizations()
         {
             foreach (var it in restaurantsList)
@@ -456,6 +465,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //старый метод для сохранения списка заказов, сейчас не используется
         public void sendOrderList()
         {
             foreach (var it in orders)
@@ -473,6 +483,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //метод для сохранения списка заказов ajax
         public bool SaveOrders(string JSONString)
         {
             var serializer = new JavaScriptSerializer();
@@ -496,7 +507,7 @@ namespace Fusion.Models
                 order order = new order();
                 order.id = Int32.Parse(id.ToString());
                 order.date_start = DateTime.Parse(date_start.ToString());
-                if (date_end == "")
+                if (date_end.ToString() == "")
                 {
                     order.date_end = null;
                 }
@@ -521,6 +532,7 @@ namespace Fusion.Models
             list.SaveChanges();
             return true;
         }
+        //метод для сохранения списка номенклатур ajax
         public bool SaveDocument(string JSONString)
         {
             var serializer = new JavaScriptSerializer();

@@ -221,18 +221,18 @@ namespace Fusion.Controllers
            }
             return result;
         }
-        public ActionResult TestOrders(string period)
-        {
-            ZakupModel model = new ZakupModel();
-            string name = User.Identity.GetUserName();
-            model.username = name;
-            if (period == null || period == "")
-                model.Period = DateTime.Today;
-            else
-                model.Period = DateTime.Parse(period);
-            model.getOrders();
-            return View(model);
-        }
+        //public ActionResult TestOrders(string period)
+        //{
+        //    ZakupModel model = new ZakupModel();
+        //    string name = User.Identity.GetUserName();
+        //    model.username = name;
+        //    if (period == null || period == "")
+        //        model.Period = DateTime.Today;
+        //    else
+        //        model.Period = DateTime.Parse(period);
+        //    model.getOrders();
+        //    return View(model);
+        //}
         [HttpPost]
         public ActionResult SaveOrdersAjax(string data)
         {
@@ -281,7 +281,7 @@ namespace Fusion.Controllers
                 return File(export.ExportToBytesWin(), "text/csv", "Заявки за " + model.dateExportForEmployee + ".csv");
             }
             else return View();
-            
+
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Restaurants()
