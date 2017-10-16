@@ -14,8 +14,16 @@ namespace Fusion.Models
     
     public partial class DLVOrder
     {
+        public DLVOrder()
+        {
+            this.DLVOrderLog = new HashSet<DLVOrderLog>();
+        }
+    
         public int id { get; set; }
         public int SiteOrderID { get; set; }
         public System.DateTime SendDateTime { get; set; }
+        public bool Success { get; set; }
+    
+        public virtual ICollection<DLVOrderLog> DLVOrderLog { get; set; }
     }
 }

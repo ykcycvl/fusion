@@ -101,7 +101,7 @@ Content-Length: {0}
         {
             string query = String.Format(@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes"" ?>
 <Message Action=""Search holders"" Terminal_Type=""{0}"" Global_Type=""{1}"">
-<Include>Account, Holder_Card, Holder_Contact</Include>
+<Include>Account, Holder_Card, Holder_Contact, Holder_Address</Include>
 <Count>25</Count>
 <Index>1</Index>
 <Item Mode=""Clear""/>
@@ -126,7 +126,7 @@ Content-Length: {0}
         {
             string query = String.Format(@"<?xml version=""1.0"" standalone=""yes"" ?>
 <Message Action=""Search holders"" Terminal_Type=""{0}"" Global_Type=""{1}"">
-	<Include>Account, Holder_Card, Holder_Contact</Include>
+	<Include>Account, Holder_Card, Holder_Contact, Holder_Address</Include>
 	<Count>25</Count>
 	<Index>1</Index>
 	<Item Mode=""Clear""/>
@@ -274,6 +274,10 @@ Content-Length: {0}
 
             [XmlElement("Holders_Contacts")]
             public CRMHolderContactsInfo Holders_Contacts { get; set; }
+
+            [XmlElement("Holders_Addresses")]
+            public CRMHolderAddressesInfo Holders_Addresses { get; set; }
+
             [XmlArray("Holders_Properties"), XmlArrayItem("Holder_Property")]
             public List<HolderProperty> Holders_Properties { get; set; }
 
@@ -517,6 +521,10 @@ Content-Length: {0}
             }
             public class AddressInfo
             {
+                [Display(Name = "ID")]
+                [XmlElement("Address_ID")]
+                public string Address_ID { get; set; }
+
                 [Display(Name = "Тип")]
                 [XmlElement("Type_ID")]
                 [Required]
@@ -596,6 +604,11 @@ Content-Length: {0}
                 [XmlArray("Holder_Card"), XmlArrayItem("Card")]
                 public List<CardInfo> Cards { get; set; }
             }
+            public class CRMHolderAddressesInfo
+            {
+                [XmlArray("Holder_Address"), XmlArrayItem("Address")]
+                public List<AddressInfo> Addresses { get; set; }
+            }
             public Holder Deserialize(string xml)
             {
                 var xmlSerializer = new XmlSerializer(typeof(Holder));
@@ -650,7 +663,7 @@ Content-Length: {0}
                 {
                     Action = "Add holders";
                     Holders = RKCRM.SearchHoldersByPhone(contact.Value);
-                    this.Include = "Holder_Contact";
+                    this.Include = "Holder_Contact, Holder_Address";
 
                     if (string.IsNullOrEmpty(this.Holder.F_Name))
                         this.Holder.F_Name = "";
@@ -724,7 +737,7 @@ Content-Length: {0}
                 Holder = new RKCRM.Holder();
                 Holder.Holder_ID = holder_id;
                 Action = "Get holder info";
-                Include = "Account, Holder_Contact, Holder_Card,  Holder_Property";
+                Include = "Account, Holder_Contact, Holder_Card,  Holder_Property, Holder_Address";
                 string s = Serialize();
                 s = Regex.Replace(s, "<Birth>.*?</Birth>", "");
                 s = s.Replace("<Holder>", "");
@@ -772,7 +785,7 @@ Content-Length: {0}
                     }
 
                 Action = "Edit holders";
-                Include = "Account, Holder_Contact, Holder_Card";
+                Include = "Account, Holder_Contact, Holder_Card, Holder_Address";
                 Holder.Holders_Cards = null;
                 Holder.Holders_Contacts = null;
                 Holder.Group_ID = "45";

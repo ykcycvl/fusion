@@ -123,6 +123,14 @@
             @Model.DateInsert.ToString("dd.MM.yyyy")
         </p>
 
+        @if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 19) != null)
+        {
+            <p>
+                ПРОМОКОД:
+                <b>@Model.Properties.FirstOrDefault(p => p.OrderPropsId == 19).Value</b>
+            </p>
+        }
+
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr bgcolor="#E2E2E2">
                 <td align="center" style="border: 1pt solid #000000; border-right:none;">№</td>
@@ -152,9 +160,16 @@
                 </tr>
             }
 
+            @if (Model.Discount != 0 && Model.Properties.FirstOrDefault(p => p.OrderPropsId == 19) != null)
+            {
+                <tr>
+                    <td align="right" bgcolor="#ffffff" colspan="4" style="border: 1pt solid #000000; border-right:none; border-top:none;">Скидка (@(100 / ((Model.Price + Model.Discount) / Model.Discount))%):</td>
+                    <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-top:none;">@Model.Discount</td>
+                </tr>
+            }
             <tr>
-                <td align="right" bgcolor="#ffffff" colspan="4" style="border: 1pt solid #000000; border-right:none; border-top:none;">Итого:</td>
-                <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-top:none;">@Model.Price</td>
+                <td align="right" bgcolor="#ffffff" colspan="4" style="border: 1pt solid #000000; border-right:none; border-top:none;"><b>Итого:</b></td>
+                <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-top:none;"><b>@Model.Price</b></td>
             </tr>
         </table>
 

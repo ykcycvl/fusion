@@ -59,5 +59,8 @@ namespace Fusion.Models
         public virtual DbSet<CRMSended> CRMSended { get; set; }
         public virtual DbSet<CRMToSend> CRMToSend { get; set; }
         public virtual DbSet<DLVOrder> DLVOrder { get; set; }
+        public virtual DbSet<DLVOrderLog> DLVOrderLog { get; set; }
+        public virtual DbSet<VegaPersonalSetting> VegaPersonalSetting { get; set; }
+        public virtual DbSet<VegaSetting> VegaSetting { get; set; }
     }
 }

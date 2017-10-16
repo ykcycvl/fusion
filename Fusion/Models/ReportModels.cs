@@ -23,7 +23,7 @@ namespace Fusion.Models
         }
         private static SqlConnection SqlServerConnection()
         {
-            string connectionString = WebConfigurationManager.ConnectionStrings["RKConnectionString"].ConnectionString;
+            string connectionString = WebConfigurationManager.ConnectionStrings["SQLConnection"].ConnectionString;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             return con;
@@ -66,6 +66,116 @@ namespace Fusion.Models
 
                 rdr.Close();
                 con.Close();
+            }
+        }
+        public class CRMAnalyticsModel
+        {
+            public class Item
+            {
+                public string Restaurant { get; set; }
+                public int GuestCnt { get; set; }
+                public int Day { get; set; }
+                public int Month { get; set; }
+                public int Year { get; set; }
+                public Decimal RealMoney { get; set; }
+                public Decimal UnrealMoney { get; set; }
+                public Decimal AvgCheck { get; set; }
+                public Decimal AvgCheckPG { get; set; }
+            }
+
+            public List<Item> Items = new List<Item>();
+
+            public void GetGuestDynamics(DateTime startdDT, DateTime endDT)
+            {
+                SqlConnection con = SqlServerConnection();
+                SqlCommand cmd = new SqlCommand(String.Format(@"SELECT
+	COUNT(PEOPLE_ID) AS GUESTCNT,
+	CG.NAME AS Restaurant,
+	MIDSERVER,
+	SUM(REALSUM) AS REALSUM,
+	SUM(UNREALSUM) AS UNREALSUM,
+	AVG(AVGSUMPP) AS AVGSUMPP,
+	AVG(AVGSUM) AS AVGSUM,
+    D,
+	MON,
+	Y
+FROM
+	(SELECT 
+	DISTINCT
+	T1.ACCOUNT_ID,
+	T1.MIDSERVER,
+	T1.TABLEID,
+	T1.PEOPLE_ID,
+	T1.FULL_NAME,
+	SUM(T1.REALSUM) AS REALSUM,
+	SUM(T1.UNREALSUM) AS UNREALSUM,
+	AVG(AVGSUMPP) AS AVGSUMPP,
+	AVG(AVGSUM) AS AVGSUM,
+	D, MON, Y
+FROM
+	(select 
+		DISTINCT
+		CT.ACCOUNT_ID,
+		PC.MIDSERVER,
+		O.TABLEID,
+		cp.PEOPLE_ID,
+		cp.FULL_NAME,
+		IIF (C.USEBONUSPERCENT > 0, CL.BINDEDSUM, 0) AS REALSUM,
+		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0) AS UNREALSUM,
+		AVG(PC.BINDEDSUM / IIF (O.GUESTSCOUNT = 0, 1, O.GUESTSCOUNT)) AS AVGSUMPP,
+		AVG(PC.BINDEDSUM) as AVGSUM,
+        DATEPART(DAY, ct.TRANSACTION_TIME) as D,
+	    DATEPART(MONTH, ct.TRANSACTION_TIME) as MON,
+	    DATEPART(YEAR, ct.TRANSACTION_TIME) as Y
+	from [CRM7U].[dbo].[CARD_TRANSACTIONS] CT
+		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLE_ACCOUNTS] cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLES] cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+		INNER JOIN [RK7].[dbo].[PRINTCHECKS] PC ON PC.CHECKNUM = CT.EXTERNAL_ID AND 
+			DATEDIFF(DAY, '1899-12-30 00:00:00', ToDateTimeOffset(PC.CLOSEDATETIME, '+10:00')) = DATEDIFF(DAY, '1899-12-30 00:00:00', CT.TRANSACTION_TIME) AND 
+			PC.CLOSEDATETIME BETWEEN '2017-01-01' and '{1}'
+		INNER JOIN [RK7].[dbo].[ORDERS] O ON PC.VISIT = O.VISIT AND PC.MIDSERVER = O.MIDSERVER AND O.PRICELISTSUM <> 0
+		INNER JOIN [RK7].[dbo].[CURRLINES] CL ON PC.VISIT = CL.VISIT AND PC.MIDSERVER = CL.MIDSERVER
+		INNER JOIN [RK7].[dbo].[CURRENCIES] C ON CL.SIFR = C.SIFR
+	WHERE CT.transaction_type IN (162, 161)
+	GROUP BY 
+		CT.ACCOUNT_ID,
+		PC.MIDSERVER,
+		O.TABLEID,
+		cp.PEOPLE_ID,
+		cp.FULL_NAME,
+		IIF (C.USEBONUSPERCENT > 0, CL.BINDEDSUM, 0),
+		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0),
+		DATEPART(DAY, ct.TRANSACTION_TIME),
+	    DATEPART(MONTH, ct.TRANSACTION_TIME),
+	    DATEPART(YEAR, ct.TRANSACTION_TIME)) T1
+	GROUP BY
+		T1.ACCOUNT_ID,
+		T1.MIDSERVER,
+		T1.TABLEID,
+		T1.PEOPLE_ID,
+		T1.FULL_NAME,
+		D, MON, Y) T1
+	INNER JOIN [RK7].[dbo].[CASHGROUPS] CG ON T1.MIDSERVER = CG.SIFR
+GROUP BY MIDSERVER, D, MON, Y, CG.NAME", startdDT.ToString("yyyy-MM-dd"), endDT.ToString("yyyy-MM-dd")), con);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                foreach (var row in rdr)
+                {
+                    Item i = new Item()
+                    {
+                        Restaurant = rdr["Restaurant"].ToString(),
+                        GuestCnt = Convert.ToInt32(rdr["GUESTCNT"]),
+                        AvgCheck = Convert.ToDecimal(rdr["AVGSUM"]),
+                        AvgCheckPG = Convert.ToDecimal(rdr["AVGSUMPP"]),
+                        Day = Convert.ToInt32(rdr["D"]),
+                        Month = Convert.ToInt32(rdr["MON"]),
+                        Year = Convert.ToInt32(rdr["Y"]),
+                        RealMoney = Convert.ToDecimal(rdr["REALSUM"]),
+                        UnrealMoney = Convert.ToDecimal(rdr["UNREALSUM"])
+                    };
+                    Items.Add(i);
+                }
             }
         }
     }

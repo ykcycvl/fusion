@@ -62,6 +62,11 @@
         <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="2.75" PointY="17.75" />
         <EntityTypeShape EntityType="FusionDBModels.DLVOrder" Width="1.5" PointX="17.375" PointY="4.75" />
         <AssociationConnector Association="FusionDBModels.FK_bd_subdivision_organization_id" />
+        <EntityTypeShape EntityType="FusionDBModels.DLVOrderLog" Width="1.5" PointX="19.625" PointY="4.375" />
+        <AssociationConnector Association="FusionDBModels.FK_DLVOrderLog_DLVOrder" />
+        <EntityTypeShape EntityType="FusionDBModels.VegaPersonalSetting" Width="1.5" PointX="19.625" PointY="11" />
+        <EntityTypeShape EntityType="FusionDBModels.VegaSetting" Width="1.5" PointX="17.375" PointY="10.875" />
+        <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

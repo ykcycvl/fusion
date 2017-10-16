@@ -1296,28 +1296,41 @@ namespace Fusion.Models
             public List<TransactionInfo> Transactions = new List<TransactionInfo>();
             public void Search()
             {
-                whereString = String.Format("WHERE ct.transaction_type IN (162, 161) and ct.TRANSACTION_TIME >= '{0}' and ct.TRANSACTION_TIME <= '{1}'", StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd"));
-                havingString = String.Format("HAVING COUNT(ct.TRANSACTION_ID) >= {0}", count);
+                whereString = String.Format("WHERE CT.transaction_type IN (162, 161) and CT.TRANSACTION_TIME BETWEEN '{0}' and '{1}'", StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd 04:00"));
 
                 SqlConnection con = GetConnection();
-                SqlCommand command = new SqlCommand(String.Format(@"select
-	                COUNT(ct.TRANSACTION_ID) as OPD,
-                    cp.PEOPLE_ID,
-	                cp.FULL_NAME,
-	                ct.CARD_CODE,
-	                convert(varchar, ct.TRANSACTION_TIME, 104) as DT
-                FROM
-	                CARD_TRANSACTIONS ct
-	                INNER JOIN CARD_PEOPLE_ACCOUNTS cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
-	                INNER JOIN CARD_PEOPLES cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
-                {0}
-                GROUP BY
-                    cp.PEOPLE_ID,
-	                cp.FULL_NAME,
-	                ct.CARD_CODE,
-	                convert(varchar, ct.TRANSACTION_TIME, 104)
-                {1}
-                ORDER BY OPD DESC", whereString, havingString), con);
+                SqlCommand command = new SqlCommand(String.Format(@"SELECT 
+	COUNT(*) as OPD,
+	t1.PEOPLE_ID,
+	t1.FULL_NAME,
+	t1.CARD_CODE,
+	DT
+FROM
+(select 
+	DISTINCT
+	CT.ACCOUNT_ID,
+	PC.MIDSERVER,
+	O.TABLEID,
+	cp.PEOPLE_ID,
+	cp.FULL_NAME,
+	ct.CARD_CODE,
+	convert(varchar, ct.TRANSACTION_TIME, 104) as DT
+from [CRM7U].[dbo].[CARD_TRANSACTIONS] CT
+	INNER JOIN [CRM7U].[dbo].[CARD_PEOPLE_ACCOUNTS] cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+	INNER JOIN [CRM7U].[dbo].[CARD_PEOPLES] cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+	LEFT JOIN [RK7].[dbo].[PRINTCHECKS] PC ON PC.CHECKNUM = CT.EXTERNAL_ID AND 
+        DATEDIFF(DAY, '1899-12-30 00:00:00', ToDateTimeOffset(PC.CLOSEDATETIME, '+10:00')) = DATEDIFF(DAY, '1899-12-30 00:00:00', CT.TRANSACTION_TIME_ORIGINAL) AND 
+        PC.CLOSEDATETIME BETWEEN '{2}' and '{3}'
+	LEFT JOIN [RK7].[dbo].[ORDERS] O ON PC.VISIT = O.VISIT AND PC.MIDSERVER = O.MIDSERVER AND O.PRICELISTSUM <> 0
+{0}) t1
+GROUP BY 
+	t1.PEOPLE_ID,
+	t1.FULL_NAME,
+	t1.CARD_CODE,
+	DT
+HAVING
+    COUNT(*) >= {1}
+ORDER BY 1 DESC, DT DESC", whereString, count, StartDateTime.ToString("yyyy-MM-dd"), EndDateTime.ToString("yyyy-MM-dd 04:00")), con);
 
                 SqlDataReader rdr = command.ExecuteReader();
 

@@ -216,6 +216,7 @@
     <Compile Include="Controllers\ITController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MiscReport\MiscReportController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RK7Controller.cs" />
     <Compile Include="Controllers\CallbackController.cs" />
     <Compile Include="Controllers\RK7OnlineMonitorController.cs" />
@@ -971,6 +972,9 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DLVOrder.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DLVOrderLog.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DOCUMENTMAKETSCHEMELINKS.cs">
@@ -1828,8 +1832,212 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RK7.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\RK7\Delivery\qryDeliveryCancelEdit.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryChangeRestState.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryConfirmEdit.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryEditOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryGetOrderList.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryLockOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryPayOrders.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryPostOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryPrintInvoice.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryServPrint.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliverySetForwarder.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliverySetLastProcessTime.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliverySetOrderNumGen.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryUpdateStatus.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryValidateOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\qryDeliveryVoidOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryCancelEdit.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryChangeRestState.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryConfirmEdit.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryGetOrderList.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryLockOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryPayOrders.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryPostOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryPrintInvoice.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryServPrint.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliverySetForwarder.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliverySetLastProcessTime.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliverySetOrderNumGen.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryUpdateStatus.cs" />
+    <Compile Include="Models\RK7\Delivery\resDeliveryVoidOrder.cs" />
+    <Compile Include="Models\RK7\Delivery\schema0.cs" />
+    <Compile Include="Models\RK7\ITV_TITLE.cs" />
+    <Compile Include="Models\RK7\qryAddExternalTariff.cs" />
+    <Compile Include="Models\RK7\qryApplyMCR.cs" />
+    <Compile Include="Models\RK7\qryApplyPersonalCard.cs" />
+    <Compile Include="Models\RK7\qryCalcOrder.cs" />
+    <Compile Include="Models\RK7\qryCalcOrder2.cs" />
+    <Compile Include="Models\RK7\qryCallDeviceMenu.cs" />
+    <Compile Include="Models\RK7\qryChangeDrawerBalance.cs" />
+    <Compile Include="Models\RK7\qryChangeSessionCourse.cs" />
+    <Compile Include="Models\RK7\qryClearDishRests.cs" />
+    <Compile Include="Models\RK7\qryCloseCashShift.cs" />
+    <Compile Include="Models\RK7\qryCloseCommonShift.cs" />
+    <Compile Include="Models\RK7\qryCloseSeat.cs" />
+    <Compile Include="Models\RK7\qryCloseVisit.cs" />
+    <Compile Include="Models\RK7\qryCloseWebForm.cs" />
+    <Compile Include="Models\RK7\qryConfirmOperation.cs" />
+    <Compile Include="Models\RK7\qryCreateInvoice.cs" />
+    <Compile Include="Models\RK7\qryCreateOrder.cs" />
+    <Compile Include="Models\RK7\qryCreateVisit.cs" />
+    <Compile Include="Models\RK7\qryDeleteReceipt.cs" />
+    <Compile Include="Models\RK7\qryDeleteReceiptPayments.cs" />
+    <Compile Include="Models\RK7\qryDelWaiterMessages.cs" />
+    <Compile Include="Models\RK7\qryDeviceStatuses.cs" />
+    <Compile Include="Models\RK7\qryETPC.cs" />
+    <Compile Include="Models\RK7\qryExchangePriority.cs" />
+    <Compile Include="Models\RK7\qryFarCardsAnyInfoRaw.cs" />
+    <Compile Include="Models\RK7\qryFarCardsAnyInfoXML.cs" />
+    <Compile Include="Models\RK7\qryGetCardInfo.cs" />
+    <Compile Include="Models\RK7\qryGetDataListInfo.cs" />
+    <Compile Include="Models\RK7\qryGetDishRest.cs" />
+    <Compile Include="Models\RK7\qryGetDishRests.cs" />
+    <Compile Include="Models\RK7\qryGetDocByLayout.cs" />
+    <Compile Include="Models\RK7\qryGetDrawerBalance.cs" />
+    <Compile Include="Models\RK7\qryGetEmployeeInfo.cs" />
+    <Compile Include="Models\RK7\qryGetEmployeeInfo2.cs" />
+    <Compile Include="Models\RK7\qryGetFunctions.cs" />
+    <Compile Include="Models\RK7\qryGetInvoice.cs" />
+    <Compile Include="Models\RK7\qryGetItemBlob.cs" />
+    <Compile Include="Models\RK7\qryGetOrder.cs" />
+    <Compile Include="Models\RK7\qryGetOrderBindings.cs" />
+    <Compile Include="Models\RK7\qryGetOrderList.cs" />
+    <Compile Include="Models\RK7\qryGetOrderList2.cs" />
+    <Compile Include="Models\RK7\qryGetOrderMenu.cs" />
+    <Compile Include="Models\RK7\qryGetParamValue.cs" />
+    <Compile Include="Models\RK7\qryGetPrintLayout.cs" />
+    <Compile Include="Models\RK7\qryGetReceiptList.cs" />
+    <Compile Include="Models\RK7\qryGetRefData.cs" />
+    <Compile Include="Models\RK7\qryGetRefDataFiltered.cs" />
+    <Compile Include="Models\RK7\qryGetRefList.cs" />
+    <Compile Include="Models\RK7\qryGetSystemInfo2.cs" />
+    <Compile Include="Models\RK7\qryGetUsageValue.cs" />
+    <Compile Include="Models\RK7\qryGetWaiterList.cs" />
+    <Compile Include="Models\RK7\qryGetWaiterMessages.cs" />
+    <Compile Include="Models\RK7\qryGotoOrder.cs" />
+    <Compile Include="Models\RK7\qryKDSGetDishData2.cs" />
+    <Compile Include="Models\RK7\qryKDSSetDishData2.cs" />
+    <Compile Include="Models\RK7\qryKDSSetDishData3.cs" />
+    <Compile Include="Models\RK7\qryListDeviceMenu.cs" />
+    <Compile Include="Models\RK7\qryLockOrder.cs" />
+    <Compile Include="Models\RK7\qryLogicalDevices.cs" />
+    <Compile Include="Models\RK7\qryLoginOnStation.cs" />
+    <Compile Include="Models\RK7\qryMakeCardDeposit.cs" />
+    <Compile Include="Models\RK7\qryOpenSeat.cs" />
+    <Compile Include="Models\RK7\qryOpenWebForm.cs" />
+    <Compile Include="Models\RK7\qryParseMCR.cs" />
+    <Compile Include="Models\RK7\qryPayOrder.cs" />
+    <Compile Include="Models\RK7\qryPerformMessage.cs" />
+    <Compile Include="Models\RK7\qryPostMessage.cs" />
+    <Compile Include="Models\RK7\qryPrintBill.cs" />
+    <Compile Include="Models\RK7\qryPrintDataXML.cs" />
+    <Compile Include="Models\RK7\qryPrintMaket.cs" />
+    <Compile Include="Models\RK7\qryRegisterEmployee.cs" />
+    <Compile Include="Models\RK7\qrySaveOrder.cs" />
+    <Compile Include="Models\RK7\qrySendToVDU.cs" />
+    <Compile Include="Models\RK7\qrySetDishRests.cs" />
+    <Compile Include="Models\RK7\qrySetRefData.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthError.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthError2.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthPay.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthPay2.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthStart.cs" />
+    <Compile Include="Models\RK7\qryTerminalAuthStart2.cs" />
+    <Compile Include="Models\RK7\qryTransferDishes.cs" />
+    <Compile Include="Models\RK7\qryUndoBill.cs" />
+    <Compile Include="Models\RK7\qryUndoPersonalCard.cs" />
+    <Compile Include="Models\RK7\qryUndoReceipt.cs" />
+    <Compile Include="Models\RK7\qryUnregisterEmployee.cs" />
+    <Compile Include="Models\RK7\qryUpdateOrder.cs" />
+    <Compile Include="Models\RK7\qryVoidOrder.cs" />
+    <Compile Include="Models\RK7\qryWaiterMessage.cs" />
+    <Compile Include="Models\RK7\qryWaitWindow.cs" />
+    <Compile Include="Models\RK7\resAddExternalTariff.cs" />
+    <Compile Include="Models\RK7\resApplyMCR.cs" />
+    <Compile Include="Models\RK7\resApplyPersonalCard.cs" />
+    <Compile Include="Models\RK7\resCalcOrder.cs" />
+    <Compile Include="Models\RK7\resCalcOrder2.cs" />
+    <Compile Include="Models\RK7\resChangeDrawerBalance.cs" />
+    <Compile Include="Models\RK7\resChangeSessionCourse.cs" />
+    <Compile Include="Models\RK7\resClearDishRests.cs" />
+    <Compile Include="Models\RK7\resCloseCashShift.cs" />
+    <Compile Include="Models\RK7\resCloseCommonShift.cs" />
+    <Compile Include="Models\RK7\resCloseSeat.cs" />
+    <Compile Include="Models\RK7\resCloseVisit.cs" />
+    <Compile Include="Models\RK7\resCloseWebForm.cs" />
+    <Compile Include="Models\RK7\resConfirmOperation.cs" />
+    <Compile Include="Models\RK7\resCreateInvoice.cs" />
+    <Compile Include="Models\RK7\resCreateOrder.cs" />
+    <Compile Include="Models\RK7\resCreateVisit.cs" />
+    <Compile Include="Models\RK7\resDeleteReceipt.cs" />
+    <Compile Include="Models\RK7\resDeleteReceiptPayments.cs" />
+    <Compile Include="Models\RK7\resDelWaiterMessages.cs" />
+    <Compile Include="Models\RK7\resDeviceStatuses.cs" />
+    <Compile Include="Models\RK7\resETPC.cs" />
+    <Compile Include="Models\RK7\resGetCardInfo.cs" />
+    <Compile Include="Models\RK7\resGetDataListInfo.cs" />
+    <Compile Include="Models\RK7\resGetDishRest.cs" />
+    <Compile Include="Models\RK7\resGetDishRests.cs" />
+    <Compile Include="Models\RK7\resGetDocByLayout.cs" />
+    <Compile Include="Models\RK7\resGetDrawerBalance.cs" />
+    <Compile Include="Models\RK7\resGetEmployeeInfo.cs" />
+    <Compile Include="Models\RK7\resGetEmployeeInfo2.cs" />
+    <Compile Include="Models\RK7\resGetFunctions.cs" />
+    <Compile Include="Models\RK7\resGetInvoice.cs" />
+    <Compile Include="Models\RK7\resGetOrderBindings.cs" />
+    <Compile Include="Models\RK7\resGetOrderList.cs" />
+    <Compile Include="Models\RK7\resGetOrderList2.cs" />
+    <Compile Include="Models\RK7\resGetOrderMenu.cs" />
+    <Compile Include="Models\RK7\resGetParamValue.cs" />
+    <Compile Include="Models\RK7\resGetPrintLayout.cs" />
+    <Compile Include="Models\RK7\resGetReceiptList.cs" />
+    <Compile Include="Models\RK7\resGetRefList.cs" />
+    <Compile Include="Models\RK7\resGetSystemInfo2.cs" />
+    <Compile Include="Models\RK7\resGetUsageValue.cs" />
+    <Compile Include="Models\RK7\resGetWaiterList.cs" />
+    <Compile Include="Models\RK7\resGetWaiterMessages.cs" />
+    <Compile Include="Models\RK7\resGotoOrder.cs" />
+    <Compile Include="Models\RK7\resKDSGetDishData2.cs" />
+    <Compile Include="Models\RK7\resKDSSetDishData2.cs" />
+    <Compile Include="Models\RK7\resKDSSetDishData3.cs" />
+    <Compile Include="Models\RK7\resListDeviceMenu.cs" />
+    <Compile Include="Models\RK7\resLockOrder.cs" />
+    <Compile Include="Models\RK7\resLogicalDevices.cs" />
+    <Compile Include="Models\RK7\resLoginOnStation.cs" />
+    <Compile Include="Models\RK7\resMakeCardDeposit.cs" />
+    <Compile Include="Models\RK7\resOpenSeat.cs" />
+    <Compile Include="Models\RK7\resOpenWebForm.cs" />
+    <Compile Include="Models\RK7\resParseMCR.cs" />
+    <Compile Include="Models\RK7\resPayOrder.cs" />
+    <Compile Include="Models\RK7\resPerformMessage.cs" />
+    <Compile Include="Models\RK7\resPostMessage.cs" />
+    <Compile Include="Models\RK7\resPrintBill.cs" />
+    <Compile Include="Models\RK7\resPrintMaket.cs" />
+    <Compile Include="Models\RK7\resRegisterEmployee.cs" />
+    <Compile Include="Models\RK7\resSaveOrder.cs" />
+    <Compile Include="Models\RK7\resSendToVDU.cs" />
+    <Compile Include="Models\RK7\resSetDishRests.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthError.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthError2.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthPay.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthPay2.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthStart.cs" />
+    <Compile Include="Models\RK7\resTerminalAuthStart2.cs" />
+    <Compile Include="Models\RK7\resTransferDishes.cs" />
+    <Compile Include="Models\RK7\resUndoBill.cs" />
+    <Compile Include="Models\RK7\resUndoPersonalCard.cs" />
+    <Compile Include="Models\RK7\resUndoReceipt.cs" />
+    <Compile Include="Models\RK7\resUnregisterEmployee.cs" />
+    <Compile Include="Models\RK7\resUpdateOrder.cs" />
+    <Compile Include="Models\RK7\resValidateOrder.cs" />
+    <Compile Include="Models\RK7\resVoidOrder.cs" />
+    <Compile Include="Models\RK7\resWaiterMessage.cs" />
+    <Compile Include="Models\RK7\resWaitWindow.cs" />
     <Compile Include="Models\RK7\RK7APIModels.cs" />
     <Compile Include="Models\RK7\RK7HybridModels.cs" />
+    <Compile Include="Models\RK7\schema0.cs" />
     <Compile Include="Models\RKCRM.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1849,7 +2057,7 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RPL8_TRANSACT.cs">
-      <DependentUpon>RK7.tt</DependentUpon>
+      <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RPT_CUBE_DIMENSIONS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
@@ -2012,6 +2220,7 @@
     <Compile Include="Models\Setting.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SettingsViewModel.cs" />
     <Compile Include="Models\Setting_Deleted.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
@@ -2349,6 +2558,12 @@
     <Compile Include="Models\UserActionHistory.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VegaPersonalSetting.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VegaSetting.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VISITGUESTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -2434,8 +2649,34 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\dx.android5.light.css" />
+    <Content Include="Content\dx.common.css" />
+    <Content Include="Content\dx.contrast.compact.css" />
+    <Content Include="Content\dx.contrast.css" />
+    <Content Include="Content\dx.dark.compact.css" />
+    <Content Include="Content\dx.dark.css" />
+    <Content Include="Content\dx.ios7.default.css" />
+    <Content Include="Content\dx.light.compact.css" />
+    <Content Include="Content\dx.light.css" />
+    <Content Include="Content\dx.spa.css" />
+    <Content Include="Content\dx.win10.black.css" />
+    <Content Include="Content\dx.win10.white.css" />
+    <Content Include="Content\dx.win8.black.css" />
+    <Content Include="Content\dx.win8.white.css" />
+    <Content Include="Content\layouts\Desktop\DesktopLayout.css" />
+    <Content Include="Content\layouts\Desktop\DesktopLayout.html" />
+    <Content Include="Content\layouts\Desktop\DesktopLayout.js" />
+    <Content Include="Content\layouts\Empty\EmptyLayout.css" />
+    <Content Include="Content\layouts\Empty\EmptyLayout.html" />
+    <Content Include="Content\layouts\Empty\EmptyLayout.js" />
+    <Content Include="Content\layouts\Popup\PopupLayout.css" />
+    <Content Include="Content\layouts\Popup\PopupLayout.html" />
+    <Content Include="Content\layouts\Popup\PopupLayout.js" />
+    <Content Include="Content\pivot.min.css" />
+    <Content Include="data.js" />
     <Content Include="data\events.xml" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
+    <Content Include="index.js" />
     <Content Include="Models\BioTime.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BioTime.edmx</DependentUpon>
@@ -2456,6 +2697,33 @@
       <DependentUpon>FusionDB.edmx</DependentUpon>
       <LastGenOutput>FusionDB.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-aria.js" />
+    <Content Include="Scripts\angular-aria.min.js" />
+    <Content Include="Scripts\angular-cookies.js" />
+    <Content Include="Scripts\angular-cookies.min.js" />
+    <Content Include="Scripts\angular-csp.css" />
+    <Content Include="Scripts\angular-loader.js" />
+    <Content Include="Scripts\angular-loader.min.js" />
+    <Content Include="Scripts\angular-message-format.js" />
+    <Content Include="Scripts\angular-message-format.min.js" />
+    <Content Include="Scripts\angular-messages.js" />
+    <Content Include="Scripts\angular-messages.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-parse-ext.js" />
+    <Content Include="Scripts\angular-parse-ext.min.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular-scenario.js" />
+    <Content Include="Scripts\angular-touch.js" />
+    <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\chosen-sprite%402x.png" />
     <Content Include="Scripts\chosen-sprite.png" />
     <Content Include="Scripts\chosen.jquery.min.js" />
@@ -2497,18 +2765,13 @@
       <DependentUpon>Calendar.edmx</DependentUpon>
       <LastGenOutput>Calendar.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\cldr.js" />
+    <Content Include="Scripts\cldr\event.js" />
+    <Content Include="Scripts\cldr\supplemental.js" />
+    <Content Include="Scripts\cldr\unresolved.js" />
     <Content Include="Scripts\codebase\fonts\font-license.txt" />
     <Content Include="Scripts\codebase\fonts\fontawesome-webfont.svg" />
-    <Content Include="Scripts\codebase\i18n\be.js" />
-    <Content Include="Scripts\codebase\i18n\de.js" />
-    <Content Include="Scripts\codebase\i18n\en.js" />
-    <Content Include="Scripts\codebase\i18n\es.js" />
-    <Content Include="Scripts\codebase\i18n\fr.js" />
-    <Content Include="Scripts\codebase\i18n\it.js" />
-    <Content Include="Scripts\codebase\i18n\ja.js" />
-    <Content Include="Scripts\codebase\i18n\pt.js" />
     <Content Include="Scripts\codebase\i18n\ru.js" />
-    <Content Include="Scripts\codebase\i18n\zh.js" />
     <Content Include="Scripts\codebase\legacy\excanvas\AUTHORS.txt" />
     <Content Include="Scripts\codebase\legacy\excanvas\COPYING.txt" />
     <Content Include="Scripts\codebase\legacy\excanvas\excanvas.js" />
@@ -2530,6 +2793,8 @@
     <Content Include="Scripts\codebase\webix.css" />
     <Content Include="Scripts\codebase\webix.js" />
     <Content Include="Scripts\codebase\webix_debug.js" />
+    <Content Include="Scripts\devextreme-localization\dx.messages.ru.js" />
+    <Content Include="Scripts\devextreme-localization\dx.web.ru.js" />
     <Content Include="Scripts\dhtmlx\dhtmlxAccordion\codebase\dhtmlxaccordion.js" />
     <Content Include="Scripts\dhtmlx\dhtmlxAccordion\codebase\dhtmlxaccordion_deprecated.js" />
     <Content Include="Scripts\dhtmlx\dhtmlxAccordion\codebase\ext\dhtmlxaccordion_dnd.js" />
@@ -3690,7 +3955,56 @@
     <Content Include="Scripts\dhtmlx\dhtmlxWindows\codebase\skins\dhtmlxwindows_dhx_web.css" />
     <Content Include="Scripts\dhtmlx\dhtmlxWindows\codebase\skins\dhtmlxwindows_material.css" />
     <Content Include="Scripts\dhtmlx\libCompiler\yui.jar" />
+    <Content Include="Content\icons\dxiconsios.woff" />
+    <Content Include="Content\icons\dxiconsios.ttf" />
+    <Content Include="Content\icons\dxicons.woff" />
+    <Content Include="Content\icons\dxicons.ttf" />
+    <Content Include="Scripts\dx.all.js" />
+    <Content Include="Scripts\errors.json" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-touch.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-parse-ext.min.js.map" />
+    <Content Include="Scripts\angular-messages.min.js.map" />
+    <Content Include="Scripts\angular-message-format.min.js.map" />
+    <Content Include="Scripts\angular-loader.min.js.map" />
+    <Content Include="Scripts\angular-cookies.min.js.map" />
+    <Content Include="Scripts\angular-aria.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\dx.aspnet.mvc.js" />
+    <Content Include="Scripts\dx.viz-web.debug.js" />
+    <Content Include="Scripts\dx.viz-web.js" />
+    <Content Include="Scripts\dx.viz.debug.js" />
+    <Content Include="Scripts\dx.viz.js" />
+    <Content Include="Scripts\dx.web.debug.js" />
+    <Content Include="Scripts\dx.web.js" />
+    <Content Include="Scripts\globalize.js" />
+    <Content Include="Scripts\globalize\currency.js" />
+    <Content Include="Scripts\globalize\date.js" />
+    <Content Include="Scripts\globalize\message.js" />
+    <Content Include="Scripts\globalize\number.js" />
+    <Content Include="Scripts\globalize\plural.js" />
+    <Content Include="Scripts\globalize\relative-time.js" />
+    <Content Include="Scripts\globalize\unit.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-by.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-kg.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-kz.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-md.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-ru.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru-ua.js" />
+    <Content Include="Scripts\i18n\angular-locale_ru.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.9.2.custom.min.js" />
+    <Content Include="Scripts\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jszip.js" />
+    <Content Include="Scripts\jszip.min.js" />
+    <Content Include="Scripts\knockout-3.4.2.debug.js" />
+    <Content Include="Scripts\knockout-3.4.2.js" />
     <Content Include="Scripts\MonthPicker.js" />
     <Content Include="Content\pickmeup.min.css" />
     <Content Include="Content\plugins\morris.css" />
@@ -4007,7 +4321,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\css\fixed_table_rc.css" />
     <Content Include="Scripts\css\images\asc.gif" />
     <Content Include="Scripts\css\images\bg.gif" />
@@ -4022,8 +4335,7 @@
     <Content Include="Scripts\jqueryui\external\jshint.js" />
     <Content Include="Scripts\jqueryui\external\qunit.css" />
     <Content Include="Scripts\jqueryui\external\qunit.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.pickmeup.js" />
     <Content Include="Scripts\jquery.pickmeup.min.js" />
@@ -4094,9 +4406,6 @@
     <Content Include="Scripts\jqueryui\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Scripts\jqueryui\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Scripts\jqueryui\ui\i18n\jquery-ui-i18n.js" />
-    <Content Include="Scripts\jqueryui\ui\i18n\jquery.ui.datepicker-en-AU.js" />
-    <Content Include="Scripts\jqueryui\ui\i18n\jquery.ui.datepicker-en-GB.js" />
-    <Content Include="Scripts\jqueryui\ui\i18n\jquery.ui.datepicker-en-NZ.js" />
     <Content Include="Scripts\jqueryui\ui\i18n\jquery.ui.datepicker-ru.js" />
     <Content Include="Scripts\jqueryui\ui\jquery-ui.js" />
     <Content Include="Scripts\jqueryui\ui\jquery.ui.accordion.js" />
@@ -4256,6 +4565,22 @@
     <Content Include="Scripts\jstree\themes\default\throbber.gif" />
     <Content Include="Scripts\js\fixed_table_rc.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\pivottable\c3_renderers.js" />
+    <Content Include="Scripts\pivottable\c3_renderers.min.js" />
+    <Content Include="Scripts\pivottable\d3_renderers.js" />
+    <Content Include="Scripts\pivottable\d3_renderers.min.js" />
+    <Content Include="Scripts\pivottable\export_renderers.js" />
+    <Content Include="Scripts\pivottable\export_renderers.min.js" />
+    <Content Include="Scripts\pivottable\gchart_renderers.js" />
+    <Content Include="Scripts\pivottable\gchart_renderers.min.js" />
+    <Content Include="Scripts\pivottable\nrecopivottableext.css" />
+    <Content Include="Scripts\pivottable\nrecopivottableext.js" />
+    <Content Include="Scripts\pivottable\pivot.css" />
+    <Content Include="Scripts\pivottable\pivot.js" />
+    <Content Include="Scripts\pivottable\pivot.min.css" />
+    <Content Include="Scripts\pivottable\pivot.min.js" />
+    <Content Include="Scripts\pivottable\pivot.ru.min.js" />
+    <Content Include="Scripts\pivottable\test.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />
     <Content Include="Scripts\plugins\flot\flot-data.js" />
     <Content Include="Scripts\plugins\flot\jquery.flot.js" />
@@ -4993,6 +5318,15 @@
     <Content Include="Scripts\tinymce\themes\inlite\theme.min.js" />
     <Content Include="Scripts\tinymce\themes\modern\theme.min.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
+    <Content Include="Scripts\vectormap-data\africa.js" />
+    <Content Include="Scripts\vectormap-data\canada.js" />
+    <Content Include="Scripts\vectormap-data\eurasia.js" />
+    <Content Include="Scripts\vectormap-data\europe.js" />
+    <Content Include="Scripts\vectormap-data\usa.js" />
+    <Content Include="Scripts\vectormap-data\world.js" />
+    <Content Include="Scripts\vectormap-utils\dx.vectormaputils.debug.js" />
+    <Content Include="Scripts\vectormap-utils\dx.vectormaputils.js" />
+    <Content Include="Scripts\vectormap-utils\dx.vectormaputils.node.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -5010,7 +5344,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
@@ -5155,9 +5488,6 @@
     <Content Include="Web References\ZupWS\Employee.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\ZupWS\Organization.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
     <Content Include="Web References\ZupWS\Accrual.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
@@ -5195,6 +5525,14 @@
     <Content Include="Views\Zakup\Analytics.cshtml" />
     <Content Include="Views\Zakup\Restaurants.cshtml" />
     <Content Include="Views\Zakup\Users.cshtml" />
+    <Content Include="Views\Profile\Settings.cshtml" />
+    <Content Include="Web References\ZupWS\Organization.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Views\CRM\Report.cshtml" />
+    <Content Include="Scripts\pivottable\pivot.ru.min.js.map" />
+    <Content Include="Scripts\version.json" />
+    <Content Include="Views\Shared\_LayoutEmpty.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

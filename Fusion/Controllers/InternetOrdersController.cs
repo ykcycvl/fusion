@@ -68,21 +68,32 @@ namespace Fusion.Controllers
         public ActionResult SendToDelivery(int id)
         {
             var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
+            var setting = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName == User.Identity.Name.ToString());
 
-            if (order == null)
+            if (order == null || (order != null && !order.Success))
             {
+                if (order == null)
+                {
+                    order = db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now, Success = false });
+                    db.SaveChanges();
+                }
+
                 InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
                 model.GetOrder(id, User.Identity.Name.ToString());
-                model.SetStatus('F');
+
+                if (setting != null && Boolean.Parse(setting.SettingValue.ToLower()))
+                {
+                    model.SetStatus('F');
+                }
 
                 InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString());
 
                 if (response.Success)
                 {
-                    db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now });
-                    db.SaveChanges();
+                    order.Success = true;
                 }
 
+                db.SaveChanges();
                 return View(response);
             }
             else

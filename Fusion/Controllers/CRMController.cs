@@ -65,8 +65,8 @@ namespace Fusion.Controllers
         {
             ReportViewModels.OPDViewModel model = new ReportViewModels.OPDViewModel();
             model.count = 2;
-            model.StartDateTime = DateTime.Today.AddDays(-10);
-            model.EndDateTime = DateTime.Today.AddDays(1);
+            model.StartDateTime = DateTime.Today.AddDays(-3);
+            model.EndDateTime = DateTime.Today;
             model.Search();
             return View(model);
         }
@@ -360,6 +360,12 @@ namespace Fusion.Controllers
             }
 
             return View();
+        }
+        public ActionResult Report()
+        {
+            ReportModels.CRMAnalyticsModel model = new ReportModels.CRMAnalyticsModel();
+            model.GetGuestDynamics(new DateTime(2017, 1, 1), DateTime.Today);
+            return View(model);
         }
     }
 }

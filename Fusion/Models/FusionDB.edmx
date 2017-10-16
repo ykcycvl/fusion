@@ -165,6 +165,19 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="SiteOrderID" Type="int" Nullable="false" />
           <Property Name="SendDateTime" Type="datetime" Nullable="false" />
+          <Property Name="Success" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DLVOrderLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ActionDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ActionName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="ActionContent" Type="text" Nullable="false" />
+          <Property Name="ActionResult" Type="text" Nullable="false" />
+          <Property Name="ActionXML" Type="xml" />
         </EntityType>
         <EntityType Name="host">
           <Key>
@@ -347,6 +360,25 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="storagename" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="text" Nullable="false" />
         </EntityType>
+        <EntityType Name="VegaPersonalSetting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="SettingID" Type="int" Nullable="false" />
+          <Property Name="SettingValue" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VegaSetting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SettingName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="SettingTitle" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="SettingType" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
         <Association Name="FK_Article_ArticleCategory">
           <End Role="ArticleCategory" Type="Self.ArticleCategory" Multiplicity="1" />
           <End Role="Article" Type="Self.Article" Multiplicity="*" />
@@ -488,6 +520,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="bd_subdivision">
               <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DLVOrderLog_DLVOrder">
+          <End Role="DLVOrder" Type="Self.DLVOrder" Multiplicity="1" />
+          <End Role="DLVOrderLog" Type="Self.DLVOrderLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DLVOrder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DLVOrderLog">
+              <PropertyRef Name="OrderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -635,6 +679,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VegaPersonalSetting_VegaSetting">
+          <End Role="VegaSetting" Type="Self.VegaSetting" Multiplicity="1" />
+          <End Role="VegaPersonalSetting" Type="Self.VegaPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VegaSetting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VegaPersonalSetting">
+              <PropertyRef Name="SettingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FusionDBModelsStoreContainer">
           <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ArticleCategory" EntityType="Self.ArticleCategory" Schema="dbo" store:Type="Tables" />
@@ -652,6 +708,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="CRMSended" EntityType="Self.CRMSended" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CRMToSend" EntityType="Self.CRMToSend" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DLVOrder" EntityType="Self.DLVOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DLVOrderLog" EntityType="Self.DLVOrderLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
@@ -669,6 +726,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="server" EntityType="Self.server" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stoplist" EntityType="Self.stoplist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VegaPersonalSetting" EntityType="Self.VegaPersonalSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VegaSetting" EntityType="Self.VegaSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="hostip" EntityType="Self.hostip" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [hostip].[hostip] AS [hostip], 
@@ -729,6 +788,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_organization" EntitySet="bd_organization" />
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
           </AssociationSet>
+          <AssociationSet Name="FK_DLVOrderLog_DLVOrder" Association="Self.FK_DLVOrderLog_DLVOrder">
+            <End Role="DLVOrder" EntitySet="DLVOrder" />
+            <End Role="DLVOrderLog" EntitySet="DLVOrderLog" />
+          </AssociationSet>
           <AssociationSet Name="FK_mc_extra_mc_task" Association="Self.FK_mc_extra_mc_task">
             <End Role="mc_task" EntitySet="mc_task" />
             <End Role="mc_extra" EntitySet="mc_extra" />
@@ -776,6 +839,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_serverip_server" Association="Self.FK_serverip_server">
             <End Role="server" EntitySet="server" />
             <End Role="serverip" EntitySet="serverip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VegaPersonalSetting_VegaSetting" Association="Self.FK_VegaPersonalSetting_VegaSetting">
+            <End Role="VegaSetting" EntitySet="VegaSetting" />
+            <End Role="VegaPersonalSetting" EntitySet="VegaPersonalSetting" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1406,6 +1473,17 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_organization" EntitySet="bd_organization" />
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
           </AssociationSet>
+          <EntitySet Name="DLVOrderLog" EntityType="FusionDBModels.DLVOrderLog" />
+          <AssociationSet Name="FK_DLVOrderLog_DLVOrder" Association="FusionDBModels.FK_DLVOrderLog_DLVOrder">
+            <End Role="DLVOrder" EntitySet="DLVOrder" />
+            <End Role="DLVOrderLog" EntitySet="DLVOrderLog" />
+          </AssociationSet>
+          <EntitySet Name="VegaPersonalSetting" EntityType="FusionDBModels.VegaPersonalSetting" />
+          <EntitySet Name="VegaSetting" EntityType="FusionDBModels.VegaSetting" />
+          <AssociationSet Name="FK_VegaPersonalSetting_VegaSetting" Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting">
+            <End Role="VegaSetting" EntitySet="VegaSetting" />
+            <End Role="VegaPersonalSetting" EntitySet="VegaPersonalSetting" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1541,6 +1619,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SiteOrderID" Type="Int32" Nullable="false" />
           <Property Name="SendDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="DLVOrderLog" Relationship="FusionDBModels.FK_DLVOrderLog_DLVOrder" FromRole="DLVOrder" ToRole="DLVOrderLog" />
+          <Property Name="Success" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_bd_subdivision_organization_id">
           <End Type="FusionDBModels.bd_organization" Role="bd_organization" Multiplicity="0..1" />
@@ -1551,6 +1631,64 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="bd_subdivision">
               <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DLVOrderLog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ActionDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActionName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ActionContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ActionResult" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ActionXML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DLVOrder" Relationship="FusionDBModels.FK_DLVOrderLog_DLVOrder" FromRole="DLVOrderLog" ToRole="DLVOrder" />
+        </EntityType>
+        <Association Name="FK_DLVOrderLog_DLVOrder">
+          <End Type="FusionDBModels.DLVOrder" Role="DLVOrder" Multiplicity="1" />
+          <End Type="FusionDBModels.DLVOrderLog" Role="DLVOrderLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DLVOrder">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DLVOrderLog">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="VegaPersonalSetting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SettingID" Type="Int32" Nullable="false" />
+          <Property Name="SettingValue" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="VegaSetting" Relationship="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" FromRole="VegaPersonalSetting" ToRole="VegaSetting" />
+        </EntityType>
+        <EntityType Name="VegaSetting">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SettingName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SettingTitle" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SettingType" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="VegaPersonalSetting" Relationship="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" FromRole="VegaSetting" ToRole="VegaPersonalSetting" />
+        </EntityType>
+        <Association Name="FK_VegaPersonalSetting_VegaSetting">
+          <End Type="FusionDBModels.VegaSetting" Role="VegaSetting" Multiplicity="1" />
+          <End Type="FusionDBModels.VegaPersonalSetting" Role="VegaPersonalSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VegaSetting">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="VegaPersonalSetting">
+              <PropertyRef Name="SettingID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1925,8 +2063,43 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySetMapping Name="DLVOrder">
             <EntityTypeMapping TypeName="FusionDBModels.DLVOrder">
               <MappingFragment StoreEntitySet="DLVOrder">
+                <ScalarProperty Name="Success" ColumnName="Success" />
                 <ScalarProperty Name="SendDateTime" ColumnName="SendDateTime" />
                 <ScalarProperty Name="SiteOrderID" ColumnName="SiteOrderID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DLVOrderLog">
+            <EntityTypeMapping TypeName="FusionDBModels.DLVOrderLog">
+              <MappingFragment StoreEntitySet="DLVOrderLog">
+                <ScalarProperty Name="ActionXML" ColumnName="ActionXML" />
+                <ScalarProperty Name="ActionResult" ColumnName="ActionResult" />
+                <ScalarProperty Name="ActionContent" ColumnName="ActionContent" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ActionDateTime" ColumnName="ActionDateTime" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VegaPersonalSetting">
+            <EntityTypeMapping TypeName="FusionDBModels.VegaPersonalSetting">
+              <MappingFragment StoreEntitySet="VegaPersonalSetting">
+                <ScalarProperty Name="SettingValue" ColumnName="SettingValue" />
+                <ScalarProperty Name="SettingID" ColumnName="SettingID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VegaSetting">
+            <EntityTypeMapping TypeName="FusionDBModels.VegaSetting">
+              <MappingFragment StoreEntitySet="VegaSetting">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="SettingType" ColumnName="SettingType" />
+                <ScalarProperty Name="SettingTitle" ColumnName="SettingTitle" />
+                <ScalarProperty Name="SettingName" ColumnName="SettingName" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

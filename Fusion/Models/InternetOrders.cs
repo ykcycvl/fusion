@@ -49,9 +49,9 @@ namespace Fusion.Models
             public class GuestInfo
             {
                 public int id { get; set; }
-                [Display(Name="Логин")]
+                [Display(Name = "Логин")]
                 public string Login { get; set; }
-                [Display(Name="Имя")]
+                [Display(Name = "Имя")]
                 public string Name { get; set; }
                 [Display(Name = "email")]
                 public string email { get; set; }
@@ -62,13 +62,13 @@ namespace Fusion.Models
             {
                 public int id { get; set; }
                 public int productId { get; set; }
-                [Display(Name="Цена")]
+                [Display(Name = "Цена")]
                 public Decimal Price { get; set; }
-                [Display(Name="Валюта")]
+                [Display(Name = "Валюта")]
                 public string CurrencyName { get; set; }
-                [Display(Name="Количество")]
+                [Display(Name = "Количество")]
                 public Decimal Quantity { get; set; }
-                [Display(Name="Название")]
+                [Display(Name = "Название")]
                 public string ProductName { get; set; }
                 [Display(Name = "Код RK7")]
                 public string RKCode { get; set; }
@@ -158,6 +158,8 @@ namespace Fusion.Models
                         con.Close();
                     }
             }
+
+            CARD_SYSTEMEntities db = new CARD_SYSTEMEntities();
 
             public void GetOrder(int id, string UserName)
             {
@@ -355,7 +357,9 @@ WHERE bso.ID = {0}", id), con);
                 #endregion
 
                 #region FillItems
-                com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb LEFT JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID = 76 where bsb.ORDER_ID = {0}", id);
+                com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb LEFT JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID 
+LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID IN (76, 162, 161, 160, 159, 158, 153, 155, 151)
+where bsb.ORDER_ID = {0}", id);
                 rdr = com.ExecuteReader();
 
                 if (rdr.HasRows)
@@ -403,11 +407,15 @@ WHERE bso.ID = {0}", id), con);
 
                 string[] nameParts = this.Guest.Name.Trim().Split(' ');
                 name = nameParts[0];
-                phone = this.Guest.phone.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
 
+                var propsAddress = this.Properties.FirstOrDefault(p => p.OrderPropsId == 1);
+                var propsPhone = this.Properties.FirstOrDefault(p => p.OrderPropsId == 2);
+                var propsEmail = this.Properties.FirstOrDefault(p => p.OrderPropsId == 3);
                 var propsDeliveryTime = this.Properties.FirstOrDefault(p => p.OrderPropsId == 4);
                 var propsGuestCount = this.Properties.FirstOrDefault(p => p.OrderPropsId == 8);
                 var propsSdacha = this.Properties.FirstOrDefault(p => p.OrderPropsId == 9);
+                var propsCity = this.Properties.FirstOrDefault(p => p.OrderPropsId == 17);
+                var propsPromoCode = this.Properties.FirstOrDefault(p => p.OrderPropsId == 19);
                 var propsRestId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 22);
                 var propsCityId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 24);
                 var propsStreetId = this.Properties.FirstOrDefault(p => p.OrderPropsId == 25);
@@ -417,6 +425,8 @@ WHERE bso.ID = {0}", id), con);
                 var propsFloor = this.Properties.FirstOrDefault(p => p.OrderPropsId == 29);
                 var propsAppt = this.Properties.FirstOrDefault(p => p.OrderPropsId == 30);
                 var propsEntryCode = this.Properties.FirstOrDefault(p => p.OrderPropsId == 31);
+
+                phone = propsPhone.Value.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
 
                 string ordercategoryID = "0", restID = "0";
 
@@ -471,6 +481,159 @@ WHERE bso.ID = {0}", id), con);
                 {
                     addressInfo = new List<RKCRM.Holder.AddressInfo>();
 
+                    if (propsAddress == null)
+                    {
+                        result.Success = false;
+                        result.Message = "Не удалось определить адрес доставки. Пожалуйста, проверьте корректность данных.";
+                        return result;
+                    }
+
+                    if (propsCityId == null && propsCity != null)
+                    {
+                        var cityInfo = db.CARD_CITIES.FirstOrDefault(p => p.NAME.ToLower() == propsCity.Value && p.DELETED == 0 && p.COUNTRY_ID == 1);
+
+                        if (cityInfo == null)
+                        {
+                            result.Success = false;
+                            result.Message = "Не удалось определить город доставки. Пожалуйста, проверьте корректность данных.";
+                            return result;
+                        }
+
+                        propsCityId = new OrderPropertyInfo() { Value = cityInfo.CITY_ID.ToString() };
+                    }
+                    else
+                    {
+                        result.Success = false;
+                        result.Message = "Не удалось определить город доставки. Пожалуйста, проверьте корректность данных.";
+                        return result;
+                    }
+
+                    //Определение улицы
+                    if (propsStreetId == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"улица:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString().Trim();
+                            long cityId = Convert.ToInt64(propsCityId.Value);
+                            var streetInfo = db.CARD_STREETS.FirstOrDefault(p => p.NAME.ToLower() == sv.ToLower() && p.CITY_ID == cityId && p.DELETED == 0);
+
+                            if (streetInfo == null)
+                            {
+                                result.Success = false;
+                                result.Message = "Не удалось определить улицу. Пожалуйста, проверьте корректность данных.";
+                                return result;
+                            }
+
+                            propsStreetId = new OrderPropertyInfo() { Value = streetInfo.STREET_ID.ToString() };
+                        }
+                    }
+
+                    //Определение дома
+                    if (propsHouse == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"дом:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsHouse = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            result.Success = false;
+                            result.Message = "Не удалось определить номер дома. Пожалуйста, проверьте корректность данных.";
+                            return result;
+                        }
+                    }
+
+                    //Определение строения
+                    if (propsBuilding == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"строение:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsBuilding = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            propsBuilding = new OrderPropertyInfo() { Value = "" };
+                        }
+                    }
+
+                    //Определение подъезда
+                    if (propsEntry == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"подъезд:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsEntry = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            propsEntry = new OrderPropertyInfo() { Value = "" };
+                        }
+                    }
+
+                    //Определение домофона
+                    if (propsEntryCode == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"домофон:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsEntryCode = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            propsEntryCode = new OrderPropertyInfo() { Value = "" };
+                        }
+                    }
+
+                    //Определение этажа
+                    if (propsFloor == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"этаж:(?<val>.*?),");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsFloor = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            propsFloor = new OrderPropertyInfo() { Value = "" };
+                        }
+                    }
+
+                    //Определение квартиры
+                    if (propsAppt == null)
+                    {
+                        Match mt = Regex.Match(propsAddress.Value.ToLower(), @"квартира\/офис:(?<val>.*?)$");
+
+                        if (mt.Success)
+                        {
+                            string sv = mt.Groups["val"].ToString();
+
+                            propsAppt = new OrderPropertyInfo() { Value = sv.Trim() };
+                        }
+                        else
+                        {
+                            propsAppt = new OrderPropertyInfo() { Value = "" };
+                        }
+                    }
+
                     addressInfo.Add(new RKCRM.Holder.AddressInfo()
                     {
                         Type_ID = "250",
@@ -500,33 +663,38 @@ WHERE bso.ID = {0}", id), con);
                         guestCount = 1;
                 }
 
+                if (this.Payed)
+                    comment += String.Format("{0} ОПЛАЧЕН ", this.id);
+
+                if (this.PaySystem.id == 5)
+                    comment += "ТЕРМИНАЛ ";
+
                 if (propsDeliveryTime == null || propsDeliveryTime.Value.Trim() == "Ближайшее")
                 {
                     if (orderType == 2)
                     {
-                        deliveryTime = DateTime.Now.AddMinutes(defaultCookTime);
+                        DateTime dt = DateTime.Now;
+                        deliveryTime = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second).AddMinutes(defaultCookTime);
                     }
                     else
                     {
                         if (orderType == 3)
                         {
-                            deliveryTime = DateTime.Now.AddMinutes(defaultCookTime + defaultWayTime);
+                            DateTime dt = DateTime.Now;
+                            deliveryTime = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second).AddMinutes(defaultCookTime + defaultWayTime);
                         }
                     }
                 }
                 else
                 {
                     deliveryTime = DateTime.Parse(propsDeliveryTime.Value.Trim());
-                    comment += " " + deliveryTime.ToString("dd.MM.yyyy HH:mm");
+                    comment += deliveryTime.ToString("dd.MM.yyyy HH:mm") + " ";
                 }
 
                 if (propsSdacha != null && propsSdacha.Value.Trim() != "")
-                    comment += String.Format(" {0}р", propsSdacha.Value);
+                    comment += String.Format("{0}р ", propsSdacha.Value);
 
-                if (this.Payed)
-                    comment += String.Format(" {0} ОПЛАЧЕН ", this.id);
-
-                comment += this.Comment;
+                comment += this.Comment.Trim();
 
                 string contactPhone = String.Format(@"<Contact><Type_ID>254</Type_ID><Value>{0}</Value><Dispatch>True</Dispatch></Contact>", phone);
 
@@ -534,6 +702,11 @@ WHERE bso.ID = {0}", id), con);
 
                 if (holders != null && holders.Count > 0)
                 {
+                    if (addressInfo == null)
+                        addressInfo = new List<RKCRM.Holder.AddressInfo>();
+
+                    addressInfo.AddRange(holders[0].Holders_Addresses.Addresses);
+
                     RKCRM.EditHoldersModel editHolders = new RKCRM.EditHoldersModel();
                     holders[0].F_Name = name;
                     holders[0].L_Name = "";
@@ -543,49 +716,104 @@ WHERE bso.ID = {0}", id), con);
                         holders[0].Addresses = addressInfo;
 
                     editHolders.Holder = holders[0];
-                    editHolders.EditHolder(UserName);
+                    holders[0] = editHolders.EditHolder(UserName);
                 }
                 else
                 {
                     RKCRM.AddHoldersModel addHolders = new RKCRM.AddHoldersModel();
-                    addHolders.Holder = new RKCRM.Holder() {
+                    addHolders.Holder = new RKCRM.Holder()
+                    {
                         Group_ID = "4",
                         F_Name = name,
+                        BirthD = new DateTime(1900, 1, 1),
                         Contacts = new List<RKCRM.Holder.ContactInfo>(),
                         Addresses = addressInfo
                     };
 
-                    addHolders.Holder.Contacts.Add(new RKCRM.Holder.ContactInfo() {
+                    addHolders.Holder.Contacts.Add(new RKCRM.Holder.ContactInfo()
+                    {
                         Type_ID = "254",
                         Value = phone,
                         Dispatch = "True"
                     });
 
-                    addHolders.AddHolder();
+                    if (addHolders.AddHolder())
+                        holders = RKCRM.SearchHoldersByPhone(phone);
+                    else
+                    {
+                        result.Message = "[AddHolders] " + addHolders.LastResult;
+                        result.Success = false;
+                        return result;
+                    }
                 }
 
-                string guests = "";
-
-                for (int i = 1; i < guestCount; i++)
-                    guests += String.Format(@"<Guest GuestLabel=""{0}"" />", (i + 1));
                 #endregion
 
                 #region RK7Block
-                string rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
-<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-	<RK7CMD CMD=""CreateOrder"">
-	<Order persistentComment=""{0}"" nonPersistentComment=""Internet"" extSource=""31"" extID=""256"">
-		<Table code=""60"" />
-		<OrderType code=""{1}"" />
-		<GuestType id=""1"" />
-		<OrderCategory id=""{2}"" />
-		<Guests>
-		<Item clientID=""{3}"" />
-		{4}
-		</Guests>
-	</Order>
-	</RK7CMD>
-</RK7Query>", comment, orderType, ordercategoryID, holders[0].Holder_ID, guests);
+                string addressId = "0";
+                bool addressSpecified = false;
+
+                if (addressInfo != null && addressInfo.Count > 0)
+                {
+                    RKCRM.Holder.AddressInfo ai = addressInfo.FirstOrDefault(p => String.IsNullOrEmpty(p.Address_ID));
+
+                    if(ai != null)
+                    {
+                        ai = holders[0].Holders_Addresses.Addresses.FirstOrDefault(p =>
+                            p.Country_ID == ai.Country_ID
+                            && p.City_ID == ai.City_ID
+                            && p.Street_ID == ai.Street_ID
+                            && p.House == ai.House
+                            && p.Apartments == ai.Apartments);
+
+                        addressId = ai.Address_ID;
+                        addressSpecified = true;
+                    }
+                }
+
+                RK7_qryCreateOrder.RK7Query createOrder = new RK7_qryCreateOrder.RK7Query();
+                createOrder.RK7CMD = new RK7_qryCreateOrder.RK7QueryRK7CMD();
+                RK7_qryCreateOrder.RK7QueryRK7CMDOrder order = new RK7_qryCreateOrder.RK7QueryRK7CMDOrder()
+                {
+                    Table = new RK7_qryCreateOrder.refItem() { code = "60" },
+                    OrderType = new RK7_qryCreateOrder.refItem() { code = orderType.ToString() },
+                    GuestType = new RK7_qryCreateOrder.refItem() { id = "1" },
+                    OrderCategory = new RK7_qryCreateOrder.refItem() { id = ordercategoryID },
+                    persistentComment = comment,
+                    nonPersistentComment = "Internet",
+                    extSource = "31",
+                    extID = "256"
+                };
+
+                List<RK7_qryCreateOrder.guest_item> guests = new List<RK7_qryCreateOrder.guest_item>();
+
+
+                guests.Add(new RK7_qryCreateOrder.guest_item()
+                {
+                    clientIDSpecified = true,
+                    clientID = Convert.ToInt64(holders[0].Holder_ID),
+                    addressIDSpecified = addressSpecified,
+                    addressID = Convert.ToInt64(addressId)
+                });
+
+                for (int i = 1; i < guestCount; i++)
+                    guests.Add(new RK7_qryCreateOrder.guest_item()
+                    {
+                        guestLabel = (i + 1).ToString()
+                    });
+
+                order.Guests = new RK7_qryCreateOrder.Guests_Item()
+                {
+                    count = guestCount,
+                    Guest = guests.ToArray()
+                };
+
+                createOrder.RK7CMD.Order = new RK7_qryCreateOrder.RK7QueryRK7CMDOrder[1] { order };
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(RK7_qryCreateOrder.RK7Query));
+                StringWriter stringWriter = new StringWriter();
+                xmlSerializer.Serialize(stringWriter, createOrder);
+                string rkQuery = stringWriter.ToString();
 
                 string s = RK7APIModels.HttpPost(rkQuery);
 
@@ -609,16 +837,29 @@ WHERE bso.ID = {0}", id), con);
                     return result;
                 }
 
-                string deliveryBlock = String.Format(@"<DeliveryBlock deliveryTime=""{0}"" minCookTime=""1899-12-30T01:00:00"" />", deliveryTime.ToString("yyyy-MM-ddTHH:mm:ss"));
+                Dlv_qryDeliveryUpdateStatus.RK7Query updateStatus = new Dlv_qryDeliveryUpdateStatus.RK7Query()
+                {
+                    RK7CMD = new Dlv_qryDeliveryUpdateStatus.RK7QueryRK7CMD()
+                    {
+                        Order = new Dlv_qryDeliveryUpdateStatus.orderElement() { guid = guid }
+                    }
+                };
 
-                rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-8""?>
-<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <RK7CMD CMD=""DeliveryUpdateStatus"">
-	<Order guid=""{0}"" />
-	{1}
-	<Restaurant id=""{2}"" />
-  </RK7CMD>
-</RK7Query>", guid, deliveryBlock, restID);
+                if (!String.IsNullOrEmpty(restID) && restID != "0")
+                    updateStatus.RK7CMD.Restaurant = new Dlv_qryDeliveryUpdateStatus.refItem() { id = restID };
+
+                updateStatus.RK7CMD.DeliveryBlock = new Dlv_qryDeliveryUpdateStatus.deliveryBlock()
+                {
+                    deliveryTimeSpecified = true,
+                    deliveryTime = deliveryTime,
+                    minCookTimeSpecified = true,
+                    minCookTime = (new DateTime(1899, 12, 30)).AddMinutes(defaultCookTime)
+                };
+
+                xmlSerializer = new XmlSerializer(typeof(Dlv_qryDeliveryUpdateStatus.RK7Query));
+                stringWriter = new StringWriter();
+                xmlSerializer.Serialize(stringWriter, updateStatus);
+                rkQuery = stringWriter.ToString();
 
                 s = RK7APIModels.HttpPost(rkQuery);
 
@@ -629,33 +870,31 @@ WHERE bso.ID = {0}", id), con);
 
                 if (status != "Ok")
                 {
-                    result.Message = "[DeliveryUpdateStatus] " + s;
+                    result.Message = "[SaveOrder] " + s;
                     result.Success = false;
                     return result;
                 }
 
-                string dishes = "";
+                RK7_qrySaveOrder.RK7Query saveOrder = new RK7_qrySaveOrder.RK7Query() { RK7CMD = new RK7_qrySaveOrder.RK7QueryRK7CMD() { dontcheckLicense = true, deferred = true, dontcheckLicenseSpecified = true } };
+                saveOrder.RK7CMD.Order = new RK7_qrySaveOrder.orderElement() { guid = guid };
+
+                List<RK7_qrySaveOrder.dishItem> dishes = new List<RK7_qrySaveOrder.dishItem>();
 
                 foreach (var dish in this.Items)
                 {
                     if (dish.RKCode != "")
-                        dishes += String.Format(@"
-<Dish code=""{0}"" quantity=""{1}"" />", dish.RKCode, dish.Quantity * 1000);
+                        dishes.Add(new RK7_qrySaveOrder.dishItem() { code = dish.RKCode, quantity = Convert.ToInt32(dish.Quantity * 1000) });
                 }
 
                 if (this.PriceDelivery > 0 && orderType == 3)
-                    dishes += String.Format(@"
-<Dish code=""322"" quantity=""1000"" />");
+                    dishes.Add(new RK7_qrySaveOrder.dishItem() { code = "322", quantity = 1000 });
 
-                rkQuery = String.Format(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<RK7Query xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <RK7CMD CMD=""SaveOrder"" deferred=""1"" dontcheckLicense=""1"">
-	<Order guid=""{0}"" />
-	<Session>
-	  {1}
-	</Session>
-  </RK7CMD>
-</RK7Query>", guid, dishes);
+                saveOrder.RK7CMD.Session = new RK7_qrySaveOrder.SessionItem[1] { new RK7_qrySaveOrder.SessionItem() { Items = dishes.ToArray() } };
+
+                xmlSerializer = new XmlSerializer(typeof(RK7_qrySaveOrder.RK7Query));
+                stringWriter = new StringWriter();
+                xmlSerializer.Serialize(stringWriter, saveOrder);
+                rkQuery = stringWriter.ToString();
 
                 s = RK7APIModels.HttpPost(rkQuery);
 
@@ -684,7 +923,7 @@ WHERE bso.ID = {0}", id), con);
         {
             string statuses = "'C','F','N','O'";
 
-            if(filter_status != null)
+            if (filter_status != null)
             {
                 statuses = "";
 
@@ -820,7 +1059,7 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
 
 
                     if (rdr["LockEmpID"] != DBNull.Value)
-                    { 
+                    {
                         oi.EmployeeLocked = new OrderInfo.EmployeeInfo();
                         oi.EmployeeLocked.id = Convert.ToInt32(rdr["LockEmpID"]);
 
