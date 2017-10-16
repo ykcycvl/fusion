@@ -1,0 +1,108 @@
+﻿
+@model Fusion.Models.ZakupModel
+
+@{
+    ViewBag.Title = "Дерево товаров SH4";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<link href="//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js"></script>
+<link href="~/Scripts/jstree/themes/default/style.min.css" rel="stylesheet" />
+<script src="~/Scripts/jstree/jstree.min.js"></script>
+
+<script>
+    $(function () {
+        $('#jstree_demo_div')
+            .on('select_node.jstree', function (e, data) {
+                if (data.node.id == "All") {
+                    if (confirm("Загрузка перечня всех товаров с остатками может занять ОЧЕНЬ длительное время. Вы уверены, что хотите загрузить все товары с остатками?")) {
+                        $("#GoodsData").hide();
+                        $("#preloader").show();
+                        $("#GoodsData").load(("/Zakup/Remnants/?storehouse_name=@Model.sh_id"), function () {
+                            $("#preloader").hide();
+                            $("#GoodsData").show();
+                            $('#Table').DataTable({
+                                "paging": true,
+                                "ordering": true,
+                                "info": true,
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Все"]],
+                                "iDisplayLength": 50,
+                                "language": {
+                                    "lengthMenu": "Показывать _MENU_ на странице",
+                                    "zeroRecords": "Ничего не нашли - сорян!",
+                                    "info": "Страница _PAGE_ из _PAGES_",
+                                    "infoEmpty": "Ноу рекордс эвейлбл",
+                                    "infoFiltered": "(фильтрануто _MAX_ записей)",
+                                    "sSearch": "<span>Фильтрануть</span> _INPUT_",
+                                }
+                            });
+                        });
+                    }
+                }
+                else {
+                    $("#GoodsData").hide();
+                    $("#preloader").show();
+                    $("#GoodsData").load(("/Zakup/Remnants/?GroupID="+data.node.id+"&storehouse_name=@Model.sh_id"), function () {
+                        $("#preloader").hide();
+                        $("#GoodsData").show();
+                        $('#Table').DataTable({
+                            "paging": true,
+                            "ordering": true,
+                            "info": true,
+                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Все"]],
+                            "iDisplayLength": 50,
+                            "language": {
+                                "lengthMenu": "Показывать _MENU_ на странице",
+                                "zeroRecords": "Ничего не нашли - сорян!",
+                                "info": "Страница _PAGE_ из _PAGES_",
+                                "infoEmpty": "Ноу рекордс эвейлбл",
+                                "infoFiltered": "(фильтрануто _MAX_ записей)",
+                                "sSearch": "<span>Фильтрануть</span> _INPUT_",
+                            }
+                        });
+                    });
+                }
+            })
+            .jstree({
+                "types": {
+                    "folder": {
+                        "max_children": -1,
+                        "max_depth": -1,
+                        "icon": "Content/img/folder.png",
+                        "valid_children": ["folder", "file"]
+                    },
+                    "file": {
+                        "max_children": 0,
+                        "max_depth": 0,
+                        "icon": "Content/img/leaf.png",
+                        "valid_children": []
+                    }
+                },
+                "plugins": ["themes", "json_data", "dnd", "ui", "crrm", "types"]
+            });
+    });
+</script>
+
+<div class="navbar-default sidebar" role="navigation">
+    <h3>Категории</h3>
+    <div class="sidebar-nav navbar-collapse">
+        <div id="jstree_demo_div">
+            @Html.Partial("_GoodsTree_remnants")
+        </div>
+    </div>
+</div>
+<div id="page-wrapper" style="min-height:648px">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Список товаров</h1>
+        </div>
+    </div>
+
+    <div id="preloader" style="display:none;text-align:center">
+        <img src="https://hsto.org/getpro/habr/post_images/451/5dc/843/4515dc843bbdc21e00d96d4db2a42d87.gif" alt="AJAX loader" title="AJAX loader" />
+    </div>
+
+    <div class="row" id="GoodsData">
+    </div>
+</div>

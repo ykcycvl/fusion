@@ -1,0 +1,30 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "storehouses";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">Склады</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr class="info">
+                    <th>id</th>
+                    <th>name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var it in Model.storehousesList.Where(m => m.id > 0))
+                {
+                    <tr>
+                        <td>@it.id</td>
+                        <td>@Html.ActionLink(it.name, "GoodsTree_remnants", new { @storehouse_name = it.id }, null)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

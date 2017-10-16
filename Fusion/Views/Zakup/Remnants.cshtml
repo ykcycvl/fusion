@@ -1,0 +1,30 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    Layout = null;
+}
+
+<div class="col-lg-12" style="overflow-x:scroll">
+    <table class="table table-bordered" id="Table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Наименование</th>
+                <th>Кол-во</th>
+                <th>Ед. измерения</th>
+                <th>НДС</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var it in Model.remnantsList)
+            {
+                <tr>
+                    <td>@it.RID</td>
+                    <td>@it.name</td>
+                    <td>@Math.Round(it.quantity, 2)</td>
+                    <td>@it.measurements</td>
+                    <td>@it.vat</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

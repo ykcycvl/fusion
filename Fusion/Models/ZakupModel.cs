@@ -8,16 +8,68 @@ using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Jitbit.Utils;
 using System.Web.Script.Serialization;
+using Sh4Ole;
+using System.Text;
 
 
 namespace Fusion.Models
 {
     public class ZakupModel
     {
+        //классы для сторхауса
+        public class GoodsTreeItem
+        {
+            [Display(Name = "ID")]
+            public int ID { get; set; }
+            [Display(Name = "Родитель")]
+            public int? ParentID { get; set; }
+            [Display(Name = "Наименование")]
+            public string Name { get; set; }
+            [Display(Name = "Код")]
+            public string Code { get; set; }
+            [Display(Name = "Внешний код")]
+            public string ExternalCode { get; set; }
+        }
+        public class Good
+        {
+            public dynamic id { get; set; }
+            public dynamic GroupID { get; set; }
+            public dynamic GroupName { get; set; }
+            public dynamic Name { get; set; }
+            public dynamic CodePrefix { get; set; }
+            public dynamic CodeNumber { get; set; }
+            public dynamic Unit { get; set; }
+            public dynamic ComplectID { get; set; }
+            public dynamic ComplectName { get; set; }
+        }
+        public class GoodsBalance
+        {
+            public Good good { get; set; }
+            public dynamic balance { get; set; }
+            public double cost { get; set; }
+            public double cost_bal { get; set; }
+            public double NDS { get; set; }
+            public double NSP { get; set; }
+        }
+        public class remnants
+        {
+            public int RID { get; set; }
+            public string name { get; set; }
+            public string measurements { get; set; }
+            public dynamic quantity { get; set; }
+            public double vat { get; set; }
+            public string storehouse { get; set; }
+        }
+        public class storehouses
+        {
+            public double id { get; set; }
+            public string name { get; set; }
+        }
+        //классы для селектов, экспорта в эксель и пр.
         public class vendors1
         {
-           public string name { get; set; }
-           public int id { get; set; }
+            public string name { get; set; }
+            public int id { get; set; }
         }
         public class categs
         {
@@ -59,13 +111,10 @@ namespace Fusion.Models
             public string state { get; set; }
             public int state_id { get; set; }
         }
-        public bd_vendor vendor { get; set; }
-        public string vendor_name { get; set; }
-        public DateTime? date_end { get; set; }
-        public DateTime? date_from { get; set; }
-        public ExportData export { get; set; }
-        public DateTime analyticsDate { get; set; }
-        public vendor_for_send vendor_for_send_item { get; set; }
+        /*Здесь будут переменные*/
+        public List<GoodsTreeItem> GoodsTree = new List<GoodsTreeItem>();
+        public List<Good> Goods = new List<Good>();
+        public List<GoodsBalance> GoodsBalances = new List<GoodsBalance>();
         public List<items1> listItem { get; set; }
         public List<Models.bd_nomenclature> items { get; set; }
         public List<Models.bd_measurement> maesurements { get; set; }
@@ -73,6 +122,23 @@ namespace Fusion.Models
         public List<Models.bd_employee> usersList { get; set; }
         public List<Models.bd_organization> organizationList { get; set; }
         public List<Models.bd_subdivision> restaurantsList { get; set; }
+        public List<ZakupModel.vendors1> vendors { get; set; }
+        public Entities list = new Entities();
+        public IEnumerable<SelectListItem> catListFull { get; set; }
+        public IEnumerable<SelectListItem> statesSelect { get; set; }
+        public List<Models.bd_order> orders { get; set; }
+        public List<Models.bd_states> states { get; set; }
+        public List<categs> Categories { get; set; }
+        public List<storehouses> storehousesList { get; set; }
+        public List<remnants> remnantsList { get; set; }
+        public List<Models.bd_vendor> vendorList { get; set; }
+        public bd_vendor vendor { get; set; }
+        public string vendor_name { get; set; }
+        public DateTime? date_end { get; set; }
+        public DateTime? date_from { get; set; }
+        public ExportData export { get; set; }
+        public DateTime analyticsDate { get; set; }
+        public vendor_for_send vendor_for_send_item { get; set; }
         public string categoryName { get; set; }
         public string CategoryName1 { get; set; }
         public string organizationName { get; set; }
@@ -81,17 +147,110 @@ namespace Fusion.Models
         public string stateName { get; set; }
         public DateTime dateExportForEmployee { get; set; }
         public string measurementName { get; set; }
-        public List<ZakupModel.vendors1> vendors { get; set; }
-        public List<Models.bd_vendor> vendorList { get; set; }
-        public Entities list = new Entities();
-        public IEnumerable<SelectListItem> catListFull { get; set; }
-        public IEnumerable<SelectListItem> statesSelect { get; set; }
-        public List<Models.bd_order> orders { get; set; }
-        public List<Models.bd_states> states { get; set; }
         [DataType(DataType.Date)]
         public DateTime Period { get; set; }
-        public List<categs> Categories { get; set; }
         public string username { get; set; }
+        public int sh_id { get; set; }
+
+        //методы для сторхауса
+        Sh4Ole.SH4App sh4 = new SH4App();
+        public int Open()
+        {
+            sh4.SetServerName("10.1.0.14:pTa10002t60000");
+            return sh4.DBLoginEx("Admin", "2707");
+        }
+        public void Close()
+        {
+            sh4.DBLogout();
+        }
+        public void getStorehouses()
+        {
+            storehousesList = new List<storehouses>();
+            int IndQuery = sh4.pr_CreateProc("CorrTree");
+            sh4.pr_SetValByName(IndQuery, 0, "101.1.0", 0); //16
+            sh4.pr_Post(IndQuery, 0);
+            int h = sh4.pr_ExecuteProc(IndQuery);
+            int flds = sh4.pr_FieldCount(IndQuery, 1);
+            while (sh4.pr_EOF(IndQuery, 1) != 1)
+            {
+                storehouses storehouse = new storehouses();
+                storehouse.id = sh4.pr_ValByName(IndQuery, 1, "101.1.0");
+                storehouse.name = sh4.pr_ValByName(IndQuery, 1, "101.3.0");
+                storehousesList.Add(storehouse);
+                sh4.pr_Next(IndQuery, 1);
+            }
+            sh4.pr_CloseProc(IndQuery);
+        }
+        public void GetGoodsTree(int? id)
+        {
+            int res = sh4.GoodsTree();
+
+            if (res >= 0)
+            {
+                while (sh4.EOF(res) != 1)
+                {
+                    GoodsTreeItem gti = new GoodsTreeItem();
+                    gti.ID = sh4.ValByName(res, "1.209.1.0");
+
+                    if (sh4.ValByName(res, "1.209.2.0").GetType() != typeof(DBNull))
+                        gti.ParentID = sh4.ValByName(res, "1.209.2.0");
+
+                    Encoding srcEncodingFormat = Encoding.GetEncoding(1251);
+                    Encoding dstEncodingFormat = Encoding.UTF8;
+                    byte[] originalByteString = srcEncodingFormat.GetBytes(sh4.ValByName(res, "1.209.3.0").ToString());
+                    byte[] convertedByteString = Encoding.Convert(srcEncodingFormat, dstEncodingFormat, originalByteString);
+                    gti.Name = dstEncodingFormat.GetString(convertedByteString);
+                    gti.Code = sh4.ValByName(res, "1.209.4.0").ToString();
+                    gti.ExternalCode = sh4.ValByName(res, "1.209.5.0").ToString();
+
+                    GoodsTree.Add(gti);
+                    sh4.Next(res);
+                }
+
+                sh4.CloseQuery(res);
+            }
+        }
+        public void getRemnants(int? GroupID, int storehouse)
+        {
+            //получение остатков на основа id склада и товарной группы, если товарная группа пустая - выгружаем все номенклатуры
+            remnantsList = new List<remnants>();
+            int res = sh4.pr_CreateProc("GsRemns");
+            sh4.pr_SetValByName(res, 0, "0.1.0", DateTime.Today.ToOADate());
+            if(GroupID != null)
+            {
+                sh4.pr_SetValByName(res, 0, "209.1.5", GroupID);      // RID Товарной группы (null -по всем)
+            }
+            //sh4.pr_SetValByName(res, 0, "102.1.6", null);       // RID Скла да (null -по всем)
+            sh4.pr_SetValByName(res, 0, "101.1.7", storehouse);       // RID Группы складов (null -по всем)
+            //sh4.pr_SetValByName(res, 0, "208.1.8", null);       // RID Основные Категории товаров (null -по всем)
+            //sh4.pr_SetValByName(res, 0, "219.1.9", null);       // RID Бухгалтерские Категории товаров (null -по всем)
+
+            sh4.pr_SetValByName(res, 0, "0.3.0", 0);      // Опции построения отчета
+            //sh4.pr_SetValByName(res, 0, "1.1.0", 0);            // Поле кода типа группировки tUint16
+            //sh4.pr_SetValByName(res, 0, "100.1.4", 0);          // RID валюты, в которой строить отчет
+            sh4.pr_SetValByName(res, 0, "0.6.0", 0);            // tUint16 Тип сравнения кол-ва (<, >, и т.п.): бит 1 <, бит 2 ==, бит 3 >
+            sh4.pr_SetValByName(res, 0, "0.7.0", 0);             // tUint16 С чем сравнивать кол-во: 0 - с нулем, 1 - с мин. запасом, 2 - с макс. запасом
+            sh4.pr_Post(res, 0);
+            int h = sh4.pr_ExecuteProc(res);
+            int flds = sh4.pr_FieldCount(res, 2);
+            int count = sh4.pr_EOF(res, 2);
+            int count2 = sh4.pr_EOF(res, 1);
+            while (sh4.pr_EOF(res, 2) != 1)
+            {
+                remnants remnants = new remnants();
+                dynamic RID = sh4.pr_ValByName(res, 2, "210.1.9");
+                remnants.RID = (int)RID;
+                dynamic Name = sh4.pr_ValByName(res, 2, "210.2.9").ToString();
+                remnants.name = (string)Name;
+                remnants.measurements = sh4.pr_ValByName(res, 2, "206.2.9").ToString();
+                remnants.quantity = sh4.pr_ValByName(res, 2, "0.2.0");
+                dynamic Vat = sh4.pr_ValByName(res, 2, "0.4.0");
+                remnants.vat = (double)Vat;
+                remnantsList.Add(remnants);
+                sh4.pr_Next(res, 2);
+            }
+            sh4.pr_CloseProc(res);
+        }
         public void createVendor()
         {
             vendor = new bd_vendor();
@@ -245,6 +404,7 @@ namespace Fusion.Models
                 return orgs;
             }
         }
+        //старый метод для сохранения номенклатур, сейчас не используется
         public void PostNom()
         {
             foreach (var it in items)
@@ -263,6 +423,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //старый метод для сохранения поставщиков, сейчас не используется
         public void PostVen()
         {
             foreach (var it in vendorList)
@@ -281,6 +442,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //метод для создания заказов от товароведа
         public void sendOrder( string username)
         {
             foreach (var it in items)
@@ -292,6 +454,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //мето для сохранения списка ресторанов с организациями
         public void postOrganizations()
         {
             foreach (var it in restaurantsList)
@@ -302,6 +465,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //старый метод для сохранения списка заказов, сейчас не используется
         public void sendOrderList()
         {
             foreach (var it in orders)
@@ -319,6 +483,7 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        //метод для сохранения списка заказов ajax
         public bool SaveOrders(string JSONString)
         {
             var serializer = new JavaScriptSerializer();
@@ -342,7 +507,7 @@ namespace Fusion.Models
                 order order = new order();
                 order.id = Int32.Parse(id.ToString());
                 order.date_start = DateTime.Parse(date_start.ToString());
-                if (date_end == "")
+                if (date_end.ToString() == "")
                 {
                     order.date_end = null;
                 }
@@ -367,6 +532,7 @@ namespace Fusion.Models
             list.SaveChanges();
             return true;
         }
+        //метод для сохранения списка номенклатур ajax
         public bool SaveDocument(string JSONString)
         {
             var serializer = new JavaScriptSerializer();

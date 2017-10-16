@@ -221,18 +221,18 @@ namespace Fusion.Controllers
            }
             return result;
         }
-        public ActionResult TestOrders(string period)
-        {
-            ZakupModel model = new ZakupModel();
-            string name = User.Identity.GetUserName();
-            model.username = name;
-            if (period == null || period == "")
-                model.Period = DateTime.Today;
-            else
-                model.Period = DateTime.Parse(period);
-            model.getOrders();
-            return View(model);
-        }
+        //public ActionResult TestOrders(string period)
+        //{
+        //    ZakupModel model = new ZakupModel();
+        //    string name = User.Identity.GetUserName();
+        //    model.username = name;
+        //    if (period == null || period == "")
+        //        model.Period = DateTime.Today;
+        //    else
+        //        model.Period = DateTime.Parse(period);
+        //    model.getOrders();
+        //    return View(model);
+        //}
         [HttpPost]
         public ActionResult SaveOrdersAjax(string data)
         {
@@ -281,7 +281,7 @@ namespace Fusion.Controllers
                 return File(export.ExportToBytesWin(), "text/csv", "Заявки за " + model.dateExportForEmployee + ".csv");
             }
             else return View();
-            
+
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Restaurants()
@@ -334,6 +334,43 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             model.getUsers();
+            return View(model);
+        }
+        public ActionResult Remnants(int? GroupID, int storehouse_name)
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            if (model.Open() == 0)
+            {
+                if (GroupID != null)
+                {
+                    model.getRemnants(GroupID, storehouse_name);
+                }
+                else model.getRemnants(null, storehouse_name);
+                model.Close();
+            }
+            return View(model);
+        }
+        public ActionResult Storehouses()
+        {
+            ZakupModel model = new ZakupModel();
+            if(model.Open() == 0)
+            {
+                model.getStorehouses();
+                model.Close();
+            }
+            return View(model);
+        }
+        public ActionResult GoodsTree_remnants(int storehouse_name)
+        {
+            ZakupModel model = new ZakupModel();
+            model.sh_id = storehouse_name;
+            if (model.Open() == 0)
+            {
+                model.GetGoodsTree(null);
+                model.Close();
+            }
             return View(model);
         }
     }

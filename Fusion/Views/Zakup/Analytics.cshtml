@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Analytics";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
-    int  i = 1;
+    int i = 1;
     int j = 1;
     int k = 1;
     decimal? vendSum = 0;
@@ -12,15 +12,19 @@
     .wrapper_orders a:hover {
         color: white !important;
     }
+
     .wrapper_orders a:active {
         color: white !important;
     }
+
     .wrapper_orders a:visited {
         color: white !important;
     }
+
     .wrapper_orders a:focus {
         color: white !important;
     }
+
     .ui-datepicker-calendar {
         display: none;
     }
@@ -44,7 +48,7 @@
     });
 </script>
 <p class="alert alert-info">Выберите месяц, за которую нужно вывести данные. По умолчанию выставлена сегодняшняя дата</p>
-@Html.TextBoxFor(m => m.analyticsDate, new { @class="monthpicker from-control" })
+@Html.TextBoxFor(m => m.analyticsDate, new { @class = "monthpicker from-control" })
 <div class="wrapper_orders">
     <br />
     <div class="panel panel-yellow">
@@ -131,18 +135,20 @@
                         <tr class="info">
                             <th>Наименование</th>
                             <th>Кол-во заказанных номенклатур</th>
+                            <th>Ед. измерения</th>
                             <th>Сумма</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price) })) 
-                            {
-                              <tr>
-                                  <td>@it.name</td>
-                                  <td>@it.count</td>
-                                  <td>@it.summ</td>
-                              </tr>  
-                            }
+                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new {measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price) }))
+                        {
+                            <tr>
+                                <td>@it.name</td>
+                                <td>@it.count</td>
+                                <td>@it.measurement</td>
+                                <td>@it.summ</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
