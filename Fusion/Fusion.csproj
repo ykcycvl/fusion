@@ -3973,6 +3973,10 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Files\Бар.xlsx" />
+    <Content Include="Files\Кухня.xlsx" />
+    <Content Include="Files\Фабрика.xlsx" />
+    <Content Include="Files\Хозы.xlsx" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\dx.aspnet.mvc.js" />
     <Content Include="Scripts\dx.viz-web.debug.js" />
@@ -5533,6 +5537,10 @@
     <Content Include="Scripts\pivottable\pivot.ru.min.js.map" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\Shared\_LayoutEmpty.cshtml" />
+    <Content Include="Views\Zakup\GoodsTree_remnants.cshtml" />
+    <Content Include="Views\Zakup\Remnants.cshtml" />
+    <Content Include="Views\Zakup\storehouses.cshtml" />
+    <Content Include="Views\Shared\_GoodsTree_remnants.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
