@@ -361,10 +361,37 @@ namespace Fusion.Controllers
 
             return View();
         }
-        public ActionResult Report()
+        public ActionResult GuestDynamics(string StartDT, string EndDT)
         {
+            if (String.IsNullOrEmpty(StartDT))
+                StartDT = DateTime.Today.AddMonths(-3).ToString();
+
+            if (String.IsNullOrEmpty(EndDT))
+                EndDT = DateTime.Today.ToString();
+
+            DateTime startDT = DateTime.Today.AddMonths(3);
+            DateTime endDT = DateTime.Today;
+            DateTime.TryParse(StartDT, out startDT);
+            DateTime.TryParse(EndDT, out endDT);
             ReportModels.CRMAnalyticsModel model = new ReportModels.CRMAnalyticsModel();
-            model.GetGuestDynamics(new DateTime(2017, 1, 1), DateTime.Today);
+            model.GetGuestDynamics(startDT, endDT);
+            return View(model);
+        }
+
+        public ActionResult GetGuestVisitsDynamics(string StartDT, string EndDT)
+        {
+            if (String.IsNullOrEmpty(StartDT))
+                StartDT = DateTime.Today.AddDays(-10).ToString();
+
+            if (String.IsNullOrEmpty(EndDT))
+                EndDT = DateTime.Today.ToString();
+
+            DateTime startDT = DateTime.Today.AddMonths(3);
+            DateTime endDT = DateTime.Today;
+            DateTime.TryParse(StartDT, out startDT);
+            DateTime.TryParse(EndDT, out endDT);
+            ReportModels.CRMAnalyticsModel model = new ReportModels.CRMAnalyticsModel();
+            model.GetGuestVisitsDynamics(startDT, endDT);
             return View(model);
         }
     }

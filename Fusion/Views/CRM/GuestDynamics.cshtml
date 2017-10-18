@@ -1,0 +1,175 @@
+﻿@model Fusion.Models.ReportModels.CRMAnalyticsModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Аналитика CRM";
+    string TableData = @"var sales = [";
+
+    foreach (var i in Model.Items)
+    {
+        var dt = new DateTime(i.Year, i.Month, i.Day);
+        TableData += "{";
+        TableData += String.Format("'Ресторан': '{0}','Гостей с картами': {1},'Число': '{2}','Месяц': '{3}','Год': {4},'Оплачено': {5}, 'Оплачено бонусами': {6}, 'Средний чек': {7}, 'Ср чек гостя': {8}",
+        i.Restaurant, i.GuestCnt, i.Day.ToString("00") + " " + dt.ToString("ddd", System.Globalization.CultureInfo.GetCultureInfo("ru-RU")), 
+        i.Month.ToString("00") + ". " + dt.ToString("MMMM", System.Globalization.CultureInfo.GetCultureInfo("ru-RU")), 
+        i.Year, i.RealMoney, i.UnrealMoney, i.AvgCheck, i.AvgCheckPG);
+        TableData += "},\r\n";
+    }
+
+    TableData += "];";
+}
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/cldr.js"></script>
+<script src="~/Scripts/cldr/event.js"></script>
+<script src="~/Scripts/cldr/supplemental.js"></script>
+<script src="~/Scripts/cldr/unresolved.js"></script>
+<script src="~/Scripts/globalize.js"></script>
+<script src="~/Scripts/globalize/message.js"></script>
+<script src="~/Scripts/globalize/number.js"></script>
+<script src="~/Scripts/globalize/currency.js"></script>
+<script src="~/Scripts/globalize/date.js"></script>
+<link href="~/Content/dx.spa.css" rel="stylesheet" />
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.compact.css" rel="stylesheet" />
+<script src="~/Scripts/dx.all.js"></script>
+<script>
+    $(function () {
+        $(function () {
+            $("#dateBoxStart").dxDateBox({
+                min: new Date(2016, 1, 1),
+                max: new Date(2020, 12, 31),
+                name: "StartDT"
+            });
+            $("#dateBoxEnd").dxDateBox({
+                min: new Date(2016, 1, 1),
+                max: new Date(2020, 12, 31),
+                name: "EndDT"
+            });
+        });
+
+        @Html.Raw(TableData)
+        var pivotGridChart = $("#pivotgrid-chart").dxChart({
+            commonSeriesSettings: {
+                type: "bar"
+            },
+            tooltip: {
+                enabled: true,
+                customizeTooltip: function (args) {
+                    var valueText = (args.seriesName.indexOf("Оплачено") != -1) ?
+                        Globalize.formatCurrency(args.originalValue,
+                            "USD", { maximumFractionDigits: 0 }) :
+                        args.originalValue;
+
+                    return {
+                        html: args.seriesName + "<div class='currency'>"
+                        + valueText + "</div>"
+                    };
+                }
+            },
+            size: {
+                height: 320
+            },
+            adaptiveLayout: {
+                width: 450
+            }
+        }).dxChart("instance");
+
+        var pivotGrid = $("#pivotgrid").dxPivotGrid({
+            allowSortingBySummary: true,
+            allowFiltering: true,
+            showBorders: true,
+            showColumnGrandTotals: false,
+            showRowGrandTotals: false,
+            showRowTotals: false,
+            showColumnTotals: false,
+            fieldChooser: {
+                enabled: true
+            },
+            dataSource: {
+                fields: [{
+                    caption: "Ресторан",
+                    width: 120,
+                    dataField: "Ресторан",
+                    area: "row",
+                }, {
+                    caption: "Гостей с картами",
+                    dataField: "Гостей с картами",
+                    dataType: "number",
+                    summaryType: "sum",
+                    area: "data"
+                }, {
+                    dataField: "Год",
+                    dataType: "number",
+                    area: "column"
+                }, {
+                    dataField: "Месяц",
+                    dataType: "string",
+                    area: "column"
+                }, {
+                    dataField: "Число",
+                    dataType: "string",
+                    area: "column"
+                }, {
+                    dataField: "Оплачено",
+                    dataType: "number",
+                    summaryType: "sum",
+                    area: "data",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    }
+                }, {
+                    dataField: "Оплачено бонусами",
+                    dataType: "number",
+                    summaryType: "sum",
+                    area: "data",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    }
+                }, {
+                    dataField: "Средний чек",
+                    dataType: "number",
+                    summaryType: "avg",
+                    area: "data",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    }
+                }, {
+                    caption: "Ср. чек/гостя",
+                    dataField: "Ср чек гостя",
+                    dataType: "number",
+                    area: "data",
+                    summaryType: "avg",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    }
+                }],
+                store: sales
+            }
+        }).dxPivotGrid("instance");
+
+        pivotGrid.bindChart(pivotGridChart, {
+            dataFieldsDisplayMode: "splitPanes",
+            alternateDataFields: false
+        });
+    });
+</script>
+<script src="/index.js"></script>
+
+<div class="row">
+    @using (Html.BeginForm("GuestDynamics", "CRM", FormMethod.Get))
+    {
+        <div id="dateBoxStart" name="StartDT"></div>
+        <div id="dateBoxEnd" name="EndDT"></div>
+        <input type="submit" value="Отчет" class="btn btn-default"/>
+    }
+</div>
+<div class="demo-container">
+    <div id="pivotgrid-demo">
+        <div id="pivotgrid-chart"></div>
+        <div id="pivotgrid"></div>
+    </div>
+</div>

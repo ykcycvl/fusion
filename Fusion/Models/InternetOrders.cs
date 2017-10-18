@@ -488,28 +488,31 @@ where bsb.ORDER_ID = {0}", id);
                         return result;
                     }
 
-                    if (propsCityId == null && propsCity != null)
-                    {
-                        var cityInfo = db.CARD_CITIES.FirstOrDefault(p => p.NAME.ToLower() == propsCity.Value && p.DELETED == 0 && p.COUNTRY_ID == 1);
-
-                        if (cityInfo == null)
-                        {
-                            result.Success = false;
-                            result.Message = "Не удалось определить город доставки. Пожалуйста, проверьте корректность данных.";
-                            return result;
-                        }
-
-                        propsCityId = new OrderPropertyInfo() { Value = cityInfo.CITY_ID.ToString() };
-                    }
-                    else
+                    if (propsCityId == null && propsCity == null)
                     {
                         result.Success = false;
                         result.Message = "Не удалось определить город доставки. Пожалуйста, проверьте корректность данных.";
                         return result;
                     }
+                    else
+                    {
+                        if (propsCityId == null && propsCity != null)
+                        {
+                            var cityInfo = db.CARD_CITIES.FirstOrDefault(p => p.NAME.ToLower() == propsCity.Value && p.DELETED == 0 && p.COUNTRY_ID == 1);
+
+                            if (cityInfo == null)
+                            {
+                                result.Success = false;
+                                result.Message = "Не удалось определить город доставки. Пожалуйста, проверьте корректность данных.";
+                                return result;
+                            }
+
+                            propsCityId = new OrderPropertyInfo() { Value = cityInfo.CITY_ID.ToString() };
+                        }
+                    }
 
                     //Определение улицы
-                    if (propsStreetId == null)
+                    if (propsStreetId == null || String.IsNullOrEmpty(propsStreetId.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"улица:(?<val>.*?),");
 
@@ -550,7 +553,7 @@ where bsb.ORDER_ID = {0}", id);
                     }
 
                     //Определение строения
-                    if (propsBuilding == null)
+                    if (propsBuilding == null || String.IsNullOrEmpty(propsBuilding.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"строение:(?<val>.*?),");
 
@@ -567,7 +570,7 @@ where bsb.ORDER_ID = {0}", id);
                     }
 
                     //Определение подъезда
-                    if (propsEntry == null)
+                    if (propsEntry == null || String.IsNullOrEmpty(propsEntry.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"подъезд:(?<val>.*?),");
 
@@ -584,7 +587,7 @@ where bsb.ORDER_ID = {0}", id);
                     }
 
                     //Определение домофона
-                    if (propsEntryCode == null)
+                    if (propsEntryCode == null || String.IsNullOrEmpty(propsEntryCode.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"домофон:(?<val>.*?),");
 
@@ -601,7 +604,7 @@ where bsb.ORDER_ID = {0}", id);
                     }
 
                     //Определение этажа
-                    if (propsFloor == null)
+                    if (propsFloor == null || String.IsNullOrEmpty(propsFloor.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"этаж:(?<val>.*?),");
 
@@ -618,7 +621,7 @@ where bsb.ORDER_ID = {0}", id);
                     }
 
                     //Определение квартиры
-                    if (propsAppt == null)
+                    if (propsAppt == null || String.IsNullOrEmpty(propsAppt.Value))
                     {
                         Match mt = Regex.Match(propsAddress.Value.ToLower(), @"квартира\/офис:(?<val>.*?)$");
 

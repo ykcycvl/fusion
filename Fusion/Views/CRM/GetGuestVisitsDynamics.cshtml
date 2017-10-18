@@ -6,9 +6,11 @@
 
     foreach (var i in Model.Items)
     {
+        var dt = new DateTime(i.Year, i.Month, 1);
         TableData += "{";
-        TableData += String.Format("'Ресторан': '{0}','Гостей с картами': {1},'Число': {2},'Месяц': '{3}','Год': {4},'Оплачено': {5}, 'Оплачено бонусами': {6}, 'Средний чек': {7}, 'Ср чек гостя': {8}",
-        i.Restaurant, i.GuestCnt, i.Day, i.Month.ToString("00") + ". " + new DateTime(2015, i.Month, 1).ToString("MMMM", System.Globalization.CultureInfo.GetCultureInfo("ru-RU")), i.Year, i.RealMoney, i.UnrealMoney, i.AvgCheck, i.AvgCheckPG);
+        TableData += String.Format("'FullName': '{0}', 'PeopleID': {1}, 'Визитов': {2}, 'Месяц': '{3}','Год': {4},'Оплачено': {5}, 'Оплачено бонусами': {6}, 'Средний чек': {7}, 'Ср чек гостя': {8}",
+        i.FullName, i.PeopleID, i.VisitCount, i.Month.ToString("00") + ". " + dt.ToString("MMMM", System.Globalization.CultureInfo.GetCultureInfo("ru-RU")),
+        i.Year, i.RealMoney, i.UnrealMoney, i.AvgCheck, i.AvgCheckPG);
         TableData += "},\r\n";
     }
 
@@ -31,6 +33,19 @@
 <script src="~/Scripts/dx.all.js"></script>
 <script>
     $(function () {
+        $(function () {
+            $("#dateBoxStart").dxDateBox({
+                min: new Date(2016, 1, 1),
+                max: new Date(2020, 12, 31),
+                name: "StartDT"
+            });
+            $("#dateBoxEnd").dxDateBox({
+                min: new Date(2016, 1, 1),
+                max: new Date(2020, 12, 31),
+                name: "EndDT"
+            });
+        });
+
         @Html.Raw(TableData)
         var pivotGridChart = $("#pivotgrid-chart").dxChart({
             commonSeriesSettings: {
@@ -62,6 +77,15 @@
             allowSortingBySummary: true,
             allowFiltering: true,
             showBorders: true,
+            onCellClick: function (e) {
+                if (typeof e.cell.path != 'undefined')
+                {
+                    if (e.cell.path.length == 3)
+                    {
+                        window.open("/CRM/Transactions?people_id=" + e.cell.path[1], '_blank');
+                    }
+                }
+            },
             showColumnGrandTotals: false,
             showRowGrandTotals: false,
             showRowTotals: false,
@@ -71,15 +95,61 @@
             },
             dataSource: {
                 fields: [{
-                    caption: "Ресторан",
-                    width: 120,
-                    dataField: "Ресторан",
+                    caption: "Визитов",
+                    dataField: "Визитов",
                     area: "row",
                 }, {
-                    caption: "Гостей с картами",
-                    dataField: "Гостей с картами",
+                    caption: "ID",
+                    dataField: "PeopleID",
+                    area: "row"
+                }, {
+                    caption: "Ф.И.О.",
+                    dataField: "FullName",
+                    area: "row"
+                }, {
+                    caption: "Количество гостей",
+                    dataField: "PeopleID",
+                    summaryType: "count",
+                    area: "data"
+                },{
+                    caption: "Оплачено",
+                    dataField: "Оплачено",
                     dataType: "number",
                     summaryType: "sum",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    },
+                    area: "data"
+                }, {
+                    caption: "Оплачено бонусами",
+                    dataField: "Оплачено бонусами",
+                    dataType: "number",
+                    summaryType: "sum",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    },
+                    area: "data"
+                }, {
+                    caption: "Средний чек",
+                    dataField: "Средний чек",
+                    dataType: "number",
+                    summaryType: "avg",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    },
+                    area: "data"
+                }, {
+                    caption: "Ср чек гостя",
+                    dataField: "Ср чек гостя",
+                    dataType: "number",
+                    summaryType: "avg",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    },
                     area: "data"
                 }, {
                     dataField: "Год",
@@ -89,47 +159,6 @@
                     dataField: "Месяц",
                     dataType: "string",
                     area: "column"
-                }, {
-                    dataField: "Число",
-                    dataType: "number",
-                    area: "column"
-                }, {
-                    dataField: "Оплачено",
-                    dataType: "number",
-                    summaryType: "sum",
-                    area: "data",
-                    format: {
-                        type: 'fixedPoint',
-                        precision: 2
-                    }
-                }, {
-                    dataField: "Оплачено бонусами",
-                    dataType: "number",
-                    summaryType: "sum",
-                    area: "data",
-                    format: {
-                        type: 'fixedPoint',
-                        precision: 2
-                    }
-                }, {
-                    dataField: "Средний чек",
-                    dataType: "number",
-                    summaryType: "avg",
-                    area: "data",
-                    format: {
-                        type: 'fixedPoint',
-                        precision: 2
-                    }
-                }, {
-                    caption: "Ср. чек/гостя",
-                    dataField: "Ср чек гостя",
-                    dataType: "number",
-                    area: "data",
-                    summaryType: "avg",
-                    format: {
-                        type: 'fixedPoint',
-                        precision: 2
-                    }
                 }],
                 store: sales
             }
@@ -143,6 +172,14 @@
 </script>
 <script src="/index.js"></script>
 
+<div class="row">
+    @using (Html.BeginForm("GetGuestVisitsDynamics", "CRM", FormMethod.Get))
+    {
+        <div id="dateBoxStart" name="StartDT"></div>
+        <div id="dateBoxEnd" name="EndDT"></div>
+        <input type="submit" value="Отчет" class="btn btn-default" />
+    }
+</div>
 <div class="demo-container">
     <div id="pivotgrid-demo">
         <div id="pivotgrid-chart"></div>

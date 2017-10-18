@@ -74,6 +74,9 @@ namespace Fusion.Models
             {
                 public string Restaurant { get; set; }
                 public int GuestCnt { get; set; }
+                public int VisitCount { get; set; }
+                public string FullName { get; set; }
+                public long PeopleID { get; set; }
                 public int Day { get; set; }
                 public int Month { get; set; }
                 public int Year { get; set; }
@@ -89,21 +92,20 @@ namespace Fusion.Models
             {
                 SqlConnection con = SqlServerConnection();
                 SqlCommand cmd = new SqlCommand(String.Format(@"SELECT
-	COUNT(PEOPLE_ID) AS GUESTCNT,
-	CG.NAME AS Restaurant,
+	COUNT(*) AS GuestCNT,
 	MIDSERVER,
+	Restaurant,
 	SUM(REALSUM) AS REALSUM,
 	SUM(UNREALSUM) AS UNREALSUM,
 	AVG(AVGSUMPP) AS AVGSUMPP,
 	AVG(AVGSUM) AS AVGSUM,
-    D,
-	MON,
-	Y
+	DT
 FROM
-	(SELECT 
+(SELECT 
 	DISTINCT
 	T1.ACCOUNT_ID,
 	T1.MIDSERVER,
+	T1.Restaurant,
 	T1.TABLEID,
 	T1.PEOPLE_ID,
 	T1.FULL_NAME,
@@ -111,12 +113,13 @@ FROM
 	SUM(T1.UNREALSUM) AS UNREALSUM,
 	AVG(AVGSUMPP) AS AVGSUMPP,
 	AVG(AVGSUM) AS AVGSUM,
-	D, MON, Y
+	DT
 FROM
 	(select 
 		DISTINCT
 		CT.ACCOUNT_ID,
 		PC.MIDSERVER,
+		CG.NAME AS Restaurant,
 		O.TABLEID,
 		cp.PEOPLE_ID,
 		cp.FULL_NAME,
@@ -124,39 +127,37 @@ FROM
 		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0) AS UNREALSUM,
 		AVG(PC.BINDEDSUM / IIF (O.GUESTSCOUNT = 0, 1, O.GUESTSCOUNT)) AS AVGSUMPP,
 		AVG(PC.BINDEDSUM) as AVGSUM,
-        DATEPART(DAY, ct.TRANSACTION_TIME) as D,
-	    DATEPART(MONTH, ct.TRANSACTION_TIME) as MON,
-	    DATEPART(YEAR, ct.TRANSACTION_TIME) as Y
+		convert(varchar, ct.TRANSACTION_TIME, 104) as DT
 	from [CRM7U].[dbo].[CARD_TRANSACTIONS] CT
 		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLE_ACCOUNTS] cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
 		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLES] cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
 		INNER JOIN [RK7].[dbo].[PRINTCHECKS] PC ON PC.CHECKNUM = CT.EXTERNAL_ID AND 
 			DATEDIFF(DAY, '1899-12-30 00:00:00', ToDateTimeOffset(PC.CLOSEDATETIME, '+10:00')) = DATEDIFF(DAY, '1899-12-30 00:00:00', CT.TRANSACTION_TIME) AND 
-			PC.CLOSEDATETIME BETWEEN '2017-01-01' and '{1}'
+			PC.CLOSEDATETIME BETWEEN '{0} 09:00' and '{1} 04:00'
 		INNER JOIN [RK7].[dbo].[ORDERS] O ON PC.VISIT = O.VISIT AND PC.MIDSERVER = O.MIDSERVER AND O.PRICELISTSUM <> 0
 		INNER JOIN [RK7].[dbo].[CURRLINES] CL ON PC.VISIT = CL.VISIT AND PC.MIDSERVER = CL.MIDSERVER
 		INNER JOIN [RK7].[dbo].[CURRENCIES] C ON CL.SIFR = C.SIFR
+		INNER JOIN [RK7].[dbo].[CASHGROUPS] CG ON PC.MIDSERVER = CG.SIFR
 	WHERE CT.transaction_type IN (162, 161)
 	GROUP BY 
 		CT.ACCOUNT_ID,
 		PC.MIDSERVER,
 		O.TABLEID,
+		CG.NAME,
 		cp.PEOPLE_ID,
 		cp.FULL_NAME,
 		IIF (C.USEBONUSPERCENT > 0, CL.BINDEDSUM, 0),
 		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0),
-		DATEPART(DAY, ct.TRANSACTION_TIME),
-	    DATEPART(MONTH, ct.TRANSACTION_TIME),
-	    DATEPART(YEAR, ct.TRANSACTION_TIME)) T1
+		convert(varchar, ct.TRANSACTION_TIME, 104)) T1
 	GROUP BY
 		T1.ACCOUNT_ID,
 		T1.MIDSERVER,
+		T1.Restaurant,
 		T1.TABLEID,
 		T1.PEOPLE_ID,
 		T1.FULL_NAME,
-		D, MON, Y) T1
-	INNER JOIN [RK7].[dbo].[CASHGROUPS] CG ON T1.MIDSERVER = CG.SIFR
-GROUP BY MIDSERVER, D, MON, Y, CG.NAME", startdDT.ToString("yyyy-MM-dd"), endDT.ToString("yyyy-MM-dd")), con);
+		DT) T2
+GROUP BY MIDSERVER, Restaurant, DT", startdDT.ToString("yyyy-MM-dd"), endDT.AddDays(1).ToString("yyyy-MM-dd")), con);
 
                 SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -165,10 +166,98 @@ GROUP BY MIDSERVER, D, MON, Y, CG.NAME", startdDT.ToString("yyyy-MM-dd"), endDT.
                     Item i = new Item()
                     {
                         Restaurant = rdr["Restaurant"].ToString(),
-                        GuestCnt = Convert.ToInt32(rdr["GUESTCNT"]),
+                        GuestCnt = Convert.ToInt32(rdr["GuestCNT"]),
                         AvgCheck = Convert.ToDecimal(rdr["AVGSUM"]),
                         AvgCheckPG = Convert.ToDecimal(rdr["AVGSUMPP"]),
-                        Day = Convert.ToInt32(rdr["D"]),
+                        Day = Convert.ToDateTime(rdr["DT"]).Day,
+                        Month = Convert.ToDateTime(rdr["DT"]).Month,
+                        Year = Convert.ToDateTime(rdr["DT"]).Year,
+                        RealMoney = Convert.ToDecimal(rdr["REALSUM"]),
+                        UnrealMoney = Convert.ToDecimal(rdr["UNREALSUM"])
+                    };
+                    Items.Add(i);
+                }
+            }
+
+            public void GetGuestVisitsDynamics(DateTime startdDT, DateTime endDT)
+            {
+                SqlConnection con = SqlServerConnection();
+                SqlCommand cmd = new SqlCommand(String.Format(@"SELECT 
+	COUNT(PEOPLE_ID) AS VISIT,
+	PEOPLE_ID,
+	FULL_NAME,
+	SUM(REALSUM) AS REALSUM,
+	SUM(UNREALSUM) AS UNREALSUM,
+	AVG(AVGSUMPP) AS AVGSUMPP,
+	AVG(AVGSUM) AS AVGSUM,
+	DATEPART(MONTH, DT) AS MON,
+	DATEPART(YEAR, DT) AS Y
+FROM
+(SELECT 
+	DISTINCT
+	T1.ACCOUNT_ID,
+	T1.PEOPLE_ID,
+	T1.FULL_NAME,
+	SUM(T1.REALSUM) AS REALSUM,
+	SUM(T1.UNREALSUM) AS UNREALSUM,
+	AVG(AVGSUMPP) AS AVGSUMPP,
+	AVG(AVGSUM) AS AVGSUM,
+	DT
+FROM
+	(select 
+		DISTINCT
+		CT.ACCOUNT_ID,
+		PC.MIDSERVER,
+		CG.NAME AS Restaurant,
+		O.TABLEID,
+		cp.PEOPLE_ID,
+		cp.FULL_NAME,
+		IIF (C.USEBONUSPERCENT > 0, CL.BINDEDSUM, 0) AS REALSUM,
+		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0) AS UNREALSUM,
+		AVG(PC.BINDEDSUM / IIF (O.GUESTSCOUNT = 0, 1, O.GUESTSCOUNT)) AS AVGSUMPP,
+		AVG(PC.BINDEDSUM) as AVGSUM,
+		ct.TRANSACTION_TIME as DT
+	from [CRM7U].[dbo].[CARD_TRANSACTIONS] CT
+		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLE_ACCOUNTS] cpa ON ct.ACCOUNT_ID = cpa.PEOPLE_ACCOUNT_ID
+		INNER JOIN [CRM7U].[dbo].[CARD_PEOPLES] cp ON cpa.PEOPLE_ID = cp.PEOPLE_ID
+		INNER JOIN [RK7].[dbo].[PRINTCHECKS] PC ON PC.CHECKNUM = CT.EXTERNAL_ID AND 
+			DATEDIFF(DAY, '1899-12-30 00:00:00', ToDateTimeOffset(PC.CLOSEDATETIME, '+10:00')) = DATEDIFF(DAY, '1899-12-30 00:00:00', CT.TRANSACTION_TIME) AND 
+			PC.CLOSEDATETIME BETWEEN '{0} 09:00' and '{1} 04:00'
+		INNER JOIN [RK7].[dbo].[ORDERS] O ON PC.VISIT = O.VISIT AND PC.MIDSERVER = O.MIDSERVER AND O.PRICELISTSUM <> 0
+		INNER JOIN [RK7].[dbo].[CURRLINES] CL ON PC.VISIT = CL.VISIT AND PC.MIDSERVER = CL.MIDSERVER
+		INNER JOIN [RK7].[dbo].[CURRENCIES] C ON CL.SIFR = C.SIFR
+		INNER JOIN [RK7].[dbo].[CASHGROUPS] CG ON PC.MIDSERVER = CG.SIFR
+	WHERE CT.transaction_type IN (162, 161)
+	GROUP BY 
+		CT.ACCOUNT_ID,
+		PC.MIDSERVER,
+		O.TABLEID,
+		CG.NAME,
+		cp.PEOPLE_ID,
+		cp.FULL_NAME,
+		IIF (C.USEBONUSPERCENT > 0, CL.BINDEDSUM, 0),
+		IIF (C.USEBONUSPERCENT = 0, CL.BINDEDSUM, 0),
+		ct.TRANSACTION_TIME) T1
+	GROUP BY
+		T1.ACCOUNT_ID,
+		T1.PEOPLE_ID,
+		T1.FULL_NAME,
+		DT) T2
+GROUP BY 
+	PEOPLE_ID, FULL_NAME, DATEPART(MONTH, DT), DATEPART(YEAR, DT)
+ORDER BY 1", startdDT.ToString("yyyy-MM-dd"), endDT.AddDays(1).ToString("yyyy-MM-dd")), con);
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+
+                foreach (var row in rdr)
+                {
+                    Item i = new Item()
+                    {
+                        FullName = rdr["FULL_NAME"].ToString(),
+                        VisitCount = Convert.ToInt32(rdr["VISIT"]),
+                        PeopleID = Convert.ToInt64(rdr["PEOPLE_ID"]),
+                        AvgCheck = Convert.ToDecimal(rdr["AVGSUM"]),
+                        AvgCheckPG = Convert.ToDecimal(rdr["AVGSUMPP"]),
                         Month = Convert.ToInt32(rdr["MON"]),
                         Year = Convert.ToInt32(rdr["Y"]),
                         RealMoney = Convert.ToDecimal(rdr["REALSUM"]),
