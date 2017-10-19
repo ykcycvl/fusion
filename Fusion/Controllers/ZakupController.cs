@@ -44,7 +44,7 @@ namespace Fusion.Controllers
             return View(model);
         }
          * */
-        [MyAuthorize(Roles = "ZakupAdmin")]
+        [MyAuthorize(Roles = "ZakupAdmin, ZakupUser")]
         public ActionResult Vendors()
         {
             Models.ZakupModel model = new Models.ZakupModel();
