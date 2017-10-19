@@ -17,19 +17,20 @@ namespace Fusion.Controllers
         {
             return View();
         }
-         [MyAuthorize(Roles = "SB_Admin, SB_User")]
+        [MyAuthorize(Roles = "SB_Admin, SB_User")]
         public ActionResult Problems(string period)
         {
             SB model = new SB();
             model.username = User.Identity.GetUserName();
-             if(period != "" && period != null) {
-                 model.Period = DateTime.Parse(period);
-             }
-             else
-             {
-                 model.Period = DateTime.Today;
-             }
-             model.getProblems();
+            if (period != "" && period != null)
+            {
+                model.Period = DateTime.Parse(period);
+            }
+            else
+            {
+                model.Period = DateTime.Today;
+            }
+            model.getProblems();
             return View(model);
         }
         [HttpPost]

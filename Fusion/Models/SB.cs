@@ -25,8 +25,9 @@ namespace Fusion.Models
         public List<Models.sb_problems> problems { get; set; }
         public List<Models.sb_managers> managers { get; set; }
         public List<Models.sb_rights> rights { get; set; }
+        public List<sb_top> problems_top { get; set; }
         public Entities list = new Entities();
-        
+
         public string RestaurantName { get; set; }
         public string username { get; set; }
         public string ManagerName { get; set; }
@@ -109,13 +110,13 @@ namespace Fusion.Models
             foreach (var it in problems)
             {
 
-                if(LoginViewModel.IsMemberOf(username, "SB_User"))
+                if (LoginViewModel.IsMemberOf(username, "SB_User"))
                 {
                     list.sb_problems.FirstOrDefault(m => m.id == it.id).solution = it.solution;
                 }
                 else
                 {
-                    if (Period.Year + Period.Month == it.date.Value.Month + it.date.Value.Year) 
+                    if (Period.Year + Period.Month == it.date.Value.Month + it.date.Value.Year)
                     {
                         list.sb_problems.FirstOrDefault(m => m.id == it.id).solution = it.solution;
                         list.sb_problems.FirstOrDefault(m => m.id == it.id).problem = it.problem;
@@ -129,8 +130,33 @@ namespace Fusion.Models
         }
         public void sendSingleProblem()
         {
-            list.sb_problems.Add(new sb_problems { date = problem.date, problem = problem.problem, restaurant_id = problem.restaurant_id, solution = problem.solution, id = list.sb_problems.Count()+1, mgr_id = problem.manager_id });
+            list.sb_problems.Add(new sb_problems { date = problem.date, problem = problem.problem, restaurant_id = problem.restaurant_id, solution = problem.solution, id = list.sb_problems.Count() + 1, mgr_id = problem.manager_id });
             list.SaveChanges();
+        }
+        public void getProblemsTop()
+        {
+            restaurants = list.sb_restaurants.ToList();
+            problems_top = list.sb_top.ToList();
+        }
+        public void sendProblemTop()
+        {
+            foreach (var it in problems_top)
+            {
+                list.sb_top.FirstOrDefault(m => m.id == it.id).date = it.date;
+                list.sb_top.FirstOrDefault(m => m.id == it.id).problem = it.problem;
+                list.sb_top.FirstOrDefault(m => m.id == it.id).solution = it.solution;
+                list.sb_top.FirstOrDefault(m => m.id == it.id).restaurant_id = it.restaurant_id;
+            }
+            list.SaveChanges();
+        }
+        public void sendSingleProblemTop()
+        {
+            list.sb_top.Add(new sb_top { date = problem.date, problem = problem.problem, restaurant_id = problem.restaurant_id, solution = problem.solution });
+            list.SaveChanges();
+        }
+        public void createProblem()
+        {
+            problem = new Problem();
         }
     }
 }
