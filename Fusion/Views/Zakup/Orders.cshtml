@@ -127,10 +127,10 @@
                       { id: "price", header: "Цена", width: 100 },
                       { id: "count", header: "Кол-во", width: 100, editor: "text" },
                       { id: "summ", header: "Сумма", width: 100 },
-                      { id: "date_from", header: ["Дата создания", { content: "textFilter" }], editor: "date", width: 120 },
+                      { id: "date_from", header: ["Дата создания", { content: "textFilter" }], editor: "date", sort: "date", width: 120 },
                       { id: "date_end", header: ["Дата прихода", { content: "textFilter" }], editor: "date", width: 120 },
-                      { id: "state", header: ["Статус", { content: "textFilter" }], editor: "select", options: [@Html.Raw(selectState)], width: 100 },
-                      { id: "comment", header: "Комментарий", editor: "popup", width: 120 },
+                      { id: "state", header: ["Статус", { content: "textFilter" }], editor: "select", options: [@Html.Raw(selectState)], width: 100, sort: "string" },
+                      { id: "comment", header: "Комментарий", editor: "popup", width: 120, sort: "string" },
 				    ],
 				    data: {
 				        data: [
