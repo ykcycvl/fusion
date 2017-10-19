@@ -284,7 +284,7 @@ namespace Fusion.Models
 
         public void getNomenclatures()
         {
-            items = list.bd_nomenclature.ToList();
+            items = list.bd_nomenclature.OrderBy(m => m.vendor_id).ToList();
             categ = list.bd_category.ToList();
             maesurements = list.bd_measurement.ToList();
             Categories = new List<categs>();
