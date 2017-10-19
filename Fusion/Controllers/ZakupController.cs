@@ -9,8 +9,9 @@ using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using Jitbit.Utils;
 using Newtonsoft.Json;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Mvc;
+//using DevExtreme.AspNet.Data;
+//using DevExtreme.AspNet.Mvc;
+
 namespace Fusion.Controllers
 {
     public class ZakupController : Controller

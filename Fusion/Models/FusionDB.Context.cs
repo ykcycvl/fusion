@@ -62,5 +62,6 @@ namespace Fusion.Models
         public virtual DbSet<DLVOrderLog> DLVOrderLog { get; set; }
         public virtual DbSet<VegaPersonalSetting> VegaPersonalSetting { get; set; }
         public virtual DbSet<VegaSetting> VegaSetting { get; set; }
+        public virtual DbSet<sb_top> sb_top { get; set; }
     }
 }

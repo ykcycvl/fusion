@@ -12,20 +12,14 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sb_restaurants
+    public partial class sb_top
     {
-        public sb_restaurants()
-        {
-            this.sb_managers = new HashSet<sb_managers>();
-            this.sb_problems = new HashSet<sb_problems>();
-            this.sb_top = new HashSet<sb_top>();
-        }
-    
         public int id { get; set; }
-        public string restaurant_name { get; set; }
+        public System.DateTime date { get; set; }
+        public string problem { get; set; }
+        public int restaurant_id { get; set; }
+        public string solution { get; set; }
     
-        public virtual ICollection<sb_managers> sb_managers { get; set; }
-        public virtual ICollection<sb_problems> sb_problems { get; set; }
-        public virtual ICollection<sb_top> sb_top { get; set; }
+        public virtual sb_restaurants sb_restaurants { get; set; }
     }
 }

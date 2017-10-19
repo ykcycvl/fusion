@@ -324,6 +324,16 @@ warning 6002: The table/view 'Fusion.dbo.hostip' does not have a primary key def
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="sb_top">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="problem" Type="varchar(max)" />
+          <Property Name="restaurant_id" Type="int" Nullable="false" />
+          <Property Name="solution" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="server">
           <Key>
             <PropertyRef Name="id" />
@@ -655,6 +665,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_sb_top_restaurant_id">
+          <End Role="sb_restaurants" Type="Self.sb_restaurants" Multiplicity="1" />
+          <End Role="sb_top" Type="Self.sb_top" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_top">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_serverip_iptable">
           <End Role="iptable" Type="Self.iptable" Multiplicity="1" />
           <End Role="serverip" Type="Self.serverip" Multiplicity="*" />
@@ -723,6 +745,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="sb_problems" EntityType="Self.sb_problems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_rights" EntityType="Self.sb_rights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sb_top" EntityType="Self.sb_top" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="server" EntityType="Self.server" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stoplist" EntityType="Self.stoplist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
@@ -831,6 +854,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_sb_problems_restaurant_id" Association="Self.FK_sb_problems_restaurant_id">
             <End Role="sb_restaurants" EntitySet="sb_restaurants" />
             <End Role="sb_problems" EntitySet="sb_problems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sb_top_restaurant_id" Association="Self.FK_sb_top_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_top" EntitySet="sb_top" />
           </AssociationSet>
           <AssociationSet Name="FK_serverip_iptable" Association="Self.FK_serverip_iptable">
             <End Role="iptable" EntitySet="iptable" />
@@ -1484,6 +1511,11 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="VegaSetting" EntitySet="VegaSetting" />
             <End Role="VegaPersonalSetting" EntitySet="VegaPersonalSetting" />
           </AssociationSet>
+          <EntitySet Name="sb_top" EntityType="FusionDBModels.sb_top" />
+          <AssociationSet Name="FK_sb_top_restaurant_id" Association="FusionDBModels.FK_sb_top_restaurant_id">
+            <End Role="sb_restaurants" EntitySet="sb_restaurants" />
+            <End Role="sb_top" EntitySet="sb_top" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1519,6 +1551,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="restaurant_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="sb_managers" Relationship="FusionDBModels.FK_sb_managers_restaurant_id" FromRole="sb_restaurants" ToRole="sb_managers" />
           <NavigationProperty Name="sb_problems" Relationship="FusionDBModels.FK_sb_problems_restaurant_id" FromRole="sb_restaurants" ToRole="sb_problems" />
+          <NavigationProperty Name="sb_top" Relationship="FusionDBModels.FK_sb_top_restaurant_id" FromRole="sb_restaurants" ToRole="sb_top" />
         </EntityType>
         <EntityType Name="sb_rights">
           <Key>
@@ -1689,6 +1722,29 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="VegaPersonalSetting">
               <PropertyRef Name="SettingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="sb_top">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="problem" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="restaurant_id" Type="Int32" Nullable="false" />
+          <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="sb_restaurants" Relationship="FusionDBModels.FK_sb_top_restaurant_id" FromRole="sb_top" ToRole="sb_restaurants" />
+        </EntityType>
+        <Association Name="FK_sb_top_restaurant_id">
+          <End Type="FusionDBModels.sb_restaurants" Role="sb_restaurants" Multiplicity="1" />
+          <End Type="FusionDBModels.sb_top" Role="sb_top" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sb_restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="sb_top">
+              <PropertyRef Name="restaurant_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2100,6 +2156,17 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="SettingType" ColumnName="SettingType" />
                 <ScalarProperty Name="SettingTitle" ColumnName="SettingTitle" />
                 <ScalarProperty Name="SettingName" ColumnName="SettingName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sb_top">
+            <EntityTypeMapping TypeName="FusionDBModels.sb_top">
+              <MappingFragment StoreEntitySet="sb_top">
+                <ScalarProperty Name="solution" ColumnName="solution" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="problem" ColumnName="problem" />
+                <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

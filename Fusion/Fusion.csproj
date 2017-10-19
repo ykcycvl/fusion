@@ -2121,6 +2121,9 @@
     <Compile Include="Models\sb_rights.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sb_top.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Schedule.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
@@ -5542,6 +5545,8 @@
     <Content Include="Views\Zakup\storehouses.cshtml" />
     <Content Include="Views\Shared\_GoodsTree_remnants.cshtml" />
     <Content Include="Views\CRM\GetGuestVisitsDynamics.cshtml" />
+    <Content Include="Views\SB_Problems\Problem_top.cshtml" />
+    <Content Include="Views\SB_Problems\SendProblemTop.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
