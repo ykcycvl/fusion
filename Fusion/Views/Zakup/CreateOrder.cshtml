@@ -11,7 +11,7 @@
         });
         $("#sub").click(function () {
             var value = $("#count_0").val();
-            if ($(value  != "")) { $("#IsOrdered_0").prop("checked", true) }
+            if ($(value != "")) { $("#IsOrdered_0").prop("checked", true) }
             else { $("#IsOrdered_0").prop("checked", false) }
         });
     });
@@ -22,7 +22,7 @@
         <h3 class="panel-title">Заявка</h3>
     </div>
     <div class="panel-body">
-        
+
         @using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" }))
         {
 
@@ -48,6 +48,7 @@
                     <tr class="success">
                         <th>Наименование</th>
                         <th>Поставщик</th>
+                        <th>Ед. изм.</th>
                         <th width="150px">Кол-во</th>
                     </tr>
                 </thead>
@@ -69,7 +70,8 @@
                                 <td>
                                     @Model.items[i].bd_vendor.name
                                 </td>
-                                <td>@Html.TextBoxFor(m => m.items[i].Count, new { @class="form-control" })</td>
+                                <td>@Model.items[i].bd_measurement.name</td>
+                                <td>@Html.TextBoxFor(m => m.items[i].Count, new { @class = "form-control" })</td>
                             }
                             else
                             {
@@ -91,13 +93,13 @@
 <script>
     filterTable(document.getElementById("target"), {
         0: new filterTable.Filter(document.getElementById("namef"),
-        /* Коллбэк ф-ция валидации */
-        function (value, filters, i) {
-            var c_value = value.toLowerCase(),
-                f_value = filters[i].value.toLowerCase();
-            return c_value.indexOf(f_value) === 0;
-        },
-        "onkeyup"
-    )
+            /* Коллбэк ф-ция валидации */
+            function (value, filters, i) {
+                var c_value = value.toLowerCase(),
+                    f_value = filters[i].value.toLowerCase();
+                return c_value.indexOf(f_value) === 0;
+            },
+            "onkeyup"
+        )
     });
 </script>

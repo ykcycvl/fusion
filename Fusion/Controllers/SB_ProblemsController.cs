@@ -46,6 +46,8 @@ namespace Fusion.Controllers
             model.getProblems();
             return View(model);
         }
+
+
         public ActionResult SendProblem()
         {
             SB model = new SB();
@@ -55,8 +57,44 @@ namespace Fusion.Controllers
         [HttpPost]
         public ActionResult SendProblem(SB model)
         {
+            model.getProblems();
             model.sendSingleProblem();
             return Redirect("/SB_problems/Problems");
+        }
+
+
+
+        public ActionResult Problem_top()
+        {
+            SB model = new SB();
+            model.getProblems();
+            model.getProblemsTop();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Problem_top(SB model)
+        {
+            model.getProblems();
+            model.sendProblemTop();
+            return View(model);
+        }
+
+
+
+        public ActionResult SendProblemTop()
+        {
+            SB model = new SB();
+            model.createProblem();
+            model.getProblems();
+            model.getProblemsTop();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult SendProblemTop(SB model)
+        {
+            model.getProblems();
+            model.sendSingleProblemTop();
+            return Redirect("/SB_problems/Problem_top");
         }
     }
 }

@@ -34,10 +34,12 @@
         background-color: #fb541e;
         color: white;
     }
+
     .highlight_green {
         background-color: #669966;
         color: white;
     }
+
     .highlight_blue {
         background-color: #337ab7;
         color: white;
@@ -73,20 +75,20 @@
                             </button>
                             <ul class="dropdown-menu success">
                                 <li>
-                                    <a  href="~/Files/Кухня.xlsx">Кухня</a>
+                                    <a href="~/Files/Кухня.xlsx">Кухня</a>
                                 </li>
                                 <li>
-                                    <a  href="~/Files/Хозы.xlsx">Хозы</a>
+                                    <a href="~/Files/Хозы.xlsx">Хозы</a>
                                 </li>
                                 <li>
-                                    <a  href="~/Files/Бар.xlsx">Бар</a>
+                                    <a href="~/Files/Бар.xlsx">Бар</a>
                                 </li>
                                 <li>
-                                    <a  href="~/Files/Фабрика.xlsx">Фабрика</a>
+                                    <a href="~/Files/Фабрика.xlsx">Фабрика</a>
                                 </li>
                             </ul>
                         </div>
-                       </div>
+                    </div>
                 </div>
                 @Html.HiddenFor(m => m.username)
             </div>
@@ -123,7 +125,7 @@
                       { id: "vendor_name", header: ["Поставщик", { content: "textFilter" }], width: 300, sort: "string" },
                       { id: "measurement_name", header: "Ед. измерения", width: 100 },
                       { id: "price", header: "Цена", width: 100 },
-                      { id: "count", header: "Кол-во", width: 100 },
+                      { id: "count", header: "Кол-во", width: 100, editor: "text" },
                       { id: "summ", header: "Сумма", width: 100 },
                       { id: "date_from", header: ["Дата создания", { content: "textFilter" }], editor: "date", width: 120 },
                       { id: "date_end", header: ["Дата прихода", { content: "textFilter" }], editor: "date", width: 120 },
@@ -137,7 +139,7 @@
 				    },
 				    editable: true,
 				    scheme: {
-                        $change: function (item) { 
+                        $change: function (item) {
 				            if (item.state == "Прибыл")
                                 item.$css = "highlight_green";
 				            if (item.state == "Ожидается")
@@ -168,7 +170,7 @@
         });
     });
     function Save() {
-        
+
         var grid = $$("grid");
 
 

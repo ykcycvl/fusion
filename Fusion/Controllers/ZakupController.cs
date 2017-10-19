@@ -8,7 +8,9 @@ using Microsoft.AspNet.Identity;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using Jitbit.Utils;
-
+using Newtonsoft.Json;
+//using DevExtreme.AspNet.Data;
+//using DevExtreme.AspNet.Mvc;
 namespace Fusion.Controllers
 {
     public class ZakupController : Controller
@@ -62,12 +64,12 @@ namespace Fusion.Controllers
             ZakupModel model = new ZakupModel();
             string name = User.Identity.GetUserName();
             model.username = name;
-                if (period == null || period == "")
-                    model.Period = DateTime.Today;
-                else
-                    model.Period = DateTime.Parse(period);
-                model.getOrders();
-                return View(model);
+            if (period == null || period == "")
+                model.Period = DateTime.Today;
+            else
+                model.Period = DateTime.Parse(period);
+            model.getOrders();
+            return View(model);
         }
         [HttpPost]
         public ActionResult orders(ZakupModel model)
@@ -135,9 +137,9 @@ namespace Fusion.Controllers
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Юр. лицо"] = it.bd_organization.name;
-                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;  
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
                 }
-                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для "+ model.export.VendorName_Name +".csv");
+                return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для " + model.export.VendorName_Name + ".csv");
             }
             else
             {
@@ -151,7 +153,7 @@ namespace Fusion.Controllers
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
                     Export["Юр. лицо"] = it.bd_organization.name;
-                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;   
+                    Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за все время для " + model.export.VendorName_Name + ".csv");
             }
@@ -182,7 +184,7 @@ namespace Fusion.Controllers
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         [HttpPost]
-        public ActionResult OrdersList(ZakupModel model) 
+        public ActionResult OrdersList(ZakupModel model)
         {
             model.getOrders();
             model.getVendors();
@@ -195,7 +197,7 @@ namespace Fusion.Controllers
             model.list.SaveChanges();
             return Redirect("~/Zakup/Orders_by_vendors");
         }
-        
+
         [HttpPost]
         public ContentResult SaveNomenclatureAjax(string data)
         {
@@ -215,10 +217,10 @@ namespace Fusion.Controllers
                     result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
                 }
             }
-           catch (Exception ex) 
-           {
-               result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
-           }
+            catch (Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+            }
             return result;
         }
         //public ActionResult TestOrders(string period)
@@ -352,10 +354,11 @@ namespace Fusion.Controllers
             }
             return View(model);
         }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Storehouses()
         {
             ZakupModel model = new ZakupModel();
-            if(model.Open() == 0)
+            if (model.Open() == 0)
             {
                 model.getStorehouses();
                 model.Close();
@@ -372,6 +375,44 @@ namespace Fusion.Controllers
                 model.Close();
             }
             return View(model);
+        }
+        [HttpGet]
+        public ActionResult getOrdersListMonth()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getOrders();
+            var ordersList = new List<object>();
+            foreach (var it in model.orders.GroupBy(m => m.date.Value.Month).Select(g => new { name = g.Key, count = g.Count() }).OrderBy(h => h.name))
+            {
+                ZakupModel.chartOrders chart = new ZakupModel.chartOrders();
+                chart.MonthName = it.name.ToString();
+                chart.count = it.count;
+                ordersList.Add(chart);
+            }
+            return Content(JsonConvert.SerializeObject(ordersList), "application/json");
+        }
+        [HttpGet]
+        public ActionResult getOrdersListNoms()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getOrders();
+            var ordersList = new List<object>();
+            foreach (var it in model.orders.GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { restName = g.Key, count = g.Count() }))
+            {
+                ZakupModel.chartOrders order = new ZakupModel.chartOrders();
+                order.RestName = it.restName;
+                order.count = it.count;
+                ordersList.Add(order);
+            }
+            return Content(JsonConvert.SerializeObject(ordersList), "application/json");
+        }
+        public ActionResult TestAnalytics()
+        {
+            return View();
         }
     }
 }

@@ -10,8 +10,8 @@ using Jitbit.Utils;
 using System.Web.Script.Serialization;
 using Sh4Ole;
 using System.Text;
-
-
+//using DevExtreme.AspNet;
+//using DevExtreme.AspNet.Mvc;
 namespace Fusion.Models
 {
     public class ZakupModel
@@ -71,6 +71,12 @@ namespace Fusion.Models
             public string name { get; set; }
             public int id { get; set; }
         }
+        public class chartOrders
+        {
+            public string MonthName { get; set; }
+            public string RestName { get; set; }
+            public int count { get; set; }
+        }
         public class categs
         {
             public string name;
@@ -110,6 +116,7 @@ namespace Fusion.Models
             public string comment { get; set; }
             public string state { get; set; }
             public int state_id { get; set; }
+            public int count { get; set; }
         }
         /*Здесь будут переменные*/
         public List<GoodsTreeItem> GoodsTree = new List<GoodsTreeItem>();
@@ -216,7 +223,7 @@ namespace Fusion.Models
             remnantsList = new List<remnants>();
             int res = sh4.pr_CreateProc("GsRemns");
             sh4.pr_SetValByName(res, 0, "0.1.0", DateTime.Today.ToOADate());
-            if(GroupID != null)
+            if (GroupID != null)
             {
                 sh4.pr_SetValByName(res, 0, "209.1.5", GroupID);      // RID Товарной группы (null -по всем)
             }
@@ -301,7 +308,7 @@ namespace Fusion.Models
                 p.name = it.name;
                 vendors.Add(p);
             }
-        }  
+        }
         public IEnumerable<SelectListItem> CategoriesSelectList
         {
             get
@@ -356,29 +363,29 @@ namespace Fusion.Models
                 return vends;
             }
         }
-         public void getOrders()
+        public void getOrders()
         {
             orders = list.bd_order.ToList();
             states = list.bd_states.ToList();
         }
-         public IEnumerable<SelectListItem> stateSelectList
-         {
-             get
-             {
-                 List<SelectListItem> states1 = new List<SelectListItem>();
+        public IEnumerable<SelectListItem> stateSelectList
+        {
+            get
+            {
+                List<SelectListItem> states1 = new List<SelectListItem>();
 
-                 for (int i = 0; i < states.Count; i++)
-                 {
-                     states1.Add(new SelectListItem() { Text = states[i].name, Value = states[i].id.ToString() });
-                 }
-                 SelectListItem sli = states1.FirstOrDefault(p => p.Text == stateName);
+                for (int i = 0; i < states.Count; i++)
+                {
+                    states1.Add(new SelectListItem() { Text = states[i].name, Value = states[i].id.ToString() });
+                }
+                SelectListItem sli = states1.FirstOrDefault(p => p.Text == stateName);
 
-                 if (sli != null)
-                     sli.Selected = true;
+                if (sli != null)
+                    sli.Selected = true;
 
-                 return states1;
-             }
-         }
+                return states1;
+            }
+        }
         public void getVendors()
         {
             vendorList = list.bd_vendor.ToList();
@@ -419,7 +426,7 @@ namespace Fusion.Models
                     list.bd_nomenclature.FirstOrDefault(m => m.id == it.id).vendor_id = it.vendor_id;
                     list.bd_nomenclature.FirstOrDefault(m => m.id == it.id).category_id = it.category_id;
                     list.bd_nomenclature.FirstOrDefault(m => m.id == it.id).measurement_id = it.measurement_id;
-                }    
+                }
             }
             list.SaveChanges();
         }
@@ -443,7 +450,7 @@ namespace Fusion.Models
             list.SaveChanges();
         }
         //метод для создания заказов от товароведа
-        public void sendOrder( string username)
+        public void sendOrder(string username)
         {
             foreach (var it in items)
             {
@@ -503,6 +510,8 @@ namespace Fusion.Models
                 r.TryGetValue("state", out state);
                 object comment = null;
                 r.TryGetValue("comment", out comment);
+                object count = null;
+                r.TryGetValue("count", out count);
 
                 order order = new order();
                 order.id = Int32.Parse(id.ToString());
@@ -516,17 +525,19 @@ namespace Fusion.Models
                     order.date_end = DateTime.Parse(date_end.ToString());
                 }
                 order.comment = comment.ToString();
+                order.count = Int32.Parse(count.ToString());
                 order.state_id = states.FirstOrDefault(m => m.name == state.ToString()).id;
                 listOrders.Add(order);
             }
             foreach (var p in listOrders)
             {
-                if (orders.FirstOrDefault(m => m.id == p.id).state != p.state_id || orders.FirstOrDefault(m => m.id == p.id).comment != p.comment || orders.FirstOrDefault(m => m.id == p.id).date_end != p.date_end) 
+                if (orders.FirstOrDefault(m => m.id == p.id).state != p.state_id || orders.FirstOrDefault(m => m.id == p.id).comment != p.comment || orders.FirstOrDefault(m => m.id == p.id).date_end != p.date_end || orders.FirstOrDefault(m => m.id == p.id).count != p.count)
                 {
                     list.bd_order.FirstOrDefault(m => m.id == p.id).state = p.state_id;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).comment = p.comment;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).date_end = p.date_end;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).date = p.date_start;
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).count = p.count;
                 }
             }
             list.SaveChanges();
@@ -586,7 +597,7 @@ namespace Fusion.Models
                 }
             }
             list.SaveChanges();
-          return true;
+            return true;
         }
     }
 }

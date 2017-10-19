@@ -1,0 +1,48 @@
+﻿@model Fusion.Models.SB
+@{
+    ViewBag.Title = "Problem_top";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    #problems a {
+        color: white;
+    }
+</style>
+@using (Html.BeginForm("Problem_top", "SB_Problems", FormMethod.Post, new { id = "Form" }))
+{
+    <div class="panel panel-yellow" id="problems">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Проблемы топ
+            </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="display:none">id</th>
+                        <th>date</th>
+                        <th>problem</th>
+                        <th>solution</th>
+                        <th>restaurant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(int i = 0; i < Model.problems_top.Count(); i++)
+                    {
+                        Model.RestaurantName = Model.problems_top[i].sb_restaurants.restaurant_name;
+                        <tr>
+                            <td style="display:none">@Html.HiddenFor(m => Model.problems_top[i].id)</td>
+                            <td>@Html.TextBoxFor(m => Model.problems_top[i].date, new { @type = "date", @class = "form-control", @Value = Model.problems_top[i].date.ToString("yyyy-MM-dd") })</td>
+                            <td>@Html.TextBoxFor(m => Model.problems_top[i].problem, new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(m => Model.problems_top[i].solution, new { @class="form-control" })</td>
+                            <td>@Html.DropDownListFor(m => Model.problems_top[i].restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Save" class="btn btn-success" />
+        </div>
+        @Html.ActionLink("Create new problem", "SendProblemTop", null, new { @class="btn btn-success" })
+    </div>
+}
