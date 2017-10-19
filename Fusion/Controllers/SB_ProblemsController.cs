@@ -63,7 +63,7 @@ namespace Fusion.Controllers
         }
 
 
-
+        [MyAuthorize(Roles = "FusionAdmin, SB_Admin")]
         public ActionResult Problem_top()
         {
             SB model = new SB();
@@ -80,7 +80,7 @@ namespace Fusion.Controllers
         }
 
 
-
+        [MyAuthorize(Roles = "FusionAdmin, SB_Admin")]
         public ActionResult SendProblemTop()
         {
             SB model = new SB();
