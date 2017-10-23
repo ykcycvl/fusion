@@ -1,0 +1,48 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Reclamation";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Список рекламации
+        </h3>
+    </div>
+    <div class="panel-body">
+@using (Html.BeginForm("Reclamation", "Zakup", FormMethod.Post, new { id = "Form" }))
+{
+    <input type="submit" value="Сохранить" class="btn btn-success"/>
+    @Html.ActionLink("Добавить рекламацию", "addReclamation", null, new { @class="btn btn-primary" })
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr class="info">
+                <th style="display:none">id</th>
+                <th>Дата</th>
+                <th>Ресторан</th>
+                <th>Поставщик</th>
+                <th>Номенклатура</th>
+                <th>Проблема</th>
+                <th>Решение</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.reclamations.Count(); i++)
+            {
+                <tr>
+                    <td style="display:none">@Html.HiddenFor(m => Model.reclamations[i].id)</td>
+                    <td>
+                        @Html.DisplayFor(m => Model.reclamations[i].date, new { @type = "date", @Value = Model.reclamations[i].date.ToString("yyy-mm-dd"), @class = "form-control" })
+                    </td>
+                    <td>@Model.reclamations[i].bd_subdivision.name</td>
+                    <td>@Model.reclamations[i].bd_vendor.name</td>
+                    <td>@Model.reclamations[i].bd_nomenclature.name</td>
+                    <td>@Model.reclamations[i].bd_reclamation_problems.problem</td>
+                    <td>@Html.TextBoxFor(m => Model.reclamations[i].solution, new { @class = "form-control" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    </div>
+</div>
