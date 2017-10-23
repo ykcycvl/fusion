@@ -64,5 +64,7 @@ namespace Fusion.Models
         public virtual DbSet<VegaSetting> VegaSetting { get; set; }
         public virtual DbSet<sb_top> sb_top { get; set; }
         public virtual DbSet<EmailTemplate> EmailTemplate { get; set; }
+        public virtual DbSet<bd_reclamation> bd_reclamation { get; set; }
+        public virtual DbSet<bd_reclamation_problems> bd_reclamation_problems { get; set; }
     }
 }

@@ -88,6 +88,25 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
         </EntityType>
+        <EntityType Name="bd_reclamation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="restaurant_id" Type="int" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="vendor_id" Type="int" Nullable="false" />
+          <Property Name="nomenclature_id" Type="int" Nullable="false" />
+          <Property Name="problem_id" Type="int" Nullable="false" />
+          <Property Name="solution" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="bd_reclamation_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="problem" Type="varchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="bd_states">
           <Key>
             <PropertyRef Name="id" />
@@ -532,6 +551,54 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bd_reclamation_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="1" />
+          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_problem_id">
+          <End Role="bd_reclamation_problems" Type="Self.bd_reclamation_problems" Multiplicity="1" />
+          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_reclamation_problems">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="problem_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_restaurant_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_vendor_id">
+          <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
+          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_bd_subdivision_organization_id">
           <End Role="bd_organization" Type="Self.bd_organization" Multiplicity="0..1" />
           <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="*" />
@@ -745,6 +812,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_order" EntityType="Self.bd_order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_organization" EntityType="Self.bd_organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_reclamation" EntityType="Self.bd_reclamation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_reclamation_problems" EntityType="Self.bd_reclamation_problems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_states" EntityType="Self.bd_states" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" Schema="dbo" store:Type="Tables" />
@@ -830,6 +899,22 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
             <End Role="bd_states" EntitySet="bd_states" />
             <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_nomenclature_id" Association="Self.FK_bd_reclamation_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_problem_id" Association="Self.FK_bd_reclamation_problem_id">
+            <End Role="bd_reclamation_problems" EntitySet="bd_reclamation_problems" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_restaurant_id" Association="Self.FK_bd_reclamation_restaurant_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_vendor_id" Association="Self.FK_bd_reclamation_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
           </AssociationSet>
           <AssociationSet Name="FK_bd_subdivision_organization_id" Association="Self.FK_bd_subdivision_organization_id">
             <End Role="bd_organization" EntitySet="bd_organization" />
@@ -975,6 +1060,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <NavigationProperty Name="bd_measurement" Relationship="Self.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
           <NavigationProperty Name="bd_vendor" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
           <NavigationProperty Name="bd_order" Relationship="Self.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
+          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_reclamation" />
         </EntityType>
         <EntityType Name="bd_order">
           <Key>
@@ -1025,6 +1111,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <NavigationProperty Name="bd_employee" Relationship="Self.FK_bd_employee_subdiv_id" FromRole="bd_subdivision" ToRole="bd_employee" />
           <Property Name="organization_id" Type="Int32" />
           <NavigationProperty Name="bd_organization" Relationship="FusionDBModels.FK_bd_subdivision_organization_id" FromRole="bd_subdivision" ToRole="bd_organization" />
+          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_restaurant_id" FromRole="bd_subdivision" ToRole="bd_reclamation" />
         </EntityType>
         <EntityType Name="bd_vendor">
           <Key>
@@ -1037,6 +1124,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="INN" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="KPP" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="bd_nomenclature" Relationship="Self.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_vendor_id" FromRole="bd_vendor" ToRole="bd_reclamation" />
         </EntityType>
         <EntityType Name="bitrixUser">
           <Key>
@@ -1549,6 +1637,24 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="EmailTemplate" EntitySet="EmailTemplate" />
             <End Role="CRMSegment" EntitySet="CRMSegment" />
           </AssociationSet>
+          <EntitySet Name="bd_reclamation" EntityType="FusionDBModels.bd_reclamation" />
+          <EntitySet Name="bd_reclamation_problems" EntityType="FusionDBModels.bd_reclamation_problems" />
+          <AssociationSet Name="FK_bd_reclamation_nomenclature_id" Association="FusionDBModels.FK_bd_reclamation_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_problem_id" Association="FusionDBModels.FK_bd_reclamation_problem_id">
+            <End Role="bd_reclamation_problems" EntitySet="bd_reclamation_problems" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_restaurant_id" Association="FusionDBModels.FK_bd_reclamation_restaurant_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_vendor_id" Association="FusionDBModels.FK_bd_reclamation_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1803,6 +1909,78 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="CRMSegment">
               <PropertyRef Name="EmailTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="bd_reclamation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="restaurant_id" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="nomenclature_id" Type="Int32" Nullable="false" />
+          <Property Name="problem_id" Type="Int32" Nullable="false" />
+          <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_reclamation" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_reclamation_problems" Relationship="FusionDBModels.FK_bd_reclamation_problem_id" FromRole="bd_reclamation" ToRole="bd_reclamation_problems" />
+          <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_reclamation_restaurant_id" FromRole="bd_reclamation" ToRole="bd_subdivision" />
+          <NavigationProperty Name="bd_vendor" Relationship="FusionDBModels.FK_bd_reclamation_vendor_id" FromRole="bd_reclamation" ToRole="bd_vendor" />
+        </EntityType>
+        <EntityType Name="bd_reclamation_problems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="problem" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_problem_id" FromRole="bd_reclamation_problems" ToRole="bd_reclamation" />
+        </EntityType>
+        <Association Name="FK_bd_reclamation_nomenclature_id">
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_problem_id">
+          <End Type="FusionDBModels.bd_reclamation_problems" Role="bd_reclamation_problems" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_reclamation_problems">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="problem_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_restaurant_id">
+          <End Type="FusionDBModels.bd_subdivision" Role="bd_subdivision" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_reclamation_vendor_id">
+          <End Type="FusionDBModels.bd_vendor" Role="bd_vendor" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation">
+              <PropertyRef Name="vendor_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2237,6 +2415,27 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_reclamation">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_reclamation">
+              <MappingFragment StoreEntitySet="bd_reclamation">
+                <ScalarProperty Name="solution" ColumnName="solution" />
+                <ScalarProperty Name="problem_id" ColumnName="problem_id" />
+                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_reclamation_problems">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_reclamation_problems">
+              <MappingFragment StoreEntitySet="bd_reclamation_problems">
+                <ScalarProperty Name="problem" ColumnName="problem" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

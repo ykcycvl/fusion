@@ -12,21 +12,16 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class bd_subdivision
+    public partial class bd_reclamation_problems
     {
-        public bd_subdivision()
+        public bd_reclamation_problems()
         {
-            this.bd_employee = new HashSet<bd_employee>();
             this.bd_reclamation = new HashSet<bd_reclamation>();
         }
     
         public int id { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public Nullable<int> organization_id { get; set; }
+        public string problem { get; set; }
     
-        public virtual ICollection<bd_employee> bd_employee { get; set; }
-        public virtual bd_organization bd_organization { get; set; }
         public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
     }
 }

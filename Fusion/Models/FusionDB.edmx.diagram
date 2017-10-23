@@ -71,6 +71,12 @@
         <AssociationConnector Association="FusionDBModels.FK_sb_top_restaurant_id" />
         <EntityTypeShape EntityType="FusionDBModels.EmailTemplate" Width="1.5" PointX="15.125" PointY="24" />
         <AssociationConnector Association="FusionDBModels.FK_CRMSegment_EmailTemplate" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_problems" Width="1.5" PointX="3" PointY="10.25" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_problem_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_restaurant_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_vendor_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
