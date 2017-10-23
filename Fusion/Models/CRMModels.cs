@@ -990,6 +990,21 @@ Content-Length: {0}
 
         private Entities db = new Entities();
         public List<CRMSegment> Segments { get; set; }
+        public List<SelectListItem> Templates
+        {
+            get
+            {
+                List<SelectListItem> result = new List<SelectListItem>();
+                var et = db.EmailTemplate.ToList();
+
+                foreach (var e in et)
+                {
+                    result.Add(new SelectListItem() { Value = e.id.ToString(), Text = e.Title });
+                }
+
+                return result;
+            }
+        }
         public string Exception { get; set; }
         public CRMSegment Segment { get; set; }
         [Required]
@@ -1038,17 +1053,12 @@ Content-Length: {0}
                     SqlDataReader rdr = cmd.ExecuteReader();
                     List<string> mailList = new List<string>();
 
+                    var template = db.EmailTemplate.FirstOrDefault(p => p.id == this.Segment.EmailTemplateID);
+
                     while (rdr.Read())
                     {
                         if (rdr["email"] != DBNull.Value && rdr["email"].ToString().Trim() != "")
                             mailList.Add(rdr["email"].ToString().Trim());
-                    }
-
-                    for (int i = 0; i < 100; i++)
-                    {
-                        mailList.Add("ykcycvl@gmail.com");
-                        mailList.Add("ivermak@tokyo-bar.ru");
-                        mailList.Add("ag@tokyo-bar.ru");
                     }
 
                     foreach (var m in mailList)
@@ -1067,7 +1077,7 @@ Content-Length: {0}
 
                         MailMessage message = new MailMessage(from, to);
                         message.IsBodyHtml = true;
-                        message.Body = this.MailText;
+                        message.Body = template.Content.Replace("{content}", this.MailText);
                         message.BodyEncoding = System.Text.Encoding.UTF8;
                         message.Subject = this.MailTitle;
                         message.SubjectEncoding = System.Text.Encoding.UTF8;

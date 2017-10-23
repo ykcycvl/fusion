@@ -133,6 +133,7 @@
           <Property Name="CreateDateTime" Type="datetime" Nullable="false" />
           <Property Name="Creator" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="EmailTemplateID" Type="int" />
         </EntityType>
         <EntityType Name="CRMSended">
           <Key>
@@ -178,6 +179,16 @@
           <Property Name="ActionContent" Type="text" Nullable="false" />
           <Property Name="ActionResult" Type="text" Nullable="false" />
           <Property Name="ActionXML" Type="xml" />
+        </EntityType>
+        <EntityType Name="EmailTemplate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Content" Type="text" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="host">
           <Key>
@@ -533,6 +544,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CRMSegment_EmailTemplate">
+          <End Role="EmailTemplate" Type="Self.EmailTemplate" Multiplicity="0..1" />
+          <End Role="CRMSegment" Type="Self.CRMSegment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailTemplate">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CRMSegment">
+              <PropertyRef Name="EmailTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DLVOrderLog_DLVOrder">
           <End Role="DLVOrder" Type="Self.DLVOrder" Multiplicity="1" />
           <End Role="DLVOrderLog" Type="Self.DLVOrderLog" Multiplicity="*" />
@@ -731,6 +754,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="CRMToSend" EntityType="Self.CRMToSend" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DLVOrder" EntityType="Self.DLVOrder" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DLVOrderLog" EntityType="Self.DLVOrderLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailTemplate" EntityType="Self.EmailTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
@@ -810,6 +834,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_subdivision_organization_id" Association="Self.FK_bd_subdivision_organization_id">
             <End Role="bd_organization" EntitySet="bd_organization" />
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CRMSegment_EmailTemplate" Association="Self.FK_CRMSegment_EmailTemplate">
+            <End Role="EmailTemplate" EntitySet="EmailTemplate" />
+            <End Role="CRMSegment" EntitySet="CRMSegment" />
           </AssociationSet>
           <AssociationSet Name="FK_DLVOrderLog_DLVOrder" Association="Self.FK_DLVOrderLog_DLVOrder">
             <End Role="DLVOrder" EntitySet="DLVOrder" />
@@ -1516,6 +1544,11 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="sb_restaurants" EntitySet="sb_restaurants" />
             <End Role="sb_top" EntitySet="sb_top" />
           </AssociationSet>
+          <EntitySet Name="EmailTemplate" EntityType="FusionDBModels.EmailTemplate" />
+          <AssociationSet Name="FK_CRMSegment_EmailTemplate" Association="FusionDBModels.FK_CRMSegment_EmailTemplate">
+            <End Role="EmailTemplate" EntitySet="EmailTemplate" />
+            <End Role="CRMSegment" EntitySet="CRMSegment" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="sb_managers">
           <Key>
@@ -1620,6 +1653,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="CreateDateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Creator" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="EmailTemplateID" Type="Int32" />
+          <NavigationProperty Name="EmailTemplate" Relationship="FusionDBModels.FK_CRMSegment_EmailTemplate" FromRole="CRMSegment" ToRole="EmailTemplate" />
         </EntityType>
         <EntityType Name="CRMSended">
           <Key>
@@ -1745,6 +1780,29 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="sb_top">
               <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EmailTemplate">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="CRMSegment" Relationship="FusionDBModels.FK_CRMSegment_EmailTemplate" FromRole="EmailTemplate" ToRole="CRMSegment" />
+        </EntityType>
+        <Association Name="FK_CRMSegment_EmailTemplate">
+          <End Type="FusionDBModels.EmailTemplate" Role="EmailTemplate" Multiplicity="0..1" />
+          <End Type="FusionDBModels.CRMSegment" Role="CRMSegment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailTemplate">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CRMSegment">
+              <PropertyRef Name="EmailTemplateID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2080,6 +2138,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySetMapping Name="CRMSegment">
             <EntityTypeMapping TypeName="FusionDBModels.CRMSegment">
               <MappingFragment StoreEntitySet="CRMSegment">
+                <ScalarProperty Name="EmailTemplateID" ColumnName="EmailTemplateID" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Creator" ColumnName="Creator" />
                 <ScalarProperty Name="CreateDateTime" ColumnName="CreateDateTime" />
@@ -2167,6 +2226,17 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
                 <ScalarProperty Name="problem" ColumnName="problem" />
                 <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailTemplate">
+            <EntityTypeMapping TypeName="FusionDBModels.EmailTemplate">
+              <MappingFragment StoreEntitySet="EmailTemplate">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -69,6 +69,8 @@
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <EntityTypeShape EntityType="FusionDBModels.sb_top" Width="1.5" PointX="14.625" PointY="20.25" />
         <AssociationConnector Association="FusionDBModels.FK_sb_top_restaurant_id" />
+        <EntityTypeShape EntityType="FusionDBModels.EmailTemplate" Width="1.5" PointX="15.125" PointY="24" />
+        <AssociationConnector Association="FusionDBModels.FK_CRMSegment_EmailTemplate" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
