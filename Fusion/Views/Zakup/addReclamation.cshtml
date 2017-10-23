@@ -1,0 +1,48 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "addReclamation";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<link href="~/Scripts/chosen.min.css" rel="stylesheet" />
+<script src="~/Scripts/chosen.jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#reclamation_item_nomenclature_id").chosen({
+            search_contains: true
+        });
+        $("#reclamation_item_vendor_id").chosen({
+            search_contains: true
+        });
+    });
+</script>
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Добавить рекламацию
+        </h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("addReclamation", "Zakup", FormMethod.Post, new { id = "Form" }))
+        {
+            @Html.HiddenFor(m => m.username)
+            <div class="form-group">
+                <label for=@Model.reclamation_item.date>Дата</label>
+                @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control", @type = "date", @required = "true", @Value = "2017-10-20" })
+            </div>
+            <div class="form-group">
+                <label for=@Model.reclamation_item.vendor_id>Поставщик</label>
+                @Html.DropDownListFor(m => m.reclamation_item.vendor_id, Model.vendorsSelectList, new { @class = "form-control", @required = "true" })
+            </div>
+            <div class="form-group">
+                <label for=@Model.reclamation_item.nomenclature_id>Номенклатура</label>
+                @Html.DropDownListFor(m => m.reclamation_item.nomenclature_id, Model.nomenclaturesSelectList, new { @class = "form-control", @required = "true" })
+            </div>
+            <div class="form-group">
+                <label for=@Model.reclamation_item.problem_id>Проблема</label>
+                @Html.DropDownListFor(m => m.reclamation_item.problem_id, Model.reclamation_problemsSelectList, new { @class = "form-control", @required = "true" })
+            </div>
+            <input type="submit" class="btn btn-primary" value="Сохранить" />
+        }
+    </div>
+</div>
+

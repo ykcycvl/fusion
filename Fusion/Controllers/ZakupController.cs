@@ -415,5 +415,43 @@ namespace Fusion.Controllers
         {
             return View();
         }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
+        public ActionResult Reclamation()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getUsers();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getReclamations();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Reclamation(ZakupModel model)
+        {
+            model.saveReclamations();
+            model.getUsers();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getReclamations();
+            return View(model);
+        }
+        public ActionResult addReclamation()
+        {
+            ZakupModel model = new ZakupModel();
+            model.username = User.Identity.GetUserName();
+            model.getUsers();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getReclamations();
+            model.createReclamation();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult addReclamation(ZakupModel model)
+        {
+            model.getUsers();
+            model.sendReclamation();
+            return Redirect("~/Zakup/Reclamation");
+        }
     }
 }
