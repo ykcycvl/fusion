@@ -17,7 +17,7 @@ namespace Fusion.Controllers
         {
             return View();
         }
-        [MyAuthorize(Roles = "SB_Admin, SB_User")]
+        [MyAuthorize(Roles = "SB_Admin, SB_User, FusionAdmin")]
         public ActionResult Problems(string period)
         {
             SB model = new SB();
