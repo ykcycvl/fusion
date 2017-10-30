@@ -21,6 +21,8 @@ namespace Fusion.Models
         public int nomenclature_id { get; set; }
         public int problem_id { get; set; }
         public string solution { get; set; }
+        public string filePath { get; set; }
+        public Nullable<int> state_id { get; set; }
     
         public virtual bd_nomenclature bd_nomenclature { get; set; }
         public virtual bd_reclamation_problems bd_reclamation_problems { get; set; }

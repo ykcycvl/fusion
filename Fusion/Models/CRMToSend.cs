@@ -16,10 +16,12 @@ namespace Fusion.Models
     {
         public int id { get; set; }
         public System.DateTime CreateDateTime { get; set; }
-        public System.DateTime LastUpdateDateTime { get; set; }
-        public string Email { get; set; }
-        public int Status { get; set; }
-        public string MailSubject { get; set; }
-        public string MailBody { get; set; }
+        public int StatusID { get; set; }
+        public string RecipientEmail { get; set; }
+        public int MailID { get; set; }
+        public string Paprika { get; set; }
+    
+        public virtual EmailStatus EmailStatus { get; set; }
+        public virtual Mail Mail { get; set; }
     }
 }

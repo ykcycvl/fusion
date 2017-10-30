@@ -160,6 +160,7 @@ namespace Fusion.Models
             }
 
             CARD_SYSTEMEntities db = new CARD_SYSTEMEntities();
+            RK7Entities dbRK7 = new RK7Entities();
 
             public void GetOrder(int id, string UserName)
             {
@@ -773,6 +774,11 @@ where bsb.ORDER_ID = {0}", id);
                     }
                 }
 
+                var empid = dbRK7.EMPLOYEES.FirstOrDefault(p => p.AUTHUSERNAME == UserName);
+
+                if (empid == null)
+                    empid = new EMPLOYEES() { SIFR = 9001 };
+
                 RK7_qryCreateOrder.RK7Query createOrder = new RK7_qryCreateOrder.RK7Query();
                 createOrder.RK7CMD = new RK7_qryCreateOrder.RK7QueryRK7CMD();
                 RK7_qryCreateOrder.RK7QueryRK7CMDOrder order = new RK7_qryCreateOrder.RK7QueryRK7CMDOrder()
@@ -782,6 +788,8 @@ where bsb.ORDER_ID = {0}", id);
                     GuestType = new RK7_qryCreateOrder.refItem() { id = "1" },
                     OrderCategory = new RK7_qryCreateOrder.refItem() { id = ordercategoryID },
                     persistentComment = comment,
+                    Creator = new RK7_qryCreateOrder.refItem() { id = empid.SIFR.ToString() },
+                    Waiter = new RK7_qryCreateOrder.refItem() { id = empid.SIFR.ToString() },
                     nonPersistentComment = "Internet",
                     extSource = "31",
                     extID = "256"
@@ -877,7 +885,15 @@ where bsb.ORDER_ID = {0}", id);
                     return result;
                 }
 
-                RK7_qrySaveOrder.RK7Query saveOrder = new RK7_qrySaveOrder.RK7Query() { RK7CMD = new RK7_qrySaveOrder.RK7QueryRK7CMD() { dontcheckLicense = true, deferred = true, dontcheckLicenseSpecified = true } };
+                RK7_qrySaveOrder.RK7Query saveOrder = new RK7_qrySaveOrder.RK7Query()
+                {
+                    RK7CMD = new RK7_qrySaveOrder.RK7QueryRK7CMD()
+                    {
+                        dontcheckLicense = true,
+                        deferred = true,
+                        dontcheckLicenseSpecified = true
+                    }
+                };
                 saveOrder.RK7CMD.Order = new RK7_qrySaveOrder.orderElement() { guid = guid };
 
                 List<RK7_qrySaveOrder.dishItem> dishes = new List<RK7_qrySaveOrder.dishItem>();

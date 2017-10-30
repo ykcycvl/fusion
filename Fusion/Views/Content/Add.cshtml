@@ -6,6 +6,17 @@
 
 <h2>@ViewBag.Title</h2>
 
+<style type="text/css" media="screen">
+    #editor {
+        width: 100%;
+        height: 50vh;
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ext-beautify.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ext-chromevox.js"></script>
+
 @using (Html.BeginForm("Add", "Content", FormMethod.Post))
 {
     <div class="col-md-3">
@@ -19,8 +30,19 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.TextAreaFor(p => p.Content, new { @class = "form-control", @rows = "30" })
+        <div id="editor">@Model.Content</div>
+        @Html.TextAreaFor(p => p.Content, new { @style = "display:none", id = "hiddenEditor" })
     </div>
 
-    <input type="submit" value="Сохранить" class="btn btn-default" />
+    <input type="submit" value="Сохранить" class="btn btn-default" onclick="getValue();" />
 }
+
+<script>
+    var editor = ace.edit("editor");
+    editor.getSession().setMode("ace/mode/html");
+
+    function getValue() {
+        $("#hiddenEditor").val(editor.getValue());
+        return false;
+    }
+</script>

@@ -12,21 +12,19 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmailTemplate
+    public partial class Mail
     {
-        public EmailTemplate()
+        public Mail()
         {
-            this.CRMSegment = new HashSet<CRMSegment>();
-            this.Mail = new HashSet<Mail>();
+            this.CRMToSend = new HashSet<CRMToSend>();
         }
     
         public int id { get; set; }
-        public string Name { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
-        public bool IsActive { get; set; }
+        public System.DateTime CreateDateTime { get; set; }
+        public string MailSubject { get; set; }
+        public int MailTemplateID { get; set; }
     
-        public virtual ICollection<CRMSegment> CRMSegment { get; set; }
-        public virtual ICollection<Mail> Mail { get; set; }
+        public virtual ICollection<CRMToSend> CRMToSend { get; set; }
+        public virtual EmailTemplate EmailTemplate { get; set; }
     }
 }

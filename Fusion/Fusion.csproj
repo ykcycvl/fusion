@@ -87,6 +87,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -299,6 +300,12 @@
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\bd_organization.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_reclamation.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_reclamation_problems.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\bd_states.cs">
@@ -990,6 +997,9 @@
     <Compile Include="Models\DRAWERLOG.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EmailStatus.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EmailTemplate.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -1369,6 +1379,9 @@
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MA.cs" />
+    <Compile Include="Models\Mail.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\MAILING_AUTORIZATION_Result.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
@@ -5555,6 +5568,8 @@
     <Content Include="Views\Content\Edit.cshtml" />
     <Content Include="Views\Content\Add.cshtml" />
     <Content Include="Views\Content\List.cshtml" />
+    <Content Include="Views\Zakup\addReclamation.cshtml" />
+    <Content Include="Views\Zakup\Reclamation.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

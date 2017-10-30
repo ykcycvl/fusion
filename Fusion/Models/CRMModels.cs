@@ -17,6 +17,8 @@ using System.Web.Mvc;
 using System.Web.Hosting;
 using System.Net.Mail;
 using System.ComponentModel;
+using System.Security.Cryptography;
+using System.Transactions;
 
 namespace Fusion.Models
 {
@@ -1042,6 +1044,12 @@ Content-Length: {0}
             //mailSent = true;
         }
 
+        private class Email
+        {
+            public string id { get; set; }
+            public string email { get; set; }
+        }
+
         public bool Prepare()
         {
             try
@@ -1051,39 +1059,95 @@ Content-Length: {0}
                     SqlConnection con = GetConnection();
                     SqlCommand cmd = new SqlCommand(this.Segment.SegmentQuery, con);
                     SqlDataReader rdr = cmd.ExecuteReader();
-                    List<string> mailList = new List<string>();
+                    List<Email> mailList = new List<Email>();
 
-                    var template = db.EmailTemplate.FirstOrDefault(p => p.id == this.Segment.EmailTemplateID);
+                    Mail mail = new Mail() { MailSubject = this.MailTitle, MailTemplateID = (int)this.Segment.EmailTemplateID, CreateDateTime = DateTime.Now };
+
+                    db.Mail.Add(mail);
+                    db.SaveChanges();
 
                     while (rdr.Read())
                     {
-                        if (rdr["email"] != DBNull.Value && rdr["email"].ToString().Trim() != "")
-                            mailList.Add(rdr["email"].ToString().Trim());
+                        if (rdr["CONTACT_VALUE"] != DBNull.Value && rdr["CONTACT_VALUE"].ToString().Trim() != "")
+                        {
+                            mailList.Add(new Email() { id = rdr["CONTACT_ID"].ToString(), email = rdr["CONTACT_VALUE"].ToString() });
+                        }
                     }
 
-                    foreach (var m in mailList)
+                    rdr.Close();
+                    con.Close();
+                    cmd.Dispose();
+
+                    using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Suppress, new TimeSpan(2, 00, 0)))
                     {
-                        SmtpClient client = new SmtpClient();
-                        client.Host = "srv-ex00.fg.local";
-                        client.Port = 2525;
-                        client.EnableSsl = false;
-                        client.Credentials = new NetworkCredential("noreply", "123456zZ");
-                        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        Entities context = null;
 
-                        MailAddress from = new MailAddress("noreply@tokyo-bar.ru", "Кристина из Токио",
-                        System.Text.Encoding.UTF8);
+                        context = new Entities();
+                        context.Configuration.AutoDetectChangesEnabled = false;
 
-                        MailAddress to = new MailAddress(m);
+                        int count = 0;
 
-                        MailMessage message = new MailMessage(from, to);
-                        message.IsBodyHtml = true;
-                        message.Body = template.Content.Replace("{content}", this.MailText);
-                        message.BodyEncoding = System.Text.Encoding.UTF8;
-                        message.Subject = this.MailTitle;
-                        message.SubjectEncoding = System.Text.Encoding.UTF8;
-                        client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
-                        string userState = "Тестовая рассылка! " + m;
-                        client.SendAsync(message, userState);
+                        foreach (var m in mailList)
+                        {
+                            string hash = "";
+
+                            using (MD5 md5 = MD5.Create())
+                            {
+                                byte[] data = md5.ComputeHash(Encoding.UTF8.GetBytes(m.id + "_" + m.email));
+
+                                StringBuilder sBuilder = new StringBuilder();
+
+                                for (int i = 0; i < data.Length; i++)
+                                    sBuilder.Append(data[i].ToString("x2"));
+
+
+                                hash = sBuilder.ToString();
+                            }
+
+                            CRMToSend row = new CRMToSend() { MailID = mail.id, Paprika = hash, RecipientEmail = m.email, StatusID = 1, CreateDateTime = DateTime.Now };
+
+                            ++count;
+                            context = AddToContext(context, row, count, 1000, true);
+
+                            /*SmtpClient client = new SmtpClient();
+                            client.Host = "srv-ex00.fg.local";
+                            client.Port = 2525;
+                            client.EnableSsl = false;
+                            client.Credentials = new NetworkCredential("noreply", "123456zZ");
+                            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                            MailAddress from = new MailAddress("noreply@tokyo-bar.ru", "Кристина из Токио",
+                            System.Text.Encoding.UTF8);
+
+                            MailAddress to = new MailAddress(m.email);
+
+                            MailMessage message = new MailMessage(from, to);
+                            message.IsBodyHtml = true;
+                            message.Body = template.Content.Replace("{content}", this.MailText).Replace("{unsubscribe_link}", "https://tokyo-bar.ru/personal/email-d.php?num_email=" + m.email + "&paprika=" + hash);
+                            message.BodyEncoding = System.Text.Encoding.UTF8;
+                            message.Subject = this.MailTitle;
+                            message.SubjectEncoding = System.Text.Encoding.UTF8;
+                            client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
+                            string userState = "Тестовая рассылка! " + m;
+                            client.SendAsync(message, userState);*/
+                        }
+
+                        context.SaveChanges();
+
+                        try
+                        {
+                            
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                        finally
+                        {
+                            if (context != null)
+                                context.Dispose();
+                        }
+
+                        scope.Complete();
                     }
 
                     return true;
@@ -1095,6 +1159,24 @@ Content-Length: {0}
             {
                 throw ex; 
             }
+        }
+
+        private Entities AddToContext(Entities context, CRMToSend entity, int count, int commitCount, bool recreateContext)
+        {
+            context.CRMToSend.Add(entity);
+
+            if (count % commitCount == 0)
+            {
+                context.SaveChanges();
+                if (recreateContext)
+                {
+                    context.Dispose();
+                    context = new Entities();
+                    context.Configuration.AutoDetectChangesEnabled = false;
+                }
+            }
+
+            return context;
         }
     }
 }
