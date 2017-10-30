@@ -50,7 +50,7 @@
             changeMonth: true,
             changeYear: true,
             showButtonPanel: true,
-            dateFormat: '0m.yy',
+            dateFormat: 'm.yy',
             onClose: function (dateText, inst) {
                 $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
                 window.location.href = '/SB_Problems/Problems?period=' + $("#Period").val();
@@ -177,7 +177,7 @@
                         <td>@Html.HiddenFor(m => m.problems[i].id)</td>
                         <td>@Html.HiddenFor(m => m.problems[i].date)</td>
                     </tr>
-                    if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin"))
+                    if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin") || LoginViewModel.IsMemberOf(Model.username, "FusionAdmin"))
                     {
                         if (Model.Period.Month + Model.Period.Year == Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year)
                         {
@@ -195,13 +195,13 @@
                     }
                     else
                     {
-                        if (Model.Period.Month + Model.Period.Year == Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year)
+                        if (Model.Period.Month + Model.Period.Year == Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year && Model.username == Model.problems[i].sb_managers.domain_name)
                         {
                             <tr class="records" style="background-color: @color">
                                 <td id="di" style="display: none">@Model.problems[i].id</td>
                                 <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
                                 <td>@Html.DropDownListFor(m => m.problems[i].restaurant_id, Model.RestaurantsSelectList, new { @disabled = "true", @class = "form-control" })</td>
-                                <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class = "form-control" })</td>
+                                <td>@Html.TextAreaFor(m => m.problems[i].problem, new { @class = "form-control", @disabled = "true" })</td>
                                 <td>@Html.TextAreaFor(m => m.problems[i].solution, new { @class = "form-control" })</td>
                                 <td>@Html.TextBoxFor(m => m.problems[i].sb_managers.name, new { @disabled = "true", @class = "form-control" })</td>
                                 @Html.HiddenFor(m => m.problems[i].id)
