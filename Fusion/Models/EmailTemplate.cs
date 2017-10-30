@@ -12,21 +12,19 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class bd_subdivision
+    public partial class EmailTemplate
     {
-        public bd_subdivision()
+        public EmailTemplate()
         {
-            this.bd_employee = new HashSet<bd_employee>();
-            this.bd_reclamation = new HashSet<bd_reclamation>();
+            this.CRMSegment = new HashSet<CRMSegment>();
         }
     
         public int id { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public Nullable<int> organization_id { get; set; }
+        public string Name { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public bool IsActive { get; set; }
     
-        public virtual ICollection<bd_employee> bd_employee { get; set; }
-        public virtual bd_organization bd_organization { get; set; }
-        public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
+        public virtual ICollection<CRMSegment> CRMSegment { get; set; }
     }
 }

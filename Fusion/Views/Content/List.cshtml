@@ -1,0 +1,32 @@
+﻿@model List<Fusion.Models.EmailTemplate>
+@{
+    ViewBag.Title = "Список шаблонов";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Добавить шаблон", "Add", "Content", new { @class = "btn btn-default" })
+<div class="row">
+    <table class="table table-striped">
+        <tr>
+            <th>
+                NAME
+            </th>
+            <th>
+                Название шаблона
+            </th>
+        </tr>
+        @foreach (var et in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(et.Name, "Edit", new { @id = et.id })
+                </td>
+                <td>
+                    @Html.ActionLink(et.Title, "Edit", new { @id = et.id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -766,8 +766,7 @@ where bsb.ORDER_ID = {0}", id);
                             p.Country_ID == ai.Country_ID
                             && p.City_ID == ai.City_ID
                             && p.Street_ID == ai.Street_ID
-                            && p.House == ai.House
-                            && p.Apartments == ai.Apartments);
+                            && p.House == ai.House);
 
                         addressId = ai.Address_ID;
                         addressSpecified = true;

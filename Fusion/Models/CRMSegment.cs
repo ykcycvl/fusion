@@ -21,5 +21,8 @@ namespace Fusion.Models
         public System.DateTime CreateDateTime { get; set; }
         public string Creator { get; set; }
         public bool IsActive { get; set; }
+        public Nullable<int> EmailTemplateID { get; set; }
+    
+        public virtual EmailTemplate EmailTemplate { get; set; }
     }
 }

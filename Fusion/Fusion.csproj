@@ -210,6 +210,7 @@
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\CallCenter\CallCenterController.cs" />
     <Compile Include="Controllers\CallCenter\CDRController.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\CRMController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InternetOrdersController.cs" />
@@ -988,6 +989,9 @@
     </Compile>
     <Compile Include="Models\DRAWERLOG.cs">
       <DependentUpon>RK7.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EmailTemplate.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
@@ -5547,6 +5551,10 @@
     <Content Include="Views\CRM\GetGuestVisitsDynamics.cshtml" />
     <Content Include="Views\SB_Problems\Problem_top.cshtml" />
     <Content Include="Views\SB_Problems\SendProblemTop.cshtml" />
+    <Content Include="Views\Content\Index.cshtml" />
+    <Content Include="Views\Content\Edit.cshtml" />
+    <Content Include="Views\Content\Add.cshtml" />
+    <Content Include="Views\Content\List.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
