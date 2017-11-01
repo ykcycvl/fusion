@@ -9,6 +9,7 @@ using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using Jitbit.Utils;
 using Newtonsoft.Json;
+using Microsoft.Office;
 //using DevExtreme.AspNet.Data;
 //using DevExtreme.AspNet.Mvc;
 
@@ -452,6 +453,46 @@ namespace Fusion.Controllers
             model.getUsers();
             model.sendReclamation();
             return Redirect("~/Zakup/Reclamation");
+        }
+        /*
+        public ActionResult getReclamationWord(int id)
+        {
+            object missing = System.Reflection.Missing.Value;
+            object readOnly = false;
+            object isVisible = true;
+            object fileName = "C:/Users/ag/Documents/GitHub/Fusion/Fusion/Files/Reclamation.dotx";
+            Microsoft.Office.Interop.Word.ApplicationClass applicationWord = new Microsoft.Office.Interop.Word.ApplicationClass();
+            Microsoft.Office.Interop.Word.Document document = new Microsoft.Office.Interop.Word.Document();
+            try
+            {
+                document = applicationWord.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
+                document.Activate();
+                foreach(var it in document.Variables)
+                {
+                    int i = 0;
+                }
+                document.Variables["Vendor"].Value = "11";
+                document.Application.Quit(ref missing, ref missing, ref missing);
+
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+                document.Application.Quit(ref missing, ref missing, ref missing);
+
+            }
+            return View();
+        }*/
+        public ActionResult Test()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getUsers();
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Test(ZakupModel model)
+        {
+            return View();
         }
     }
 }
