@@ -140,11 +140,11 @@
 				    editable: true,
 				    scheme: {
                         $change: function (item) {
-				            if (item.state == "Прибыл")
+				            if (item.state == "Выполнено")
                                 item.$css = "highlight_green";
 				            if (item.state == "Ожидается")
                                 item.$css = "highlight_red";
-                            if (item.state == "Принят")
+                            if (item.state == "Принято")
                                 item.$css = "highlight_blue";
 				        }
 				    },
