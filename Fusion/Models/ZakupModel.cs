@@ -619,6 +619,7 @@ namespace Fusion.Models
         {
             reclamations = list.bd_reclamation.ToList();
             reclamation_problems = list.bd_reclamation_problems.ToList();
+            states = list.bd_states.ToList();
         }
         public IEnumerable<SelectListItem> reclamation_problemsSelectList
         {
@@ -673,16 +674,18 @@ namespace Fusion.Models
         {
             foreach (var it in reclamations)
             {
-                if (list.bd_reclamation.FirstOrDefault(m => m.id == it.id).solution != it.solution)
+                if (list.bd_reclamation.FirstOrDefault(m => m.id == it.id).solution != it.solution || list.bd_reclamation.FirstOrDefault(m => m.id == it.id).comment != it.comment || list.bd_reclamation.FirstOrDefault(m => m.id == it.id).state_id != it.state_id)
                 {
                     list.bd_reclamation.FirstOrDefault(m => m.id == it.id).solution = it.solution;
+                    list.bd_reclamation.FirstOrDefault(m => m.id == it.id).comment = it.comment;
+                    list.bd_reclamation.FirstOrDefault(m => m.id == it.id).state_id = it.state_id;
                 }
                 list.SaveChanges();
             }
         }
         public void sendReclamation()
         {
-            list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id });
+            list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
             list.SaveChanges();
         }
     }
