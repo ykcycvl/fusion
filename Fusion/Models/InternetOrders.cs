@@ -133,6 +133,7 @@ namespace Fusion.Models
             public string DeliveryName { get; set; }
             public int BitrixUserID { get; set; }
             public string Address { get; set; }
+            public int DiscountPrc { get; set; }
 
             public void SetStatus(char StatusId)
             {
@@ -164,6 +165,7 @@ namespace Fusion.Models
 
             public void GetOrder(int id, string UserName)
             {
+                DiscountPrc = 0;
                 BitrixUserID = 0;
                 MySqlConnection con = GetConnection();
                 SqlConnection vegaCon = GetVegaConnection();
@@ -355,6 +357,23 @@ WHERE bso.ID = {0}", id), con);
                 }
 
                 rdr.Close();
+                #endregion
+
+                #region GetPromocode
+                var coupon = this.Properties.FirstOrDefault(p => p.OrderPropsId == 19);
+
+                if (coupon != null)
+                {
+                    com.CommandText = String.Format(@"select biebp.value as discount from b_iblock_element bieb INNER JOIN b_iblock_element_property biebp ON bieb.ID = biebp.IBLOCK_ELEMENT_ID AND biebp.IBLOCK_PROPERTY_ID = 37 where bieb.IBLOCK_ID = 11 and bieb.name = '{0}';", coupon.Value);
+                    rdr = com.ExecuteReader();
+
+                    if (rdr.HasRows)
+                        while (rdr.Read())
+                            if (rdr["discount"] != DBNull.Value)
+                                DiscountPrc = Convert.ToInt32(rdr["discount"]);
+
+                    rdr.Close();
+                }
                 #endregion
 
                 #region FillItems
@@ -709,15 +728,22 @@ where bsb.ORDER_ID = {0}", id);
                     if (addressInfo == null)
                         addressInfo = new List<RKCRM.Holder.AddressInfo>();
 
-                    addressInfo.AddRange(holders[0].Holders_Addresses.Addresses);
+                    holders[0].Addresses = addressInfo;
+
+                    if (orderType == 2)
+                    {
+                        addressInfo.AddRange(holders[0].Holders_Addresses.Addresses);
+
+                        for (int i = 0; i < addressInfo.Count; i++)
+                            addressInfo[i].Deleted = "True";
+                    }
+
+                    holders[0].Holders_Addresses = null;
 
                     RKCRM.EditHoldersModel editHolders = new RKCRM.EditHoldersModel();
                     holders[0].F_Name = name;
                     holders[0].L_Name = "";
-                    holders[0].M_Name = "";
-
-                    if (addressInfo != null)
-                        holders[0].Addresses = addressInfo;
+                    holders[0].M_Name = "";                      
 
                     editHolders.Holder = holders[0];
                     holders[0] = editHolders.EditHolder(UserName);
@@ -767,7 +793,8 @@ where bsb.ORDER_ID = {0}", id);
                             p.Country_ID == ai.Country_ID
                             && p.City_ID == ai.City_ID
                             && p.Street_ID == ai.Street_ID
-                            && p.House == ai.House);
+                            && p.House == ai.House
+                            );
 
                         addressId = ai.Address_ID;
                         addressSpecified = true;
@@ -896,18 +923,23 @@ where bsb.ORDER_ID = {0}", id);
                 };
                 saveOrder.RK7CMD.Order = new RK7_qrySaveOrder.orderElement() { guid = guid };
 
-                List<RK7_qrySaveOrder.dishItem> dishes = new List<RK7_qrySaveOrder.dishItem>();
+                List<RK7_qrySaveOrder.checkItem> items = new List<RK7_qrySaveOrder.checkItem>();
 
                 foreach (var dish in this.Items)
-                {
                     if (dish.RKCode != "")
-                        dishes.Add(new RK7_qrySaveOrder.dishItem() { code = dish.RKCode, quantity = Convert.ToInt32(dish.Quantity * 1000) });
-                }
+                        items.Add(new RK7_qrySaveOrder.dishItem() { code = dish.RKCode, quantity = Convert.ToInt32(dish.Quantity * 1000) });
 
                 if (this.PriceDelivery > 0 && orderType == 3)
-                    dishes.Add(new RK7_qrySaveOrder.dishItem() { code = "322", quantity = 1000 });
+                    items.Add(new RK7_qrySaveOrder.dishItem() { code = "322", quantity = 1000 });
 
-                saveOrder.RK7CMD.Session = new RK7_qrySaveOrder.SessionItem[1] { new RK7_qrySaveOrder.SessionItem() { Items = dishes.ToArray() } };
+                if (this.DiscountPrc == 5)
+                    items.Add(new RK7_qrySaveOrder.discountItem() { id = "1011218", code = "1000012" });
+
+                if (this.DiscountPrc == 10)
+                    items.Add(new RK7_qrySaveOrder.discountItem() { id = "1011251", code = "1000014" });
+
+
+                saveOrder.RK7CMD.Session = new RK7_qrySaveOrder.SessionItem[1] { new RK7_qrySaveOrder.SessionItem() { Items = items.ToArray() } };
 
                 xmlSerializer = new XmlSerializer(typeof(RK7_qrySaveOrder.RK7Query));
                 stringWriter = new StringWriter();
