@@ -89,6 +89,8 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             model.getOrders();
+            model.getUsers();
+            model.restaurant_id = model.usersList.FirstOrDefault(m => m.domain_login == User.Identity.GetUserName()).bd_subdivision.id;
             if (catId == null)
             {
                 catId = 1;
@@ -97,6 +99,13 @@ namespace Fusion.Controllers
             {
                 model.categoryId = catId;
             }
+            /*model.getRemnants(model.restaurant_id);
+            model.Open();
+            model.getStorehouses();
+            double double_storehouse_id = model.storehousesList.FirstOrDefault(m => m.name == model.restaurantsList.FirstOrDefault(g => g.id == model.restaurant_id).name).id;
+            int storehouse_id = Int32.Parse(double_storehouse_id.ToString());
+            model.getRemnants(null, storehouse_id);
+            model.Close();*/
             return View(model);
         }
         [HttpPost]
@@ -483,16 +492,44 @@ namespace Fusion.Controllers
             }
             return View();
         }*/
-        public ActionResult Test()
+        public ActionResult Test(int restaurant_id = -1)
         {
             ZakupModel model = new ZakupModel();
+            model.restaurant_id = restaurant_id;
+            model.getVendors();
+            model.getNomenclatures();
             model.getUsers();
+            model.getRemnants(restaurant_id);
             return View(model);
         }
         [HttpPost]
         public ActionResult Test(ZakupModel model)
         {
-            return View();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            model.saveRemnants(model.restaurant_id);
+            return Redirect("Test");
+        }
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
+        public ActionResult Remnants_rest(int restaurant_id = -1)
+        {
+            ZakupModel model = new ZakupModel();
+            model.restaurant_id = restaurant_id;
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            model.getRemnants(restaurant_id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Remnants_rest(ZakupModel model)
+        {
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            model.saveRemnants(model.restaurant_id);
+            return Redirect("Remnants_rest");
         }
     }
 }

@@ -71,6 +71,20 @@ namespace Fusion.Models
             public string name { get; set; }
             public int id { get; set; }
         }
+        public class remnants_for_noms
+        {
+            public int nomenclature_id { get; set; }
+            public string nomenclature_name { get; set; }
+            public int? count { get; set; }
+        }
+        public class restaurants_and_remnants
+        {
+            public int restaurant_id { get; set; }
+            public string restaurant_name { get; set; }
+            public List<remnants_for_noms> remnants {get; set;}
+        }
+        public int restaurant_id { get; set; }
+        public List<restaurants_and_remnants> remnants_overall { get; set; }
         public class chartOrders
         {
             public string MonthName { get; set; }
@@ -133,6 +147,7 @@ namespace Fusion.Models
         public List<Good> Goods = new List<Good>();
         public List<GoodsBalance> GoodsBalances = new List<GoodsBalance>();
         public List<items1> listItem { get; set; }
+        public List<bd_rests> remnantsSQL { get; set; }
         public List<Models.bd_nomenclature> items { get; set; }
         public List<Models.bd_measurement> maesurements { get; set; }
         public List<Models.bd_category> categ { get; set; }
@@ -303,6 +318,7 @@ namespace Fusion.Models
             items = list.bd_nomenclature.OrderBy(m => m.vendor_id).ToList();
             categ = list.bd_category.ToList();
             maesurements = list.bd_measurement.ToList();
+            remnantsSQL = list.bd_rests.ToList();
             Categories = new List<categs>();
             foreach (var it in categ)
             {
@@ -686,6 +702,56 @@ namespace Fusion.Models
         public void sendReclamation()
         {
             list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
+            list.SaveChanges();
+        }
+        public void getRemnants(int restaurant_id)
+        {
+            remnants_overall = new List<restaurants_and_remnants>();
+            foreach (var it in restaurantsList.Where(m => m.id == restaurant_id))
+            {
+                restaurants_and_remnants rest = new restaurants_and_remnants();
+                rest.remnants = new List<remnants_for_noms>();
+                rest.restaurant_id = it.id;
+                rest.restaurant_name = it.name;
+                foreach (var g in items)
+                {
+                    remnants_for_noms remnants_by_nom = new remnants_for_noms();
+                    remnants_by_nom.nomenclature_id = g.id;
+                    remnants_by_nom.nomenclature_name = g.name;
+                    if (remnantsSQL.Where(j => j.nomenclature_id == g.id && j.restaurant_id == it.id).Count() == 0)
+                    {
+                        remnants_by_nom.count = 0;
+                    }
+                    else
+                    {
+                        if (remnantsSQL.FirstOrDefault(h => h.nomenclature_id == g.id && h.restaurant_id == it.id).count == null)
+                        {
+                            remnants_by_nom.count = 0;
+                        }
+                        else
+                        {
+                            remnants_by_nom.count = remnantsSQL.FirstOrDefault(h => h.nomenclature_id == g.id && h.restaurant_id == it.id).count;
+                        }
+                    }
+                    rest.remnants.Add(remnants_by_nom);
+                }
+                remnants_overall.Add(rest);
+            }
+            remnants_overall.Count();
+        }
+        public void saveRemnants(int restaurant_id)
+        {
+            foreach(var it in remnants_overall[0].remnants)
+            {
+                if(list.bd_rests.Where(m => m.restaurant_id == restaurant_id && m.nomenclature_id == it.nomenclature_id).Count() == 0)
+                {
+                    list.bd_rests.Add(new bd_rests { nomenclature_id = it.nomenclature_id, restaurant_id = restaurant_id, count = it.count });
+                }
+                else
+                {
+                    list.bd_rests.FirstOrDefault(m => m.nomenclature_id == it.nomenclature_id && m.restaurant_id == restaurant_id).count = it.count;
+                }
+            }
             list.SaveChanges();
         }
     }
