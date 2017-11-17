@@ -1,0 +1,63 @@
+﻿@model Fusion.Models.ZakupModel
+@{
+    ViewBag.Title = "Остатки";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">Минимальные остатки</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Remnants_rest", "Zakup", FormMethod.Post, new { id = "Form" }))
+        {
+            if (Model.restaurant_id == -1)
+            {
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="display: none">id</th>
+                            <th>Ресторан</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.restaurantsList)
+                        {
+                            <tr>
+                                <td style="display: none">@it.id</td>
+                                <td>@Html.ActionLink(it.name, "Remnants_rest", new { restaurant_id = it.id })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.remnants_overall[0].restaurant_id)
+                @Html.HiddenFor(m => m.restaurant_id)
+                <blockquote class="blockquote">
+                    <div class="alert alert-danger" style="margin-bottom: 0;">@Html.DisplayFor(m => m.remnants_overall[0].restaurant_name)</div>
+                </blockquote>
+                    <input type="submit" value="Сохранить" class="btn btn-success" />
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="display: none">id</th>
+                                <th>Наименование</th>
+                                <th>Минимальный остаток</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.remnants_overall[0].remnants.Count(); i++)
+                            {
+                                <tr>
+                                    <td style="display: none">@Html.HiddenFor(m => Model.remnants_overall[0].remnants[i].nomenclature_id)</td>
+                                    <td>@Html.DisplayFor(m => Model.remnants_overall[0].remnants[i].nomenclature_name)</td>
+                                    <td>@Html.TextBoxFor(m => Model.remnants_overall[0].remnants[i].count, new { @class = "form-control" })</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            }
+        }
+    </div>
+</div>
