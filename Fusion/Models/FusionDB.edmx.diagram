@@ -82,6 +82,7 @@
         <AssociationConnector Association="FusionDBModels.FK_sb_top_restaurant_id" />
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <AssociationConnector Association="FusionDBModels.serverip" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_state_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

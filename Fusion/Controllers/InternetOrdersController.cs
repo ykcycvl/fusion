@@ -68,7 +68,8 @@ namespace Fusion.Controllers
         public ActionResult SendToDelivery(int id)
         {
             var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
-            var setting = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName == User.Identity.Name.ToString());
+            var internetOrderSetStatusF = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName == User.Identity.Name.ToString());
+            var extSourceID = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName == User.Identity.Name.ToString());
 
             if (order == null || (order != null && !order.Success))
             {
@@ -81,12 +82,18 @@ namespace Fusion.Controllers
                 InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
                 model.GetOrder(id, User.Identity.Name.ToString());
 
-                if (setting != null && Boolean.Parse(setting.SettingValue.ToLower()))
+                if (internetOrderSetStatusF != null && Boolean.Parse(internetOrderSetStatusF.SettingValue.ToLower()))
                 {
                     model.SetStatus('F');
                 }
 
-                InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString());
+                string esid = "31";
+
+                if (extSourceID != null && !String.IsNullOrEmpty(extSourceID.SettingValue))
+                    esid = extSourceID.SettingValue;
+
+
+                InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString(), esid);
 
                 if (response.Success)
                 {

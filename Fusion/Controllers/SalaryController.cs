@@ -23,6 +23,14 @@ namespace Fusion.Controllers
             return View();
         }
         [MyAuthorize(Roles = "VegaCMAdmin, ZUP")]
+        public ActionResult GetBioTimeData()
+        {
+            SalaryModels.Vega1CWS.BioTimeViewModel model = new SalaryModels.Vega1CWS.BioTimeViewModel();
+            model.Test(User.Identity.Name);
+            return View();
+        }
+
+        [MyAuthorize(Roles = "VegaCMAdmin, ZUP")]
         public ActionResult TimeSheets(string orgname)
         {
             SalaryModels.Vega1CWS.TimeSheetViewModel model = new SalaryModels.Vega1CWS.TimeSheetViewModel();

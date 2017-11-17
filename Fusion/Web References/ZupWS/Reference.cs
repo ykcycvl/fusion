@@ -57,6 +57,8 @@ namespace Fusion.ZupWS {
         
         private System.Threading.SendOrPostCallback SaveListRateOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetBIOLINKInfoOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -136,6 +138,9 @@ namespace Fusion.ZupWS {
         
         /// <remarks/>
         public event SaveListRateCompletedEventHandler SaveListRateCompleted;
+        
+        /// <remarks/>
+        public event GetBIOLINKInfoCompletedEventHandler GetBIOLINKInfoCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetEmployees", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -602,6 +607,40 @@ namespace Fusion.ZupWS {
             if ((this.SaveListRateCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.SaveListRateCompleted(this, new SaveListRateCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/vega#VegaWS:GetBIOLINKInfo", RequestNamespace="http://srv-1c_g/vega", ResponseNamespace="http://srv-1c_g/vega", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
+        public Document GetBIOLINKInfo(string UserName, [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)] string НомерДокумента, int Год) {
+            object[] results = this.Invoke("GetBIOLINKInfo", new object[] {
+                        UserName,
+                        НомерДокумента,
+                        Год});
+            return ((Document)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetBIOLINKInfoAsync(string UserName, string НомерДокумента, int Год) {
+            this.GetBIOLINKInfoAsync(UserName, НомерДокумента, Год, null);
+        }
+        
+        /// <remarks/>
+        public void GetBIOLINKInfoAsync(string UserName, string НомерДокумента, int Год, object userState) {
+            if ((this.GetBIOLINKInfoOperationCompleted == null)) {
+                this.GetBIOLINKInfoOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetBIOLINKInfoOperationCompleted);
+            }
+            this.InvokeAsync("GetBIOLINKInfo", new object[] {
+                        UserName,
+                        НомерДокумента,
+                        Год}, this.GetBIOLINKInfoOperationCompleted, userState);
+        }
+        
+        private void OnGetBIOLINKInfoOperationCompleted(object arg) {
+            if ((this.GetBIOLINKInfoCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetBIOLINKInfoCompleted(this, new GetBIOLINKInfoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -1845,6 +1884,32 @@ namespace Fusion.ZupWS {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((Employee[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    public delegate void GetBIOLINKInfoCompletedEventHandler(object sender, GetBIOLINKInfoCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetBIOLINKInfoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetBIOLINKInfoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Document Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Document)(this.results[0]));
             }
         }
     }

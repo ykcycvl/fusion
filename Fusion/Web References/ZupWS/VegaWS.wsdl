@@ -340,6 +340,22 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="GetBIOLINKInfo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="НомерДокумента" nillable="true" type="xs:string" />
+            <xs:element name="Год" type="xs:int" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetBIOLINKInfoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Document" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
   </types>
   <message name="GetEmployeesRequestMessage">
@@ -426,6 +442,12 @@
   <message name="SaveListRateResponseMessage">
     <part name="parameters" element="tns:SaveListRateResponse" />
   </message>
+  <message name="GetBIOLINKInfoRequestMessage">
+    <part name="parameters" element="tns:GetBIOLINKInfo" />
+  </message>
+  <message name="GetBIOLINKInfoResponseMessage">
+    <part name="parameters" element="tns:GetBIOLINKInfoResponse" />
+  </message>
   <portType name="VegaWSPortType">
     <operation name="GetEmployees">
       <input message="tns:GetEmployeesRequestMessage" />
@@ -482,6 +504,10 @@
     <operation name="SaveListRate">
       <input message="tns:SaveListRateRequestMessage" />
       <output message="tns:SaveListRateResponseMessage" />
+    </operation>
+    <operation name="GetBIOLINKInfo">
+      <input message="tns:GetBIOLINKInfoRequestMessage" />
+      <output message="tns:GetBIOLINKInfoResponseMessage" />
     </operation>
   </portType>
   <binding name="VegaWSSoapBinding" type="tns:VegaWSPortType">
@@ -612,6 +638,15 @@
         <soapbind:body use="literal" />
       </output>
     </operation>
+    <operation name="GetBIOLINKInfo">
+      <soapbind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetBIOLINKInfo" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
   </binding>
   <binding name="VegaWSSoap12Binding" type="tns:VegaWSPortType">
     <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -734,6 +769,15 @@
     </operation>
     <operation name="SaveListRate">
       <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:SaveListRate" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetBIOLINKInfo">
+      <soap12bind:operation soapAction="http://srv-1c_g/vega#VegaWS:GetBIOLINKInfo" style="document" />
       <input>
         <soap12bind:body use="literal" />
       </input>

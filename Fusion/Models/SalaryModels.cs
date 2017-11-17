@@ -528,7 +528,6 @@ namespace Fusion.Models
                     }
                 }
             }
-
             public class AccrualAndDetentionViewModel : DocumentInfo
             {
                 public List<EmployeeAccrualsAndDetentions> EAAD = new List<EmployeeAccrualsAndDetentions>();
@@ -765,7 +764,6 @@ namespace Fusion.Models
                     }
                 }
             }
-
             public class EmployeesRateModel
             {
                 public DateTime Period { get; set; }
@@ -864,6 +862,17 @@ namespace Fusion.Models
                     {
                         service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
                         service.SaveListRate(Employees.ToArray(), FullName, username, Period.ToString("dd.MM.yyyy"));
+                    }
+                }
+            }
+            public class BioTimeViewModel
+            { 
+                public void Test(string userName)
+                {
+                    using (ZupWS.VegaWS service = new VegaWS())
+                    {
+                        service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
+                        var t = service.GetBIOLINKInfo(userName, "00ЗК-000175", 2017);
                     }
                 }
             }

@@ -409,13 +409,13 @@ where bsb.ORDER_ID = {0}", id);
 
                 con.Close();
             }
-            public SODresponse SendOrderToDelivery(string UserName)
+            public SODresponse SendOrderToDelivery(string UserName, string extSourceID)
             {
                 SODresponse result = new SODresponse() { OrderID = this.id };
                 List<RKCRM.Holder.AddressInfo> addressInfo = null;
 
                 #region Prepare
-                string comment = "", name = "", phone = "";
+                string comment = "", f_name = "", l_name = "", phone = "";
                 int guestCount = 0, orderType = 3;
                 DateTime deliveryTime = DateTime.Now;
 
@@ -426,12 +426,13 @@ where bsb.ORDER_ID = {0}", id);
                     orderType = 2;
 
                 string[] nameParts = this.Guest.Name.Trim().Split(' ');
-                name = nameParts[0];
+                f_name = nameParts[0];
 
                 var propsAddress = this.Properties.FirstOrDefault(p => p.OrderPropsId == 1);
                 var propsPhone = this.Properties.FirstOrDefault(p => p.OrderPropsId == 2);
                 var propsEmail = this.Properties.FirstOrDefault(p => p.OrderPropsId == 3);
                 var propsDeliveryTime = this.Properties.FirstOrDefault(p => p.OrderPropsId == 4);
+                var propsName = this.Properties.FirstOrDefault(p => p.OrderPropsId == 7);
                 var propsGuestCount = this.Properties.FirstOrDefault(p => p.OrderPropsId == 8);
                 var propsSdacha = this.Properties.FirstOrDefault(p => p.OrderPropsId == 9);
                 var propsCity = this.Properties.FirstOrDefault(p => p.OrderPropsId == 17);
@@ -686,6 +687,15 @@ where bsb.ORDER_ID = {0}", id);
                         guestCount = 1;
                 }
 
+                if (propsName != null)
+                {
+                    nameParts = propsName.Value.Trim().Split(' ');
+                    f_name = nameParts[0].Trim();
+
+                    if (nameParts.Length > 1)
+                        l_name = nameParts[1].Trim();
+                }
+
                 if (this.Payed)
                     comment += String.Format("{0} ОПЛАЧЕН ", this.id);
 
@@ -741,10 +751,10 @@ where bsb.ORDER_ID = {0}", id);
                     holders[0].Holders_Addresses = null;
 
                     RKCRM.EditHoldersModel editHolders = new RKCRM.EditHoldersModel();
-                    holders[0].F_Name = name;
-                    holders[0].L_Name = "";
-                    holders[0].M_Name = "";                      
-
+                    holders[0].F_Name = f_name;
+                    holders[0].L_Name = l_name;
+                    holders[0].M_Name = "";
+                    holders[0].Full_Name = "";
                     editHolders.Holder = holders[0];
                     holders[0] = editHolders.EditHolder(UserName);
                 }
@@ -754,7 +764,8 @@ where bsb.ORDER_ID = {0}", id);
                     addHolders.Holder = new RKCRM.Holder()
                     {
                         Group_ID = "4",
-                        F_Name = name,
+                        F_Name = f_name,
+                        L_Name = l_name,
                         BirthD = new DateTime(1900, 1, 1),
                         Contacts = new List<RKCRM.Holder.ContactInfo>(),
                         Addresses = addressInfo
@@ -806,6 +817,7 @@ where bsb.ORDER_ID = {0}", id);
                 if (empid == null)
                     empid = new EMPLOYEES() { SIFR = 9001 };
 
+
                 RK7_qryCreateOrder.RK7Query createOrder = new RK7_qryCreateOrder.RK7Query();
                 createOrder.RK7CMD = new RK7_qryCreateOrder.RK7QueryRK7CMD();
                 RK7_qryCreateOrder.RK7QueryRK7CMDOrder order = new RK7_qryCreateOrder.RK7QueryRK7CMDOrder()
@@ -818,7 +830,7 @@ where bsb.ORDER_ID = {0}", id);
                     Creator = new RK7_qryCreateOrder.refItem() { id = empid.SIFR.ToString() },
                     Waiter = new RK7_qryCreateOrder.refItem() { id = empid.SIFR.ToString() },
                     nonPersistentComment = "Internet",
-                    extSource = "31",
+                    extSource = extSourceID,
                     extID = "256"
                 };
 
