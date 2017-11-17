@@ -7,9 +7,10 @@
     string selectVendor = "";
     string selectcategory = "";
     string selectMeasurement = "";
+    string selectState = "";
     foreach (var it in Model.items)
     {
-        TableData += "{id: \"" + it.id + "\", vendor_id: \"" + it.vendor_id + "\", name: \"" + it.name.Replace('"', ' ').Trim() + "\", vendor_name: \"" + it.bd_vendor.name + "\", category_name: \"" + it.bd_category.name + "\", measurement_name: \"" + it.bd_measurement.name + "\",price: \"" + it.Price + "\",";
+        TableData += "{id: \"" + it.id + "\", vendor_id: \"" + it.vendor_id + "\", name: \"" + it.name.Trim().Replace('"', '\'') + "\", vendor_name: \"" + it.bd_vendor.name + "\", category_name: \"" + it.bd_category.name + "\", measurement_name: \"" + it.bd_measurement.name + "\",price: \"" + it.Price + "\",state: \"" + it.bd_nomenclature_state.name + "\"";
         TableData += "}, \r\n";
     }
     foreach (var it in Model.vendorList)
@@ -23,6 +24,10 @@
     foreach (var it in Model.Categories)
     {
         selectcategory += " \"" + it.name + "\",";
+    }
+    foreach(var it in Model.nomenclature_states_SelectList)
+    {
+        selectState += " \"" + it.Text + "\",";
     }
 }
 <script src="~/Scripts/codebase/webix.js"></script>
@@ -52,9 +57,10 @@
                       { id: "vendor_id", hidden: "true" },
                       { id: "name", header: ["Наименование", { content: "textFilter" }], editor: "text", width: 300, sort: "string" },
                       { id: "vendor_name", header: ["Поставщик", { content: "textFilter" }], editor: "select", options: [@Html.Raw(selectVendor)], width: 300, sort: "string" },
-                      { id: "category_name", header: "Категория", editor: "select", options: [@Html.Raw(selectcategory)], width: 300 },
+                      { id: "category_name", header: "Категория", editor: "select", options: [@Html.Raw(selectcategory)], width: 200 },
                       { id: "measurement_name", header: "Ед. измерения", editor: "select", options: [@Html.Raw(selectMeasurement)], width: 100 },
-                      { id: "price", header: "Цена", editor: "text", width: 100 }
+                      { id: "price", header: "Цена", editor: "text", width: 100 },
+                      { id: "state", header: "Активность", editor: "select", options: [@Html.Raw(selectState)], width: 200 }
 				    ],
 				    data: {
 				        data: [

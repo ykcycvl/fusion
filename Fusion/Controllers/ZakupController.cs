@@ -204,6 +204,7 @@ namespace Fusion.Controllers
             foreach (var it in model.list.bd_order.Where(m => m.bd_nomenclature.bd_vendor.name == model.vendor_for_send_item.name && m.date == model.vendor_for_send_item.date_from))
             {
                 it.date_end = model.vendor_for_send_item.date_end;
+                it.state = model.vendor_for_send_item.state;
             }
             model.list.SaveChanges();
             return Redirect("~/Zakup/Orders_by_vendors");

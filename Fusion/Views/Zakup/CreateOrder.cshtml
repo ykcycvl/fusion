@@ -25,7 +25,6 @@
 
         @using (Html.BeginForm("CreateOrder", "Zakup", FormMethod.Post, new { id = "Form" }))
         {
-
             <div class="row">
                 <div class="col-md-2">
                     <div id="filters">
@@ -39,7 +38,10 @@
                     <input type="submit" class="btn btn-success" id="sub" value="Сохранить" />
                 </div>
             </div>
-
+            <br />
+           <!-- <div class="alert alert-info">
+                Рекомендуемое количество отображает разницу между текущим остатком по номенклатуре и минимальным остатком, заданным Отделом Закупа.
+            </div>-->
             <br />
             @Html.DropDownListFor(m => m.categoryId, Model.CategoriesSelectList, new { @class = "form-control" })
             <br />
@@ -50,14 +52,40 @@
                         <th>Поставщик</th>
                         <th>Ед. изм.</th>
                         <th width="150px">Кол-во</th>
+                        
                     </tr>
                 </thead>
                 <tbody id="target">
                     @for (int i = 0; i < Model.items.Count(); i++)
                     {
+                        /*double storehose_count = 0;
+                        if (Model.remnantsList.Where(m => m.name == Model.items[i].name).Count() != 0)
+                        {
+                            storehose_count = Model.remnantsList.FirstOrDefault(m => m.name == Model.items[i].name).quantity;
+                        }
+                        int? minimal_count = 0;
+                        if(Model.remnants_overall[0].remnants.FirstOrDefault(m => m.nomenclature_name == Model.items[i].name).count != null)
+                        {
+                            minimal_count = Model.remnants_overall[0].remnants.FirstOrDefault(m => m.nomenclature_id == Model.items[i].id).count;
+                        }
+                        double? recommend_count = 0;
+                        if (minimal_count != null && storehose_count != null)
+                        {
+                            storehose_count = Math.Round(storehose_count, 2);
+                            recommend_count = minimal_count - storehose_count;
+                        }
+                        string color_class = "";
+                        if(recommend_count > 0)
+                        {
+                            color_class = "danger";
+                        }
+                        else if(recommend_count < 0)
+                        {
+                            color_class = "success";
+                        }*/
                         <tr>
 
-                            @if (Model.items[i].category_id == Model.categoryId)
+                            @if (Model.items[i].category_id == Model.categoryId && Model.items[i].state == 1)
                             {
                                 <td>
                                     @Model.items[i].name
@@ -72,6 +100,7 @@
                                 </td>
                                 <td>@Model.items[i].bd_measurement.name</td>
                                 <td>@Html.TextBoxFor(m => m.items[i].Count, new { @class = "form-control" })</td>
+                               
                             }
                             else
                             {

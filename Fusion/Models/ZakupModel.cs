@@ -107,6 +107,8 @@ namespace Fusion.Models
             public int category_id { get; set; }
             public int id { get; set; }
             public decimal? price { get; set; }
+            public string state_name { get; set; }
+            public int state_id { get; set; }
         }
         public class ExportData
         {
@@ -121,6 +123,7 @@ namespace Fusion.Models
             public DateTime date_from { get; set; }
             public int id { get; set; }
             public string name { get; set; }
+            public int state { get; set; }
         }
         public class order
         {
@@ -156,6 +159,7 @@ namespace Fusion.Models
         public List<Models.bd_subdivision> restaurantsList { get; set; }
         public List<ZakupModel.vendors1> vendors { get; set; }
         public List<bd_reclamation> reclamations { get; set; }
+        public List<bd_nomenclature_state> nomeclature_states { get; set; }
         public List<bd_reclamation_problems> reclamation_problems { get; set; }
         public Entities list = new Entities();
         public IEnumerable<SelectListItem> catListFull { get; set; }
@@ -183,6 +187,7 @@ namespace Fusion.Models
         public int categoryId { get; set; }
         public string vendorName { get; set; }
         public string stateName { get; set; }
+        public string nomenclature_state_name { get; set; }
         public DateTime dateExportForEmployee { get; set; }
         public string measurementName { get; set; }
         [DataType(DataType.Date)]
@@ -316,6 +321,7 @@ namespace Fusion.Models
         public void getNomenclatures()
         {
             items = list.bd_nomenclature.OrderBy(m => m.vendor_id).ToList();
+            nomeclature_states = list.bd_nomenclature_state.ToList();
             categ = list.bd_category.ToList();
             maesurements = list.bd_measurement.ToList();
             remnantsSQL = list.bd_rests.ToList();
@@ -416,6 +422,21 @@ namespace Fusion.Models
                     sli.Selected = true;
 
                 return states1;
+            }
+        }
+        public IEnumerable<SelectListItem> nomenclature_states_SelectList
+        {
+            get
+            {
+                List<SelectListItem> states = new List<SelectListItem>();
+                for(int i = 0; i < nomeclature_states.Count; i++)
+                {
+                    states.Add(new SelectListItem() { Text = nomeclature_states[i].name, Value = nomeclature_states[i].id.ToString() });
+                }
+                SelectListItem sli = states.FirstOrDefault(p => p.Text == nomenclature_state_name);
+                if (sli != null)
+                    sli.Selected = true;
+                return states;
             }
         }
         public void getVendors()
@@ -597,6 +618,8 @@ namespace Fusion.Models
                 r.TryGetValue("measurement_name", out measurement_name);
                 object price = null;
                 r.TryGetValue("price", out price);
+                object state_name = null;
+                r.TryGetValue("state", out state_name);
 
                 items1 item = new items1();
                 item.id = Int32.Parse(id.ToString());
@@ -608,24 +631,26 @@ namespace Fusion.Models
                 item.measurement_id = maesurements.FirstOrDefault(m => m.name == item.measurement_name).id;
                 item.category_name = category_name.ToString();
                 item.category_id = categ.FirstOrDefault(m => m.name == item.category_name).id;
+                item.state_id = nomeclature_states.FirstOrDefault(m => m.name == state_name.ToString()).id;
                 listItems.Add(item);
             }
             foreach (var p in listItems)
             {
                 if (list.bd_nomenclature.Where(m => m.id == p.id).Count() != 0)
                 {
-                    if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id)
+                    if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id || items.FirstOrDefault(m => m.id == p.id).state != p.state_id)
                     {
                         list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).name = p.name;
                         list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).Price = p.price;
                         list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).vendor_id = p.vendor_id;
                         list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).measurement_id = p.measurement_id;
                         list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).category_id = p.category_id;
+                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).state = p.state_id;
                     }
                 }
                 else
                 {
-                    list.bd_nomenclature.Add(new bd_nomenclature { name = p.name, vendor_id = p.vendor_id, Price = p.price, id = p.id, category_id = p.category_id, measurement_id = p.measurement_id });
+                    list.bd_nomenclature.Add(new bd_nomenclature { name = p.name, vendor_id = p.vendor_id, Price = p.price, id = p.id, category_id = p.category_id, measurement_id = p.measurement_id, state = p.state_id });
                 }
             }
             list.SaveChanges();

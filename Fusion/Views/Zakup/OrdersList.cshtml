@@ -46,6 +46,7 @@
                     <tr>
                         <th>Дата создания заявки</th>
                         <th>Дата прихода товара</th>
+                        <th>Статус</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,9 @@
                         </td>
                         <td>
                             @Html.TextBoxFor(m => m.vendor_for_send_item.date_end, new { @type = "date", @required = "true", @class = "form-control" })
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.vendor_for_send_item.state, Model.stateSelectList, new { @class="form-control", @required="true" })
                         </td>
                     </tr>
                 </tbody>
@@ -69,6 +73,7 @@
                         <th>Цена</th>
                         <th>Дата создания</th>
                         <th>Дата прихода</th>
+                        <th>Статус</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -81,6 +86,7 @@
                             <td>@it.bd_nomenclature.Price</td>
                             <td>@it.date</td>
                             <td>@it.date_end</td>
+                            <td>@it.bd_states.name</td>
                         </tr>
                     }
                 </tbody>
