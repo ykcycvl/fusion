@@ -493,15 +493,26 @@ namespace Fusion.Controllers
             }
             return View();
         }*/
-        public ActionResult Test(int restaurant_id = -1)
+        [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
+        public ActionResult Orders_by_employees()
         {
             ZakupModel model = new ZakupModel();
-            model.restaurant_id = restaurant_id;
             model.getVendors();
             model.getNomenclatures();
             model.getUsers();
-            model.getRemnants(restaurant_id);
-            return View(model);
+            model.getOrders();
+            
+                List<IGrouping<string, bd_order>> ordersDyn = new List<IGrouping<string, bd_order>>();
+                foreach (var it in model.orders.GroupBy(m => m.bd_employee.domain_login))
+                {
+                    ordersDyn.Add(it);
+                }
+                return View(ordersDyn);
+        }
+        public ActionResult Test()
+        {
+
+            return View();
         }
         [HttpPost]
         public ActionResult Test(ZakupModel model)
@@ -509,7 +520,6 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             model.getUsers();
-            model.saveRemnants(model.restaurant_id);
             return Redirect("Test");
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]

@@ -1,0 +1,126 @@
+﻿@model System.Collections.Generic.List<IGrouping<string, Fusion.Models.bd_order>>
+@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    decimal? summ = 0;
+    int i = 0;
+}
+<style>
+    div {
+        white-space: nowrap;
+    }
+</style>
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">Мои заявки</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm("Test", "Zakup", FormMethod.Post, new { id = "Form" }))
+        {
+            if (LoginViewModel.IsMemberOf(User.Identity.Name, "ZakupAdmin"))
+            {
+                foreach (var it in Model)
+                {
+                    summ = 0;
+                    i++;
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a data-toggle="collapse" href="#@i">@it.Key</a>
+                            </h3>
+                        </div>
+                        <div class="panel-collapse collapse" id="@i">
+                            <div class="panel-body">
+                               @foreach (var ig in it.OrderBy(m => m.date).Reverse())
+                               {
+                                   string rowClass = "";
+                                   switch (ig.state)
+                                   {
+                                       case 1:
+                                           rowClass = "";
+                                           break;
+                                       case 2:
+                                           rowClass = "text-danger";
+                                           break;
+                                       case 3:
+                                           rowClass = "text-success";
+                                           break;
+                                       case 4:
+                                           rowClass = "text-info";
+                                           break;
+                                       default:
+                                           rowClass = "";
+                                           break;
+                                   }
+                                    <div class="@rowClass">
+                                        <div class="col-md-4">@ig.bd_nomenclature.name</div>
+                                        <div class="col-md-3">@ig.bd_nomenclature.bd_vendor.name</div>
+                                        <div class="col-md-1">@{ decimal? sum1 = ig.count * ig.bd_nomenclature.Price; } @sum1 руб.</div>
+                                        <div class="col-md-2">@ig.date.Value.ToString("dd.MM.yyyy")</div>
+                                        <div class="col-md-2">@ig.bd_states.name</div>
+                                    </div>
+                                                summ += ig.count * ig.bd_nomenclature.Price;
+                                            }
+                            </div>
+                            <div class="panel-footer">
+                                Общая сумма: @summ  рублей
+                            </div>
+                        </div>
+                    </div>
+                            }
+                         }
+                        else
+                        {
+                            foreach (var it in Model.Where(m => m.Key == User.Identity.Name))
+                            {
+                                summ = 0;
+                                i++;
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">
+                                            <a data-toggle="collapse" href="#@i">@it.First(m => m.bd_employee.domain_login == User.Identity.Name).bd_employee.full_name</a>
+                                        </h3>
+                                    </div>
+                                    <div class="panel-collapse collapse" id="@i">
+                                        <div class="panel-body">
+                                            @foreach (var ig in it.OrderBy(m => m.date).Reverse())
+                                            {
+                                                string rowClass = "";
+                                                switch (ig.state)
+                                                {
+                                                    case 1:
+                                                        rowClass = "";
+                                                        break;
+                                                    case 2:
+                                                        rowClass = "text-danger";
+                                                        break;
+                                                    case 3:
+                                                        rowClass = "text-success";
+                                                        break;
+                                                    case 4:
+                                                        rowClass = "text-info";
+                                                        break;
+                                                    default:
+                                                        rowClass = "";
+                                                        break;
+                                         }
+                                                <div class="@rowClass">
+                                                    <div class="col-md-4">@ig.bd_nomenclature.name</div>
+                                                    <div class="col-md-3">@ig.bd_nomenclature.bd_vendor.name</div>
+                                                    <div class="col-md-1">@{ decimal? sum1 = ig.count * ig.bd_nomenclature.Price; } @sum1 руб.</div>
+                                                    <div class="col-md-2">@ig.date.Value.ToString("dd.mm.yyyy")</div>
+                                                    <div class="col-md-2">@ig.bd_states.name</div>
+                                                </div>
+                                                            summ += ig.count * ig.bd_nomenclature.Price;
+                                            }
+                                        </div>
+                                        <div class="panel-footer">
+                                            Общая сумма: @summ  рублей
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+    </div>
+</div>
