@@ -56,63 +56,6 @@
                 window.location.href = '/SB_Problems/Problems?period=' + $("#Period").val();
             }
         });
-        /*var count = $('#feedbackCount').val();
-        var tbody = document.getElementsByTagName('tbody')[0];
-        tbody = tbody.rows.length;
-        $('#addRow').click(function () {
-            count--;
-            count++;
-            vall = 1 + count;
-            count++;
-
-            var template = $('.records').first().clone()
-            template.find('input[type=text]').val(null);
-            template.find('#di').html(vall);
-           $.each(template.find('input[type=text]'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace(/[0-9]+/gi, vall - 1);
-                name = name.replace(/[0-9]+/gi, vall - 1);
-                $(this).attr('name', name);
-                $(this).attr('id', id); 
-            });
-            $.each(template.find('input[type=date]'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace(/[0-9]+/gi, vall - 1);
-                name = name.replace(/[0-9]+/gi, vall - 1);
-                $(this).attr('name', name);
-                $(this).attr('id', id);
-                $(this).val();
-            });
-            $.each(template.find('textarea'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace(/[0-9]+/gi, vall - 1);
-                name = name.replace(/[0-9]+/gi, vall - 1);
-                $(this).html("");
-                $(this).attr('name', name);
-                $(this).attr('id', id);
-            });
-            $.each(template.find('input[type=hidden]'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace(/[0-9]+/gi, vall - 1);
-                name = name.replace(/[0-9]+/gi, vall - 1);
-                $(this).attr('name', name);
-                $(this).attr('id', id);
-                $(this).val(vall);
-            });
-            $.each(template.find('select'), function () {
-                var name = $(this).attr('name');
-                var id = $(this).attr('id');
-                id = id.replace(/[0-9]+/gi, vall - 1);
-                name = name.replace(/[0-9]+/gi, vall - 1);
-                $(this).attr('name', name);
-                $(this).attr('id', id)
-            });
-            $('#myTable').append(template);
-        })*/
         $('#addRow').click(function () {
             window.location.href = '/SB_Problems/SendProblem';
         });
@@ -124,7 +67,7 @@
     }
 </style>
 <h2>Замечания</h2>
-<input hidden id="feedbackCount" value="@Model.list.sb_problems.Count()"/>
+
 @using (Html.BeginForm("Problems", "SB_Problems", FormMethod.Post, new { id = "Form" }))
 {
     @Html.TextBoxFor(m => m.Period, new { @class = "monthpicker" })
@@ -179,8 +122,6 @@
                     </tr>
                     if (LoginViewModel.IsMemberOf(Model.username, "SB_Admin") || LoginViewModel.IsMemberOf(Model.username, "FusionAdmin"))
                     {
-                        if (Model.Period.Month + Model.Period.Year == Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year)
-                        {
                             <tr class="records" style="background-color: @adminColor">
                                 <td id="di" style="display: none">@Model.problems[i].id</td>
                                 <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @class = "form-control", @required = "true" })</td>
@@ -191,12 +132,9 @@
                                 @Html.HiddenFor(m => m.problems[i].id)
                                 @Html.HiddenFor(m => m.problems[i].sb_managers.name)
                             </tr>
-                        }
                     }
                     else
                     {
-                        if (Model.Period.Month + Model.Period.Year == Model.problems[i].date.Value.Month + Model.problems[i].date.Value.Year && Model.username == Model.problems[i].sb_managers.domain_name)
-                        {
                             <tr class="records" style="background-color: @color">
                                 <td id="di" style="display: none">@Model.problems[i].id</td>
                                 <td>@Html.TextBoxFor(m => m.problems[i].date, new { @type = "date", @Value = Model.problems[i].date.Value.ToString("yyyy-MM-dd"), @disabled = "true", @class = "form-control" })</td>
@@ -207,7 +145,6 @@
                                 @Html.HiddenFor(m => m.problems[i].id)
                                 @Html.HiddenFor(m => m.problems[i].sb_managers.name)
                             </tr>
-                        }
                     }
                 }
             </tbody>

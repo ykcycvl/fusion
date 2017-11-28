@@ -46,7 +46,7 @@ namespace Fusion.Models
         public List<manags> ManagersList { get; set; }
         public void getProblems()
         {
-            problems = list.sb_problems.ToList();
+            problems = list.sb_problems.Where(m => m.date.Value.Month == Period.Month && m.date.Value.Year == Period.Year).ToList();
             restaurants = list.sb_restaurants.ToList();
             managers = list.sb_managers.ToList();
             rights = list.sb_rights.ToList();

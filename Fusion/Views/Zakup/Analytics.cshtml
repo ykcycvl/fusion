@@ -134,18 +134,22 @@
                     <thead>
                         <tr class="info">
                             <th>Наименование</th>
+                            <th>Кол-во заявок по номенклатуре</th>
                             <th>Кол-во заказанных номенклатур</th>
                             <th>Ед. измерения</th>
+                            <th>Цена</th>
                             <th>Сумма</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new {measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price) }))
+                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new {measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price), price = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_nomenclature.Price, countNom = g.FirstOrDefault(m => m.bd_nomenclature.name == g.Key).count }))
                         {
                             <tr>
                                 <td>@it.name</td>
                                 <td>@it.count</td>
+                                <td>@it.countNom</td>
                                 <td>@it.measurement</td>
+                                <td>@it.price</td>
                                 <td>@it.summ</td>
                             </tr>
                         }
