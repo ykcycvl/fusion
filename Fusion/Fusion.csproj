@@ -5577,6 +5577,8 @@
     <Content Include="Views\Zakup\addReclamation.cshtml" />
     <Content Include="Views\Zakup\Reclamation.cshtml" />
     <Content Include="Views\Salary\GetBioTimeData.cshtml" />
+    <Content Include="Views\Zakup\Orders_by_employees.cshtml" />
+    <Content Include="Views\Zakup\Remnants_rest.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
