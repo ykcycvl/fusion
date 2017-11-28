@@ -46,8 +46,9 @@
         <th>Период регистрации</th>
         <th>Организация</th>
         <th>&nbsp;</th>
+        <th>&nbsp;</th>
     </tr>
-    @foreach (var d in Model.Documents)
+    @foreach (var d in Model.Documents.OrderByDescending(p => p.Date))
     {
         string textDecoration = "none";
         string color = "#000";
@@ -75,6 +76,9 @@
             {
                 <td>Не проведен</td>
             }
+            <td>
+                @Html.ActionLink("BioTime", "GetBioTimeData", new { @number=d.Number, @orgname=d.Organization.Name, @year=d.Date.Year })
+            </td>
         </tr>
     }
 </table>

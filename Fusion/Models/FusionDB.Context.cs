@@ -68,5 +68,7 @@ namespace Fusion.Models
         public virtual DbSet<VegaPersonalSetting> VegaPersonalSetting { get; set; }
         public virtual DbSet<VegaSetting> VegaSetting { get; set; }
         public virtual DbSet<hostip> hostip { get; set; }
+        public virtual DbSet<bd_nomenclature_state> bd_nomenclature_state { get; set; }
+        public virtual DbSet<bd_rests> bd_rests { get; set; }
     }
 }

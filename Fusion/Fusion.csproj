@@ -296,6 +296,9 @@
     <Compile Include="Models\bd_nomenclature.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\bd_nomenclature_state.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\bd_order.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -306,6 +309,9 @@
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\bd_reclamation_problems.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\bd_rests.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\bd_states.cs">
@@ -5570,6 +5576,7 @@
     <Content Include="Views\Content\List.cshtml" />
     <Content Include="Views\Zakup\addReclamation.cshtml" />
     <Content Include="Views\Zakup\Reclamation.cshtml" />
+    <Content Include="Views\Salary\GetBioTimeData.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

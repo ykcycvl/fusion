@@ -64,6 +64,14 @@
           <Property Name="measurement_id" Type="int" Nullable="false" />
           <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
           <Property Name="Count" Type="int" />
+          <Property Name="state" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_nomenclature_state">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="bd_order">
           <Key>
@@ -109,6 +117,15 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="problem" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bd_rests">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nomenclature_id" Type="int" Nullable="false" />
+          <Property Name="restaurant_id" Type="int" Nullable="false" />
+          <Property Name="count" Type="int" />
         </EntityType>
         <EntityType Name="bd_states">
           <Key>
@@ -486,6 +503,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bd_nomenclature_state">
+          <End Role="bd_nomenclature_state" Type="Self.bd_nomenclature_state" Multiplicity="1" />
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature_state">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_bd_nomenclature_vendor_id">
           <End Role="bd_vendor" Type="Self.bd_vendor" Multiplicity="1" />
           <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="*" />
@@ -627,6 +656,30 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="bd_reclamation">
               <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_rests_nomenclature_id">
+          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="1" />
+          <End Role="bd_rests" Type="Self.bd_rests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_rests">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_rests_restaurant_id">
+          <End Role="bd_subdivision" Type="Self.bd_subdivision" Multiplicity="1" />
+          <End Role="bd_rests" Type="Self.bd_rests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_rests">
+              <PropertyRef Name="restaurant_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -877,10 +930,12 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_employee" EntityType="Self.bd_employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_measurement" EntityType="Self.bd_measurement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_nomenclature" EntityType="Self.bd_nomenclature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_nomenclature_state" EntityType="Self.bd_nomenclature_state" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_order" EntityType="Self.bd_order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_organization" EntityType="Self.bd_organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_reclamation" EntityType="Self.bd_reclamation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_reclamation_problems" EntityType="Self.bd_reclamation_problems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_rests" EntityType="Self.bd_rests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_states" EntityType="Self.bd_states" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_subdivision" EntityType="Self.bd_subdivision" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_vendor" EntityType="Self.bd_vendor" Schema="dbo" store:Type="Tables" />
@@ -941,6 +996,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_measurement" EntitySet="bd_measurement" />
             <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
           </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_state" Association="Self.FK_bd_nomenclature_state">
+            <End Role="bd_nomenclature_state" EntitySet="bd_nomenclature_state" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
           <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="Self.FK_bd_nomenclature_vendor_id">
             <End Role="bd_vendor" EntitySet="bd_vendor" />
             <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
@@ -988,6 +1047,14 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_reclamation_vendor_id" Association="Self.FK_bd_reclamation_vendor_id">
             <End Role="bd_vendor" EntitySet="bd_vendor" />
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_rests_nomenclature_id" Association="Self.FK_bd_rests_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_rests" EntitySet="bd_rests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_rests_restaurant_id" Association="Self.FK_bd_rests_restaurant_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_rests" EntitySet="bd_rests" />
           </AssociationSet>
           <AssociationSet Name="FK_bd_subdivision_organization_id" Association="Self.FK_bd_subdivision_organization_id">
             <End Role="bd_organization" EntitySet="bd_organization" />
@@ -1258,6 +1325,20 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_states" EntitySet="bd_states" />
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
           </AssociationSet>
+          <EntitySet Name="bd_nomenclature_state" EntityType="FusionDBModels.bd_nomenclature_state" />
+          <EntitySet Name="bd_rests" EntityType="FusionDBModels.bd_rests" />
+          <AssociationSet Name="FK_bd_nomenclature_state" Association="FusionDBModels.FK_bd_nomenclature_state">
+            <End Role="bd_nomenclature_state" EntitySet="bd_nomenclature_state" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_rests_nomenclature_id" Association="FusionDBModels.FK_bd_rests_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_rests" EntitySet="bd_rests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_rests_restaurant_id" Association="FusionDBModels.FK_bd_rests_restaurant_id">
+            <End Role="bd_subdivision" EntitySet="bd_subdivision" />
+            <End Role="bd_rests" EntitySet="bd_rests" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -1331,6 +1412,9 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <NavigationProperty Name="bd_vendor" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
           <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
           <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_reclamation" />
+          <Property Name="state" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bd_nomenclature_state" Relationship="FusionDBModels.FK_bd_nomenclature_state" FromRole="bd_nomenclature" ToRole="bd_nomenclature_state" />
+          <NavigationProperty Name="bd_rests" Relationship="FusionDBModels.FK_bd_rests_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_rests" />
         </EntityType>
         <EntityType Name="bd_order">
           <Key>
@@ -1411,6 +1495,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <NavigationProperty Name="bd_employee" Relationship="FusionDBModels.FK_bd_employee_subdiv_id" FromRole="bd_subdivision" ToRole="bd_employee" />
           <NavigationProperty Name="bd_organization" Relationship="FusionDBModels.FK_bd_subdivision_organization_id" FromRole="bd_subdivision" ToRole="bd_organization" />
           <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_restaurant_id" FromRole="bd_subdivision" ToRole="bd_reclamation" />
+          <NavigationProperty Name="bd_rests" Relationship="FusionDBModels.FK_bd_rests_restaurant_id" FromRole="bd_subdivision" ToRole="bd_rests" />
         </EntityType>
         <EntityType Name="bd_vendor">
           <Key>
@@ -2162,6 +2247,61 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="bd_nomenclature_state">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_nomenclature_state" FromRole="bd_nomenclature_state" ToRole="bd_nomenclature" />
+        </EntityType>
+        <EntityType Name="bd_rests">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nomenclature_id" Type="Int32" Nullable="false" />
+          <Property Name="restaurant_id" Type="Int32" Nullable="false" />
+          <Property Name="count" Type="Int32" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_rests_nomenclature_id" FromRole="bd_rests" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_rests_restaurant_id" FromRole="bd_rests" ToRole="bd_subdivision" />
+        </EntityType>
+        <Association Name="FK_bd_nomenclature_state">
+          <End Type="FusionDBModels.bd_nomenclature_state" Role="bd_nomenclature_state" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature_state">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_rests_nomenclature_id">
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_rests" Role="bd_rests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_rests">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_rests_restaurant_id">
+          <End Type="FusionDBModels.bd_subdivision" Role="bd_subdivision" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_rests" Role="bd_rests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_subdivision">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_rests">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2224,6 +2364,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySetMapping Name="bd_nomenclature">
             <EntityTypeMapping TypeName="FusionDBModels.bd_nomenclature">
               <MappingFragment StoreEntitySet="bd_nomenclature">
+                <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
@@ -2639,6 +2780,24 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
               <ScalarProperty Name="id" ColumnName="ipaddressid" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="bd_nomenclature_state">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_nomenclature_state">
+              <MappingFragment StoreEntitySet="bd_nomenclature_state">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_rests">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_rests">
+              <MappingFragment StoreEntitySet="bd_rests">
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

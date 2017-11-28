@@ -23,11 +23,30 @@ namespace Fusion.Controllers
             return View();
         }
         [MyAuthorize(Roles = "VegaCMAdmin, ZUP")]
-        public ActionResult GetBioTimeData()
+        public ActionResult GetBioTimeData(string orgname, string period, string number, int? year)
         {
-            SalaryModels.Vega1CWS.BioTimeViewModel model = new SalaryModels.Vega1CWS.BioTimeViewModel();
-            model.Test(User.Identity.Name);
-            return View();
+            SalaryModels.Vega1CWS.TimeSheetViewModel model = new SalaryModels.Vega1CWS.TimeSheetViewModel();
+
+            if (!String.IsNullOrEmpty(orgname))
+                model.FullName = orgname;
+
+            if (!String.IsNullOrEmpty(period))
+                model.Period = DateTime.Parse(period);
+            else
+                model.Period = new DateTime(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month, 1);
+
+            model.GetOrganizationList(User.Identity.Name);
+
+            if (!String.IsNullOrEmpty(number) && year != null)
+                model.GetBioTimeData(number, (int)year, User.Identity.Name);
+            else
+                if (!String.IsNullOrEmpty(orgname) && !String.IsNullOrEmpty(period))
+            {
+                model.CreateDocument(User.Identity.Name);
+                return RedirectToAction("TimeSheet", new { number = model.DocNumber, year = model.Date.Year });
+            }
+
+            return View(model);
         }
 
         [MyAuthorize(Roles = "VegaCMAdmin, ZUP")]

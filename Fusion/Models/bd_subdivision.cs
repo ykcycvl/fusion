@@ -18,6 +18,7 @@ namespace Fusion.Models
         {
             this.bd_employee = new HashSet<bd_employee>();
             this.bd_reclamation = new HashSet<bd_reclamation>();
+            this.bd_rests = new HashSet<bd_rests>();
         }
     
         public int id { get; set; }
@@ -28,5 +29,6 @@ namespace Fusion.Models
         public virtual ICollection<bd_employee> bd_employee { get; set; }
         public virtual bd_organization bd_organization { get; set; }
         public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
+        public virtual ICollection<bd_rests> bd_rests { get; set; }
     }
 }

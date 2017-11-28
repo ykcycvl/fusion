@@ -83,6 +83,11 @@
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <AssociationConnector Association="FusionDBModels.serverip" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_state_id" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="1.5" PointX="0.75" PointY="4.375" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_rests" Width="1.5" PointX="5.25" PointY="17.25" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_rests_nomenclature_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_rests_restaurant_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

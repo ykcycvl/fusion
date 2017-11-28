@@ -25,6 +25,7 @@ namespace Fusion.Models
             public string Period { get; set; }
             public DateTime Date { get; set; }
             public string Hours { get; set; }
+            public string source { get; set; }
             public int? d1 { get; set; }
             public int? d2 { get; set; }
             public int? d3 { get; set; }
@@ -232,6 +233,7 @@ namespace Fusion.Models
             public List<ZupWS.Detention> Detentions { get; set; }
             public List<ZupWS.Accrual> Accruals { get; set; }
             public List<HourPerDay> TimeSheet { get; set; }
+            public List<HourPerDay> BioTimeData { get; set; }
             public Decimal AccrualsSum { get; set; }
             public Decimal DetentionsSum { get; set; }
             public string Rate { get; set; }
@@ -443,6 +445,116 @@ namespace Fusion.Models
                         }
                     }
                 }
+                public void GetBioTimeData(string Number, int year, string username)
+                {
+                    GetDocument(Number, year, username);
+
+                    using (ZupWS.VegaWS service = new ZupWS.VegaWS())
+                    {
+                        service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
+
+                        var doc = service.GetBIOLINKInfo(username, Number, year);
+                        DocNumber = doc.Number;
+                        Date = doc.Date;
+                        CarriedOut = doc.CarriedOut;
+                        FullName = doc.Organization.Name;
+                        Period = doc.RegistrationPeriod;
+
+                        foreach (var etsi in doc.Employees)
+                        {
+                            if (Subdivisions == null)
+                                Subdivisions = new List<Subdivision>();
+
+                            Subdivision s = Subdivisions.FirstOrDefault(p => p.Code == etsi.SubdivisionCode);
+
+                            if (s == null)
+                            {
+                                s = new Subdivision() { Employees = new List<Employee>(), Code = etsi.SubdivisionCode, FullName = etsi.Subdivision };
+                                Subdivisions.Add(s);
+                            }
+
+                            Employee e = s.Employees.FirstOrDefault(p => p.Code == etsi.Code);
+
+                            if (e == null)
+                            {
+                                e = new Employee() { Code = etsi.Code, FullName = etsi.Name, Position = etsi.Position, Rate = etsi.Rate, BioTimeData = new List<HourPerDay>() };
+                                s.Employees.Add(e);
+                            }
+
+                            e.BioTimeData = new List<HourPerDay>();
+
+                            if (Convert.ToDecimal(etsi.TimeSheet.d1) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 1), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d1)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d2) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 2), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d2)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d3) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 3), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d3)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d4) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 4), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d4)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d5) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 5), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d5)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d6) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 6), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d6)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d7) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 7), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d7)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d8) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 8), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d8)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d9) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 9), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d9)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d10) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 10), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d10)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d11) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 11), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d11)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d12) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 12), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d12)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d13) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 13), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d13)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d14) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 14), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d14)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d15) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 15), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d15)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d16) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 16), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d16)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d17) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 17), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d17)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d18) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 18), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d18)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d19) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 19), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d19)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d20) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 20), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d20)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d21) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 21), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d21)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d22) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 22), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d22)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d23) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 23), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d23)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d24) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 24), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d24)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d25) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 25), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d25)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d26) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 26), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d26)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d27) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 27), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d27)) });
+                            if (Convert.ToDecimal(etsi.TimeSheet.d28) != 0)
+                                e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 28), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d28)) });
+
+                            try
+                            {
+                                if (Convert.ToDecimal(etsi.TimeSheet.d29) != 0)
+                                    e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 29), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d29)) });
+                                if (Convert.ToDecimal(etsi.TimeSheet.d30) != 0)
+                                    e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 30), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d30)) });
+                                if (Convert.ToDecimal(etsi.TimeSheet.d31) != 0)
+                                    e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 31), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d31)) });
+                            }
+                            catch { }
+
+                            s.Employees.OrderBy(p => p.Position).ThenBy(p => p.FullName);
+                        }
+                    }
+                }
                 public void CreateDocument(string username)
                 {
                     using (ZupWS.VegaWS service = new ZupWS.VegaWS())
@@ -475,6 +587,9 @@ namespace Fusion.Models
 
                         foreach (var e in ETS)
                         {
+                            if (e.source != null && e.source == "BioTime")
+                                continue;
+
                             DocNumber = e.DocNumber;
                             year = e.Date.Year;
                             ZupWS.Employee employee = new ZupWS.Employee();

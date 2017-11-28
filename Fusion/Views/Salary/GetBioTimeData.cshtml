@@ -1,7 +1,7 @@
 ﻿@model Fusion.Models.SalaryModels.Vega1CWS.TimeSheetViewModel
 
 @{
-    ViewBag.Title = "Ведомость " + Model.FullName;
+    ViewBag.Title = "Данные БиоТайм " + Model.FullName;
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 
     int daysCount = DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month);
@@ -31,27 +31,80 @@
     {
         TableData += "{ id: \"sub" + subdivision.FullName + "\", subdiv: \"" + subdivision.FullName + "\", $css:\"subhighlight\" },\r\n";
 
+        bool ngroup = false;
+
         foreach (var e in subdivision.Employees)
         {
             j++;
-            TableData += "{ id: " + j.ToString() + ", Code: \"" + e.Code + "\", Organization: \""
+            ngroup = false;
+            string dataMismatchCSS = ", $cellCss: {";
+            string css = "";
+
+            TableData += "{ isbt: false, Code: \"" + e.Code + "\", Organization: \""
                 + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
                 + Model.DocNumber + "\", Date: \"" + Model.Date.ToString("yyyy-MM-dd") + "\", Position: \""
                 + e.Position + "\", subdiv: \"" + subdivision.FullName + "\", FullName: \""
-                + e.FullName + "\", Rate: \"" + e.Rate + "\"";
+                + e.FullName + "\", Rate: \"" + e.Rate + "\", source:\"РВ\"";
+
+            for (int i = 0; i < daysCount; i++)
+            {
+                var ts = e.TimeSheet.FirstOrDefault(p => p.Day.Day == (i + 1));
+                var bt = e.BioTimeData.FirstOrDefault(p => p.Day.Day == (i + 1));
+
+                if (ts != null)
+                {
+                    if (bt == null || ts.Hours != bt.Hours)
+                    {
+                        dataMismatchCSS += "d" + (i + 1).ToString() + ": \"mismatch\", ";
+                    }
+                }
+                else
+                {
+                    if (bt != null)
+                    {
+                        dataMismatchCSS += "d" + (i + 1).ToString() + ": \"mismatch\", ";
+                    }
+                }
+            }
 
             for (int i = 0; i < e.TimeSheet.Count; i++)
             {
                 TableData += ", d" + e.TimeSheet[i].Day.Day.ToString() + ": \"" + e.TimeSheet[i].Hours.ToString() + "\"";
+
+                var t = e.BioTimeData.FirstOrDefault(p => p.Day.Day == e.TimeSheet[i].Day.Day);
             }
 
-            TableData += "},";
+            if (ngroup)
+            {
+                css = ", $css:\"bthighlighttop\"";
+            }
+
+            TableData += dataMismatchCSS + "} " + css + "},";
+
+            TableData += "{ isbt: true, Code: \"" + e.Code + "_BT\", Organization: \""
+                + Model.FullName + "\", Period: \"" + Model.Period + "\", DocNumber: \""
+                + Model.DocNumber + "\", Date: \"" + Model.Date.ToString("yyyy-MM-dd") + "\", Position: \""
+                + e.Position + "\", subdiv: \"" + subdivision.FullName + "\", FullName: \""
+                + e.FullName + "\", Rate: \"" + e.Rate + "\", source: \"BioTime\"";
+
+            for (int i = 0; i < e.BioTimeData.Count; i++)
+            {
+                TableData += ", d" + e.BioTimeData[i].Day.Day.ToString() + ": \"" + e.BioTimeData[i].Hours.ToString() + "\"";
+            }
+
+            if (ngroup)
+            {
+                css = ", $css:\"bthighlightbottom\"";
+            }
+
+            TableData += css + "},";
         }
+
     }
 
     foreach (var subdivision in Model.Subdivisions)
     {
-        //SpansData += "[\"subКухня\", \"subdiv\", 3, 21]";
+        SpansData += "[ \"sub" + subdivision.Code + "\", \"subdiv\", 2, 1, null, \"subhighlight\" ],\r\n";
     }
 }
 
@@ -94,6 +147,26 @@
     </div>
 }
 
+<div class="alert alert-danger">
+    <p>
+        Пометка в колонке "Источник":
+        <br/>
+        РВ - ручной ввод
+        <br/>
+        BioTime - данные, полученные из BioLink BioTime
+        <br/>
+        <br />
+        В случае, если данные не совпдают, ячейка, в которой значение проставлена вручную, "подсвечивается" цветом.
+    </p>
+    <p>
+        Данные для редактирования доступны только в строках, источник которых "ручной ввод". Данные из BioTime недоступны для редактирования. В данный момент эти данные используются как "справочные", однако в скором времени будет заблокирована возможность 
+        "ручного ввода", за исключением случаев, когда необходима корректировка.
+    </p>
+    <p>
+        Также, сейчас есть возможность "вбивать" более 14 часов за смену одному сотруднику. Однако, в дальнейшем этой возможности не будет. Необходимо соблюдать трудовое законодательство.
+    </p>
+</div>
+
 <script src="~/Scripts/codebase/webix.js"></script>
 <link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
 <script src="~/Scripts/codebase/i18n/ru.js"></script>
@@ -122,8 +195,22 @@
         margin-left: 0px;
     }
 
+    .bthighlighttop {
+        color: #000;
+        border-top: 1px dotted #888;
+    }
+
+    .bthighlightbottom {
+        color: #000;
+        border-bottom: 1px dotted #888 !important;
+    }
+
+    .mismatch {
+        background-color: #ffbdbc;
+    }
+
     .subhighlight {
-        background-color: #edf4f9;
+        background-color: #b7caec;
         font-weight: bold;
     }
 
@@ -169,7 +256,7 @@
 
         var docnumber = "@Model.DocNumber";
 
-        if (docnumber == null || docnumber == '' || @Model.CarriedOut.ToString().ToLower())
+        if (docnumber == null || docnumber == '' || @Model.CarriedOut)
             clearInterval(timerId);
 
         if ((docnumber == null || docnumber == ''))
@@ -193,6 +280,7 @@
             rowHeight: 23,
             padding: 5,
             columns: [
+              { id: "isbt", header: "", hidden: "true" },
               { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
               { id: "DocNumber", header: "DocNumber", hidden: "true" },
               { id: "Date", header: "Date", hidden: "true" },
@@ -202,14 +290,15 @@
               { id: "subdiv", header: [{ text: "Подразд." }, { content: "selectFilter" }], width: 80 },
               { id: "Position", header: "Должность", width: 150},
               { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 230 },
+              { id: "source", header: [{ text: "Источник" }, { content: "selectFilter" }], width: 70 },
               { id: "Rate", header: "Оклад" },
               { id: "hours", header: "Итого", width: 50, math: "[$r,d1] + [$r,d2]+ [$r,d3]+ [$r,d4]+ [$r,d5]+ [$r,d6]+ [$r,d7]+ [$r,d8]+ [$r,d9]+ [$r,d10]+ [$r,d11]+ [$r,d12]+ [$r,d13]+ [$r,d14]+ [$r,d15]+ [$r,d16]+ [$r,d17]+ [$r,d18]+ [$r,d19]+ [$r,d20]+ [$r,d21]+ [$r,d22]+ [$r,d23]+ [$r,d24]+ [$r,d25]+ [$r,d26]+ [$r,d27]+ [$r,d28]+ [$r,d29]+ [$r,d30]+ [$r,d31]" },
               @Html.Raw(monthColumn)
             ],
-            spans: true,
             rules:{
                 @Html.Raw(rules)
             },
+            spans: true,
             data: {
                 data: [
                     @Html.Raw(TableData)
@@ -217,6 +306,13 @@
                 spans: [
                     @Html.Raw(SpansData)
                 ]
+            },
+            on: {
+                onBeforeEditStart: function (id) {
+                    var row = id.row;
+                    var column = id.column;
+                    return !this.getItem(id.row)["isbt"];
+                }
             },
             editable: @((!Model.CarriedOut).ToString().ToLower()),
             select: "cell",
@@ -253,13 +349,14 @@
     function Save() {
         var grid = $$("grid");
         var filter = grid.getFilter("FullName").value;
-		var subdivFilter = grid.getFilter("subdiv").value;
+        var subdivFilter = grid.getFilter("subdiv").value;
+        var sourceFilter = grid.getFilter("source").value;
         var carriedOut = @Model.CarriedOut.ToString().ToLower();
 
         if(carriedOut)
             return;
 
-        if(filter != "" || subdivFilter != "")
+        if (filter != "" || subdivFilter != "" || sourceFilter != "")
         {
             alert("Сохранение документа невозможно, так как установлен фильтр! Перед сохранением удалите, пожалуйста, фильтр!");
             return;
@@ -287,8 +384,9 @@
         var grid = $$("grid");
         var filter = grid.getFilter("FullName").value;
         var subdivFilter = grid.getFilter("subdiv").value;
+        var sourceFilter = grid.getFilter("source").value;
 
-        if (filter != "" || subdivFilter != "")
+        if (filter != "" || subdivFilter != "" || sourceFilter != "")
         {
             webix.message({
                 type: "error",

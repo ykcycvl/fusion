@@ -18,6 +18,7 @@ namespace Fusion.Models
         {
             this.bd_order = new HashSet<bd_order>();
             this.bd_reclamation = new HashSet<bd_reclamation>();
+            this.bd_rests = new HashSet<bd_rests>();
         }
     
         public int id { get; set; }
@@ -27,11 +28,14 @@ namespace Fusion.Models
         public int measurement_id { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> Count { get; set; }
+        public int state { get; set; }
     
         public virtual bd_category bd_category { get; set; }
         public virtual bd_measurement bd_measurement { get; set; }
         public virtual bd_vendor bd_vendor { get; set; }
         public virtual ICollection<bd_order> bd_order { get; set; }
         public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
+        public virtual bd_nomenclature_state bd_nomenclature_state { get; set; }
+        public virtual ICollection<bd_rests> bd_rests { get; set; }
     }
 }
