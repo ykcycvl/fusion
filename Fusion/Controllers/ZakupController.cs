@@ -147,7 +147,7 @@ namespace Fusion.Controllers
                     Export["Количество"] = it.count;
                     Export["Сумма"] = it.count * it.bd_nomenclature.Price;
                     Export["Ресторан"] = it.bd_employee.bd_subdivision.name;
-                    Export["Юр. лицо"] = it.bd_organization.name;
+                    Export["Юр. лицо"] = model.list.bd_subdivision.FirstOrDefault(m => m.id == it.bd_employee.subdiv_id).bd_organization.name;
                     Export["Поставщик"] = it.bd_nomenclature.bd_vendor.name;
                 }
                 return File(Export.ExportToBytesWin(), "text/csv", "Заявки за " + model.export.date + " для " + model.export.VendorName_Name + ".csv");
