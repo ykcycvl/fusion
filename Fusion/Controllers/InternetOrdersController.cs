@@ -31,6 +31,7 @@ namespace Fusion.Controllers
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
         public ActionResult Print(int id)
         {
+            ViewBag.ErrorMessage = "";
             InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
             model.GetOrder(id, User.Identity.Name.ToString());
 
@@ -41,6 +42,42 @@ namespace Fusion.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "Произошлая какая-то ебаная ебала при обновлении статуса. Ошибка ниже: " + ex.Message;
+            }
+
+            try
+            {
+                var autoSendToDelivery = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "SendOrderToDelivery" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+
+                if (autoSendToDelivery != null && !string.IsNullOrEmpty(autoSendToDelivery.SettingValue) && autoSendToDelivery.SettingValue == "true")
+                {
+                    var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
+                    var internetOrderSetStatusF = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                    var extSourceID = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+
+                    if (order == null)
+                    {
+                        order = db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now, Success = false });
+                        db.SaveChanges();
+                    }
+
+                    string esid = "31";
+
+                    if (extSourceID != null && !String.IsNullOrEmpty(extSourceID.SettingValue))
+                        esid = extSourceID.SettingValue;
+
+                    InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString(), esid);
+
+                    if (response.Success)
+                    {
+                        order.Success = true;
+                    }
+
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage += " Ошибка при оформлении интернет-заказа: " + ex.Message;
             }
 
             return View(model);
@@ -71,7 +108,7 @@ namespace Fusion.Controllers
             var internetOrderSetStatusF = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName == User.Identity.Name.ToString());
             var extSourceID = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName == User.Identity.Name.ToString());
 
-            if (order == null || (order != null && !order.Success))
+            if (order == null || order != null)
             {
                 if (order == null)
                 {
