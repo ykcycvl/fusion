@@ -23,5 +23,12 @@ namespace Fusion.Controllers
             var settings = db.VegaSetting.ToList();
             return View(settings);
         }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Settings(List<Fusion.Models.VegaSetting> model)
+        {
+            return View(model);
+        }
     }
 }

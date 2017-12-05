@@ -16,7 +16,7 @@
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script>
         $(document).ready(function () {
-            print("");
+            //print("");
         });
     </script>
     <style>
@@ -61,6 +61,9 @@
 <body bgcolor=white lang=RU style='tab-interval:35.4pt'>
     <div style="color: #f00">
         @ViewBag.ErrorMessage
+    </div>
+    <div>
+        <a href="/InternetOrders/CallToGuest?id=@Model.id.ToString()" target="_blank" title="Позвонить"><img src="~/images/phone-2-xxl.png" alt="Позвонить" style="width: 30px; border: 1px solid #f00; border-radius: 5px; padding: 5px;"/></a>
     </div>
     <div class=Section1>
         <p>

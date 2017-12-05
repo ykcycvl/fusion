@@ -1,0 +1,37 @@
+﻿@model Fusion.Models.Settings
+
+@{
+    ViewBag.Title = "Привязки пользователей между системами";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("UserDataBind", "Settings", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Доменный логин
+            </th>
+            <th>
+                ID пользователя Битрикс
+            </th>
+        </tr>
+        @for(int i = 0; i < Model.UserDataBinds.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.HiddenFor(m => m.UserDataBinds[i].id)
+                    @Html.TextBoxFor(m => m.UserDataBinds[i].adlogin, new { @class="form-control" })
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.UserDataBinds[i].bitrixId, new { @class = "form-control" })
+                </td>
+            </tr>
+        }
+    </table>
+
+    <input type="submit" value="Сохранить" class="btn btn-default" />
+}

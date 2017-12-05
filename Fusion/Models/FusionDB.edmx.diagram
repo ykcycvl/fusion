@@ -18,7 +18,6 @@
         <EntityTypeShape EntityType="FusionDBModels.bd_states" Width="1.5" PointX="5.25" PointY="14.125" />
         <EntityTypeShape EntityType="FusionDBModels.bd_subdivision" Width="1.5" PointX="3" PointY="6.5" />
         <EntityTypeShape EntityType="FusionDBModels.bd_vendor" Width="1.5" PointX="0.75" PointY="10.125" />
-        <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="5.75" PointY="1.5" />
         <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="15" PointY="17" />
         <EntityTypeShape EntityType="FusionDBModels.CRMSended" Width="1.5" PointX="19.75" PointY="5.5" />
         <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="17.25" PointY="20.375" />
@@ -88,6 +87,7 @@
         <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
         <AssociationConnector Association="FusionDBModels.FK_bd_rests_nomenclature_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_rests_restaurant_id" />
+        <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -347,79 +347,58 @@
     }
 
     webix.ready(function () {
-        var hours_format = 
+        var hours_format =
         grid = webix.ui({
             container: "tabl",
-            rows: [
-				{
-				    id: "grid",
-                    view: "datatable",
-                    leftSplit: 9,
-                    rowHeight: 23,
-                    padding: 1,
-                    headermenu: true,
-                    resizeColumn: true,
-                    columns: [
-                      { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
-                      { id: "DocNumber", header: "DocNumber", hidden: "true" },
-                      { id: "Period", header: "Period", hidden: "true" },
-                      { id: "Organization", header: "Organization", hidden: "true" },
-                      { id: "Code", header: "Code", hidden: "true" },
-                      { id: "subdiv", header: [{ text: "Подразд." }, { content: "selectFilter" }], width: 80 },
-                      { id: "Position", header: "Должность", width: 130 },
-                      { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 210 },
-                      { id: "Rate", header: "Оклад", width: 60 },
-                      { id: "Hours", header: "Итого часы", css:"readonly", width: 50 },
-                      @Html.Raw(accColumns)
-                      @Html.Raw(totalaccsum)
-                      @Html.Raw(detColumns)
-                      @Html.Raw(totaldetsum)
-                      @Html.Raw(aadsum)
-                    ],
-                    rules:{
-                        @Html.Raw(rules)
-                    },
-				    spans: true,
-				    scheme:{
-				        $init:function(obj){
-				            obj.Hours = Number.parseInt(obj.Hours) || 0;
-				            obj.totaldetsum = Number.parseInt(obj.totalaccsum) || 0;
-				            obj.totaldetsum = Number.parseInt(obj.totaldetsum) || 0;
-				        }
-				    },
-                    data: {
-                        data: [
-                        @Html.Raw(TableData)
-                        ]
-                    },
-                    editable: true,
-                    select: "cell",
-                    multiselect: true,
-                    blockselect: true,
-                    clipboard: "block",
-                    navigation: "true",
-                    editaction: "dblclick",
-                    height: 500,
-                    math: true
-				},
-				{
-				    view: "form",
-				    css: "toolbar",
-				    paddingY: 5,
-				    paddingX: 10,
-				    cols:[
-						{
-						    view: "label", label: "Экспорт в Excel"
-						},
-                        {
-                            view: "button", label: "Скачать", width: 150, click:function(){
-                                ExportToExcel();
-                            }
-                        }
-				    ]
-
+            id: "grid",
+            view: "datatable",
+            leftSplit: 9,
+            rowHeight: 23,
+            padding: 1,
+            headermenu: true,
+            resizeColumn: true,
+            columns: [
+                { id: "subdivisiionId", header: "subdivisiionId", hidden: "true" },
+                { id: "DocNumber", header: "DocNumber", hidden: "true" },
+                { id: "Period", header: "Period", hidden: "true" },
+                { id: "Organization", header: "Organization", hidden: "true" },
+                { id: "Code", header: "Code", hidden: "true" },
+                { id: "subdiv", header: [{ text: "Подразд." }, { content: "selectFilter" }], width: 80 },
+                { id: "Position", header: "Должность", width: 130 },
+                { id: "FullName", header: [{ text: "ФИО" }, { content: "selectFilter" }], width: 210 },
+                { id: "Rate", header: "Оклад", width: 60 },
+                { id: "Hours", header: "Итого часы", css:"readonly", width: 50 },
+                @Html.Raw(accColumns)
+                @Html.Raw(totalaccsum)
+                @Html.Raw(detColumns)
+                @Html.Raw(totaldetsum)
+                @Html.Raw(aadsum)
+            ],
+            rules:{
+                @Html.Raw(rules)
+            },
+			spans: true,
+			scheme:{
+				$init:function(obj){
+				    obj.Hours = Number.parseInt(obj.Hours) || 0;
+				    obj.totaldetsum = Number.parseInt(obj.totalaccsum) || 0;
+				    obj.totaldetsum = Number.parseInt(obj.totaldetsum) || 0;
 				}
-            ]
+			},
+            data: {
+                data: [
+                @Html.Raw(TableData)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 500,
+            math: true
         });
 
         webix.UIManager.addHotKey("any", function (view) {
@@ -527,6 +506,7 @@
 @if (!Model.CarriedOut)
 {
     <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+    <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
 }
 
 <form action="ExportToExcel" method="post" target="_blank" id="excelForm">

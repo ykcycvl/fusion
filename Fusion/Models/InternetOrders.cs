@@ -16,6 +16,8 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace Fusion.Models
 {
@@ -42,6 +44,12 @@ namespace Fusion.Models
             public int OrderID { get; set; }
             public bool Success { get; set; }
             public string Message { get; set; }
+        }
+
+        public class Message
+        {
+            public string To { get; set; }
+            public string Phone { get; set; }
         }
 
         public class OrderInfo
@@ -944,10 +952,10 @@ where bsb.ORDER_ID = {0}", id);
                 if (this.PriceDelivery > 0 && orderType == 3)
                     items.Add(new RK7_qrySaveOrder.dishItem() { code = "322", quantity = 1000 });
 
-                if (this.DiscountPrc == 5)
+                if (this.DiscountPrc == 5 && orderType != 2)
                     items.Add(new RK7_qrySaveOrder.discountItem() { id = "1011218", code = "1000012" });
 
-                if (this.DiscountPrc == 10)
+                if (this.DiscountPrc == 10 && orderType != 2)
                     items.Add(new RK7_qrySaveOrder.discountItem() { id = "1011251", code = "1000014" });
 
 
@@ -1155,6 +1163,34 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
 
             rdr.Close();
             con.Close();
+        }
+    }
+    public class QuasiPhone
+    {
+        private StreamWriter swSender;
+        private TcpClient tcpServer;
+        private IPAddress ipAddr;
+
+        public void Send(string UserName, string Message)
+        {
+            InitializeConnection(UserName, Message);
+        }
+
+        private void InitializeConnection(string UserName, string Message)
+        {
+            ipAddr = IPAddress.Parse(WebConfigurationManager.AppSettings["QuasiServer"].ToString());
+            tcpServer = new TcpClient();
+            tcpServer.Connect(ipAddr, 1986);
+
+            swSender = new StreamWriter(tcpServer.GetStream());
+            swSender.WriteLine("vega [" + UserName + "]");
+            swSender.Flush();
+
+            swSender.WriteLine(Message);
+            swSender.Flush();
+
+            swSender.Close();
+            tcpServer.Close();
         }
     }
 }

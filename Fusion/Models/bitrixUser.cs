@@ -14,6 +14,7 @@ namespace Fusion.Models
     
     public partial class bitrixUser
     {
+        public int id { get; set; }
         public string adlogin { get; set; }
         public int bitrixId { get; set; }
     }

@@ -38,7 +38,6 @@ namespace Fusion.Models
         public virtual DbSet<bd_states> bd_states { get; set; }
         public virtual DbSet<bd_subdivision> bd_subdivision { get; set; }
         public virtual DbSet<bd_vendor> bd_vendor { get; set; }
-        public virtual DbSet<bitrixUser> bitrixUser { get; set; }
         public virtual DbSet<CRMSegment> CRMSegment { get; set; }
         public virtual DbSet<CRMSended> CRMSended { get; set; }
         public virtual DbSet<CRMToSend> CRMToSend { get; set; }
@@ -70,5 +69,6 @@ namespace Fusion.Models
         public virtual DbSet<hostip> hostip { get; set; }
         public virtual DbSet<bd_nomenclature_state> bd_nomenclature_state { get; set; }
         public virtual DbSet<bd_rests> bd_rests { get; set; }
+        public virtual DbSet<bitrixUser> bitrixUser { get; set; }
     }
 }

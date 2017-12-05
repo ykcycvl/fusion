@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Fusion.Models;
+using System.Web.Script.Serialization;
 
 namespace Fusion.Controllers
 {
@@ -29,6 +30,43 @@ namespace Fusion.Controllers
         }
 
         [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
+        public ContentResult CallToGuest(int id)
+        {
+            ContentResult cr = new ContentResult();
+            InternetOrders.OrderInfo model = new InternetOrders.OrderInfo();
+            model.GetOrder(id, User.Identity.Name.ToString());
+
+            try
+            {
+                var propsPhone = model.Properties.FirstOrDefault(p => p.OrderPropsId == 2);
+
+                if (propsPhone != null)
+                {
+                    string phone = propsPhone.Value.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "").Replace("+7", "");
+                    Fusion.Models.InternetOrders.Message message = new InternetOrders.Message() { To = User.Identity.Name.ToString().Trim().ToLower(), Phone = phone };
+                    var json = new JavaScriptSerializer().Serialize(message);
+                    QuasiPhone q = new QuasiPhone();
+                    q.Send(User.Identity.Name.ToString().ToLower(), json);
+                    cr.Content = "Запрос отправлен!";
+                }
+            }
+            catch (Exception ex)
+            {
+                cr.Content = "Не удалось отправить запрос на звонок: " + ex.Message;
+            }
+
+            cr.Content += @"<script>
+    function Close() 
+    {
+        window.close();
+    }
+    setTimeout(Close, 3000);
+</script>";
+
+            return cr;
+        }
+
+        [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
         public ActionResult Print(int id)
         {
             ViewBag.ErrorMessage = "";
@@ -46,19 +84,18 @@ namespace Fusion.Controllers
 
             try
             {
-                var autoSendToDelivery = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "SendOrderToDelivery" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                var tmp = db.VegaPersonalSetting.Where(p => p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                List<VegaPersonalSetting> settings = new List<VegaPersonalSetting>();
 
-                if (autoSendToDelivery != null && !string.IsNullOrEmpty(autoSendToDelivery.SettingValue) && autoSendToDelivery.SettingValue == "true")
+                if (tmp != null)
+                    settings = tmp.ToList();
+
+                var autoSendToDelivery = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "SendOrderToDelivery" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+
+                if (autoSendToDelivery != null && !string.IsNullOrEmpty(autoSendToDelivery.SettingValue) && autoSendToDelivery.SettingValue.ToLower() == "true")
                 {
-                    var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
-                    var internetOrderSetStatusF = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
-                    var extSourceID = db.VegaPersonalSetting.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
-
-                    if (order == null)
-                    {
-                        order = db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now, Success = false });
-                        db.SaveChanges();
-                    }
+                    var internetOrderSetStatusF = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                    var extSourceID = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
 
                     string esid = "31";
 
@@ -66,13 +103,6 @@ namespace Fusion.Controllers
                         esid = extSourceID.SettingValue;
 
                     InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString(), esid);
-
-                    if (response.Success)
-                    {
-                        order.Success = true;
-                    }
-
-                    db.SaveChanges();
                 }
             }
             catch (Exception ex)

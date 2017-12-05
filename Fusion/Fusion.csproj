@@ -224,6 +224,7 @@
     <Compile Include="Controllers\RK7OnlineMonitorController.cs" />
     <Compile Include="Controllers\SalaryController.cs" />
     <Compile Include="Controllers\SB_ProblemsController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SH4Controller.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ZakupController.cs" />
@@ -2246,6 +2247,7 @@
     <Compile Include="Models\Setting.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SettingsViewModel.cs" />
     <Compile Include="Models\Setting_Deleted.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
@@ -2702,6 +2704,7 @@
     <Content Include="data.js" />
     <Content Include="data\events.xml" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
+    <Content Include="images\phone-2-xxl.png" />
     <Content Include="index.js" />
     <Content Include="Models\BioTime.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -5579,6 +5582,9 @@
     <Content Include="Views\Salary\GetBioTimeData.cshtml" />
     <Content Include="Views\Zakup\Orders_by_employees.cshtml" />
     <Content Include="Views\Zakup\Remnants_rest.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Settings\UserDataBind.cshtml" />
+    <Content Include="Views\Settings\UserSettings.cshtml" />
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

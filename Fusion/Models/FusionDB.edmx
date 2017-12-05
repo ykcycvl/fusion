@@ -156,8 +156,9 @@
         </EntityType>
         <EntityType Name="bitrixUser">
           <Key>
-            <PropertyRef Name="adlogin" />
+            <PropertyRef Name="id" />
           </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="adlogin" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="bitrixId" Type="int" Nullable="false" />
         </EntityType>
@@ -1155,7 +1156,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_states" EntityType="FusionDBModels.bd_states" />
           <EntitySet Name="bd_subdivision" EntityType="FusionDBModels.bd_subdivision" />
           <EntitySet Name="bd_vendor" EntityType="FusionDBModels.bd_vendor" />
-          <EntitySet Name="bitrixUser" EntityType="FusionDBModels.bitrixUser" />
           <EntitySet Name="CRMSegment" EntityType="FusionDBModels.CRMSegment" />
           <EntitySet Name="CRMSended" EntityType="FusionDBModels.CRMSended" />
           <EntitySet Name="CRMToSend" EntityType="FusionDBModels.CRMToSend" />
@@ -1339,6 +1339,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
             <End Role="bd_rests" EntitySet="bd_rests" />
           </AssociationSet>
+          <EntitySet Name="bitrixUser" EntityType="FusionDBModels.bitrixUser" />
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -1509,13 +1510,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="KPP" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
           <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_vendor_id" FromRole="bd_vendor" ToRole="bd_reclamation" />
-        </EntityType>
-        <EntityType Name="bitrixUser">
-          <Key>
-            <PropertyRef Name="adlogin" />
-          </Key>
-          <Property Name="adlogin" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="bitrixId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CRMSegment">
           <Key>
@@ -2302,6 +2296,14 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="bitrixUser">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="adlogin" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="bitrixId" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2451,14 +2453,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="bitrixUser">
-            <EntityTypeMapping TypeName="FusionDBModels.bitrixUser">
-              <MappingFragment StoreEntitySet="bitrixUser">
-                <ScalarProperty Name="bitrixId" ColumnName="bitrixId" />
-                <ScalarProperty Name="adlogin" ColumnName="adlogin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2794,6 +2788,15 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="count" ColumnName="count" />
                 <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
                 <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bitrixUser">
+            <EntityTypeMapping TypeName="FusionDBModels.bitrixUser">
+              <MappingFragment StoreEntitySet="bitrixUser">
+                <ScalarProperty Name="bitrixId" ColumnName="bitrixId" />
+                <ScalarProperty Name="adlogin" ColumnName="adlogin" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

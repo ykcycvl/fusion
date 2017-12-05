@@ -9,65 +9,48 @@
 
 @using (Html.BeginForm("Settings", "Profile", FormMethod.Post))
 {
-    <div class="row">
-        <ul class="nav nav-tabs">
-            <li class="">
-                <a href="#home" data-toggle="tab" aria-expanded="false">Home</a>
-            </li>
-            <li class="active">
-                <a href="#profile" data-toggle="tab" aria-expanded="true">Profile</a>
-            </li>
-            <li class="">
-                <a href="#messages" data-toggle="tab" aria-expanded="false">Messages</a>
-            </li>
-            <li class="">
-                <a href="#settings" data-toggle="tab" aria-expanded="false">Settings</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane fade" id="home">
-                <h4>Home Tab</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="tab-pane fade active in" id="profile">
-                <h4>Profile Tab</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="tab-pane fade" id="messages">
-                <h4>Messages Tab</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-            <div class="tab-pane fade" id="settings">
-                <h4>Settings Tab</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
-        </div>
+    <h4>Персональные настройки</h4>
+    <table class="table table-bordered table-striped">
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.SettingTitle</td>
+                <td>
+                    <input type="hidden" name="settingName" value="@s.SettingName" />
 
-        <table class="table table-bordered table-striped">
-            @foreach (var s in Model)
-            {
-                <tr>
-                    <td>@s.SettingName</td>
-                    <td>@s.SettingTitle</td>
-                    <td>
-                        <input type="hidden" name="settingName" value="@s.SettingName" />
-                        @if (s.VegaPersonalSetting.FirstOrDefault(p => p.UserName == User.Identity.Name) != null)
+                    @if (s.VegaPersonalSetting.FirstOrDefault(p => p.UserName == User.Identity.Name) != null)
+                    {
+                        if (s.SettingType == "System.Boolean")
                         {
-                            if (s.SettingType == "System.Boolean")
-                            {
-                                <input type="checkbox" checked="@Boolean.Parse(s.VegaPersonalSetting.FirstOrDefault(p => p.UserName == User.Identity.Name).SettingValue)" name="@s.SettingName" />
-                            }
+                            <input type="checkbox" checked="@Boolean.Parse(s.VegaPersonalSetting.FirstOrDefault(p => p.UserName == User.Identity.Name).SettingValue)" name="@s.SettingName" />
                         }
-                        else
+                        if (s.SettingType == "System.Int32")
                         {
-                            if (s.SettingType == "System.Boolean")
-                            {
-                                <input type="checkbox" name="@s.SettingName" class="form-control" />
-                            }
+                            <input type="number" value="@s.VegaPersonalSetting.FirstOrDefault(p => p.UserName.ToLower() == User.Identity.Name.ToLower()).SettingValue" name="@s.SettingName" class="form-control" />
                         }
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+                        if (s.SettingType == "System.String")
+                        {
+                            <input type="text" value="@s.VegaPersonalSetting.FirstOrDefault(p => p.UserName.ToLower() == User.Identity.Name.ToLower()).SettingValue" name="@s.SettingName" class="form-control" />
+                        }
+                    }
+                    else
+                    {
+                        if (s.SettingType == "System.Boolean")
+                        {
+                            <input type="checkbox" name="@s.SettingName" />
+                        }
+                        if (s.SettingType == "System.Int32")
+                        {
+                            <input type="number" name="@s.SettingName" class="form-control" />
+                        }
+                        if (s.SettingType == "System.String")
+                        {
+                            <input type="text" name="@s.SettingName" class="form-control" />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    <input type="submit" value="Сохранить" class="btn btn-primary"/>
 }
