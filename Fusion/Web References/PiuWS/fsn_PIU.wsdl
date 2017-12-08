@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:xsd1="http://srv-1c_g/autopiu" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://srv-1c_g/autopiu" name="fsn_PIU" targetNamespace="http://srv-1c_g/autopiu" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns:xs1="http://srv-1c_g/autopiu" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://srv-1c_g/autopiu" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="Element">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Level1">
+        <xs:sequence>
+          <xs:element name="Levels2" type="xs1:Levels2" />
+          <xs:element name="SumFact" type="xs:decimal" />
+          <xs:element name="SumPlan" type="xs:decimal" />
+          <xs:element name="Period" type="xs:date" />
+          <xs:element name="Organization" type="xs:string" />
+          <xs:element name="Element" type="xs1:Element" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Level2">
+        <xs:sequence>
+          <xs:element name="Levels3" type="xs1:Levels3" />
+          <xs:element name="SumFact" type="xs:decimal" />
+          <xs:element name="SumPlan" type="xs:decimal" />
+          <xs:element name="Period" type="xs:date" />
+          <xs:element name="Organization" type="xs:string" />
+          <xs:element name="Element" type="xs1:Element" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Level3">
+        <xs:sequence>
+          <xs:element name="Element" type="xs1:Element" />
+          <xs:element name="SumFact" type="xs:decimal" />
+          <xs:element name="SumPlan" type="xs:decimal" />
+          <xs:element name="Period" type="xs:date" />
+          <xs:element name="Organization" type="xs:string" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Levels1">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Level1" type="xs1:Level1" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Levels2">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Level2" type="xs1:Level2" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Levels3">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" name="Level3" type="xs1:Level3" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Tree">
+        <xs:sequence>
+          <xs:element name="Levels1" type="xs1:Levels1" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetPIUData">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Organization" type="xs:string" />
+            <xs:element name="Period" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetPIUDataResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Tree" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutPIUData">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Organization" type="xs:string" />
+            <xs:element name="Period" type="xs:string" />
+            <xs:element name="Tree" type="xs1:Tree" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutPIUDataResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" nillable="true" type="xs1:Tree" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </types>
+  <message name="GetPIUDataRequestMessage">
+    <part name="parameters" element="tns:GetPIUData" />
+  </message>
+  <message name="GetPIUDataResponseMessage">
+    <part name="parameters" element="tns:GetPIUDataResponse" />
+  </message>
+  <message name="PutPIUDataRequestMessage">
+    <part name="parameters" element="tns:PutPIUData" />
+  </message>
+  <message name="PutPIUDataResponseMessage">
+    <part name="parameters" element="tns:PutPIUDataResponse" />
+  </message>
+  <portType name="fsn_PIUPortType">
+    <operation name="GetPIUData">
+      <input message="tns:GetPIUDataRequestMessage" />
+      <output message="tns:GetPIUDataResponseMessage" />
+    </operation>
+    <operation name="PutPIUData">
+      <input message="tns:PutPIUDataRequestMessage" />
+      <output message="tns:PutPIUDataResponseMessage" />
+    </operation>
+  </portType>
+  <binding name="fsn_PIUSoapBinding" type="tns:fsn_PIUPortType">
+    <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetPIUData">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetPIUData" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutPIUData">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutPIUData" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="fsn_PIUSoap12Binding" type="tns:fsn_PIUPortType">
+    <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <operation name="GetPIUData">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetPIUData" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutPIUData">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutPIUData" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <service name="fsn_PIU">
+    <port name="fsn_PIUSoap" binding="tns:fsn_PIUSoapBinding">
+      <documentation>
+        <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
+      </documentation>
+      <soapbind:address location="http://srv-1c_g/Tokio/ws/vegapiu.1cws" />
+    </port>
+    <port name="fsn_PIUSoap12" binding="tns:fsn_PIUSoap12Binding">
+      <soap12bind:address location="http://srv-1c_g/Tokio/ws/vegapiu.1cws" />
+    </port>
+  </service>
+</definitions>

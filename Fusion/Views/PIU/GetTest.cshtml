@@ -1,0 +1,140 @@
+﻿@model Fusion.Models.PIU
+
+@{
+    ViewBag.Title = "ПИУ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string TableData = "";
+    string tdl2 = "";
+    string tdl3 = "";
+
+    foreach (var l in Model.Tree.Levels1)
+    {
+        TableData += "{ id: \"" + l.Code + "\", level: \"1\", code: \"" + l.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l.Name + "\", sumfact: \"" + l.SumFact.ToString() + "\", sumplan: \"=";
+
+        foreach (var l2 in l.Levels2)
+        {
+            TableData += " + [" + l2.Code + ", sumplan]";
+            tdl2 += "{ id: \"" + l2.Code + "\", level: \"2\", code: \"" + l2.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l2.Name + "\", sumfact: \"" + l2.SumFact.ToString() + "\", sumplan: \"" + l2.SumPlan.ToString() + "\", period: \"" + l2.Period.ToString("dd.MM.yyyy") + "\"" + ", $css:\"level2css\" },";
+
+            foreach (var l3 in l2.Levels3)
+            {
+                TableData += " + [" + l3.Code + ", sumplan]";
+                tdl3 += "{ id: \"" + l3.Code + "\", level: \"3\", code: \"" + l3.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l3.Name + "\", sumfact: \"" + l3.SumFact.ToString() + "\", sumplan: \"" + l3.SumPlan.ToString() + "\", period: \"" + l3.Period.ToString("dd.MM.yyyy") + "\"" + ", $cellCss: { name: \"level3css\" }, $css:\"level2css\" },";
+            }
+        }
+
+        TableData += "\", period: \"" + l.Period.ToString("dd.MM.yyyy") + "\"" + ", $css:\"level1css\" }," + tdl2 + tdl3;
+        tdl2 = "";
+        tdl3 = "";
+    }
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+<style>
+    .level1css {
+        font-weight: bold;
+        color: #000;
+        background-color: #b7dee8;
+    }
+
+    .level2css {
+        color: #000;
+    }
+
+    .level3css {
+        text-align: right;
+        font-style: italic;
+        color: #555;
+    }
+
+    .rightAlign {
+        text-align: right;
+    }
+</style>
+
+<script type="text/javascript">
+    webix.ready(function () {
+        grid = webix.ui({
+            container: "tabl",
+            id: "grid",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                { id: "id", header: "id", hidden: "true" },
+                { id: "code", header: "code", hidden: "true" },
+                { id: "organization", header: "organization", hidden: "true" },
+                { id: "name", header: "Наименование", width: 400 },
+                { id: "sumfact", header: "Сумма факт.", css: "rightAlign", format: webix.Number.numToStr({ groupDelimiter: " ", groupSize: 3, decimalDelimiter: ".", decimalSize: 0 }) },
+                { id: "sumplan", header: "Сумма план", editor: 'text', css: "rightAlign", format: webix.Number.numToStr({ groupDelimiter: " ", groupSize: 3, decimalDelimiter: ".", decimalSize: 0 }) },
+                { id: "period", header: "Период" },
+            ],
+            data: {
+                data: [
+                    @Html.Raw(TableData)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 600,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid);
+
+        grid.attachEvent("onPaste", function (code, e) {
+            grid.refreshColumns();
+        });
+    });
+
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
+    function Save() {
+        var grid = $$("grid");
+
+        if (!grid.validate())
+        {
+            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице." });
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var grid = $$("grid");
+        var serializedData = grid.serialize();
+        webix.ajax().post("/PIU/Save", { data: serializedData }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+</script>
+
+<h2>ПИУ</h2>
+
+<div style="position:absolute; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
+
+<div id="tabl"></div>
+<br />
+<input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />

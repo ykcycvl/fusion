@@ -218,6 +218,7 @@
     <Compile Include="Controllers\ITController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MiscReport\MiscReportController.cs" />
+    <Compile Include="Controllers\PIUController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RK7Controller.cs" />
     <Compile Include="Controllers\CallbackController.cs" />
@@ -1612,6 +1613,7 @@
     <Compile Include="Models\Personalization_Stat.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PIU.cs" />
     <Compile Include="Models\PLG_ACC_ACCOUNTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
@@ -2670,6 +2672,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Web References\PiuWS\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\ZupWS\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5585,6 +5592,15 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Settings\UserDataBind.cshtml" />
     <Content Include="Views\Settings\UserSettings.cshtml" />
+    <Content Include="Views\PIU\GetTest.cshtml" />
+    <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
+    <None Include="Web References\PiuWS\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Web References\PiuWS\Tree.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
     <None Include="Web References\ZupWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -5642,6 +5658,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Fusion_ZupWS_VegaWS</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://srv-1c_g/Tokio/ws/vegapiu.1cws%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\PiuWS\</RelPath>
+      <UpdateFromURL>http://srv-1c_g/Tokio/ws/vegapiu.1cws%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Fusion_PiuWS_fsn_PIU</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

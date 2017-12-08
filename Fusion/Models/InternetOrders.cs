@@ -455,6 +455,9 @@ where bsb.ORDER_ID = {0}", id);
                 var propsAppt = this.Properties.FirstOrDefault(p => p.OrderPropsId == 30);
                 var propsEntryCode = this.Properties.FirstOrDefault(p => p.OrderPropsId == 31);
 
+                //Для определения, откуда заказ, с ебучего приложения или с сайта
+                var propsSource = this.Properties.FirstOrDefault(p => p.OrderPropsId == 18);
+
                 phone = propsPhone.Value.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
 
                 string ordercategoryID = "0", restID = "0";
@@ -698,10 +701,24 @@ where bsb.ORDER_ID = {0}", id);
                 if (propsName != null)
                 {
                     nameParts = propsName.Value.Trim().Split(' ');
-                    f_name = nameParts[0].Trim();
 
-                    if (nameParts.Length > 1)
-                        l_name = nameParts[1].Trim();
+                    if (propsSource == null)
+                    {
+                        f_name = nameParts[0].Trim();
+
+                        if (nameParts.Length > 1)
+                            l_name = nameParts[1].Trim();
+                    }
+                    else
+                    {
+                        f_name = nameParts[0].Trim();
+
+                        if (nameParts.Length > 1)
+                        {
+                            l_name = nameParts[0].Trim();
+                            f_name = nameParts[1].Trim();
+                        }
+                    }
                 }
 
                 if (this.Payed)
@@ -728,7 +745,7 @@ where bsb.ORDER_ID = {0}", id);
                 }
                 else
                 {
-                    deliveryTime = DateTime.Parse(propsDeliveryTime.Value.Trim());
+                    deliveryTime = DateTime.Parse(propsDeliveryTime.Value.Trim().Replace(" в ", " "));
                     comment += deliveryTime.ToString("dd.MM.yyyy HH:mm") + " ";
                 }
 
