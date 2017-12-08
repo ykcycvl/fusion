@@ -118,7 +118,7 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             model.categoryId = 1;
-            return View(model);
+            return Redirect("~/Zakup/orders");
         }
         public ActionResult Export()
         {

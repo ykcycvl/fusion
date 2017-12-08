@@ -133,7 +133,7 @@ namespace Fusion.Models
             public string comment { get; set; }
             public string state { get; set; }
             public int state_id { get; set; }
-            public int count { get; set; }
+            public decimal count { get; set; }
         }
         public class reclamation
         {
@@ -578,7 +578,7 @@ namespace Fusion.Models
                     order.date_end = DateTime.Parse(date_end.ToString());
                 }
                 order.comment = comment.ToString();
-                order.count = Int32.Parse(count.ToString());
+                order.count = Convert.ToDecimal(count.ToString());
                 order.state_id = states.FirstOrDefault(m => m.name == state.ToString()).id;
                 listOrders.Add(order);
             }
