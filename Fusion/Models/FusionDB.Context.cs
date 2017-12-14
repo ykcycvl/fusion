@@ -30,8 +30,6 @@ namespace Fusion.Models
         public virtual DbSet<bd_category> bd_category { get; set; }
         public virtual DbSet<bd_employee> bd_employee { get; set; }
         public virtual DbSet<bd_measurement> bd_measurement { get; set; }
-        public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
-        public virtual DbSet<bd_order> bd_order { get; set; }
         public virtual DbSet<bd_organization> bd_organization { get; set; }
         public virtual DbSet<bd_reclamation> bd_reclamation { get; set; }
         public virtual DbSet<bd_reclamation_problems> bd_reclamation_problems { get; set; }
@@ -70,5 +68,7 @@ namespace Fusion.Models
         public virtual DbSet<bd_nomenclature_state> bd_nomenclature_state { get; set; }
         public virtual DbSet<bd_rests> bd_rests { get; set; }
         public virtual DbSet<bitrixUser> bitrixUser { get; set; }
+        public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
+        public virtual DbSet<bd_order> bd_order { get; set; }
     }
 }

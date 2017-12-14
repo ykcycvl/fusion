@@ -90,20 +90,37 @@ namespace Fusion.Controllers
                 if (tmp != null)
                     settings = tmp.ToList();
 
-                var autoSendToDelivery = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "SendOrderToDelivery" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                var internetOrderSetStatusF = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                var extSourceID = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
 
-                if (autoSendToDelivery != null && !string.IsNullOrEmpty(autoSendToDelivery.SettingValue) && autoSendToDelivery.SettingValue.ToLower() == "true")
+                string esid = "31";
+
+                if (extSourceID != null && !String.IsNullOrEmpty(extSourceID.SettingValue))
+                    esid = extSourceID.SettingValue;
+
+                var order = db.DLVOrder.FirstOrDefault(p => p.SiteOrderID == id);
+
+                if (order == null || order != null)
                 {
-                    var internetOrderSetStatusF = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderSetStatusF" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
-                    var extSourceID = settings.FirstOrDefault(p => p.VegaSetting.SettingName == "InternetOrderID" && p.UserName.ToLower() == User.Identity.Name.ToString().ToLower());
+                    if (order == null)
+                    {
+                        order = db.DLVOrder.Add(new DLVOrder() { SiteOrderID = id, SendDateTime = DateTime.Now, Success = false });
+                        db.SaveChanges();
+                    }
 
-                    string esid = "31";
+                    if (!order.Success)
+                    {
+                        InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString(), esid);
 
-                    if (extSourceID != null && !String.IsNullOrEmpty(extSourceID.SettingValue))
-                        esid = extSourceID.SettingValue;
+                        if (response.Success)
+                        {
+                            order.Success = true;
+                        }
 
-                    InternetOrders.SODresponse response = model.SendOrderToDelivery(User.Identity.Name.ToString(), esid);
+                        db.SaveChanges();
+                    }
                 }
+
             }
             catch (Exception ex)
             {

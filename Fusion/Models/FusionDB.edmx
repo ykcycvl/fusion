@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FusionDBModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FusionDBModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Article">
           <Key>
             <PropertyRef Name="id" />
@@ -63,7 +63,7 @@
           <Property Name="vendor_id" Type="int" Nullable="false" />
           <Property Name="measurement_id" Type="int" Nullable="false" />
           <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
-          <Property Name="Count" Type="int" />
+          <Property Name="Count" Type="numeric" Precision="18" Scale="0" />
           <Property Name="state" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="bd_nomenclature_state">
@@ -81,9 +81,9 @@
           <Property Name="employee" Type="varchar" MaxLength="255" />
           <Property Name="nomenclature_id" Type="int" />
           <Property Name="date" Type="datetime" />
-          <Property Name="count" Type="int" />
           <Property Name="measurement_id" Type="int" />
           <Property Name="category_id" Type="int" />
+          <Property Name="count" Type="numeric" Precision="5" Scale="2" />
           <Property Name="organization_id" Type="int" />
           <Property Name="date_end" Type="datetime" />
           <Property Name="comment" Type="varchar" MaxLength="500" />
@@ -600,18 +600,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_bd_reclamation_nomenclature_id">
-          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="1" />
-          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_reclamation">
-              <PropertyRef Name="nomenclature_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_bd_reclamation_problem_id">
           <End Role="bd_reclamation_problems" Type="Self.bd_reclamation_problems" Multiplicity="1" />
           <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
@@ -657,18 +645,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="bd_reclamation">
               <PropertyRef Name="vendor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_rests_nomenclature_id">
-          <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="1" />
-          <End Role="bd_rests" Type="Self.bd_rests" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_rests">
-              <PropertyRef Name="nomenclature_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1029,10 +1005,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_states" EntitySet="bd_states" />
             <End Role="bd_order" EntitySet="bd_order" />
           </AssociationSet>
-          <AssociationSet Name="FK_bd_reclamation_nomenclature_id" Association="Self.FK_bd_reclamation_nomenclature_id">
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
-          </AssociationSet>
           <AssociationSet Name="FK_bd_reclamation_problem_id" Association="Self.FK_bd_reclamation_problem_id">
             <End Role="bd_reclamation_problems" EntitySet="bd_reclamation_problems" />
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
@@ -1048,10 +1020,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_reclamation_vendor_id" Association="Self.FK_bd_reclamation_vendor_id">
             <End Role="bd_vendor" EntitySet="bd_vendor" />
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_rests_nomenclature_id" Association="Self.FK_bd_rests_nomenclature_id">
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-            <End Role="bd_rests" EntitySet="bd_rests" />
           </AssociationSet>
           <AssociationSet Name="FK_bd_rests_restaurant_id" Association="Self.FK_bd_rests_restaurant_id">
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
@@ -1148,8 +1116,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_category" EntityType="FusionDBModels.bd_category" />
           <EntitySet Name="bd_employee" EntityType="FusionDBModels.bd_employee" />
           <EntitySet Name="bd_measurement" EntityType="FusionDBModels.bd_measurement" />
-          <EntitySet Name="bd_nomenclature" EntityType="FusionDBModels.bd_nomenclature" />
-          <EntitySet Name="bd_order" EntityType="FusionDBModels.bd_order" />
           <EntitySet Name="bd_organization" EntityType="FusionDBModels.bd_organization" />
           <EntitySet Name="bd_reclamation" EntityType="FusionDBModels.bd_reclamation" />
           <EntitySet Name="bd_reclamation_problems" EntityType="FusionDBModels.bd_reclamation_problems" />
@@ -1189,49 +1155,9 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="ArticleCategory" EntitySet="ArticleCategory" />
             <End Role="Article" EntitySet="Article" />
           </AssociationSet>
-          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="FusionDBModels.FK_bd_nomenclature_category_id">
-            <End Role="bd_category" EntitySet="bd_category" />
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_category_id" Association="FusionDBModels.FK_bd_order_category_id">
-            <End Role="bd_category" EntitySet="bd_category" />
-            <End Role="bd_order" EntitySet="bd_order" />
-          </AssociationSet>
           <AssociationSet Name="FK_bd_employee_subdiv_id" Association="FusionDBModels.FK_bd_employee_subdiv_id">
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
             <End Role="bd_employee" EntitySet="bd_employee" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_employee" Association="FusionDBModels.FK_bd_order_employee">
-            <End Role="bd_employee" EntitySet="bd_employee" />
-            <End Role="bd_order" EntitySet="bd_order" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="FusionDBModels.FK_bd_nomenclature_measurement_id">
-            <End Role="bd_measurement" EntitySet="bd_measurement" />
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_measurement_id" Association="FusionDBModels.FK_bd_order_measurement_id">
-            <End Role="bd_measurement" EntitySet="bd_measurement" />
-            <End Role="bd_order" EntitySet="bd_order" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="FusionDBModels.FK_bd_nomenclature_vendor_id">
-            <End Role="bd_vendor" EntitySet="bd_vendor" />
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="FusionDBModels.FK_bd_order_nomenclature_id">
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-            <End Role="bd_order" EntitySet="bd_order" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_reclamation_nomenclature_id" Association="FusionDBModels.FK_bd_reclamation_nomenclature_id">
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_organization_id" Association="FusionDBModels.FK_bd_order_organization_id">
-            <End Role="bd_organization" EntitySet="bd_organization" />
-            <End Role="bd_order" EntitySet="bd_order" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_order_state" Association="FusionDBModels.FK_bd_order_state">
-            <End Role="bd_states" EntitySet="bd_states" />
-            <End Role="bd_order" EntitySet="bd_order" />
           </AssociationSet>
           <AssociationSet Name="FK_bd_subdivision_organization_id" Association="FusionDBModels.FK_bd_subdivision_organization_id">
             <End Role="bd_organization" EntitySet="bd_organization" />
@@ -1327,19 +1253,53 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           </AssociationSet>
           <EntitySet Name="bd_nomenclature_state" EntityType="FusionDBModels.bd_nomenclature_state" />
           <EntitySet Name="bd_rests" EntityType="FusionDBModels.bd_rests" />
-          <AssociationSet Name="FK_bd_nomenclature_state" Association="FusionDBModels.FK_bd_nomenclature_state">
-            <End Role="bd_nomenclature_state" EntitySet="bd_nomenclature_state" />
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-          </AssociationSet>
-          <AssociationSet Name="FK_bd_rests_nomenclature_id" Association="FusionDBModels.FK_bd_rests_nomenclature_id">
-            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
-            <End Role="bd_rests" EntitySet="bd_rests" />
-          </AssociationSet>
           <AssociationSet Name="FK_bd_rests_restaurant_id" Association="FusionDBModels.FK_bd_rests_restaurant_id">
             <End Role="bd_subdivision" EntitySet="bd_subdivision" />
             <End Role="bd_rests" EntitySet="bd_rests" />
           </AssociationSet>
           <EntitySet Name="bitrixUser" EntityType="FusionDBModels.bitrixUser" />
+          <EntitySet Name="bd_nomenclature" EntityType="FusionDBModels.bd_nomenclature" />
+          <EntitySet Name="bd_order" EntityType="FusionDBModels.bd_order" />
+          <AssociationSet Name="FK_bd_nomenclature_category_id" Association="FusionDBModels.FK_bd_nomenclature_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_category_id" Association="FusionDBModels.FK_bd_order_category_id">
+            <End Role="bd_category" EntitySet="bd_category" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_employee" Association="FusionDBModels.FK_bd_order_employee">
+            <End Role="bd_employee" EntitySet="bd_employee" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_measurement_id" Association="FusionDBModels.FK_bd_nomenclature_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_measurement_id" Association="FusionDBModels.FK_bd_order_measurement_id">
+            <End Role="bd_measurement" EntitySet="bd_measurement" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_state" Association="FusionDBModels.FK_bd_nomenclature_state">
+            <End Role="bd_nomenclature_state" EntitySet="bd_nomenclature_state" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_nomenclature_vendor_id" Association="FusionDBModels.FK_bd_nomenclature_vendor_id">
+            <End Role="bd_vendor" EntitySet="bd_vendor" />
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_nomenclature_id" Association="FusionDBModels.FK_bd_order_nomenclature_id">
+            <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_organization_id" Association="FusionDBModels.FK_bd_order_organization_id">
+            <End Role="bd_organization" EntitySet="bd_organization" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_order_state" Association="FusionDBModels.FK_bd_order_state">
+            <End Role="bd_states" EntitySet="bd_states" />
+            <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -1397,56 +1357,14 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_nomenclature_measurement_id" FromRole="bd_measurement" ToRole="bd_nomenclature" />
           <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_measurement_id" FromRole="bd_measurement" ToRole="bd_order" />
         </EntityType>
-        <EntityType Name="bd_nomenclature">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="category_id" Type="Int32" Nullable="false" />
-          <Property Name="vendor_id" Type="Int32" Nullable="false" />
-          <Property Name="measurement_id" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Count" Type="Int32" />
-          <NavigationProperty Name="bd_category" Relationship="FusionDBModels.FK_bd_nomenclature_category_id" FromRole="bd_nomenclature" ToRole="bd_category" />
-          <NavigationProperty Name="bd_measurement" Relationship="FusionDBModels.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
-          <NavigationProperty Name="bd_vendor" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
-          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
-          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_reclamation" />
-          <Property Name="state" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="bd_nomenclature_state" Relationship="FusionDBModels.FK_bd_nomenclature_state" FromRole="bd_nomenclature" ToRole="bd_nomenclature_state" />
-          <NavigationProperty Name="bd_rests" Relationship="FusionDBModels.FK_bd_rests_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_rests" />
-        </EntityType>
-        <EntityType Name="bd_order">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="employee" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="nomenclature_id" Type="Int32" />
-          <Property Name="date" Type="DateTime" Precision="3" />
-          <Property Name="count" Type="Int32" />
-          <Property Name="measurement_id" Type="Int32" />
-          <Property Name="category_id" Type="Int32" />
-          <Property Name="organization_id" Type="Int32" />
-          <Property Name="date_end" Type="DateTime" Precision="3" />
-          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="state" Type="Int32" />
-          <NavigationProperty Name="bd_category" Relationship="FusionDBModels.FK_bd_order_category_id" FromRole="bd_order" ToRole="bd_category" />
-          <NavigationProperty Name="bd_employee" Relationship="FusionDBModels.FK_bd_order_employee" FromRole="bd_order" ToRole="bd_employee" />
-          <NavigationProperty Name="bd_measurement" Relationship="FusionDBModels.FK_bd_order_measurement_id" FromRole="bd_order" ToRole="bd_measurement" />
-          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_order_nomenclature_id" FromRole="bd_order" ToRole="bd_nomenclature" />
-          <NavigationProperty Name="bd_organization" Relationship="FusionDBModels.FK_bd_order_organization_id" FromRole="bd_order" ToRole="bd_organization" />
-          <NavigationProperty Name="bd_states" Relationship="FusionDBModels.FK_bd_order_state" FromRole="bd_order" ToRole="bd_states" />
-        </EntityType>
         <EntityType Name="bd_organization">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_organization_id" FromRole="bd_organization" ToRole="bd_order" />
           <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_subdivision_organization_id" FromRole="bd_organization" ToRole="bd_subdivision" />
+          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_organization_id" FromRole="bd_organization" ToRole="bd_order" />
         </EntityType>
         <EntityType Name="bd_reclamation">
           <Key>
@@ -1461,7 +1379,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="solution" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="filePath" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="state_id" Type="Int32" />
-          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_reclamation" ToRole="bd_nomenclature" />
           <NavigationProperty Name="bd_reclamation_problems" Relationship="FusionDBModels.FK_bd_reclamation_problem_id" FromRole="bd_reclamation" ToRole="bd_reclamation_problems" />
           <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_reclamation_restaurant_id" FromRole="bd_reclamation" ToRole="bd_subdivision" />
           <NavigationProperty Name="bd_vendor" Relationship="FusionDBModels.FK_bd_reclamation_vendor_id" FromRole="bd_reclamation" ToRole="bd_vendor" />
@@ -1482,8 +1399,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_state" FromRole="bd_states" ToRole="bd_order" />
           <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_state_id" FromRole="bd_states" ToRole="bd_reclamation" />
+          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_state" FromRole="bd_states" ToRole="bd_order" />
         </EntityType>
         <EntityType Name="bd_subdivision">
           <Key>
@@ -1508,8 +1425,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="phones" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="INN" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="KPP" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
           <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_vendor_id" FromRole="bd_vendor" ToRole="bd_reclamation" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_vendor" ToRole="bd_nomenclature" />
         </EntityType>
         <EntityType Name="CRMSegment">
           <Key>
@@ -1841,30 +1758,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_bd_nomenclature_category_id">
-          <End Type="FusionDBModels.bd_category" Role="bd_category" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_nomenclature">
-              <PropertyRef Name="category_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_category_id">
-          <End Type="FusionDBModels.bd_category" Role="bd_category" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_category">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="category_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_bd_employee_subdiv_id">
           <End Type="FusionDBModels.bd_subdivision" Role="bd_subdivision" Multiplicity="1" />
           <End Type="FusionDBModels.bd_employee" Role="bd_employee" Multiplicity="*" />
@@ -1874,102 +1767,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Principal>
             <Dependent Role="bd_employee">
               <PropertyRef Name="subdiv_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_employee">
-          <End Type="FusionDBModels.bd_employee" Role="bd_employee" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_employee">
-              <PropertyRef Name="domain_login" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="employee" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_nomenclature_measurement_id">
-          <End Type="FusionDBModels.bd_measurement" Role="bd_measurement" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_measurement">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_nomenclature">
-              <PropertyRef Name="measurement_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_measurement_id">
-          <End Type="FusionDBModels.bd_measurement" Role="bd_measurement" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_measurement">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="measurement_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_nomenclature_vendor_id">
-          <End Type="FusionDBModels.bd_vendor" Role="bd_vendor" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_vendor">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_nomenclature">
-              <PropertyRef Name="vendor_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_nomenclature_id">
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="nomenclature_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_reclamation_nomenclature_id">
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_reclamation">
-              <PropertyRef Name="nomenclature_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_organization_id">
-          <End Type="FusionDBModels.bd_organization" Role="bd_organization" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_organization">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="organization_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_order_state">
-          <End Type="FusionDBModels.bd_states" Role="bd_states" Multiplicity="0..1" />
-          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_states">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_order">
-              <PropertyRef Name="state" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2257,33 +2054,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="nomenclature_id" Type="Int32" Nullable="false" />
           <Property Name="restaurant_id" Type="Int32" Nullable="false" />
           <Property Name="count" Type="Int32" />
-          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_rests_nomenclature_id" FromRole="bd_rests" ToRole="bd_nomenclature" />
           <NavigationProperty Name="bd_subdivision" Relationship="FusionDBModels.FK_bd_rests_restaurant_id" FromRole="bd_rests" ToRole="bd_subdivision" />
         </EntityType>
-        <Association Name="FK_bd_nomenclature_state">
-          <End Type="FusionDBModels.bd_nomenclature_state" Role="bd_nomenclature_state" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature_state">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_nomenclature">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_bd_rests_nomenclature_id">
-          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="1" />
-          <End Type="FusionDBModels.bd_rests" Role="bd_rests" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="bd_nomenclature">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="bd_rests">
-              <PropertyRef Name="nomenclature_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_bd_rests_restaurant_id">
           <End Type="FusionDBModels.bd_subdivision" Role="bd_subdivision" Multiplicity="1" />
           <End Type="FusionDBModels.bd_rests" Role="bd_rests" Multiplicity="*" />
@@ -2304,6 +2076,166 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="adlogin" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="bitrixId" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="bd_nomenclature">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="category_id" Type="Int32" Nullable="false" />
+          <Property Name="vendor_id" Type="Int32" Nullable="false" />
+          <Property Name="measurement_id" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Count" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="state" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bd_category" Relationship="FusionDBModels.FK_bd_nomenclature_category_id" FromRole="bd_nomenclature" ToRole="bd_category" />
+          <NavigationProperty Name="bd_measurement" Relationship="FusionDBModels.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_nomenclature_state" Relationship="FusionDBModels.FK_bd_nomenclature_state" FromRole="bd_nomenclature" ToRole="bd_nomenclature_state" />
+          <NavigationProperty Name="bd_vendor" Relationship="FusionDBModels.FK_bd_nomenclature_vendor_id" FromRole="bd_nomenclature" ToRole="bd_vendor" />
+          <NavigationProperty Name="bd_order" Relationship="FusionDBModels.FK_bd_order_nomenclature_id" FromRole="bd_nomenclature" ToRole="bd_order" />
+        </EntityType>
+        <EntityType Name="bd_order">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="employee" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="nomenclature_id" Type="Int32" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="measurement_id" Type="Int32" />
+          <Property Name="category_id" Type="Int32" />
+          <Property Name="count" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="organization_id" Type="Int32" />
+          <Property Name="date_end" Type="DateTime" Precision="3" />
+          <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="Int32" />
+          <NavigationProperty Name="bd_category" Relationship="FusionDBModels.FK_bd_order_category_id" FromRole="bd_order" ToRole="bd_category" />
+          <NavigationProperty Name="bd_employee" Relationship="FusionDBModels.FK_bd_order_employee" FromRole="bd_order" ToRole="bd_employee" />
+          <NavigationProperty Name="bd_measurement" Relationship="FusionDBModels.FK_bd_order_measurement_id" FromRole="bd_order" ToRole="bd_measurement" />
+          <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_order_nomenclature_id" FromRole="bd_order" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_organization" Relationship="FusionDBModels.FK_bd_order_organization_id" FromRole="bd_order" ToRole="bd_organization" />
+          <NavigationProperty Name="bd_states" Relationship="FusionDBModels.FK_bd_order_state" FromRole="bd_order" ToRole="bd_states" />
+        </EntityType>
+        <Association Name="FK_bd_nomenclature_category_id">
+          <End Type="FusionDBModels.bd_category" Role="bd_category" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_category_id">
+          <End Type="FusionDBModels.bd_category" Role="bd_category" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_category">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="category_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_employee">
+          <End Type="FusionDBModels.bd_employee" Role="bd_employee" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_employee">
+              <PropertyRef Name="domain_login" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_measurement_id">
+          <End Type="FusionDBModels.bd_measurement" Role="bd_measurement" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_measurement_id">
+          <End Type="FusionDBModels.bd_measurement" Role="bd_measurement" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_measurement">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="measurement_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_state">
+          <End Type="FusionDBModels.bd_nomenclature_state" Role="bd_nomenclature_state" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature_state">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_nomenclature_vendor_id">
+          <End Type="FusionDBModels.bd_vendor" Role="bd_vendor" Multiplicity="1" />
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_vendor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_nomenclature">
+              <PropertyRef Name="vendor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_nomenclature_id">
+          <End Type="FusionDBModels.bd_nomenclature" Role="bd_nomenclature" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_nomenclature">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="nomenclature_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_organization_id">
+          <End Type="FusionDBModels.bd_organization" Role="bd_organization" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_organization">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="organization_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bd_order_state">
+          <End Type="FusionDBModels.bd_states" Role="bd_states" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_order" Role="bd_order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_states">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_order">
+              <PropertyRef Name="state" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2359,37 +2291,6 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <EntityTypeMapping TypeName="FusionDBModels.bd_measurement">
               <MappingFragment StoreEntitySet="bd_measurement">
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="bd_nomenclature">
-            <EntityTypeMapping TypeName="FusionDBModels.bd_nomenclature">
-              <MappingFragment StoreEntitySet="bd_nomenclature">
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
-                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
-                <ScalarProperty Name="category_id" ColumnName="category_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="bd_order">
-            <EntityTypeMapping TypeName="FusionDBModels.bd_order">
-              <MappingFragment StoreEntitySet="bd_order">
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="date_end" ColumnName="date_end" />
-                <ScalarProperty Name="organization_id" ColumnName="organization_id" />
-                <ScalarProperty Name="category_id" ColumnName="category_id" />
-                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
-                <ScalarProperty Name="count" ColumnName="count" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
-                <ScalarProperty Name="employee" ColumnName="employee" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2797,6 +2698,37 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
               <MappingFragment StoreEntitySet="bitrixUser">
                 <ScalarProperty Name="bitrixId" ColumnName="bitrixId" />
                 <ScalarProperty Name="adlogin" ColumnName="adlogin" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_nomenclature">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_nomenclature">
+              <MappingFragment StoreEntitySet="bd_nomenclature">
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_order">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_order">
+              <MappingFragment StoreEntitySet="bd_order">
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="date_end" ColumnName="date_end" />
+                <ScalarProperty Name="organization_id" ColumnName="organization_id" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="category_id" ColumnName="category_id" />
+                <ScalarProperty Name="measurement_id" ColumnName="measurement_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
+                <ScalarProperty Name="employee" ColumnName="employee" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

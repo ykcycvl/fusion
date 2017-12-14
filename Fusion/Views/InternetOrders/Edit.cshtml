@@ -59,7 +59,7 @@
                         <td width="60%" class="adm-detail-content-cell-r">
                             @if (Model.EmployeeLocked != null && Model.DateLocked >= DateTime.Now.AddMinutes(-30) && Model.EmployeeLocked.id != Model.BitrixUserID)
                             {
-                                <b>Вы не можете изменять этот заказ</b>
+                                <b>@Model.Status [Вы не можете изменять этот заказ]</b>
                             }
                             else
                             {

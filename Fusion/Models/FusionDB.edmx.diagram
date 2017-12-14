@@ -10,8 +10,6 @@
         <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="13.375" />
         <EntityTypeShape EntityType="FusionDBModels.bd_employee" Width="1.5" PointX="5.25" PointY="11" />
         <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="16" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="3" PointY="12.25" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="7.5" PointY="7.75" />
         <EntityTypeShape EntityType="FusionDBModels.bd_organization" Width="1.5" PointX="0.75" PointY="6.875" />
         <EntityTypeShape EntityType="FusionDBModels.bd_reclamation" Width="1.5" PointX="5.25" PointY="6" />
         <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_problems" Width="1.5" PointX="3" PointY="2.75" />
@@ -48,17 +46,7 @@
         <EntityTypeShape EntityType="FusionDBModels.VegaSetting" Width="1.5" PointX="14.75" PointY="7.625" />
         <EntityTypeShape EntityType="FusionDBModels.hostip" Width="1.5" PointX="2.75" PointY="17.5" />
         <AssociationConnector Association="FusionDBModels.FK_Article_ArticleCategory" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_category_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_category_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_employee_subdiv_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_employee" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_measurement_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_measurement_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_vendor_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_state" />
         <AssociationConnector Association="FusionDBModels.FK_bd_subdivision_organization_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_problem_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_restaurant_id" />
@@ -82,12 +70,22 @@
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <AssociationConnector Association="FusionDBModels.serverip" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_state_id" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="1.5" PointX="0.75" PointY="4.375" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="3.75" PointX="0.75" PointY="4.375" />
         <EntityTypeShape EntityType="FusionDBModels.bd_rests" Width="1.5" PointX="5.25" PointY="17.25" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_rests_nomenclature_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_rests_restaurant_id" />
         <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="5.25" PointY="24.625" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="7.5" PointY="10.25" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_category_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_category_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_employee" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_measurement_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_measurement_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_vendor_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_state" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -61,32 +61,26 @@ namespace Fusion.Models
                         Tree.Levels1 = new PiuWS.Level1[0];
 
                     var l1 = Tree.Levels1.ToList();
-                    l1.Add(new PiuWS.Level1() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan) });
+                    l1.Add(new PiuWS.Level1() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan), Levels2 = new PiuWS.Level2[0] });
                     Tree.Levels1 = l1.ToArray();
                 }
 
                 if (level != null && level.ToString() == "2")
                 {
-                    if (Tree.Levels1[Tree.Levels1.Length - 1].Levels2 == null)
-                        Tree.Levels1[Tree.Levels1.Length - 1].Levels2 = new PiuWS.Level2[0];
-
                     var l2 = Tree.Levels1[Tree.Levels1.Length - 1].Levels2.ToList();
-                    l2.Add(new PiuWS.Level2() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan) });
+                    l2.Add(new PiuWS.Level2() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan), Levels3 = new PiuWS.Level3[0] });
                     Tree.Levels1[Tree.Levels1.Length - 1].Levels2 = l2.ToArray();
                 }
 
                 if (level != null && level.ToString() == "3")
                 {
-                    if (Tree.Levels1[Tree.Levels1.Length - 1].Levels2[Tree.Levels1[Tree.Levels1.Length - 1].Levels2.Length - 1].Levels3 == null)
-                        Tree.Levels1[Tree.Levels1.Length - 1].Levels2[Tree.Levels1[Tree.Levels1.Length - 1].Levels2.Length - 1].Levels3 = new PiuWS.Level3[0];
-
                     var l3 = Tree.Levels1[Tree.Levels1.Length - 1].Levels2[Tree.Levels1[Tree.Levels1.Length - 1].Levels2.Length - 1].Levels3.ToList();
                     l3.Add(new PiuWS.Level3() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan) });
                     Tree.Levels1[Tree.Levels1.Length - 1].Levels2[Tree.Levels1[Tree.Levels1.Length - 1].Levels2.Length - 1].Levels3 = l3.ToArray();
                 }
             }
 
-            model.PutPIUData("Токио", "01.09.2017", Tree);
+            model.PutPIUData("Токио", "01.09.2017", this.Tree.Levels1);
 
             return res;
         }

@@ -455,10 +455,18 @@ where bsb.ORDER_ID = {0}", id);
                 var propsAppt = this.Properties.FirstOrDefault(p => p.OrderPropsId == 30);
                 var propsEntryCode = this.Properties.FirstOrDefault(p => p.OrderPropsId == 31);
 
+                if (this.Properties.FirstOrDefault(p => p.OrderPropsId == 12) != null)
+                    propsPhone = this.Properties.FirstOrDefault(p => p.OrderPropsId == 12);
+
+                if (this.Properties.FirstOrDefault(p => p.OrderPropsId == 11) != null)
+                    propsName = this.Properties.FirstOrDefault(p => p.OrderPropsId == 11);
+
                 //Для определения, откуда заказ, с ебучего приложения или с сайта
                 var propsSource = this.Properties.FirstOrDefault(p => p.OrderPropsId == 18);
 
                 phone = propsPhone.Value.Trim().Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "");
+
+                phone = Regex.Replace(phone, "^8", "+7");
 
                 string ordercategoryID = "0", restID = "0";
 

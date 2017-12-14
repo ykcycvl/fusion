@@ -112,28 +112,28 @@ namespace Fusion.PiuWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:PutPIUData", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Tree PutPIUData(string Organization, string Period, Tree Tree) {
+        public Tree PutPIUData(string Organization, string Period, object ДревоДанных) {
             object[] results = this.Invoke("PutPIUData", new object[] {
                         Organization,
                         Period,
-                        Tree});
+                        ДревоДанных});
             return ((Tree)(results[0]));
         }
         
         /// <remarks/>
-        public void PutPIUDataAsync(string Organization, string Period, Tree Tree) {
-            this.PutPIUDataAsync(Organization, Period, Tree, null);
+        public void PutPIUDataAsync(string Organization, string Period, object ДревоДанных) {
+            this.PutPIUDataAsync(Organization, Period, ДревоДанных, null);
         }
         
         /// <remarks/>
-        public void PutPIUDataAsync(string Organization, string Period, Tree Tree, object userState) {
+        public void PutPIUDataAsync(string Organization, string Period, object ДревоДанных, object userState) {
             if ((this.PutPIUDataOperationCompleted == null)) {
                 this.PutPIUDataOperationCompleted = new System.Threading.SendOrPostCallback(this.OnPutPIUDataOperationCompleted);
             }
             this.InvokeAsync("PutPIUData", new object[] {
                         Organization,
                         Period,
-                        Tree}, this.PutPIUDataOperationCompleted, userState);
+                        ДревоДанных}, this.PutPIUDataOperationCompleted, userState);
         }
         
         private void OnPutPIUDataOperationCompleted(object arg) {
@@ -202,8 +202,6 @@ namespace Fusion.PiuWS {
         
         private string organizationField;
         
-        private Element elementField;
-        
         private string nameField;
         
         private string codeField;
@@ -261,16 +259,6 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
-        public Element Element {
-            get {
-                return this.elementField;
-            }
-            set {
-                this.elementField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string Name {
             get {
                 return this.nameField;
@@ -308,8 +296,6 @@ namespace Fusion.PiuWS {
         private System.DateTime periodField;
         
         private string organizationField;
-        
-        private Element elementField;
         
         private string nameField;
         
@@ -368,16 +354,6 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
-        public Element Element {
-            get {
-                return this.elementField;
-            }
-            set {
-                this.elementField = value;
-            }
-        }
-        
-        /// <remarks/>
         public string Name {
             get {
                 return this.nameField;
@@ -406,8 +382,6 @@ namespace Fusion.PiuWS {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
     public partial class Level3 {
         
-        private Element elementField;
-        
         private decimal sumFactField;
         
         private decimal sumPlanField;
@@ -419,16 +393,6 @@ namespace Fusion.PiuWS {
         private string nameField;
         
         private string codeField;
-        
-        /// <remarks/>
-        public Element Element {
-            get {
-                return this.elementField;
-            }
-            set {
-                this.elementField = value;
-            }
-        }
         
         /// <remarks/>
         public decimal SumFact {
@@ -470,39 +434,6 @@ namespace Fusion.PiuWS {
                 this.organizationField = value;
             }
         }
-        
-        /// <remarks/>
-        public string Name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Code {
-            get {
-                return this.codeField;
-            }
-            set {
-                this.codeField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
-    public partial class Element {
-        
-        private string nameField;
-        
-        private string codeField;
         
         /// <remarks/>
         public string Name {

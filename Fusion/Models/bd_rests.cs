@@ -19,7 +19,6 @@ namespace Fusion.Models
         public int restaurant_id { get; set; }
         public Nullable<int> count { get; set; }
     
-        public virtual bd_nomenclature bd_nomenclature { get; set; }
         public virtual bd_subdivision bd_subdivision { get; set; }
     }
 }

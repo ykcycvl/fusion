@@ -372,6 +372,7 @@ namespace Fusion.Models
                             }
 
                             e.TimeSheet = new List<HourPerDay>();
+                            e.BioTimeData = new List<HourPerDay>();
 
                             if (Convert.ToDecimal(etsi.TimeSheet.d1) != 0)
                                 e.TimeSheet.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 1), Hours = Convert.ToDecimal(etsi.TimeSheet.d1) });
@@ -480,8 +481,6 @@ namespace Fusion.Models
                                 e = new Employee() { Code = etsi.Code, FullName = etsi.Name, Position = etsi.Position, Rate = etsi.Rate, BioTimeData = new List<HourPerDay>() };
                                 s.Employees.Add(e);
                             }
-
-                            e.BioTimeData = new List<HourPerDay>();
 
                             if (Convert.ToDecimal(etsi.TimeSheet.d1) != 0)
                                 e.BioTimeData.Add(new HourPerDay() { Day = new DateTime(Period.Year, Period.Month, 1), Hours = Math.Floor(Convert.ToDecimal(etsi.TimeSheet.d1)) });

@@ -16,14 +16,14 @@ namespace Fusion.Models
     {
         public bd_organization()
         {
-            this.bd_order = new HashSet<bd_order>();
             this.bd_subdivision = new HashSet<bd_subdivision>();
+            this.bd_order = new HashSet<bd_order>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
     
-        public virtual ICollection<bd_order> bd_order { get; set; }
         public virtual ICollection<bd_subdivision> bd_subdivision { get; set; }
+        public virtual ICollection<bd_order> bd_order { get; set; }
     }
 }

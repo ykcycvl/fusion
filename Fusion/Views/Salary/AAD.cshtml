@@ -506,8 +506,9 @@
 @if (!Model.CarriedOut)
 {
     <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
-    <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
 }
+
+<input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
 
 <form action="ExportToExcel" method="post" target="_blank" id="excelForm">
     <input type="hidden" name="data" id="tableData" />
