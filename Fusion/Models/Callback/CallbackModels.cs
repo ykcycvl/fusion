@@ -94,7 +94,9 @@ namespace Fusion.Models.Callback
                 _rest.Add(new SelectListItem() { Text = "Пр-т 100 лет Владивостоку, 50А", Value = "4" });
                 _rest.Add(new SelectListItem() { Text = "Семеновская, 7В", Value = "5" });
                 _rest.Add(new SelectListItem() { Text = "Уссурийск", Value = "6" });
-                _rest.Add(new SelectListItem() { Text = "Находка", Value = "7" });
+                _rest.Add(new SelectListItem() { Text = "Находка 1 этаж", Value = "7" });
+                _rest.Add(new SelectListItem() { Text = "Находка 2 этаж", Value = "8" });
+                _rest.Add(new SelectListItem() { Text = "Артем", Value = "9" });
                 return _rest;
             }
         }
