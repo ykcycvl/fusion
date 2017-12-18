@@ -31,7 +31,7 @@
                         </div>
                         <div class="panel-collapse collapse" id="@i">
                             <div class="panel-body">
-                               @foreach (var ig in it.OrderBy(m => m.date).Reverse())
+                               @foreach (var ig in it.Where(n => n.state != 3).OrderBy(m => m.date).Reverse())
                                {
                                    string rowClass = "";
                                    switch (ig.state)
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="panel-collapse collapse" id="@i">
                                         <div class="panel-body">
-                                            @foreach (var ig in it.OrderBy(m => m.date).Reverse())
+                                            @foreach (var ig in it.Where(n => n.state != 3).OrderBy(m => m.date).Reverse())
                                             {
                                                 string rowClass = "";
                                                 switch (ig.state)

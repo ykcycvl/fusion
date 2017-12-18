@@ -77,7 +77,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var it in Model.orders.Where(m => m.bd_nomenclature.bd_vendor.name == Model.vendor_name).OrderByDescending(m => m.date))
+                    @foreach (var it in Model.orders.Where(m => m.bd_nomenclature.bd_vendor.name == Model.vendor_name && m.state != 3).OrderByDescending(m => m.date))
                 {
                         <tr>
                             <td>@it.bd_nomenclature.name</td>

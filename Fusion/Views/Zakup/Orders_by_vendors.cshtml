@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var it in Model.orders.GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key }))
+                @foreach (var it in Model.orders.Where(n => n.state != 3).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key }))
                 {
                     <tr>
                         <td>

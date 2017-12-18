@@ -25,7 +25,7 @@
         @using (Html.BeginForm("addReclamation", "Zakup", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
         {
             @Html.HiddenFor(m => m.username)
-            /*<div class="alert alert-info"><span class="text-danger text-uppercase" style="font-weight:bold">Внимание! </span>К загрузке доступно только одно изображение, поменять его в дальнейшем будет невозможно. Будьте осторожны при выборе файла.</div>*/
+            <div class="alert alert-info"><span class="text-danger text-uppercase" style="font-weight:bold">Внимание! </span>К загрузке доступно только одно изображение, поменять его в дальнейшем будет невозможно. Будьте осторожны при выборе файла.</div>
             <div class="form-group">
                 <label for=@Model.reclamation_item.date>Дата</label>
                 @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control", @type = "date", @required = "true", @Value = "2017-10-20" })
@@ -46,7 +46,7 @@
                 <label for="@Model.reclamation_item.comment">Примечание</label>
                 @Html.TextAreaFor(m => m.reclamation_item.comment, new { @class="form-control" })
             </div>
-           /* <input type="file" name="upload" required class="form-control" />*/
+           <input type="file" name="upload" required class="form-control" />
             <br />
             <input type="submit" class="btn btn-primary" value="Сохранить" />
         }

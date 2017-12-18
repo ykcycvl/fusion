@@ -458,41 +458,12 @@ namespace Fusion.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult addReclamation(ZakupModel model)
+        public ActionResult addReclamation(ZakupModel model, HttpPostedFileBase upload)
         {
             model.getUsers();
-            model.sendReclamation();
+            model.sendReclamation(upload);
             return Redirect("~/Zakup/Reclamation");
         }
-        /*
-        public ActionResult getReclamationWord(int id)
-        {
-            object missing = System.Reflection.Missing.Value;
-            object readOnly = false;
-            object isVisible = true;
-            object fileName = "C:/Users/ag/Documents/GitHub/Fusion/Fusion/Files/Reclamation.dotx";
-            Microsoft.Office.Interop.Word.ApplicationClass applicationWord = new Microsoft.Office.Interop.Word.ApplicationClass();
-            Microsoft.Office.Interop.Word.Document document = new Microsoft.Office.Interop.Word.Document();
-            try
-            {
-                document = applicationWord.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
-                document.Activate();
-                foreach(var it in document.Variables)
-                {
-                    int i = 0;
-                }
-                document.Variables["Vendor"].Value = "11";
-                document.Application.Quit(ref missing, ref missing, ref missing);
-
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex);
-                document.Application.Quit(ref missing, ref missing, ref missing);
-
-            }
-            return View();
-        }*/
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
         public ActionResult Orders_by_employees()
         {
@@ -541,6 +512,24 @@ namespace Fusion.Controllers
             model.getUsers();
             model.saveRemnants(model.restaurant_id);
             return Redirect("Remnants_rest");
+        }
+        public ActionResult ReclamationExport(int reclamation_id)
+        {
+            GeneratedCode.GeneratedClass.Reclamation reclamation = new GeneratedCode.GeneratedClass.Reclamation();
+            ZakupModel model = new ZakupModel();
+            model.getUsers();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getReclamations();
+            reclamation.address = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_subdivision.address;
+            reclamation.date = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).date;
+            reclamation.date_end = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).date;
+            reclamation.FIO = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_subdivision.bd_employee.FirstOrDefault(j => j.subdiv_id == model.reclamations.FirstOrDefault(h => h.id == reclamation_id).restaurant_id).full_name;
+            reclamation.count = 0;
+            reclamation.nomenclature = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_nomenclature.name;
+            reclamation.organisation = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_subdivision.bd_organization.name;
+            reclamation.vendor = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_vendor.name;
+            return File(new GeneratedCode.GeneratedClass().CreatePackageAsBytes(reclamation), "application/msword", "123.docx");
         }
     }
 }

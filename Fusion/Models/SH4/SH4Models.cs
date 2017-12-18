@@ -162,7 +162,9 @@ namespace Fusion.Models.SH4
                 //Остатки
                 for (int i = 0; i < Goods.Count; i++)
                 {
-                    int res = sh4.GsFifo(Goods[i].id, 0, DateTime.Parse("2017-05-01").ToOADate(), DateTime.Today.AddDays(-1).ToOADate());
+                    DateTime dtStart = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    DateTime dtEnd = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtEnd.ToOADate());
 
                     if (res >= 0)
                     {
@@ -192,9 +194,9 @@ namespace Fusion.Models.SH4
 
                     for (int i = 0; i < Goods.Count; i++)
                     {
-                        DateTime dtStart = DateTime.Parse("01.04.2017");
-
-                        int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtStart.ToOADate());
+                    DateTime dtStart = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    DateTime dtEnd = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtEnd.ToOADate());
 
                         if (res >= 0)
                         {
@@ -211,10 +213,7 @@ namespace Fusion.Models.SH4
                                     dynamic NDS = sh4.ValByName(res, "2.105.5.0");
                                     dynamic NSP = sh4.ValByName(res, "2.105.6.0");
 
-                                    if (gb.balance > 0)
-                                        gb.cost_bal = (double)sum / (double)gb.balance;
-                                    else
-                                        gb.cost_bal = 0;
+                                    gb.cost_bal = 0;
 
                                     if(NDS != DBNull.Value)
                                         gb.NDS = (double)NDS;

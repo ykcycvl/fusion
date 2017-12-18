@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
+using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Jitbit.Utils;
 using System.Web.Script.Serialization;
@@ -724,9 +725,15 @@ namespace Fusion.Models
                 list.SaveChanges();
             }
         }
-        public void sendReclamation()
+        public void sendReclamation(HttpPostedFileBase upload)
         {
-            list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
+            string fileName = null;
+            if (upload != null)
+            {
+                fileName = System.IO.Path.GetFileName(upload.FileName);
+                upload.SaveAs(HttpContext.Current.Server.MapPath("~/Files/"+fileName));
+            }
+            list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1, filePath = fileName });
             list.SaveChanges();
         }
         public void getRemnants(int restaurant_id)
