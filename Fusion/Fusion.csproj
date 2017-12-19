@@ -48,6 +48,9 @@
       <HintPath>..\..\Asterisk.2013\Asterisk.NET\bin\Debug\AsterNET.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Users\tv\Documents\Visual Studio 2013\Projects\Django\Django\bin\FirebirdSql.Data.FirebirdClient.dll</HintPath>
@@ -147,6 +150,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -1197,6 +1201,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FusionDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\GeneratedClass.cs" />
     <Compile Include="Models\GENERATEDPROPDATAS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
@@ -5594,6 +5599,7 @@
     <Content Include="Views\Settings\UserDataBind.cshtml" />
     <Content Include="Views\Settings\UserSettings.cshtml" />
     <Content Include="Views\PIU\GetTest.cshtml" />
+    <Content Include="Views\Callback\SendEmail.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <None Include="Web References\PiuWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>

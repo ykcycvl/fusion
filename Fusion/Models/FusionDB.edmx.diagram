@@ -86,6 +86,7 @@
         <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_order_state" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

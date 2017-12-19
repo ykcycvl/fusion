@@ -29,5 +29,6 @@ namespace Fusion.Models
         public virtual bd_subdivision bd_subdivision { get; set; }
         public virtual bd_vendor bd_vendor { get; set; }
         public virtual bd_states bd_states { get; set; }
+        public virtual bd_nomenclature bd_nomenclature { get; set; }
     }
 }
