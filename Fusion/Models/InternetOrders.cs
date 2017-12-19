@@ -386,7 +386,7 @@ WHERE bso.ID = {0}", id), con);
 
                 #region FillItems
                 com.CommandText = String.Format(@"select bsb.*, CAST(bie.XML_ID as SIGNED), bieb.VALUE as RKCODE from b_sale_basket bsb LEFT JOIN b_iblock_element bie ON bsb.PRODUCT_ID = bie.ID 
-LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID IN (76, 162, 161, 160, 159, 158, 153, 155, 151)
+LEFT JOIN b_iblock_element_property bieb ON cast(bie.XML_ID AS SIGNED) = bieb.IBLOCK_ELEMENT_ID and bieb.IBLOCK_PROPERTY_ID IN (76, 162, 161, 160, 159, 158, 153, 155, 151, 460)
 where bsb.ORDER_ID = {0}", id);
                 rdr = com.ExecuteReader();
 
