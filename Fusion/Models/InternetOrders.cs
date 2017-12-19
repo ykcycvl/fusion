@@ -509,6 +509,11 @@ where bsb.ORDER_ID = {0}", id);
                             ordercategoryID = "1010100";
                             restID = "1009190";
                             break;
+                        case "1013631":
+                            // Артем
+                            ordercategoryID = "1031343";
+                            restID = "1013631";
+                            break;
                         default:
                             // Хуй пойми чо
                             ordercategoryID = "1002069";
