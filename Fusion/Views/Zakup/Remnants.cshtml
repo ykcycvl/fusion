@@ -11,19 +11,27 @@
                 <th>Наименование</th>
                 <th>Кол-во</th>
                 <th>Ед. измерения</th>
-                <th>НДС</th>
+                <th>Среднее * период</th>
+                <th>Общий остаток</th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var it in Model.remnantsList)
+            @foreach (var it in Model.remnantsList)
             {
-                <tr>
-                    <td>@it.RID</td>
-                    <td>@it.name</td>
-                    <td>@Math.Round(it.quantity, 2)</td>
-                    <td>@it.measurements</td>
-                    <td>@it.vat</td>
-                </tr>
+                if (Model.GoodsBalances.Where(m => m.good.Name == it.name && m.balance > 0).Count() != 0)
+                {
+                    int purchasing_period = 2;
+                    double average_count = Model.GoodsBalances.FirstOrDefault(m => m.good.Name == it.name).balance / DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+                    double recommended_count = average_count * purchasing_period;
+                    <tr>
+                        <td>@it.RID</td>
+                        <td>@it.name</td>
+                        <td>@Math.Round(it.quantity, 2)</td>
+                        <td>@it.measurements</td>
+                        <td>@Math.Round(recommended_count, 2)</td>
+                        <td>@Model.GoodsBalances.FirstOrDefault(m => m.good.Name == it.name).balance</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

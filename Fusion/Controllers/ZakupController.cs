@@ -360,6 +360,7 @@ namespace Fusion.Controllers
                 if (GroupID != null)
                 {
                     model.getRemnants(GroupID, storehouse_name);
+                    model.GetBalances(GroupID, null);
                 }
                 else model.getRemnants(null, storehouse_name);
                 model.Close();
@@ -446,7 +447,7 @@ namespace Fusion.Controllers
             model.getReclamations();
             return View(model);
         }
-        public ActionResult addReclamation()
+        public ActionResult addReclamation(int? id)
         {
             ZakupModel model = new ZakupModel();
             model.username = User.Identity.GetUserName();
@@ -455,13 +456,23 @@ namespace Fusion.Controllers
             model.getNomenclatures();
             model.getReclamations();
             model.createReclamation();
+            if(id != null)
+            {
+                model.reclamation_item = model.reclamations.FirstOrDefault(m => m.id == id);
+            }
             return View(model);
         }
         [HttpPost]
-        public ActionResult addReclamation(ZakupModel model, HttpPostedFileBase upload)
+        public ActionResult addReclamation(ZakupModel model)
         {
+            List<HttpPostedFileBase> files = new List<HttpPostedFileBase>();
+            for(int i = 0; i < Request.Files.Count; i++)
+            {
+                var file = Request.Files[i];
+                files.Add(file);
+            }
             model.getUsers();
-            model.sendReclamation(upload);
+            model.sendReclamation(files);
             return Redirect("~/Zakup/Reclamation");
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]
@@ -479,19 +490,6 @@ namespace Fusion.Controllers
                     ordersDyn.Add(it);
                 }
                 return View(ordersDyn);
-        }
-        public ActionResult Test()
-        {
-
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Test(ZakupModel model)
-        {
-            model.getVendors();
-            model.getNomenclatures();
-            model.getUsers();
-            return Redirect("Test");
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Remnants_rest(int restaurant_id = -1)
@@ -530,6 +528,10 @@ namespace Fusion.Controllers
             reclamation.organisation = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_subdivision.bd_organization.name;
             reclamation.vendor = model.reclamations.FirstOrDefault(m => m.id == reclamation_id).bd_vendor.name;
             return File(new GeneratedCode.GeneratedClass().CreatePackageAsBytes(reclamation), "application/msword", "123.docx");
+        }
+        public ActionResult Test()
+        {
+            return View();
         }
     }
 }

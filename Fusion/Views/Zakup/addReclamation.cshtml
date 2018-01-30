@@ -2,6 +2,18 @@
 @{
     ViewBag.Title = "addReclamation";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    string className = "";
+    if (Model.reclamation_item.id != 0)
+    {
+        className = "disabled";
+        Model.vendorName = Model.reclamation_item.bd_vendor.name;
+        Model.reclamation_problemName = Model.reclamation_item.bd_reclamation_problems.problem;
+        Model.stateName = Model.reclamation_item.bd_states.name;
+    }
+    else
+    {
+        Model.reclamation_item.date = DateTime.Today;
+    }
 }
 <link href="~/Scripts/chosen.min.css" rel="stylesheet" />
 <script src="~/Scripts/chosen.jquery.min.js"></script>
@@ -14,6 +26,12 @@
             search_contains: true
         });
     });
+    $(document).ready(function () {
+        if ($("#className").val() != "") {
+            $(".disabled").attr("disabled", true);
+            $(".chosen-container").addClass("chosen-disable chosen-disabled")
+        }
+    });
 </script>
 <div class="panel panel-yellow">
     <div class="panel-heading">
@@ -25,28 +43,64 @@
         @using (Html.BeginForm("addReclamation", "Zakup", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
         {
             @Html.HiddenFor(m => m.username)
-            <div class="alert alert-info"><span class="text-danger text-uppercase" style="font-weight:bold">Внимание! </span>К загрузке доступно только одно изображение, поменять его в дальнейшем будет невозможно. Будьте осторожны при выборе файла.</div>
+            @Html.HiddenFor(m => className)
             <div class="form-group">
                 <label for=@Model.reclamation_item.date>Дата</label>
-                @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control", @type = "date", @required = "true", @Value = "2017-10-20" })
+                @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control " + className, @type = "date", @required = "true", @Value = Model.reclamation_item.date.ToString("yyyy-MM-dd") })
             </div>
             <div class="form-group">
                 <label for=@Model.reclamation_item.vendor_id>Поставщик</label>
-                @Html.DropDownListFor(m => m.reclamation_item.vendor_id, Model.vendorsSelectList, new { @class = "form-control", @required = "true" })
+                @if (Model.reclamation_item.id == 0)
+                {
+                    @Html.DropDownListFor(m => m.reclamation_item.vendor_id, Model.vendorsSelectList, new { @class = "form-control " + className, @required = "true" })
+                }
+                else
+                {
+                    <br />
+                    @Model.reclamation_item.bd_vendor.name
+                }
             </div>
             <div class="form-group">
                 <label for=@Model.reclamation_item.nomenclature_id>Номенклатура</label>
-                @Html.DropDownListFor(m => m.reclamation_item.nomenclature_id, Model.nomenclaturesSelectList, new { @class = "form-control", @required = "true" })
+                @if (Model.reclamation_item.id == 0)
+                {
+                    @Html.DropDownListFor(m => m.reclamation_item.nomenclature_id, Model.nomenclaturesSelectList, new { @class = "form-control " + className, @required = "true" })
+                }
+                else
+                {
+                    <br />
+                    @Model.reclamation_item.bd_nomenclature.name
+                }
             </div>
             <div class="form-group">
                 <label for=@Model.reclamation_item.problem_id>Проблема</label>
-                @Html.DropDownListFor(m => m.reclamation_item.problem_id, Model.reclamation_problemsSelectList, new { @class = "form-control", @required = "true" })
+                @Html.DropDownListFor(m => m.reclamation_item.problem_id, Model.reclamation_problemsSelectList, new { @class = "form-control " + className, @required = "true" })
             </div>
+            if (Model.reclamation_item.id != 0)
+            {
+                <div class="form-group">
+                    <label for=@Model.reclamation_item.state_id>Статус</label>
+                    @Html.DropDownListFor(m => m.reclamation_item.state_id, Model.stateSelectList, new { @class = "form-control", @required = "true" })
+                </div>
+            }
             <div class="form-group">
                 <label for="@Model.reclamation_item.comment">Примечание</label>
-                @Html.TextAreaFor(m => m.reclamation_item.comment, new { @class="form-control" })
+                @Html.TextAreaFor(m => m.reclamation_item.comment, new { @class = "form-control" })
             </div>
-           <input type="file" name="upload" required class="form-control" />
+            if (Model.reclamation_item.id != 0)
+            {
+                <div class="form-group">
+                    <label for="@Model.reclamation_item.solution">Решение</label>
+                    @Html.TextAreaFor(m => m.reclamation_item.comment, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @foreach (var it in Model.reclamation_files.Where(m => m.reclamation_id == Model.reclamation_item.id))
+                    {
+                        <img src="~/Files/@it.file" style="max-width: 200px; max-height: 200px" />
+                    }
+                </div>
+            }
+            <input type="file" name="upload" multiple required class="form-control" />
             <br />
             <input type="submit" class="btn btn-primary" value="Сохранить" />
         }

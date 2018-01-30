@@ -3,6 +3,11 @@
     ViewBag.Title = "Reclamation";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
+<style>
+    #Form a {
+        text-decoration: underline;
+    }
+</style>
 <div class="panel panel-yellow">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -12,23 +17,20 @@
     <div class="panel-body">
 @using (Html.BeginForm("Reclamation", "Zakup", FormMethod.Post, new { id = "Form" }))
 {
-    <input type="submit" value="Сохранить" class="btn btn-success"/>
     @Html.ActionLink("Добавить рекламацию", "addReclamation", null, new { @class="btn btn-primary" })
     /*@Html.ActionLink("123", "getReclamationWord", new {id = 1 })*/
     <table class="table table-bordered table-striped">
         <thead>
             <tr class="info">
                 <th style="display:none">id</th>
+                <th>Просмотр</th>
                 <th>Дата</th>
                 <th>Ресторан</th>
                 <th>Поставщик</th>
                 <th>Номенклатура</th>
                 <th>Проблема</th>
-                <th>Решение</th>
-                <td>image</td>
-                <th>Примечание</th>
                 <th>Статус</th>
-                <th>Даунлоад</th>
+                <th>Word</th>
             </tr>
         </thead>
         <tbody>
@@ -59,17 +61,15 @@
                 Model.stateName = Model.reclamations[i].bd_states.name;
                 <tr style="color: @color; background-color: @backgroundcolor">
                     <td style="display:none">@Html.HiddenFor(m => Model.reclamations[i].id)</td>
+                    <td>@Html.ActionLink("Подробнее", "addReclamation", new { id = Model.reclamations[i].id }, new { @style="color:"+color+"" })</td>
                     <td>
-                        @Html.DisplayFor(m => Model.reclamations[i].date, new { @type = "date", @Value = Model.reclamations[i].date.ToString("yyy-mm-dd"), @class = "form-control" })
+                        @Model.reclamations[i].date.Date.ToShortDateString()
                     </td>
                     <td>@Model.reclamations[i].bd_subdivision.name</td>
                     <td>@Model.reclamations[i].bd_vendor.name</td>
                     <td>@Model.reclamations[i].bd_nomenclature.name</td>
                     <td>@Model.reclamations[i].bd_reclamation_problems.problem</td>
-                    <td>@Html.TextAreaFor(m => Model.reclamations[i].solution, new { @class = "form-control" })</td>
-                    <td><img style="max-width: 200px; max-height: 200px" src="~/Files/@Model.reclamations[i].filePath" /></td>
-                    <td>@Html.TextAreaFor(m => m.reclamations[i].comment, new { @class="form-control" })</td>
-                    <td>@Html.DropDownListFor(m => m.reclamations[i].state_id, Model.stateSelectList, new { @class="form-control" })</td>
+                    <td>@Model.reclamations[i].bd_states.name</td>
                     <td>@Html.ActionLink("Скачать", "ReclamationExport", new { reclamation_id = Model.reclamations[i].id }, new { @class="btn btn-primary" })</td>
                 </tr>
                 }

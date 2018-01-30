@@ -162,6 +162,7 @@ namespace Fusion.Models
         public List<bd_reclamation> reclamations { get; set; }
         public List<bd_nomenclature_state> nomeclature_states { get; set; }
         public List<bd_reclamation_problems> reclamation_problems { get; set; }
+        public List<bd_reclamation_files> reclamation_files { get; set; }
         public Entities list = new Entities();
         public IEnumerable<SelectListItem> catListFull { get; set; }
         public IEnumerable<SelectListItem> statesSelect { get; set; }
@@ -294,6 +295,245 @@ namespace Fusion.Models
                 sh4.pr_Next(res, 2);
             }
             sh4.pr_CloseProc(res);
+        }
+        public void GetGoods(int? id)
+        {
+            GetGoodsTree(id);
+
+            if (id == null)
+            {
+                for (int i = 0; i < GoodsTree.Count; i++)
+                {
+                    int res = sh4.Goods(GoodsTree[i].ID);
+
+                    if (res >= 0)
+                    {
+                        while (sh4.EOF(res) != 1)
+                        {
+                            Good g = new Good();
+                            g.id = sh4.ValByName(res, "1.210.1.0");
+                            g.GroupID = sh4.ValByName(res, "1.209.1.0");
+                            g.Name = sh4.ValByName(res, "1.210.2.0");
+                            g.CodePrefix = sh4.ValByName(res, "1.210.3.0");
+                            g.CodeNumber = sh4.ValByName(res, "1.210.4.0");
+                            g.Unit = sh4.ValByName(res, "1.206.2.0");
+                            g.ComplectID = sh4.ValByName(res, "1.200.1.1");
+                            g.ComplectName = sh4.ValByName(res, "1.200.2.1");
+
+                            Goods.Add(g);
+                            sh4.Next(res);
+                        }
+
+                        sh4.CloseQuery(res);
+                    }
+                }
+            }
+            else
+            {
+                int res = sh4.Goods((int)id);
+
+                if (res >= 0)
+                {
+                    while (sh4.EOF(res) != 1)
+                    {
+                        Good g = new Good();
+                        g.id = sh4.ValByName(res, "1.210.1.0");
+                        g.GroupID = sh4.ValByName(res, "1.209.1.0");
+                        g.Name = sh4.ValByName(res, "1.210.2.0");
+                        g.CodePrefix = sh4.ValByName(res, "1.210.3.0");
+                        g.CodeNumber = sh4.ValByName(res, "1.210.4.0");
+                        g.Unit = sh4.ValByName(res, "1.206.2.0");
+                        g.ComplectID = sh4.ValByName(res, "1.200.1.1");
+                        g.ComplectName = sh4.ValByName(res, "1.200.2.1");
+
+                        Goods.Add(g);
+                        sh4.Next(res);
+                    }
+
+                    sh4.CloseQuery(res);
+                }
+            }
+
+            for (int i = 0; i < Goods.Count; i++)
+            {
+                Goods[i].GroupName = GoodsTree.FirstOrDefault(p => p.ID == Goods[i].GroupID).Name;
+            }
+        }
+        public void GetBalances(int? GroupID, int? GoodID)
+        {
+            if (GroupID == null && GoodID == null)
+            {
+                GetGoods(null);
+
+                //Остатки
+                for (int i = 0; i < Goods.Count; i++)
+                {
+                    DateTime dtStart = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    DateTime dtEnd = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtEnd.ToOADate());
+
+                    if (res >= 0)
+                    {
+                        while (sh4.EOF(res) != 1)
+                        {
+                            if (sh4.ValByName(res, "1.105.1.1").GetType() == typeof(DBNull))
+                            {
+                                GoodsBalance gb = new GoodsBalance();
+                                gb.good = Goods[i];
+                                gb.balance = sh4.ValByName(res, "1.105.3.0");
+                                gb.cost_bal = sh4.ValByName(res, "1.105.4.0");
+                                GoodsBalances.Add(gb);
+                                break;
+                            }
+
+                            sh4.Next(res);
+                        }
+
+                        sh4.CloseQuery(res);
+                    }
+                }
+            }
+            else
+                if (GroupID != null)
+            {
+                GetGoods(GroupID);
+
+                for (int i = 0; i < Goods.Count; i++)
+                {
+                    DateTime dtStart = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    DateTime dtEnd = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtEnd.ToOADate());
+
+                    if (res >= 0)
+                    {
+                        while (sh4.EOF(res) != 1)
+                        {
+                            if (sh4.ValByName(res, "1.105.1.1").GetType() == typeof(DBNull))
+                            {
+                                GoodsBalance gb = new GoodsBalance();
+                                gb.good = Goods[i];
+                                gb.balance = sh4.ValByName(res, "1.105.3.0");
+
+                                dynamic sum = sh4.ValByName(res, "2.105.4.0");
+
+                                dynamic NDS = sh4.ValByName(res, "2.105.5.0");
+                                dynamic NSP = sh4.ValByName(res, "2.105.6.0");
+
+                                gb.cost_bal = 0;
+
+                                if (NDS != DBNull.Value)
+                                    gb.NDS = (double)NDS;
+
+                                if (NSP != DBNull.Value)
+                                    gb.NSP = (double)NSP;
+
+                                GoodsBalances.Add(gb);
+                                break;
+                            }
+
+                            sh4.Next(res);
+                        }
+
+                        sh4.CloseQuery(res);
+                    }
+                }
+            }
+            else
+            {
+                GetGoodsTree(null);
+                int res = sh4.GoodByRID((int)GoodID);
+
+                if (res >= 0)
+                {
+                    Good g = new Good();
+
+                    while (sh4.EOF(res) != 1)
+                    {
+                        g.id = sh4.ValByName(res, "1.210.1.0");
+                        g.GroupID = sh4.ValByName(res, "1.209.1.0");
+                        g.Name = sh4.ValByName(res, "1.210.2.0");
+                        g.CodePrefix = sh4.ValByName(res, "1.210.3.0");
+                        g.CodeNumber = sh4.ValByName(res, "1.210.4.0");
+                        g.Unit = sh4.ValByName(res, "1.206.2.0");
+                        g.ComplectID = sh4.ValByName(res, "1.200.1.1");
+                        g.ComplectName = sh4.ValByName(res, "1.200.2.1");
+                        g.GroupName = GoodsTree.FirstOrDefault(p => p.ID == g.GroupID).Name;
+
+                        Goods.Add(g);
+                        sh4.Next(res);
+                    }
+
+                    sh4.CloseQuery(res);
+
+                    res = sh4.GsFifo((int)GoodID, 0, DateTime.Today.ToOADate(), DateTime.Today.ToOADate());
+
+                    if (res >= 0)
+                    {
+                        while (sh4.EOF(res) != 1)
+                        {
+                            if (sh4.ValByName(res, "1.105.1.1").GetType() == typeof(DBNull))
+                            {
+                                GoodsBalance gb = new GoodsBalance();
+                                gb.good = g;
+                                gb.balance = sh4.ValByName(res, "1.105.3.0");
+                                dynamic sum = sh4.ValByName(res, "1.105.4.0");
+
+                                if (gb.balance > 0)
+                                    gb.cost_bal = (double)sum / (double)gb.balance;
+                                else
+                                    gb.cost_bal = 0;
+
+                                GoodsBalances.Add(gb);
+                                break;
+                            }
+
+                            sh4.Next(res);
+                        }
+
+                        sh4.CloseQuery(res);
+                    }
+                }
+            }
+
+            if (GoodsBalances.Count > 0)
+            {
+                DateTime startdate = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                DateTime enddate = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+
+                //Себестоимость
+                for (int i = 0; i < GoodsBalances.Count; i++)
+                {
+                    GoodsBalances[i].cost = GetCost(GoodsBalances[i].good.id, startdate, enddate);
+                }
+            }
+        }
+        public double GetCost(int GoodsID, DateTime startdate, DateTime enddate)
+        {
+            dynamic sum = 0;
+            dynamic cnt = 0;
+            int res = sh4.GsFifo(GoodsID, 0, startdate.ToOADate(), enddate.ToOADate());
+
+            if (res >= 0)
+            {
+                while (sh4.EOF(res) != 1)
+                {
+                    if (sh4.ValByName(res, "2.103.10.1").GetType() != typeof(DBNull))
+                        if (sh4.ValByName(res, "2.103.10.1") == 12 || sh4.ValByName(res, "2.103.10.1") == 12)
+                        {
+                            sum += sh4.ValByName(res, "2.105.4.0");
+                            cnt += sh4.ValByName(res, "2.105.3.0");
+                        }
+
+                    sh4.Next(res);
+                }
+
+                sh4.CloseQuery(res);
+            }
+
+            if (cnt != 0)
+                return (double)sum / (double)cnt;
+            else
+                return 0;
         }
         public void createVendor()
         {
@@ -661,6 +901,7 @@ namespace Fusion.Models
         {
             reclamations = list.bd_reclamation.ToList();
             reclamation_problems = list.bd_reclamation_problems.ToList();
+            reclamation_files = list.bd_reclamation_files.ToList();
             states = list.bd_states.ToList();
         }
         public IEnumerable<SelectListItem> reclamation_problemsSelectList
@@ -725,15 +966,32 @@ namespace Fusion.Models
                 list.SaveChanges();
             }
         }
-        public void sendReclamation(HttpPostedFileBase upload)
+        public void sendReclamation(List<HttpPostedFileBase> files)
         {
             string fileName = null;
-            if (upload != null)
+            int reclamation_id = 0;
+            if(reclamation_item.id != 0)
             {
-                fileName = System.IO.Path.GetFileName(upload.FileName);
-                upload.SaveAs(HttpContext.Current.Server.MapPath("~/Files/"+fileName));
+                reclamation_id = reclamation_item.id;
+                list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).solution = reclamation_item.solution;
+                list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).comment = reclamation_item.comment;
+                list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).state_id = reclamation_item.state_id;
             }
-            list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1, filePath = fileName });
+            else
+            {
+                list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
+            }
+            list.SaveChanges();
+            if (files.Any())
+            {
+                foreach(var it in files)
+                {
+                    int id = list.bd_reclamation.ToList().Last().id;
+                    fileName = System.IO.Path.GetFileName(it.FileName);
+                    it.SaveAs(HttpContext.Current.Server.MapPath("~/Files/" + fileName));
+                    list.bd_reclamation_files.Add(new bd_reclamation_files { reclamation_id = id, file = fileName });
+                }
+            }
             list.SaveChanges();
         }
         public void getRemnants(int restaurant_id)
