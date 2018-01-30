@@ -34,5 +34,6 @@ namespace Fusion.Models
         public Nullable<System.DateTime> DELIVERYLASTPROCESSTIME { get; set; }
         public Nullable<System.DateTime> DELIVERYMINCOOKTIME { get; set; }
         public Nullable<System.DateTime> DELIVERYREADYTIME { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

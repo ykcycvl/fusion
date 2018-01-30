@@ -79,6 +79,8 @@ namespace Fusion.Models
         public Nullable<int> SQI { get; set; }
         public string GUIDSTRING { get; set; }
         public Nullable<decimal> PAYFISCALSUM { get; set; }
+        public Nullable<short> RECEIPTTAXTYPE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

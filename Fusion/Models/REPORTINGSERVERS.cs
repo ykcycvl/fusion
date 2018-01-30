@@ -29,6 +29,7 @@ namespace Fusion.Models
         public Nullable<int> FLAGS { get; set; }
         public string LICENSE { get; set; }
         public Nullable<int> LICHARDINFO { get; set; }
+        public Nullable<int> LICHARDINFONEW { get; set; }
         public Nullable<System.DateTime> LICEXPIREAT { get; set; }
         public Nullable<int> LICENSEKEYN { get; set; }
         public Nullable<int> LICHARDKEYN { get; set; }
@@ -37,6 +38,9 @@ namespace Fusion.Models
         public Nullable<int> EXTBASECONF { get; set; }
         public string EXTBASENAME { get; set; }
         public string EXTBASEPASS { get; set; }
+        public Nullable<int> LOGBASECONF { get; set; }
+        public string LOGBASENAME { get; set; }
+        public string LOGBASEPASS { get; set; }
         public Nullable<int> LOGGINGTYPE { get; set; }
         public Nullable<int> CUBETIMEOUT { get; set; }
         public byte[] ITEMSRIGHTS { get; set; }
@@ -65,9 +69,5 @@ namespace Fusion.Models
         public Nullable<int> HTTPAPIPRIVILEGE { get; set; }
         public Nullable<int> HTTPXMLPRIVILEGE { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<int> LICHARDINFONEW { get; set; }
-        public Nullable<int> LOGBASECONF { get; set; }
-        public string LOGBASENAME { get; set; }
-        public string LOGBASEPASS { get; set; }
     }
 }

@@ -40,6 +40,7 @@ namespace Fusion.Models
         public string OPENREASONNAME { get; set; }
         public Nullable<int> IAUTHOR { get; set; }
         public string PAYGUIDSTRING { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

@@ -21,8 +21,10 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<short> STATUS { get; set; }
         public byte[] CONFIGSCHEME { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> LICENSEKIND { get; set; }
+        public Nullable<int> PARENT { get; set; }
+        public Nullable<short> ISTEMPLATE { get; set; }
         public Nullable<short> UCSPRESET { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

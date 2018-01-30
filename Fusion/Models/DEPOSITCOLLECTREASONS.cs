@@ -26,6 +26,7 @@ namespace Fusion.Models
         public Nullable<int> CARDWITHDRAWAL { get; set; }
         public Nullable<short> TRANSACTIONCODE { get; set; }
         public Nullable<int> UNDISTRMARKUP { get; set; }
+        public Nullable<int> LATEDELETEMARKUP { get; set; }
         public string FORMAT { get; set; }
         public Nullable<short> RIGHTLVL { get; set; }
         public Nullable<int> VISUALTYPE_IMAGE { get; set; }
@@ -36,6 +37,5 @@ namespace Fusion.Models
         public Nullable<int> COT { get; set; }
         public Nullable<int> ACCOUNTINGPLACE { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<int> LATEDELETEMARKUP { get; set; }
     }
 }

@@ -33,6 +33,12 @@ namespace Fusion.PiuWS {
         
         private System.Threading.SendOrPostCallback PutPIUDataOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetOrganizationsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback PutNormsOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback GetNormsOperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -78,28 +84,41 @@ namespace Fusion.PiuWS {
         public event PutPIUDataCompletedEventHandler PutPIUDataCompleted;
         
         /// <remarks/>
+        public event GetOrganizationsCompletedEventHandler GetOrganizationsCompleted;
+        
+        /// <remarks/>
+        public event PutNormsCompletedEventHandler PutNormsCompleted;
+        
+        /// <remarks/>
+        public event GetNormsCompletedEventHandler GetNormsCompleted;
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:GetPIUData", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Tree GetPIUData(string Organization, string Period) {
+        public Tree GetPIUData(string UserName, string Organization, string PeriodBegin, string PeriodEnd) {
             object[] results = this.Invoke("GetPIUData", new object[] {
+                        UserName,
                         Organization,
-                        Period});
+                        PeriodBegin,
+                        PeriodEnd});
             return ((Tree)(results[0]));
         }
         
         /// <remarks/>
-        public void GetPIUDataAsync(string Organization, string Period) {
-            this.GetPIUDataAsync(Organization, Period, null);
+        public void GetPIUDataAsync(string UserName, string Organization, string PeriodBegin, string PeriodEnd) {
+            this.GetPIUDataAsync(UserName, Organization, PeriodBegin, PeriodEnd, null);
         }
         
         /// <remarks/>
-        public void GetPIUDataAsync(string Organization, string Period, object userState) {
+        public void GetPIUDataAsync(string UserName, string Organization, string PeriodBegin, string PeriodEnd, object userState) {
             if ((this.GetPIUDataOperationCompleted == null)) {
                 this.GetPIUDataOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetPIUDataOperationCompleted);
             }
             this.InvokeAsync("GetPIUData", new object[] {
+                        UserName,
                         Organization,
-                        Period}, this.GetPIUDataOperationCompleted, userState);
+                        PeriodBegin,
+                        PeriodEnd}, this.GetPIUDataOperationCompleted, userState);
         }
         
         private void OnGetPIUDataOperationCompleted(object arg) {
@@ -112,8 +131,9 @@ namespace Fusion.PiuWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:PutPIUData", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return", IsNullable=true)]
-        public Tree PutPIUData(string Organization, string Period, object ДревоДанных) {
+        public Tree PutPIUData(string UserName, string Organization, string Period, object ДревоДанных) {
             object[] results = this.Invoke("PutPIUData", new object[] {
+                        UserName,
                         Organization,
                         Period,
                         ДревоДанных});
@@ -121,16 +141,17 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
-        public void PutPIUDataAsync(string Organization, string Period, object ДревоДанных) {
-            this.PutPIUDataAsync(Organization, Period, ДревоДанных, null);
+        public void PutPIUDataAsync(string UserName, string Organization, string Period, object ДревоДанных) {
+            this.PutPIUDataAsync(UserName, Organization, Period, ДревоДанных, null);
         }
         
         /// <remarks/>
-        public void PutPIUDataAsync(string Organization, string Period, object ДревоДанных, object userState) {
+        public void PutPIUDataAsync(string UserName, string Organization, string Period, object ДревоДанных, object userState) {
             if ((this.PutPIUDataOperationCompleted == null)) {
                 this.PutPIUDataOperationCompleted = new System.Threading.SendOrPostCallback(this.OnPutPIUDataOperationCompleted);
             }
             this.InvokeAsync("PutPIUData", new object[] {
+                        UserName,
                         Organization,
                         Period,
                         ДревоДанных}, this.PutPIUDataOperationCompleted, userState);
@@ -140,6 +161,107 @@ namespace Fusion.PiuWS {
             if ((this.PutPIUDataCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.PutPIUDataCompleted(this, new PutPIUDataCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:GetOrganizations", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlArrayAttribute("return")]
+        [return: System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Organization[] GetOrganizations(string UserName) {
+            object[] results = this.Invoke("GetOrganizations", new object[] {
+                        UserName});
+            return ((Organization[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetOrganizationsAsync(string UserName) {
+            this.GetOrganizationsAsync(UserName, null);
+        }
+        
+        /// <remarks/>
+        public void GetOrganizationsAsync(string UserName, object userState) {
+            if ((this.GetOrganizationsOperationCompleted == null)) {
+                this.GetOrganizationsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetOrganizationsOperationCompleted);
+            }
+            this.InvokeAsync("GetOrganizations", new object[] {
+                        UserName}, this.GetOrganizationsOperationCompleted, userState);
+        }
+        
+        private void OnGetOrganizationsOperationCompleted(object arg) {
+            if ((this.GetOrganizationsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetOrganizationsCompleted(this, new GetOrganizationsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:PutNorms", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return")]
+        public string PutNorms(string UserName, string Organization, string Period, object ДревоДанных) {
+            object[] results = this.Invoke("PutNorms", new object[] {
+                        UserName,
+                        Organization,
+                        Period,
+                        ДревоДанных});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void PutNormsAsync(string UserName, string Organization, string Period, object ДревоДанных) {
+            this.PutNormsAsync(UserName, Organization, Period, ДревоДанных, null);
+        }
+        
+        /// <remarks/>
+        public void PutNormsAsync(string UserName, string Organization, string Period, object ДревоДанных, object userState) {
+            if ((this.PutNormsOperationCompleted == null)) {
+                this.PutNormsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnPutNormsOperationCompleted);
+            }
+            this.InvokeAsync("PutNorms", new object[] {
+                        UserName,
+                        Organization,
+                        Period,
+                        ДревоДанных}, this.PutNormsOperationCompleted, userState);
+        }
+        
+        private void OnPutNormsOperationCompleted(object arg) {
+            if ((this.PutNormsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.PutNormsCompleted(this, new PutNormsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:GetNorms", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute("return")]
+        public Tree GetNorms(string UserName, string Organization, string Period) {
+            object[] results = this.Invoke("GetNorms", new object[] {
+                        UserName,
+                        Organization,
+                        Period});
+            return ((Tree)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetNormsAsync(string UserName, string Organization, string Period) {
+            this.GetNormsAsync(UserName, Organization, Period, null);
+        }
+        
+        /// <remarks/>
+        public void GetNormsAsync(string UserName, string Organization, string Period, object userState) {
+            if ((this.GetNormsOperationCompleted == null)) {
+                this.GetNormsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetNormsOperationCompleted);
+            }
+            this.InvokeAsync("GetNorms", new object[] {
+                        UserName,
+                        Organization,
+                        Period}, this.GetNormsOperationCompleted, userState);
+        }
+        
+        private void OnGetNormsOperationCompleted(object arg) {
+            if ((this.GetNormsCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetNormsCompleted(this, new GetNormsCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -172,6 +294,8 @@ namespace Fusion.PiuWS {
         
         private Level1[] levels1Field;
         
+        private Reconciliation[] reconciliationsField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public Level1[] Levels1 {
@@ -180,6 +304,17 @@ namespace Fusion.PiuWS {
             }
             set {
                 this.levels1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Reconciliation[] Reconciliations {
+            get {
+                return this.reconciliationsField;
+            }
+            set {
+                this.reconciliationsField = value;
             }
         }
     }
@@ -198,6 +333,8 @@ namespace Fusion.PiuWS {
         
         private decimal sumPlanField;
         
+        private decimal sumNormField;
+        
         private System.DateTime periodField;
         
         private string organizationField;
@@ -205,6 +342,14 @@ namespace Fusion.PiuWS {
         private string nameField;
         
         private string codeField;
+        
+        private Rated[] additionalField;
+        
+        private Rated[] exceptionField;
+        
+        private GroupCFR[] allowedField;
+        
+        private decimal sumNormMaxField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
@@ -238,6 +383,16 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
+        public decimal SumNorm {
+            get {
+                return this.sumNormField;
+            }
+            set {
+                this.sumNormField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
         public System.DateTime Period {
             get {
@@ -277,6 +432,49 @@ namespace Fusion.PiuWS {
                 this.codeField = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Rated[] Additional {
+            get {
+                return this.additionalField;
+            }
+            set {
+                this.additionalField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Rated[] Exception {
+            get {
+                return this.exceptionField;
+            }
+            set {
+                this.exceptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public GroupCFR[] Allowed {
+            get {
+                return this.allowedField;
+            }
+            set {
+                this.allowedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SumNormMax {
+            get {
+                return this.sumNormMaxField;
+            }
+            set {
+                this.sumNormMaxField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -293,6 +491,8 @@ namespace Fusion.PiuWS {
         
         private decimal sumPlanField;
         
+        private decimal sumNormField;
+        
         private System.DateTime periodField;
         
         private string organizationField;
@@ -300,6 +500,14 @@ namespace Fusion.PiuWS {
         private string nameField;
         
         private string codeField;
+        
+        private Rated[] additionalField;
+        
+        private Rated[] exceptionField;
+        
+        private GroupCFR[] allowedField;
+        
+        private decimal sumNormMaxField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
@@ -333,6 +541,16 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
+        public decimal SumNorm {
+            get {
+                return this.sumNormField;
+            }
+            set {
+                this.sumNormField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
         public System.DateTime Period {
             get {
@@ -372,6 +590,49 @@ namespace Fusion.PiuWS {
                 this.codeField = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Rated[] Additional {
+            get {
+                return this.additionalField;
+            }
+            set {
+                this.additionalField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Rated[] Exception {
+            get {
+                return this.exceptionField;
+            }
+            set {
+                this.exceptionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public GroupCFR[] Allowed {
+            get {
+                return this.allowedField;
+            }
+            set {
+                this.allowedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SumNormMax {
+            get {
+                return this.sumNormMaxField;
+            }
+            set {
+                this.sumNormMaxField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -386,6 +647,8 @@ namespace Fusion.PiuWS {
         
         private decimal sumPlanField;
         
+        private decimal sumNormField;
+        
         private System.DateTime periodField;
         
         private string organizationField;
@@ -393,6 +656,10 @@ namespace Fusion.PiuWS {
         private string nameField;
         
         private string codeField;
+        
+        private GroupCFR[] allowedField;
+        
+        private decimal sumNormMaxField;
         
         /// <remarks/>
         public decimal SumFact {
@@ -411,6 +678,16 @@ namespace Fusion.PiuWS {
             }
             set {
                 this.sumPlanField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SumNorm {
+            get {
+                return this.sumNormField;
+            }
+            set {
+                this.sumNormField = value;
             }
         }
         
@@ -444,6 +721,183 @@ namespace Fusion.PiuWS {
                 this.nameField = value;
             }
         }
+        
+        /// <remarks/>
+        public string Code {
+            get {
+                return this.codeField;
+            }
+            set {
+                this.codeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public GroupCFR[] Allowed {
+            get {
+                return this.allowedField;
+            }
+            set {
+                this.allowedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SumNormMax {
+            get {
+                return this.sumNormMaxField;
+            }
+            set {
+                this.sumNormMaxField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
+    public partial class GroupCFR {
+        
+        private string nameCFRField;
+        
+        private bool readRoleField;
+        
+        private bool writeRoleField;
+        
+        /// <remarks/>
+        public string NameCFR {
+            get {
+                return this.nameCFRField;
+            }
+            set {
+                this.nameCFRField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool ReadRole {
+            get {
+                return this.readRoleField;
+            }
+            set {
+                this.readRoleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool WriteRole {
+            get {
+                return this.writeRoleField;
+            }
+            set {
+                this.writeRoleField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
+    public partial class Organization {
+        
+        private bool deletedField;
+        
+        private string nameField;
+        
+        private string fullNameField;
+        
+        private string shortNameField;
+        
+        /// <remarks/>
+        public bool Deleted {
+            get {
+                return this.deletedField;
+            }
+            set {
+                this.deletedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string FullName {
+            get {
+                return this.fullNameField;
+            }
+            set {
+                this.fullNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string ShortName {
+            get {
+                return this.shortNameField;
+            }
+            set {
+                this.shortNameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
+    public partial class Reconciliation {
+        
+        private string userNameField;
+        
+        private bool agreedField;
+        
+        /// <remarks/>
+        public string UserName {
+            get {
+                return this.userNameField;
+            }
+            set {
+                this.userNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool Agreed {
+            get {
+                return this.agreedField;
+            }
+            set {
+                this.agreedField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.7.2102.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://srv-1c_g/autopiu")]
+    public partial class Rated {
+        
+        private string codeField;
         
         /// <remarks/>
         public string Code {
@@ -495,6 +949,84 @@ namespace Fusion.PiuWS {
         private object[] results;
         
         internal PutPIUDataCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Tree Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Tree)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    public delegate void GetOrganizationsCompletedEventHandler(object sender, GetOrganizationsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetOrganizationsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetOrganizationsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Organization[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Organization[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    public delegate void PutNormsCompletedEventHandler(object sender, PutNormsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class PutNormsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal PutNormsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    public delegate void GetNormsCompletedEventHandler(object sender, GetNormsCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.7.2046.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetNormsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetNormsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

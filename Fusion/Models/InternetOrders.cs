@@ -874,7 +874,6 @@ where bsb.ORDER_ID = {0}", id);
 
                 List<RK7_qryCreateOrder.guest_item> guests = new List<RK7_qryCreateOrder.guest_item>();
 
-
                 guests.Add(new RK7_qryCreateOrder.guest_item()
                 {
                     clientIDSpecified = true,
@@ -940,7 +939,7 @@ where bsb.ORDER_ID = {0}", id);
                     deliveryTimeSpecified = true,
                     deliveryTime = deliveryTime,
                     minCookTimeSpecified = true,
-                    minCookTime = (new DateTime(1899, 12, 30)).AddMinutes(defaultCookTime)
+                    minCookTime = (new DateTime(1899, 12, 30)).AddMinutes(defaultCookTime),
                 };
 
                 xmlSerializer = new XmlSerializer(typeof(Dlv_qryDeliveryUpdateStatus.RK7Query));

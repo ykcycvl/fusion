@@ -63,5 +63,6 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<short> ISBANQUET { get; set; }
         public Nullable<short> FISCORDERSTATE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

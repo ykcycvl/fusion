@@ -23,6 +23,10 @@ namespace Fusion.Models
         public Nullable<System.DateTime> INITAT { get; set; }
         public Nullable<System.DateTime> DONEAT { get; set; }
         public Nullable<System.DateTime> TAKEAT { get; set; }
+        public Nullable<System.DateTime> COLLECTAT { get; set; }
+        public Nullable<System.DateTime> COLLECTEDAT { get; set; }
+        public Nullable<System.DateTime> STARTPARKAT { get; set; }
+        public Nullable<System.DateTime> ENDPARKAT { get; set; }
         public Nullable<double> COOKTM { get; set; }
         public Nullable<double> MENUCOOKTIME { get; set; }
         public Nullable<int> MENUCATEGORY { get; set; }
@@ -31,7 +35,12 @@ namespace Fusion.Models
         public Nullable<int> INITMANAGERID { get; set; }
         public Nullable<int> DONEMANAGERID { get; set; }
         public Nullable<int> TAKEMANAGERID { get; set; }
+        public Nullable<int> COLLECTMANAGERID { get; set; }
+        public Nullable<int> COLLECTEDMANAGERID { get; set; }
+        public Nullable<int> STARTPARKMANAGERID { get; set; }
+        public Nullable<int> ENDPARKMANAGERID { get; set; }
         public Nullable<int> KDSSTATIONID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

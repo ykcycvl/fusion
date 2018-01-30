@@ -1,0 +1,516 @@
+﻿@model Fusion.Models.PIU
+
+@{
+    ViewBag.Title = "Редактирование ПИУ";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+
+    string TableData = "";
+    string tdl2 = "";
+    string tdl3 = "";
+    string dataColumns = "";
+    string dataColumnsPrc = "";
+    List<string> planColumns = new List<string>();
+    List<string> factColumns = new List<string>();
+
+    foreach (var l in Model.Tree.Levels1)
+    {
+        string formula = "";
+        dataColumns = "";
+        dataColumnsPrc = "";
+        bool AllowRead = false;
+        bool AllowWrite = false;
+
+        var t = Model.Tree.Levels1.Where(p => p.Code == l.Code);
+
+        if (t != null)
+        {
+            AllowRead = false;
+            AllowWrite = false;
+
+            if (l.Allowed != null)
+            {
+                var allowed = l.Allowed.FirstOrDefault(p => p.NameCFR == User.Identity.Name);
+
+                if (allowed != null)
+                {
+                    AllowRead = true;
+
+                    if (allowed.WriteRole)
+                    {
+                        AllowWrite = true;
+                    }
+                }
+            }
+
+            foreach (var c in t.ToList())
+            {
+                if (!planColumns.Contains("sumplan_" + c.Period.ToString("MMyy")))
+                {
+                    planColumns.Add("sumplan_" + c.Period.ToString("MMyy"));
+                }
+
+                if (!factColumns.Contains("sumfact_" + c.Period.ToString("MMyy")))
+                {
+                    factColumns.Add("sumfact_" + c.Period.ToString("MMyy"));
+                }
+
+                dataColumns += "{ id: \"sumplan_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>План\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                dataColumns += "{ id: \"sumfact_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>Факт\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                dataColumns += "{ id: \"div_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                dataColumnsPrc += "{ id: \"sumplan_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>план\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                dataColumnsPrc += "{ id: \"sumfact_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"Факт\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                dataColumnsPrc += "{ id: \"div_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                dataColumnsPrc += "{ id: \"prcNorm\", header: \"Норма<br/>" + c.Period.ToString("MMM yy") + "\", editor: '', css: \"normColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                dataColumnsPrc += "{ id: \"prc_" + c.Period.ToString("MMyy") + "\", header: \"Факт<br/>" + c.Period.ToString("MMM yy") + "\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), cssFormat:markDiv },\r\n";
+                dataColumnsPrc += "{ id: \"maxDiv\", hidden: \"true\", header: \"\", editor: ''},\r\n";
+            }
+        }
+
+        TableData += "{ id: \"" + l.Code + "\", parent: \"\", level: \"1\", code: \"" + l.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l.Name + "\"";
+        TableData += ", sumfact_" + l.Period.ToString("MMyy") + ": \"" + l.SumFact.ToString() + "\" ";
+
+        if (!AllowWrite)
+        {
+            TableData += ", readonly: true";
+        }
+
+        TableData += ", sumplan_" + l.Period.ToString("MMyy") + ": \"=";
+
+        if (l.Additional != null)
+        {
+            foreach (var a in l.Additional)
+            {
+                if (!String.IsNullOrEmpty(a.Code.Trim()))
+                {
+                    formula += " + [" + a.Code + ", sumplan_" + l.Period.ToString("MMyy") + "]";
+                }
+            }
+        }
+
+        if (l.Exception != null)
+        {
+            foreach (var e in l.Exception)
+            {
+                if (!String.IsNullOrEmpty(e.Code.Trim()))
+                {
+                    formula += " - [" + e.Code + ", sumplan_" + l.Period.ToString("MMyy") + "]";
+                }
+            }
+        }
+
+        TableData += formula + "\"";
+        TableData += ", div_" + l.Period.ToString("MMyy") + ": \"= GetVal(([" + l.Code + ", sumfact_" + l.Period.ToString("MMyy") + "] - [" + l.Code + ", sumplan_" + l.Period.ToString("MMyy") + "]) / [" + l.Code + ", sumplan_" + l.Period.ToString("MMyy") + "] * 100)\"";
+        TableData += ", prcNorm: \"" + l.SumNorm + "\", prc_" + l.Period.ToString("MMyy") + ": \"= GetVal(([" + l.Code + ", sumfact_" + l.Period.ToString("MMyy") + "] / [01.000.000, sumfact_" + l.Period.ToString("MMyy") + "]) * 100)\", maxDiv: \"" + l.SumNormMax + "\"";
+
+        foreach (var l2 in l.Levels2)
+        {
+            AllowRead = false;
+            AllowWrite = false;
+
+            if (l2.Allowed != null)
+            {
+                var allowed = l2.Allowed.FirstOrDefault(p => p.NameCFR == User.Identity.Name);
+
+                if (allowed != null)
+                {
+                    AllowRead = true;
+
+                    if (allowed.WriteRole)
+                    {
+                        AllowWrite = true;
+                    }
+                }
+            }
+
+            tdl2 += "{ id: \"" + l2.Code + "\", parent: \"" + l.Code + "\", level: \"2\", code: \"" + l2.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l2.Name + "\"";
+            tdl2 += ", sumfact_" + l2.Period.ToString("MMyy") + ": \"" + l2.SumFact.ToString() + "\"";
+
+            if (!AllowWrite)
+            {
+                tdl2 += ", readonly: true";
+            }
+
+            tdl2 += ", sumplan_" + l2.Period.ToString("MMyy") + ": \"" + l2.SumPlan.ToString() + "\"";
+            tdl2 += ", div_" + l2.Period.ToString("MMyy") + ": \"= GetVal(([" + l2.Code + ", sumfact_" + l2.Period.ToString("MMyy") + "] - [" + l2.Code + ", sumplan_" + l2.Period.ToString("MMyy") + "]) / [" + l2.Code + ", sumplan_" + l2.Period.ToString("MMyy") + "] * 100)\"";
+            tdl2 += ", prcNorm: \"" + l2.SumNorm + "\", prc_" + l2.Period.ToString("MMyy") + ": \"= GetVal(([" + l2.Code + ", sumfact_" + l2.Period.ToString("MMyy") + "] / [01.000.000, sumfact_" + l2.Period.ToString("MMyy") + "]) * 100)\", maxDiv: \"" + l2.SumNormMax + "\"";
+            tdl2 += ", itogDiv: \"=GetVal(([" + l2.Code + ", itogPlan] - [" + l2.Code + ", itogFact]) / [" + l2.Code + ", itogPlan] * 100)\"";
+            tdl2 += ", itogPlan: \"=";
+
+            foreach (var c in planColumns)
+            {
+                tdl2 += " + [" + l2.Code + ", " + c + "]";
+            }
+
+            tdl2 += "\", itogFact: \"=";
+
+            foreach (var c in factColumns)
+            {
+                tdl2 += " + [" + l2.Code + ", " + c + "]";
+            }
+
+            tdl2 += "\", period: \"" + l2.Period.ToString("dd.MM.yyyy") + "\"" + ", $css:\"level2css\" },\r\n";
+
+            foreach (var l3 in l2.Levels3)
+            {
+                AllowRead = false;
+                AllowWrite = false;
+
+                if (l3.Allowed != null)
+                {
+                    var allowed = l3.Allowed.FirstOrDefault(p => p.NameCFR == User.Identity.Name);
+
+                    if (allowed != null)
+                    {
+                        AllowRead = true;
+
+                        if (allowed.WriteRole)
+                        {
+                            AllowWrite = true;
+                        }
+                    }
+                }
+
+                tdl3 += "{ id: \"" + l3.Code + "\", parent: \"" + l2.Code + "\", level: \"3\", code: \"" + l3.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l3.Name + "\"";
+                tdl3 += ", sumfact_" + l3.Period.ToString("MMyy") + ": \"" + l3.SumFact.ToString() + "\"";
+
+                if (!AllowWrite)
+                {
+                    tdl3 += ", readonly: true";
+                }
+
+                tdl3 += ", sumplan_" + l3.Period.ToString("MMyy") + ": \"" + l3.SumPlan.ToString() + "\"";
+                tdl3 += ", div_" + l3.Period.ToString("MMyy") + ": \"= GetVal(([" + l3.Code + ", sumfact_" + l3.Period.ToString("MMyy") + "] - [" + l3.Code + ", sumplan_" + l3.Period.ToString("MMyy") + "]) / [" + l3.Code + ", sumplan_" + l3.Period.ToString("MMyy") + "] * 100)\"";
+                tdl3 += ", prcNorm: \"" + l3.SumNorm + "\", prc_" + l3.Period.ToString("MMyy") + ": \"= GetVal(([" + l3.Code + ", sumfact_" + l3.Period.ToString("MMyy") + "] / [01.000.000, sumfact_" + l3.Period.ToString("MMyy") + "]) * 100)\", maxDiv: \"" + l3.SumNormMax + "\"";
+                tdl3 += ", itogDiv: \"=GetVal(([" + l3.Code + ", itogPlan] - [" + l3.Code + ", itogFact]) / [" + l3.Code + ", itogPlan] * 100)\"";
+
+                tdl3 += ", itogPlan: \"=GetVal(";
+
+                foreach (var c in planColumns)
+                {
+                    tdl3 += " + [" + l3.Code + ", " + c + "]";
+                }
+
+                tdl3 += ")\", itogFact: \"=";
+
+                foreach (var c in factColumns)
+                {
+                    tdl3 += " + [" + l3.Code + ", " + c + "]";
+                }
+
+                tdl3 += "\", period: \"" + l3.Period.ToString("dd.MM.yyyy") + "\"" + ", $cellCss: { name: \"level3css\" }, $css:\"level2css\" },\r\n";
+            }
+
+            tdl2 += tdl3;
+            tdl3 = "";
+        }
+
+        TableData += ", itogPlan: \"=";
+
+        foreach (var c in planColumns)
+        {
+            TableData += " + [" + l.Code + ", " + c + "]";
+        }
+
+        TableData += "\", itogFact: \"=";
+
+        foreach (var c in factColumns)
+        {
+            TableData += " + [" + l.Code + ", " + c + "]";
+        }
+
+        TableData += "\", itogDiv: \"=GetVal(([" + l.Code + ", itogPlan] - [" + l.Code + ", itogFact]) / [" + l.Code + ", itogPlan] * 100)\"";
+        TableData += ", period: \"" + l.Period.ToString("dd.MM.yyyy") + "\"" + ", $css:\"level1css\" }," + tdl2;
+        tdl2 = "";
+    }
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+<style>
+    #areaA {
+        margin: 0;
+        width: 100%;
+        height: 600px;
+        float: left;
+        padding: 0;
+    }
+
+    .webix_hcell {
+        height: 46px !important;
+        line-height: 23px !important;
+        text-align: center;
+    }
+
+    .webix_template {
+        padding: 0 !important;
+    }
+
+    .level1css {
+        font-weight: bold;
+        color: #000;
+        background-color: #b7dee8;
+    }
+
+    .level2css {
+        color: #000;
+    }
+
+    .level3css {
+        text-align: right;
+        font-style: italic;
+        color: #555;
+    }
+
+    .rightAlign {
+        text-align: right;
+    }
+
+    .factColumn {
+        text-align: right;
+        background-color: #ddd;
+    }
+
+    .normColumn {
+        background: #b7e8c6;
+        text-align: right;
+    }
+
+    .planColumn {
+        text-align: right;
+    }
+    .divColumn {
+        text-align: right;
+        background-color: #ffddf3;
+    }
+    .itogColumn {
+        text-align: right;
+        background-color: #c8c8c8;
+    }
+    .misMatch {
+        background-color: #ff8787;
+    }
+</style>
+
+<script type="text/javascript">
+    webix.ready(function () {
+        grid_rub = webix.ui({
+            container: "tabl_rub",
+            id: "grid_rub",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                { id: "id", header: "id", hidden: "true" },
+                { id: "code", header: "code", hidden: "true" },
+                { id: "parent", header: "parent", hidden: "true" },
+                { id: "organization", header: "organization", hidden: "true" },
+                { id: "name", header: "Наименование", width: 350 },
+                @Html.Raw(dataColumns)
+                { id: "itogPlan", header: "Итог<br/>План", css: "itogColumn", format: webix.Number.numToStr({ groupDelimiter: " ", groupSize: 3, decimalDelimiter: ".", decimalSize: 0 })},
+                { id: "itogFact", header: "Итог<br/>Факт", css: "itogColumn", format: webix.Number.numToStr({ groupDelimiter: " ", groupSize: 3, decimalDelimiter: ".", decimalSize: 0 })},
+                { id: "itogDiv", header: "Итог<br/>Откл., %", css: "itogColumn", format: webix.Number.numToStr({ groupDelimiter: " ", groupSize: 3, decimalDelimiter: ".", decimalSize: 2 })}
+            ],
+            data: {
+                data: [
+                    @Html.Raw(TableData)
+                ]
+            },
+            on: {
+                onBeforeEditStart: function (id) {
+                    var row = id.row;
+                    return !this.getItem(row)["readonly"];
+                }
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 450,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid_rub);
+
+        grid_rub.attachEvent("onPaste", function (code, e) {
+            grid_rub.refreshColumns();
+        });
+
+        //Проценты
+        grid_prc = webix.ui({
+            container: "tabl_prc",
+            id: "grid_prc",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                { id: "id", header: "id", hidden: "true" },
+                { id: "code", header: "code", hidden: "true" },
+                { id: "parent", header: "parent", hidden: "true" },
+                { id: "organization", header: "organization", hidden: "true" },
+                { id: "name", header: "Наименование", width: 350 },
+                @Html.Raw(dataColumnsPrc)
+            ],
+            data: {
+                data: [
+                    @Html.Raw(TableData)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 500,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid_prc);
+
+        grid_prc.attachEvent("onPaste", function (code, e) {
+            grid_prc.refreshColumns();
+        });
+
+        var tabbar = {
+            view: "tabbar", type: "bottom", multiview: true, options: [
+                { value: "<span class='webix_icon fa-rub'></span><span style='padding-left: 4px'>ПиУ, руб.</span>", id: 'rubView' },
+                { value: "<span class='webix_icon fa-tasks'></span><span style='padding-left: 4px'>ПиУ, %</span>", id: 'prcView' },
+                { value: "<span class='webix_icon fa-tasks'></span><span style='padding-left: 4px'>KPI и графики</span>", id: 'kpiView' },
+            ], height: 30
+        };
+        var data = {
+            cells: [
+                {
+                    id: "rubView",
+                    content: "areaRub",
+                    select: true
+                },
+                {
+                    id: "prcView",
+                    content: "areaPrc"
+                },
+                {
+                    id: "kpiView",
+                    template: "Здесь будут KPI и графики. Если понадобятся"
+                }
+            ]
+        };
+
+        webix.ui({
+            container: "areaA",
+            rows: [
+                data,
+                tabbar
+            ]
+        });
+    });
+
+    function ExportToExcel() {
+        var grid = $$("grid_rub");
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        var serializedData = JSON.stringify(grid.serialize());
+        $("#tableData").val(serializedData);
+        $("#excelForm").submit();
+        return false;
+    }
+
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
+    function Save() {
+        var grid_rub = $$("grid_rub");
+
+        if (!grid_rub.validate())
+        {
+            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице." });
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var serializedData = grid_rub.serialize();
+        webix.ajax().post("/PIU/Save", { data: serializedData }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+
+    function GetVal(val)
+    {
+        if (!IsNumber(val))
+            return '';
+        else
+            return val;
+    };
+
+    function markDiv(value, config) {
+        console.log(config);
+        console.log("value: " + value);
+        console.log("prcNorm: " + config["prcNorm"]);
+        console.log("maxDiv: " + config["maxDiv"]);
+        console.log("div: " + Math.abs(value - config["prcNorm"]));
+        if (Math.abs(value - config["prcNorm"]) > config["maxDiv"])
+            return "misMatch";
+
+        return value;
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Организация: <b>@Model.Organization</b>
+        </div>
+    </div>
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Начало периода: <b>@Model.StartDate</b>
+        </div>
+    </div>
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Конец периода: <b>@Model.EndDate</b>
+        </div>
+    </div>
+</div>
+
+<div id="areaA"></div>
+<div id="areaRub">
+    <h3>ПиУ, руб.</h3>
+    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" /><input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
+    <br/>
+    <div id="tabl_rub"></div>
+    <form action="ExportToExcel" method="post" target="_blank" id="excelForm">
+        <input type="hidden" name="data" id="tableData" />
+    </form>
+</div>
+<div id="areaPrc">
+    <h3>Пиу, %</h3>
+    <div id="tabl_prc"></div>
+</div>
+
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>

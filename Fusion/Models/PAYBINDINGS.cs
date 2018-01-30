@@ -33,5 +33,7 @@ namespace Fusion.Models
         public Nullable<short> SEAT { get; set; }
         public Nullable<int> STATE { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<decimal> COSTSUM { get; set; }
     }
 }

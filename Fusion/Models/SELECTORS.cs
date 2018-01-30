@@ -34,8 +34,8 @@ namespace Fusion.Models
         public Nullable<int> FORMHEIGHT { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<int> RIGHTLVL { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<short> AUTOTRANSLATE { get; set; }
         public byte[] LARGEIMAGEPATH { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

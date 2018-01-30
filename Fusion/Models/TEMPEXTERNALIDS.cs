@@ -19,6 +19,7 @@ namespace Fusion.Models
         public int ORDER { get; set; }
         public string EXTSOURCE { get; set; }
         public string EXTID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

@@ -127,6 +127,7 @@ warning 6013: The table/view 'RK7.dbo._DEL_STRINGPARTS' does not have a primary 
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="STATE" Type="int" />
           <Property Name="FACTORVALUE" Type="money" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="AWARDSPENALTIESGROUPS">
           <Key>
@@ -140,9 +141,9 @@ warning 6013: The table/view 'RK7.dbo._DEL_STRINGPARTS' does not have a primary 
           <Property Name="STATUS" Type="smallint" />
           <Property Name="PARENT" Type="int" />
           <Property Name="EDITRIGHT" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="ITEMSKIND" Type="int" />
           <Property Name="UCSPRESET" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="AWARDSPENALTIESTYPES">
           <Key>
@@ -164,18 +165,18 @@ warning 6013: The table/view 'RK7.dbo._DEL_STRINGPARTS' does not have a primary 
           <Property Name="APMAXVALUE" Type="money" />
           <Property Name="APMINLIMIT" Type="money" />
           <Property Name="APMAXLIMIT" Type="money" />
-          <Property Name="ROUNDRULE" Type="int" />
           <Property Name="APMINTIMELIMIT" Type="int" />
           <Property Name="APMAXTIMELIMIT" Type="int" />
+          <Property Name="ROUNDRULE" Type="int" />
+          <Property Name="CALCINTERVAL" Type="int" />
           <Property Name="OBJECTKIND" Type="int" />
           <Property Name="OBJECTID1" Type="int" />
           <Property Name="OBJECTID2" Type="int" />
           <Property Name="OBJECTID3" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="CALCINTERVAL" Type="int" />
           <Property Name="RESTRICTMANUAL" Type="smallint" />
           <Property Name="SHOWONORDERFORM" Type="smallint" />
           <Property Name="SHOWPROGRESSBAR" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="BANDEDPROPSRIGHTS">
           <Key>
@@ -291,7 +292,7 @@ warning 6013: The table/view 'RK7.dbo.CASHCONFIG' does not have a primary key de
           <Property Name="CASHGROUP" Type="int" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="RIGHTLVL" Type="smallint" />
-          <Property Name="RESOLUTION" Type="smallint" />
+          <Property Name="RESOLUTION" Type="int" />
           <Property Name="COLORS" Type="smallint" />
           <Property Name="DEFHALLPLANID" Type="int" />
           <Property Name="RIGHTS" Type="image" />
@@ -300,11 +301,11 @@ warning 6013: The table/view 'RK7.dbo.CASHCONFIG' does not have a primary key de
           <Property Name="DEVICENAME" Type="nvarchar" MaxLength="255" />
           <Property Name="FILEMANAGERPATH" Type="nvarchar" MaxLength="255" />
           <Property Name="GRAPHICPARAMETERS" Type="smallint" />
+          <Property Name="WAITDATASENDED" Type="smallint" />
           <Property Name="AFTERSHIFTCLOSURE" Type="smallint" />
           <Property Name="SYNCSTATESFLAGS" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="WAITDATASENDED" Type="smallint" />
           <Property Name="DATASENDTIMEOUT" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="CASHGROUPS">
           <Key>
@@ -384,6 +385,7 @@ warning 6013: The table/view 'RK7.dbo.CASHCONFIG' does not have a primary key de
           <Property Name="IAUTHOR" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="PAYGUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="CASHMANCORRDATA">
           <Key>
@@ -703,8 +705,8 @@ warning 6013: The table/view 'RK7.dbo.CHECKTABLEFIELDS' does not have a primary 
           <Property Name="DEPARTCODE" Type="smallint" />
           <Property Name="EXTCODE" Type="int" />
           <Property Name="EXTRESTID" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="MODISCHEME" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="CLASSINFOGROUPS">
           <Key>
@@ -774,8 +776,8 @@ warning 6013: The table/view 'RK7.dbo.CLASSINFOPROPRESTRICTS' does not have a pr
           <Property Name="CIPARENTPOWCODE" Type="smallint" />
           <Property Name="CIDONTCHECKPROPS" Type="image" />
           <Property Name="CIUPDATERIGHT" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="HHCONTEXTID" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.CLASSINFOSQLPROPS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -816,6 +818,7 @@ warning 6013: The table/view 'RK7.dbo.CLASSINFOSQLPROPS' does not have a primary
           <Property Name="MANUALLYCHANGED" Type="smallint" />
           <Property Name="STATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="COLORMAPPINGS">
           <Key>
@@ -927,6 +930,7 @@ warning 6013: The table/view 'RK7.dbo.COTUSAGES' does not have a primary key def
           <Property Name="RIGHTLVL" Type="smallint" />
           <Property Name="DISCOUNT" Type="int" />
           <Property Name="TAXPAYTYPE" Type="int" />
+          <Property Name="MINIMALAMOUNT" Type="money" />
           <Property Name="VISUALTYPE_IMAGE" Type="int" />
           <Property Name="VISUALTYPE_BCOLOR" Type="int" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="int" />
@@ -947,11 +951,11 @@ warning 6013: The table/view 'RK7.dbo.COTUSAGES' does not have a primary key def
           <Property Name="FCPAYTRANSACTION" Type="smallint" />
           <Property Name="FCSUBACCOUNT" Type="int" />
           <Property Name="MAXPERCENT" Type="float" />
+          <Property Name="FORENCASHMENT" Type="int" />
           <Property Name="USEBONUSPERCENT" Type="float" />
           <Property Name="AUTOFILLMODE" Type="int" />
           <Property Name="AUTHPURPOSE" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="FORENCASHMENT" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.CURRENCIESBANS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -1029,6 +1033,7 @@ warning 6013: The table/view 'RK7.dbo.CURRENCIESBANS' does not have a primary ke
           <Property Name="OWNERINFO" Type="nvarchar" MaxLength="64" />
           <Property Name="FISCREGUNFISCTYPE" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6005: The data type 'sql_variant' is currently not supported for the target Entity Framework version; the column 'MESSAGE_LONG' in the table 'RK7.dbo.DATA_RK7_SERVICE_LOG' was excluded.
@@ -1981,6 +1986,7 @@ warning 6013: The table/view 'RK7.dbo.DBInformation' does not have a primary key
           <Property Name="DELIVERYLASTPROCESSTIME" Type="datetime" />
           <Property Name="DELIVERYMINCOOKTIME" Type="datetime" />
           <Property Name="DELIVERYREADYTIME" Type="datetime" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DELIVERYZONES">
           <Key>
@@ -2041,6 +2047,7 @@ warning 6013: The table/view 'RK7.dbo.DBInformation' does not have a primary key
           <Property Name="CARDWITHDRAWAL" Type="int" />
           <Property Name="TRANSACTIONCODE" Type="smallint" />
           <Property Name="UNDISTRMARKUP" Type="int" />
+          <Property Name="LATEDELETEMARKUP" Type="int" />
           <Property Name="FORMAT" Type="nvarchar" MaxLength="255" />
           <Property Name="RIGHTLVL" Type="smallint" />
           <Property Name="VISUALTYPE_IMAGE" Type="int" />
@@ -2051,7 +2058,6 @@ warning 6013: The table/view 'RK7.dbo.DBInformation' does not have a primary key
           <Property Name="COT" Type="int" />
           <Property Name="ACCOUNTINGPLACE" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="LATEDELETEMARKUP" Type="int" />
         </EntityType>
         <EntityType Name="DEVICEDATALOOKUPITEMS">
           <Key>
@@ -2109,16 +2115,16 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="DEFINTFDLL" Type="nvarchar" MaxLength="40" />
           <Property Name="FLAGS" Type="int" />
           <Property Name="DOSERDEVICE" Type="int" />
+          <Property Name="NONFISCALONLY" Type="smallint" />
           <Property Name="MAXPAYTEXTFORMAT" Type="nvarchar" MaxLength="255" />
           <Property Name="CSCLINKININAME" Type="nvarchar" MaxLength="255" />
           <Property Name="CSCLINKLOGIN" Type="nvarchar" MaxLength="80" />
           <Property Name="CSCLINKPASSWORD" Type="nvarchar" MaxLength="80" />
           <Property Name="CURRENCIESORDER" Type="nvarchar" MaxLength="80" />
           <Property Name="RECEIPTXMLSCRIPT" Type="int" />
-          <Property Name="NONFISCALONLY" Type="smallint" />
           <Property Name="ALWAYSCLOSESHIFT" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="DISHXMLATTRS" Type="nvarchar" MaxLength="255" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="DISCOUNTCOMPOSITIONS">
           <Key>
@@ -2131,14 +2137,14 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="DISCOUNT2" Type="int" />
           <Property Name="DISCOUNT3" Type="int" />
           <Property Name="DISCOUNT4" Type="int" />
+          <Property Name="DISCOUNT5" Type="int" />
+          <Property Name="DISCOUNT6" Type="int" />
+          <Property Name="DISCOUNT7" Type="int" />
           <Property Name="DISCOP" Type="smallint" />
           <Property Name="DISCOUNT" Type="int" />
           <Property Name="MAXPERCENT" Type="float" />
           <Property Name="FLAGS" Type="smallint" />
           <Property Name="SCRIPT" Type="image" />
-          <Property Name="DISCOUNT5" Type="int" />
-          <Property Name="DISCOUNT6" Type="int" />
-          <Property Name="DISCOUNT7" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="DISCOUNTDETAILS">
@@ -2164,11 +2170,11 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="BONUSPERCENTVAL" Type="float" />
           <Property Name="PRIORITY" Type="int" />
           <Property Name="DETAILRESTAURANT" Type="int" />
-          <Property Name="UOT" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="DETAILCONCEPT" Type="int" />
           <Property Name="DETAILREGION" Type="int" />
           <Property Name="DETAILFRANCHISE" Type="int" />
+          <Property Name="UOT" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="DISCOUNTS">
           <Key>
@@ -2248,6 +2254,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="BONUSSUM" Type="money" />
           <Property Name="CALCSUM" Type="money" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISHCONSUMATORS">
           <Key>
@@ -2275,6 +2282,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="GLOBALIDENT" Type="nvarchar" MaxLength="32" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISHDISCOUNTS">
           <Key>
@@ -2324,6 +2332,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="PERSONID" Type="bigint" />
           <Property Name="COUPONCOUNT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISHGROUPS">
           <Key>
@@ -2366,6 +2375,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="FREEMODICNT" Type="int" />
           <Property Name="SRCPRICE" Type="bigint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISHRESTS">
           <Key>
@@ -2380,6 +2390,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="ABSENT" Type="smallint" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="ISQNTREST" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISHVOIDS">
           <Key>
@@ -2413,6 +2424,7 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           <Property Name="AFTERBILLUNDO" Type="smallint" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="DISPLAYRESOLUTIONS">
           <Key>
@@ -2420,10 +2432,10 @@ warning 6013: The table/view 'RK7.dbo.DEVICELICENSES' does not have a primary ke
           </Key>
           <Property Name="SIFR" Type="int" Nullable="false" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="UCSPRESET" Type="smallint" />
           <Property Name="WIDTH" Type="int" />
           <Property Name="HEIGHT" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="UCSPRESET" Type="smallint" />
         </EntityType>
         <EntityType Name="DOCUMENTMAKETSCHEMELINKS">
           <Key>
@@ -2658,10 +2670,10 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
         <EntityType Name="EXTBASEUPGRADES">
           <Property Name="EXTCONF" Type="int" />
           <Property Name="BASEVER" Type="int" />
+          <Property Name="STEPNUM" Type="int" />
           <Property Name="DBALIAS" Type="nvarchar" MaxLength="40" />
           <Property Name="SQLDATA" Type="image" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="STEPNUM" Type="int" />
         </EntityType>-->
         <EntityType Name="EXTERNALIDS">
           <Key>
@@ -2675,6 +2687,7 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
           <Property Name="EXTSOURCE" Type="nvarchar" MaxLength="38" />
           <Property Name="EXTID" Type="nvarchar" MaxLength="38" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="EXTRATABLES">
           <Key>
@@ -2688,6 +2701,7 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
           <Property Name="ORDER" Type="int" Nullable="false" />
           <Property Name="TABLE" Type="int" Nullable="false" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="FILTERS">
           <Key>
@@ -2723,8 +2737,8 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
           <Property Name="FILTER_CONCEPT" Type="int" />
           <Property Name="FILTER_REGION" Type="int" />
           <Property Name="FILTER_FRANCHISE" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="FILTER_KURS" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="FISCDEVPARAMS">
           <Key>
@@ -2734,6 +2748,7 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="DLLNAME" Type="nvarchar" MaxLength="12" />
           <Property Name="PRPNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="UNILIBRARY" Type="nvarchar" MaxLength="40" />
           <Property Name="PAYMINTYPE" Type="int" />
           <Property Name="PAYMAXTYPE" Type="int" />
           <Property Name="TAXMINTYPE" Type="int" />
@@ -2743,7 +2758,6 @@ warning 6013: The table/view 'RK7.dbo.EXTBASEUPGRADES' does not have a primary k
           <Property Name="TAXPARAMNO" Type="int" />
           <Property Name="TAXDEFAULT" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="UNILIBRARY" Type="nvarchar" MaxLength="40" />
         </EntityType>
         <EntityType Name="FISCDEVZRKEYS">
           <Key>
@@ -2771,7 +2785,7 @@ warning 6013: The table/view 'RK7.dbo.FISCTYPEPROPS' does not have a primary key
           <Property Name="SIFR" Type="int" Nullable="false" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="FORMCLASS" Type="int" />
-          <Property Name="RESOLUTION" Type="smallint" />
+          <Property Name="RESOLUTION" Type="int" />
           <Property Name="TOUCHSCREEN" Type="smallint" />
           <Property Name="COMMENT" Type="nvarchar" MaxLength="100" />
           <Property Name="ALTCOMMENT" Type="nvarchar" MaxLength="100" />
@@ -2805,13 +2819,16 @@ warning 6013: The table/view 'RK7.dbo.FISCTYPEPROPS' does not have a primary key
           <Property Name="SIFT" Type="int" Nullable="false" />
           <Property Name="PARENT" Type="int" />
           <Property Name="LINKSIFR" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="LINKREFNO" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.FORMSCHEMEDETAILS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="FORMSCHEMEDETAILS">
           <Property Name="FORMSCHEME" Type="int" />
+          <Property Name="FORMTYPEID" Type="int" />
+          <Property Name="RESOLUTION" Type="int" />
+          <Property Name="TOUCHSCREEN" Type="int" />
           <Property Name="FORMDETAIL" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>-->
@@ -2888,7 +2905,7 @@ warning 6013: The table/view 'RK7.dbo.FORMSCHEMEDETAILS' does not have a primary
           <Property Name="RKTYPEIDENT" Type="int" />
           <Property Name="OBJECTREFNO" Type="smallint" />
           <Property Name="OBJECTIDENT" Type="int" />
-          <Property Name="PROPERTYVAL" Type="nvarchar" MaxLength="255" />
+          <Property Name="PROPERTYVAL" Type="nvarchar" MaxLength="2048" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="GENERATEDPROPGROUPS">
@@ -2902,9 +2919,9 @@ warning 6013: The table/view 'RK7.dbo.FORMSCHEMEDETAILS' does not have a primary
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="PARENT" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="GROUPKIND" Type="smallint" />
           <Property Name="UCSPRESET" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.GENERATEDPROPINFOS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -2919,18 +2936,18 @@ warning 6013: The table/view 'RK7.dbo.GENERATEDPROPINFOS' does not have a primar
           </Key>
           <Property Name="SIFR" Type="int" Nullable="false" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
-          <Property Name="RKTYPENAME" Type="nvarchar" MaxLength="40" />
-          <Property Name="RKPROPNAME" Type="nvarchar" MaxLength="20" />
-          <Property Name="RKPROPCOMM" Type="nvarchar" MaxLength="40" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="RKPROPKIND" Type="int" />
-          <Property Name="RKENUMLINK" Type="int" />
-          <Property Name="PARENT" Type="int" />
           <Property Name="NAME" Type="nvarchar" MaxLength="40" />
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="UCSPRESET" Type="smallint" />
+          <Property Name="RKPROPKIND" Type="int" />
+          <Property Name="RKTYPENAME" Type="nvarchar" MaxLength="40" />
+          <Property Name="RKPROPNAME" Type="nvarchar" MaxLength="20" />
+          <Property Name="RKPROPCOMM" Type="nvarchar" MaxLength="40" />
+          <Property Name="RKENUMLINK" Type="int" />
+          <Property Name="PARENT" Type="int" />
           <Property Name="SHOWONFORM" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="GENERATORS">
           <Key>
@@ -3210,6 +3227,7 @@ warning 6013: The table/view 'RK7.dbo.INTERFACEDLL' does not have a primary key 
           <Property Name="ADDRDOPINFO" Type="nvarchar" MaxLength="255" />
           <Property Name="METROSTATION" Type="nvarchar" MaxLength="40" />
           <Property Name="ZIPCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="IR_DATASETFIELDS">
           <Key>
@@ -3450,6 +3468,15 @@ warning 6013: The table/view 'RK7.dbo.KBDLAYOUTKEYS' does not have a primary key
           <Property Name="DONEMANAGERID" Type="int" />
           <Property Name="TAKEMANAGERID" Type="int" />
           <Property Name="KDSSTATIONID" Type="int" />
+          <Property Name="COLLECTAT" Type="datetime" />
+          <Property Name="COLLECTEDAT" Type="datetime" />
+          <Property Name="STARTPARKAT" Type="datetime" />
+          <Property Name="ENDPARKAT" Type="datetime" />
+          <Property Name="COLLECTMANAGERID" Type="int" />
+          <Property Name="COLLECTEDMANAGERID" Type="int" />
+          <Property Name="STARTPARKMANAGERID" Type="int" />
+          <Property Name="ENDPARKMANAGERID" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="KURSES">
           <Key>
@@ -3492,6 +3519,7 @@ warning 6013: The table/view 'RK7.dbo.LIC_CHECK_ANSWERS' does not have a primary
           <Property Name="STATUS" Type="smallint" />
           <Property Name="PARENT" Type="int" />
           <Property Name="CONFIGRAWXML" Type="image" />
+          <Property Name="COPIEDFROM" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="LINKEDSYSTEMSTYPES">
@@ -3505,9 +3533,11 @@ warning 6013: The table/view 'RK7.dbo.LIC_CHECK_ANSWERS' does not have a primary
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="CONFIGSCHEME" Type="image" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="LICENSEKIND" Type="int" />
+          <Property Name="PARENT" Type="int" />
+          <Property Name="ISTEMPLATE" Type="smallint" />
           <Property Name="UCSPRESET" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="LOGVERSION">
           <Key>
@@ -3572,6 +3602,7 @@ warning 6013: The table/view 'RK7.dbo.LIC_CHECK_ANSWERS' does not have a primary
           <Property Name="MAKET10" Type="int" />
           <Property Name="COPIES" Type="smallint" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
+          <Property Name="DEVICETYPES" Type="int" />
         </EntityType>
         <EntityType Name="MAKETSCHEMES">
           <Key>
@@ -3821,8 +3852,8 @@ warning 6013: The table/view 'RK7.dbo.LIC_CHECK_ANSWERS' does not have a primary
           <Property Name="LINKEDSCRIPT" Type="int" />
           <Property Name="LOOKUPTABLEMODE" Type="smallint" />
           <Property Name="MCRDEVICEIDENT" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="ONLYLONELY" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="MENUITEMS">
           <Key>
@@ -3900,6 +3931,7 @@ warning 6013: The table/view 'RK7.dbo.LIC_CHECK_ANSWERS' does not have a primary
           <Property Name="ADDEDAT" Type="datetime" />
           <Property Name="REPEATCOUNT" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.MODIFIEDTABLES' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -4244,9 +4276,9 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="OPERATION" Type="nvarchar" MaxLength="40" />
           <Property Name="LINKEDSCRIPT" Type="int" />
           <Property Name="EXTRACONFIRMATION" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="CONFIRMATIONTEXT" Type="nvarchar" MaxLength="100" />
           <Property Name="ALTCONFIRMATIONTEXT" Type="nvarchar" MaxLength="100" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="OPERATIONSUSERDATA">
           <Key>
@@ -4328,6 +4360,7 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="ISBANQUET" Type="smallint" />
           <Property Name="FISCORDERSTATE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="ORDERSESSIONS">
           <Key>
@@ -4373,6 +4406,9 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="UNIQUEID" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="EXTRAORDERIDENT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="ICOSTSCALE" Type="int" />
         </EntityType>
         <EntityType Name="ORDERVOIDS">
           <Key>
@@ -4385,6 +4421,8 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="FLAGS" Type="int" />
           <Property Name="RIGHTLVL" Type="smallint" />
+          <Property Name="IMPLONUNPRINTEDDISH" Type="smallint" />
+          <Property Name="IMPLONPRINTEDDISH" Type="smallint" />
           <Property Name="VISUALTYPE_IMAGE" Type="int" />
           <Property Name="VISUALTYPE_BCOLOR" Type="int" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="int" />
@@ -4395,7 +4433,6 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="EXTRESTID" Type="int" />
           <Property Name="FORMAT" Type="nvarchar" MaxLength="255" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="IMPLONNONPRINTEDDISH" Type="smallint" />
         </EntityType>
         <EntityType Name="ORDERWAITERS">
           <Key>
@@ -4409,6 +4446,7 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="ORDER" Type="int" Nullable="false" />
           <Property Name="WAITER" Type="int" Nullable="false" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="PARAMETEREXCEPTIONS">
           <Key>
@@ -4488,6 +4526,8 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="SEAT" Type="smallint" />
           <Property Name="STATE" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="COSTSUM" Type="money" />
         </EntityType>
         <EntityType Name="PAYMENTS">
           <Key>
@@ -4543,6 +4583,7 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="WASTRANSFERRED" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="PAYMENTSEXTRA">
           <Key>
@@ -4570,6 +4611,7 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="BANKTRANSACTIONTYPE" Type="smallint" />
           <Property Name="SLIP" Type="image" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="PDSCARDS">
           <Key>
@@ -4640,8 +4682,8 @@ warning 6013: The table/view 'RK7.dbo.OPERATIONDETAILS' does not have a primary 
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="int" />
           <Property Name="VISUALTYPE_FLAGS" Type="smallint" />
           <Property Name="STATUS" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="PARENT" Type="int" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.PLG_RECALCULATE_AGREGATE' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -4731,8 +4773,8 @@ warning 6013: The table/view 'RK7.dbo.PLG_RECALCULATE_AGREGATE' does not have a 
           <Property Name="SHCOMMODITYGROUP" Type="nvarchar" MaxLength="100" />
           <Property Name="SHSTOREHOUSE" Type="nvarchar" MaxLength="100" />
           <Property Name="SHSETTINGSLINK" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="ALLOWOVERRIDINGS" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="PRICEVALUES">
           <Key>
@@ -4814,6 +4856,8 @@ warning 6013: The table/view 'RK7.dbo.PLG_RECALCULATE_AGREGATE' does not have a 
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="BILLDATETIME" Type="datetime" />
           <Property Name="ISTARERECEIPT" Type="smallint" />
+          <Property Name="RECEIPTTAXTYPE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="PRINTEDDOCUMENTS">
           <Key>
@@ -4853,8 +4897,9 @@ warning 6013: The table/view 'RK7.dbo.PRINTERASSIGNS' does not have a primary ke
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="50" />
           <Property Name="UCSPRESET" Type="smallint" />
           <Property Name="FLAGS" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="LOCALSONLY" Type="smallint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
+          <Property Name="DEVICETYPES" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'RK7.dbo.PRIVILEGEDETAILS' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -4993,6 +5038,7 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="ISTARTSTATION" Type="int" />
           <Property Name="ICLOSESTATION" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="REPORTINGSERVERS">
           <Key>
@@ -5013,6 +5059,7 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="FLAGS" Type="int" />
           <Property Name="LICENSE" Type="nvarchar" MaxLength="47" />
           <Property Name="LICHARDINFO" Type="int" />
+          <Property Name="LICHARDINFONEW" Type="int" />
           <Property Name="LICEXPIREAT" Type="datetime" />
           <Property Name="LICENSEKEYN" Type="int" />
           <Property Name="LICHARDKEYN" Type="int" />
@@ -5021,6 +5068,9 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="EXTBASECONF" Type="int" />
           <Property Name="EXTBASENAME" Type="nvarchar" MaxLength="255" />
           <Property Name="EXTBASEPASS" Type="nvarchar" MaxLength="255" />
+          <Property Name="LOGBASECONF" Type="int" />
+          <Property Name="LOGBASENAME" Type="nvarchar" MaxLength="255" />
+          <Property Name="LOGBASEPASS" Type="nvarchar" MaxLength="255" />
           <Property Name="LOGGINGTYPE" Type="int" />
           <Property Name="CUBETIMEOUT" Type="int" />
           <Property Name="ITEMSRIGHTS" Type="image" />
@@ -5049,10 +5099,6 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="HTTPAPIPRIVILEGE" Type="int" />
           <Property Name="HTTPXMLPRIVILEGE" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="LICHARDINFONEW" Type="int" />
-          <Property Name="LOGBASECONF" Type="int" />
-          <Property Name="LOGBASENAME" Type="nvarchar" MaxLength="255" />
-          <Property Name="LOGBASEPASS" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="REPORTSERVERGROUPS">
           <Key>
@@ -5109,8 +5155,8 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="NAME" Type="nvarchar" MaxLength="40" />
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="STATUS" Type="smallint" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="UTCOFFSETS" Type="bigint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="RESTAURANTS">
           <Key>
@@ -5137,11 +5183,11 @@ warning 6002: The table/view 'RK7.dbo.REF_STAT_SP' does not have a primary key d
           <Property Name="STOREHOUSECODE" Type="nvarchar" MaxLength="2" />
           <Property Name="OPENINGDATE" Type="datetime" />
           <Property Name="HANDLESRESTAURANTS" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="LOCATIONLAT" Type="bigint" />
           <Property Name="LOCATIONLONG" Type="bigint" />
           <Property Name="ADDRESSGUID" Type="nvarchar" MaxLength="38" />
           <Property Name="OPERATIONALHOURS" Type="bigint" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="RIGHTGROUPS">
           <Key>
@@ -5356,9 +5402,9 @@ warning 6013: The table/view 'RK7.dbo.ROLEREPSSERVS' does not have a primary key
           <Property Name="FORMHEIGHT" Type="int" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="RIGHTLVL" Type="int" />
-          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
           <Property Name="AUTOTRANSLATE" Type="smallint" />
           <Property Name="LARGEIMAGEPATH" Type="image" />
+          <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
         <EntityType Name="SELECTORTYPES">
           <Key>
@@ -5490,6 +5536,8 @@ warning 6013: The table/view 'RK7.dbo.ROLEREPSSERVS' does not have a primary key
           <Property Name="MENUITEMPRICE" Type="money" />
           <Property Name="SOURCEGUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="ADDBYALGORITHM" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="CREATIONDATETIME" Type="datetime" />
         </EntityType>
         <EntityType Name="SHIFTS">
           <Key>
@@ -6046,6 +6094,8 @@ warning 6013: The table/view 'RK7.dbo.TABLEATTRIBUTESASSIGNS' does not have a pr
           <Property Name="REBOOTING" Type="smallint" />
           <Property Name="EXTNUMBER" Type="nvarchar" MaxLength="30" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DISBALLANCE" Type="bigint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="TARIFFDETAILS">
           <Key>
@@ -6087,6 +6137,7 @@ warning 6013: The table/view 'RK7.dbo.TABLEATTRIBUTESASSIGNS' does not have a pr
           <Property Name="ALTNAME" Type="nvarchar" MaxLength="40" />
           <Property Name="RIGHTLVL" Type="int" />
           <Property Name="TARIFFTYPEPERIOD" Type="int" />
+          <Property Name="PAUSETIME" Type="int" />
           <Property Name="VISUALTYPE_IMAGE" Type="int" />
           <Property Name="VISUALTYPE_BCOLOR" Type="int" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="int" />
@@ -6094,7 +6145,6 @@ warning 6013: The table/view 'RK7.dbo.TABLEATTRIBUTESASSIGNS' does not have a pr
           <Property Name="STATUS" Type="smallint" />
           <Property Name="PERIOD" Type="int" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
-          <Property Name="PAUSETIME" Type="int" />
         </EntityType>
         <EntityType Name="TAXDISHRULES">
           <Key>
@@ -6107,6 +6157,7 @@ warning 6013: The table/view 'RK7.dbo.TABLEATTRIBUTESASSIGNS' does not have a pr
           <Property Name="CODE" Type="int" />
           <Property Name="COT" Type="int" />
           <Property Name="UOT" Type="int" />
+          <Property Name="RECEIPTTAXTYPE" Type="int" />
           <Property Name="STATUS" Type="smallint" />
           <Property Name="RECSTAMP" Type="nvarchar" MaxLength="38" />
         </EntityType>
@@ -6159,6 +6210,7 @@ warning 6013: The table/view 'RK7.dbo.TABLEATTRIBUTESASSIGNS' does not have a pr
           <Property Name="SUM" Type="money" />
           <Property Name="NATIONALSUM" Type="money" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="TAXPAYRULES">
           <Key>
@@ -6248,6 +6300,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="COMMENT" Type="nvarchar" MaxLength="255" />
           <Property Name="CLOCKRECID" Type="int" />
           <Property Name="FACTORVALUE" Type="money" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6284,6 +6337,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="OPENREASONNAME" Type="nvarchar" MaxLength="32" />
           <Property Name="IAUTHOR" Type="int" />
           <Property Name="PAYGUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6318,6 +6372,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="LATENESS" Type="smallint" />
           <Property Name="MANUALLYCHANGED" Type="smallint" />
           <Property Name="STATUS" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6349,6 +6404,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="PAYUNIFOROWNERINFO" Type="int" />
           <Property Name="OWNERINFO" Type="nvarchar" MaxLength="64" />
           <Property Name="FISCREGUNFISCTYPE" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6379,6 +6435,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="DELIVERYTAKEOUT" Type="smallint" />
           <Property Name="DELIVERYMINCOOKTIME" Type="datetime" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6404,6 +6461,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="SUM" Type="money" />
           <Property Name="BONUSSUM" Type="money" />
           <Property Name="CALCSUM" Type="money" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6434,6 +6492,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="CPERCENT" Type="float" />
           <Property Name="GLOBALIDENT" Type="nvarchar" MaxLength="32" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6486,6 +6545,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="PERSONID" Type="bigint" />
           <Property Name="COUPONCOUNT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6520,6 +6580,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="COMBODISHUNI" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="FREEMODICNT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6537,6 +6598,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="NOTICED" Type="smallint" />
           <Property Name="ABSENT" Type="smallint" />
           <Property Name="ISQNTREST" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6573,6 +6635,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="STOREDINFM" Type="smallint" />
           <Property Name="AFTERBILLUNDO" Type="smallint" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6610,6 +6673,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="ORDER" Type="int" Nullable="false" />
           <Property Name="EXTSOURCE" Type="nvarchar" MaxLength="38" />
           <Property Name="EXTID" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6626,6 +6690,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="MIDSERVER" Type="int" Nullable="false" />
           <Property Name="ORDER" Type="int" Nullable="false" />
           <Property Name="TABLE" Type="int" Nullable="false" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6762,6 +6827,7 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="ADDRDOPINFO" Type="nvarchar" MaxLength="255" />
           <Property Name="METROSTATION" Type="nvarchar" MaxLength="40" />
           <Property Name="ZIPCODE" Type="nvarchar" MaxLength="10" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6795,6 +6861,10 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="INITAT" Type="datetime" />
           <Property Name="DONEAT" Type="datetime" />
           <Property Name="TAKEAT" Type="datetime" />
+          <Property Name="COLLECTAT" Type="datetime" />
+          <Property Name="COLLECTEDAT" Type="datetime" />
+          <Property Name="STARTPARKAT" Type="datetime" />
+          <Property Name="ENDPARKAT" Type="datetime" />
           <Property Name="COOKTM" Type="float" />
           <Property Name="MENUCOOKTIME" Type="float" />
           <Property Name="MENUCATEGORY" Type="int" />
@@ -6803,7 +6873,12 @@ warning 6013: The table/view 'RK7.dbo.TAXRATEFIELDS' does not have a primary key
           <Property Name="INITMANAGERID" Type="int" />
           <Property Name="DONEMANAGERID" Type="int" />
           <Property Name="TAKEMANAGERID" Type="int" />
+          <Property Name="COLLECTMANAGERID" Type="int" />
+          <Property Name="COLLECTEDMANAGERID" Type="int" />
+          <Property Name="STARTPARKMANAGERID" Type="int" />
+          <Property Name="ENDPARKMANAGERID" Type="int" />
           <Property Name="KDSSTATIONID" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6841,6 +6916,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="FROMSTATION" Type="int" />
           <Property Name="ADDEDAT" Type="datetime" />
           <Property Name="REPEATCOUNT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6927,6 +7003,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="CRC32" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="FISCORDERSTATE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6956,6 +7033,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="ITRADEGROUP" Type="int" />
           <Property Name="ISTATION" Type="int" />
           <Property Name="EXTRAVISIT" Type="int" />
+          <Property Name="EXTRAORDERIDENT" Type="int" />
           <Property Name="EXTRAUNI" Type="int" />
           <Property Name="COMMONVISIT" Type="int" />
           <Property Name="COMMONUNI" Type="int" />
@@ -6975,6 +7053,8 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="NORMTIME" Type="int" />
           <Property Name="UNIQUEID" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="ICOSTSCALE" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -6991,6 +7071,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="MIDSERVER" Type="int" Nullable="false" />
           <Property Name="ORDER" Type="int" Nullable="false" />
           <Property Name="WAITER" Type="int" Nullable="false" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7020,6 +7101,8 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="CONSUMATIONSUM" Type="money" />
           <Property Name="SEAT" Type="smallint" />
           <Property Name="STATE" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="COSTSUM" Type="money" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7078,6 +7161,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="IDRAWERSHIFT" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="WASTRANSFERRED" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7107,6 +7191,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="NEEDCONFIRMAFTERPRINT" Type="smallint" />
           <Property Name="TERMINALPRINTDETAILIDENT" Type="int" />
           <Property Name="BANKTRANSACTIONTYPE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7211,6 +7296,8 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="SQI" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="PAYFISCALSUM" Type="money" />
+          <Property Name="RECEIPTTAXTYPE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7258,6 +7345,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="ICLOSEMANAGER" Type="int" />
           <Property Name="ISTARTSTATION" Type="int" />
           <Property Name="ICLOSESTATION" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7317,6 +7405,8 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="COMBODISHUNI" Type="int" />
           <Property Name="COMBOMODIUNI" Type="int" />
           <Property Name="COMBODISCUNI" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
+          <Property Name="CREATIONDATETIME" Type="datetime" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7379,6 +7469,8 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="TARIFFTYPEID" Type="int" />
           <Property Name="REBOOTING" Type="smallint" />
           <Property Name="EXTNUMBER" Type="nvarchar" MaxLength="30" />
+          <Property Name="DISBALLANCE" Type="bigint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7402,6 +7494,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="TAXFLAGS" Type="smallint" />
           <Property Name="SUM" Type="money" />
           <Property Name="NATIONALSUM" Type="money" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7425,6 +7518,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="CLIENTID" Type="bigint" />
           <Property Name="ADDRESSID" Type="bigint" />
           <Property Name="FISCORDERSTATE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7459,6 +7553,7 @@ warning 6013: The table/view 'RK7.dbo.TEMPLIC_CHECK_ANSWERS' does not have a pri
           <Property Name="IQUITCOMMONSHIFT" Type="int" />
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="UNICOUNT" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="TEMPDATAKIND" Type="int" />
           <Property Name="TEMPDATASIGN" Type="int" />
@@ -7665,6 +7760,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ADDRESSID" Type="bigint" />
           <Property Name="TRANSACT_GUID" Type="nvarchar" MaxLength="38" />
           <Property Name="FISCORDERSTATE" Type="smallint" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="VISITS">
           <Key>
@@ -7696,6 +7792,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GUIDSTRING" Type="nvarchar" MaxLength="38" />
           <Property Name="UNICOUNT" Type="int" />
           <Property Name="RESERVSTATE" Type="int" />
+          <Property Name="DBSTATUS" Type="int" />
         </EntityType>
         <EntityType Name="WARNGROUPS">
           <Key>
@@ -9318,7 +9415,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySet Name="STAT_RK7_SHIFTS_REVENUE" EntityType="RK7Model.STAT_RK7_SHIFTS_REVENUE" />
           <EntitySet Name="STAT_RK7_SHIFTS_TAXES" EntityType="RK7Model.STAT_RK7_SHIFTS_TAXES" />
           <EntitySet Name="STAT_RK7_SHIFTS_VOIDS" EntityType="RK7Model.STAT_RK7_SHIFTS_VOIDS" />
-        </EntityContainer>
+          </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -9421,6 +9518,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="STATE" Type="Int32" />
           <Property Name="FACTORVALUE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="AWARDSPENALTIESGROUPS">
           <Key>
@@ -9434,9 +9532,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="STATUS" Type="Int16" />
           <Property Name="PARENT" Type="Int32" />
           <Property Name="EDITRIGHT" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ITEMSKIND" Type="Int32" />
           <Property Name="UCSPRESET" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AWARDSPENALTIESTYPES">
           <Key>
@@ -9458,18 +9556,18 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="APMAXVALUE" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="APMINLIMIT" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="APMAXLIMIT" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="ROUNDRULE" Type="Int32" />
           <Property Name="APMINTIMELIMIT" Type="Int32" />
           <Property Name="APMAXTIMELIMIT" Type="Int32" />
+          <Property Name="ROUNDRULE" Type="Int32" />
+          <Property Name="CALCINTERVAL" Type="Int32" />
           <Property Name="OBJECTKIND" Type="Int32" />
           <Property Name="OBJECTID1" Type="Int32" />
           <Property Name="OBJECTID2" Type="Int32" />
           <Property Name="OBJECTID3" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="CALCINTERVAL" Type="Int32" />
           <Property Name="RESTRICTMANUAL" Type="Int16" />
           <Property Name="SHOWONORDERFORM" Type="Int16" />
           <Property Name="SHOWPROGRESSBAR" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BANDEDPROPSRIGHTS">
           <Key>
@@ -9551,7 +9649,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CASHGROUP" Type="Int32" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="RIGHTLVL" Type="Int16" />
-          <Property Name="RESOLUTION" Type="Int16" />
+          <Property Name="RESOLUTION" Type="Int32" />
           <Property Name="COLORS" Type="Int16" />
           <Property Name="DEFHALLPLANID" Type="Int32" />
           <Property Name="RIGHTS" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -9560,11 +9658,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DEVICENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FILEMANAGERPATH" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="GRAPHICPARAMETERS" Type="Int16" />
+          <Property Name="WAITDATASENDED" Type="Int16" />
           <Property Name="AFTERSHIFTCLOSURE" Type="Int16" />
           <Property Name="SYNCSTATESFLAGS" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="WAITDATASENDED" Type="Int16" />
           <Property Name="DATASENDTIMEOUT" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CASHGROUPS">
           <Key>
@@ -9644,6 +9742,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="IAUTHOR" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="PAYGUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="CASHMANCORRDATA">
           <Key>
@@ -9935,8 +10034,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DEPARTCODE" Type="Int16" />
           <Property Name="EXTCODE" Type="Int32" />
           <Property Name="EXTRESTID" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="MODISCHEME" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CLASSINFOGROUPS">
           <Key>
@@ -9986,8 +10085,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CIPARENTPOWCODE" Type="Int16" />
           <Property Name="CIDONTCHECKPROPS" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="CIUPDATERIGHT" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="HHCONTEXTID" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CLOCKRECS">
           <Key>
@@ -10019,6 +10118,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="MANUALLYCHANGED" Type="Int16" />
           <Property Name="STATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="COLORMAPPINGS">
           <Key>
@@ -10115,6 +10215,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="RIGHTLVL" Type="Int16" />
           <Property Name="DISCOUNT" Type="Int32" />
           <Property Name="TAXPAYTYPE" Type="Int32" />
+          <Property Name="MINIMALAMOUNT" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="VISUALTYPE_IMAGE" Type="Int32" />
           <Property Name="VISUALTYPE_BCOLOR" Type="Int32" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="Int32" />
@@ -10135,11 +10236,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="FCPAYTRANSACTION" Type="Int16" />
           <Property Name="FCSUBACCOUNT" Type="Int32" />
           <Property Name="MAXPERCENT" Type="Double" />
+          <Property Name="FORENCASHMENT" Type="Int32" />
           <Property Name="USEBONUSPERCENT" Type="Double" />
           <Property Name="AUTOFILLMODE" Type="Int32" />
           <Property Name="AUTHPURPOSE" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="FORENCASHMENT" Type="Int32" />
         </EntityType>
         <EntityType Name="CURRENCYFACEVALUES">
           <Key>
@@ -10209,6 +10310,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="OWNERINFO" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="FISCREGUNFISCTYPE" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="data_shcr_cm">
           <Key>
@@ -11100,6 +11202,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DELIVERYLASTPROCESSTIME" Type="DateTime" Precision="3" />
           <Property Name="DELIVERYMINCOOKTIME" Type="DateTime" Precision="3" />
           <Property Name="DELIVERYREADYTIME" Type="DateTime" Precision="3" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DELIVERYZONES">
           <Key>
@@ -11160,6 +11263,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CARDWITHDRAWAL" Type="Int32" />
           <Property Name="TRANSACTIONCODE" Type="Int16" />
           <Property Name="UNDISTRMARKUP" Type="Int32" />
+          <Property Name="LATEDELETEMARKUP" Type="Int32" />
           <Property Name="FORMAT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RIGHTLVL" Type="Int16" />
           <Property Name="VISUALTYPE_IMAGE" Type="Int32" />
@@ -11170,7 +11274,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="COT" Type="Int32" />
           <Property Name="ACCOUNTINGPLACE" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="LATEDELETEMARKUP" Type="Int32" />
         </EntityType>
         <EntityType Name="DEVICEDATALOOKUPITEMS">
           <Key>
@@ -11210,16 +11313,16 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DEFINTFDLL" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="FLAGS" Type="Int32" />
           <Property Name="DOSERDEVICE" Type="Int32" />
+          <Property Name="NONFISCALONLY" Type="Int16" />
           <Property Name="MAXPAYTEXTFORMAT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CSCLINKININAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CSCLINKLOGIN" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="CSCLINKPASSWORD" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="CURRENCIESORDER" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
           <Property Name="RECEIPTXMLSCRIPT" Type="Int32" />
-          <Property Name="NONFISCALONLY" Type="Int16" />
           <Property Name="ALWAYSCLOSESHIFT" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="DISHXMLATTRS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DISCOUNTCOMPOSITIONS">
           <Key>
@@ -11232,14 +11335,14 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DISCOUNT2" Type="Int32" />
           <Property Name="DISCOUNT3" Type="Int32" />
           <Property Name="DISCOUNT4" Type="Int32" />
+          <Property Name="DISCOUNT5" Type="Int32" />
+          <Property Name="DISCOUNT6" Type="Int32" />
+          <Property Name="DISCOUNT7" Type="Int32" />
           <Property Name="DISCOP" Type="Int16" />
           <Property Name="DISCOUNT" Type="Int32" />
           <Property Name="MAXPERCENT" Type="Double" />
           <Property Name="FLAGS" Type="Int16" />
           <Property Name="SCRIPT" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="DISCOUNT5" Type="Int32" />
-          <Property Name="DISCOUNT6" Type="Int32" />
-          <Property Name="DISCOUNT7" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DISCOUNTDETAILS">
@@ -11265,11 +11368,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="BONUSPERCENTVAL" Type="Double" />
           <Property Name="PRIORITY" Type="Int32" />
           <Property Name="DETAILRESTAURANT" Type="Int32" />
-          <Property Name="UOT" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="DETAILCONCEPT" Type="Int32" />
           <Property Name="DETAILREGION" Type="Int32" />
           <Property Name="DETAILFRANCHISE" Type="Int32" />
+          <Property Name="UOT" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DISCOUNTS">
           <Key>
@@ -11349,6 +11452,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="BONUSSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="CALCSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISHCONSUMATORS">
           <Key>
@@ -11376,6 +11480,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GLOBALIDENT" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISHDISCOUNTS">
           <Key>
@@ -11425,6 +11530,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="PERSONID" Type="Int64" />
           <Property Name="COUPONCOUNT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISHGROUPS">
           <Key>
@@ -11467,6 +11573,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FREEMODICNT" Type="Int32" />
           <Property Name="SRCPRICE" Type="Int64" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISHRESTS">
           <Key>
@@ -11481,6 +11588,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ABSENT" Type="Int16" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ISQNTREST" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISHVOIDS">
           <Key>
@@ -11514,6 +11622,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="AFTERBILLUNDO" Type="Int16" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="DISPLAYRESOLUTIONS">
           <Key>
@@ -11521,10 +11630,10 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           </Key>
           <Property Name="SIFR" Type="Int32" Nullable="false" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="UCSPRESET" Type="Int16" />
           <Property Name="WIDTH" Type="Int32" />
           <Property Name="HEIGHT" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="UCSPRESET" Type="Int16" />
         </EntityType>
         <EntityType Name="DOCUMENTMAKETSCHEMELINKS">
           <Key>
@@ -11759,6 +11868,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="EXTSOURCE" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="EXTID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="EXTRATABLES">
           <Key>
@@ -11772,6 +11882,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ORDER" Type="Int32" Nullable="false" />
           <Property Name="TABLE" Type="Int32" Nullable="false" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="FILTERS">
           <Key>
@@ -11807,8 +11918,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="FILTER_CONCEPT" Type="Int32" />
           <Property Name="FILTER_REGION" Type="Int32" />
           <Property Name="FILTER_FRANCHISE" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FILTER_KURS" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FISCDEVPARAMS">
           <Key>
@@ -11818,6 +11929,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="DLLNAME" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="PRPNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UNILIBRARY" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="PAYMINTYPE" Type="Int32" />
           <Property Name="PAYMAXTYPE" Type="Int32" />
           <Property Name="TAXMINTYPE" Type="Int32" />
@@ -11827,7 +11939,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TAXPARAMNO" Type="Int32" />
           <Property Name="TAXDEFAULT" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="UNILIBRARY" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FISCDEVZRKEYS">
           <Key>
@@ -11846,7 +11957,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SIFR" Type="Int32" Nullable="false" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FORMCLASS" Type="Int32" />
-          <Property Name="RESOLUTION" Type="Int16" />
+          <Property Name="RESOLUTION" Type="Int32" />
           <Property Name="TOUCHSCREEN" Type="Int16" />
           <Property Name="COMMENT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ALTCOMMENT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -11880,8 +11991,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SIFT" Type="Int32" Nullable="false" />
           <Property Name="PARENT" Type="Int32" />
           <Property Name="LINKSIFR" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="LINKREFNO" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="FORMSCHEMES">
           <Key>
@@ -11956,7 +12067,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="RKTYPEIDENT" Type="Int32" />
           <Property Name="OBJECTREFNO" Type="Int16" />
           <Property Name="OBJECTIDENT" Type="Int32" />
-          <Property Name="PROPERTYVAL" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PROPERTYVAL" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GENERATEDPROPGROUPS">
@@ -11970,9 +12081,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="PARENT" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="GROUPKIND" Type="Int16" />
           <Property Name="UCSPRESET" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GENERATEDPROPTYPES">
           <Key>
@@ -11980,18 +12091,18 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           </Key>
           <Property Name="SIFR" Type="Int32" Nullable="false" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="RKTYPENAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="RKPROPNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="RKPROPCOMM" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="RKPROPKIND" Type="Int32" />
-          <Property Name="RKENUMLINK" Type="Int32" />
-          <Property Name="PARENT" Type="Int32" />
           <Property Name="NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="UCSPRESET" Type="Int16" />
+          <Property Name="RKPROPKIND" Type="Int32" />
+          <Property Name="RKTYPENAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="RKPROPNAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="RKPROPCOMM" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="RKENUMLINK" Type="Int32" />
+          <Property Name="PARENT" Type="Int32" />
           <Property Name="SHOWONFORM" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="GENERATORS">
           <Key>
@@ -12238,6 +12349,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ADDRDOPINFO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="METROSTATION" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="ZIPCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="IR_DATASETFIELDS">
           <Key>
@@ -12456,6 +12568,15 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DONEMANAGERID" Type="Int32" />
           <Property Name="TAKEMANAGERID" Type="Int32" />
           <Property Name="KDSSTATIONID" Type="Int32" />
+          <Property Name="COLLECTAT" Type="DateTime" Precision="3" />
+          <Property Name="COLLECTEDAT" Type="DateTime" Precision="3" />
+          <Property Name="STARTPARKAT" Type="DateTime" Precision="3" />
+          <Property Name="ENDPARKAT" Type="DateTime" Precision="3" />
+          <Property Name="COLLECTMANAGERID" Type="Int32" />
+          <Property Name="COLLECTEDMANAGERID" Type="Int32" />
+          <Property Name="STARTPARKMANAGERID" Type="Int32" />
+          <Property Name="ENDPARKMANAGERID" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="KURSES">
           <Key>
@@ -12487,6 +12608,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="STATUS" Type="Int16" />
           <Property Name="PARENT" Type="Int32" />
           <Property Name="CONFIGRAWXML" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="COPIEDFROM" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LINKEDSYSTEMSTYPES">
@@ -12500,9 +12622,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="CONFIGSCHEME" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="LICENSEKIND" Type="Int32" />
+          <Property Name="PARENT" Type="Int32" />
+          <Property Name="ISTEMPLATE" Type="Int16" />
           <Property Name="UCSPRESET" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="LOGVERSION">
           <Key>
@@ -12567,6 +12691,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="MAKET10" Type="Int32" />
           <Property Name="COPIES" Type="Int16" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DEVICETYPES" Type="Int32" />
         </EntityType>
         <EntityType Name="MAKETSCHEMES">
           <Key>
@@ -12816,8 +12941,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="LINKEDSCRIPT" Type="Int32" />
           <Property Name="LOOKUPTABLEMODE" Type="Int16" />
           <Property Name="MCRDEVICEIDENT" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ONLYLONELY" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="MENUITEMS">
           <Key>
@@ -12895,6 +13020,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ADDEDAT" Type="DateTime" Precision="3" />
           <Property Name="REPEATCOUNT" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="MODIFIERS">
           <Key>
@@ -13186,9 +13312,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="OPERATION" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="LINKEDSCRIPT" Type="Int32" />
           <Property Name="EXTRACONFIRMATION" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="CONFIRMATIONTEXT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ALTCONFIRMATIONTEXT" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OPERATIONSUSERDATA">
           <Key>
@@ -13270,6 +13396,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ISBANQUET" Type="Int16" />
           <Property Name="FISCORDERSTATE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="ORDERSESSIONS">
           <Key>
@@ -13315,6 +13442,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="UNIQUEID" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="EXTRAORDERIDENT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="ICOSTSCALE" Type="Int32" />
         </EntityType>
         <EntityType Name="ORDERVOIDS">
           <Key>
@@ -13327,6 +13457,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="FLAGS" Type="Int32" />
           <Property Name="RIGHTLVL" Type="Int16" />
+          <Property Name="IMPLONUNPRINTEDDISH" Type="Int16" />
+          <Property Name="IMPLONPRINTEDDISH" Type="Int16" />
           <Property Name="VISUALTYPE_IMAGE" Type="Int32" />
           <Property Name="VISUALTYPE_BCOLOR" Type="Int32" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="Int32" />
@@ -13337,7 +13469,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="EXTRESTID" Type="Int32" />
           <Property Name="FORMAT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="IMPLONNONPRINTEDDISH" Type="Int16" />
         </EntityType>
         <EntityType Name="ORDERWAITERS">
           <Key>
@@ -13351,6 +13482,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ORDER" Type="Int32" Nullable="false" />
           <Property Name="WAITER" Type="Int32" Nullable="false" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="PARAMETEREXCEPTIONS">
           <Key>
@@ -13430,6 +13562,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SEAT" Type="Int16" />
           <Property Name="STATE" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="COSTSUM" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="PAYMENTS">
           <Key>
@@ -13485,6 +13619,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="WASTRANSFERRED" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="PAYMENTSEXTRA">
           <Key>
@@ -13512,6 +13647,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="BANKTRANSACTIONTYPE" Type="Int16" />
           <Property Name="SLIP" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="PDSCARDS">
           <Key>
@@ -13582,8 +13718,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="Int32" />
           <Property Name="VISUALTYPE_FLAGS" Type="Int16" />
           <Property Name="STATUS" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="PARENT" Type="Int32" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PRICECONSTANTS">
           <Key>
@@ -13661,8 +13797,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SHCOMMODITYGROUP" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SHSTOREHOUSE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="SHSETTINGSLINK" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ALLOWOVERRIDINGS" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="PRICEVALUES">
           <Key>
@@ -13744,6 +13880,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="BILLDATETIME" Type="DateTime" Precision="3" />
           <Property Name="ISTARERECEIPT" Type="Int16" />
+          <Property Name="RECEIPTTAXTYPE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="PRINTEDDOCUMENTS">
           <Key>
@@ -13774,8 +13912,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ALTNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UCSPRESET" Type="Int16" />
           <Property Name="FLAGS" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="LOCALSONLY" Type="Int16" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DEVICETYPES" Type="Int32" />
         </EntityType>
         <EntityType Name="PRIVILEGEGROUPS">
           <Key>
@@ -13879,6 +14018,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ISTARTSTATION" Type="Int32" />
           <Property Name="ICLOSESTATION" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="REPORTINGSERVERS">
           <Key>
@@ -13899,6 +14039,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="FLAGS" Type="Int32" />
           <Property Name="LICENSE" Type="String" MaxLength="47" FixedLength="false" Unicode="true" />
           <Property Name="LICHARDINFO" Type="Int32" />
+          <Property Name="LICHARDINFONEW" Type="Int32" />
           <Property Name="LICEXPIREAT" Type="DateTime" Precision="3" />
           <Property Name="LICENSEKEYN" Type="Int32" />
           <Property Name="LICHARDKEYN" Type="Int32" />
@@ -13907,6 +14048,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="EXTBASECONF" Type="Int32" />
           <Property Name="EXTBASENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="EXTBASEPASS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOGBASECONF" Type="Int32" />
+          <Property Name="LOGBASENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LOGBASEPASS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LOGGINGTYPE" Type="Int32" />
           <Property Name="CUBETIMEOUT" Type="Int32" />
           <Property Name="ITEMSRIGHTS" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -13935,10 +14079,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="HTTPAPIPRIVILEGE" Type="Int32" />
           <Property Name="HTTPXMLPRIVILEGE" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="LICHARDINFONEW" Type="Int32" />
-          <Property Name="LOGBASECONF" Type="Int32" />
-          <Property Name="LOGBASENAME" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="LOGBASEPASS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="REPORTSERVERGROUPS">
           <Key>
@@ -13995,8 +14135,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="NAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="STATUS" Type="Int16" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="UTCOFFSETS" Type="Int64" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RESTAURANTS">
           <Key>
@@ -14023,11 +14163,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="STOREHOUSECODE" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
           <Property Name="OPENINGDATE" Type="DateTime" Precision="3" />
           <Property Name="HANDLESRESTAURANTS" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="LOCATIONLAT" Type="Int64" />
           <Property Name="LOCATIONLONG" Type="Int64" />
           <Property Name="ADDRESSGUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="OPERATIONALHOURS" Type="Int64" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="RIGHTGROUPS">
           <Key>
@@ -14235,9 +14375,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="FORMHEIGHT" Type="Int32" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="RIGHTLVL" Type="Int32" />
-          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="AUTOTRANSLATE" Type="Int16" />
           <Property Name="LARGEIMAGEPATH" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="SELECTORTYPES">
           <Key>
@@ -14369,6 +14509,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="MENUITEMPRICE" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SOURCEGUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="ADDBYALGORITHM" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="CREATIONDATETIME" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="SHIFTS">
           <Key>
@@ -14570,6 +14712,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="REBOOTING" Type="Int16" />
           <Property Name="EXTNUMBER" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DISBALLANCE" Type="Int64" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="TARIFFDETAILS">
           <Key>
@@ -14611,6 +14755,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ALTNAME" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="RIGHTLVL" Type="Int32" />
           <Property Name="TARIFFTYPEPERIOD" Type="Int32" />
+          <Property Name="PAUSETIME" Type="Int32" />
           <Property Name="VISUALTYPE_IMAGE" Type="Int32" />
           <Property Name="VISUALTYPE_BCOLOR" Type="Int32" />
           <Property Name="VISUALTYPE_TEXTCOLOR" Type="Int32" />
@@ -14618,7 +14763,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="STATUS" Type="Int16" />
           <Property Name="PERIOD" Type="Int32" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
-          <Property Name="PAUSETIME" Type="Int32" />
         </EntityType>
         <EntityType Name="TAXDISHRULES">
           <Key>
@@ -14631,6 +14775,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CODE" Type="Int32" />
           <Property Name="COT" Type="Int32" />
           <Property Name="UOT" Type="Int32" />
+          <Property Name="RECEIPTTAXTYPE" Type="Int32" />
           <Property Name="STATUS" Type="Int16" />
           <Property Name="RECSTAMP" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -14683,6 +14828,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="NATIONALSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="TAXPAYRULES">
           <Key>
@@ -14764,6 +14910,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="COMMENT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="CLOCKRECID" Type="Int32" />
           <Property Name="FACTORVALUE" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14800,6 +14947,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="OPENREASONNAME" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="IAUTHOR" Type="Int32" />
           <Property Name="PAYGUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14834,6 +14982,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="LATENESS" Type="Int16" />
           <Property Name="MANUALLYCHANGED" Type="Int16" />
           <Property Name="STATUS" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14865,6 +15014,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="PAYUNIFOROWNERINFO" Type="Int32" />
           <Property Name="OWNERINFO" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
           <Property Name="FISCREGUNFISCTYPE" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14895,6 +15045,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="DELIVERYTAKEOUT" Type="Int16" />
           <Property Name="DELIVERYMINCOOKTIME" Type="DateTime" Precision="3" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14920,6 +15071,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="BONUSSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="CALCSUM" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -14950,6 +15102,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CPERCENT" Type="Double" />
           <Property Name="GLOBALIDENT" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15002,6 +15155,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="PERSONID" Type="Int64" />
           <Property Name="COUPONCOUNT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15036,6 +15190,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="COMBODISHUNI" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FREEMODICNT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15053,6 +15208,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="NOTICED" Type="Int16" />
           <Property Name="ABSENT" Type="Int16" />
           <Property Name="ISQNTREST" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15089,6 +15245,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="STOREDINFM" Type="Int16" />
           <Property Name="AFTERBILLUNDO" Type="Int16" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15126,6 +15283,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ORDER" Type="Int32" Nullable="false" />
           <Property Name="EXTSOURCE" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="EXTID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15142,6 +15300,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="MIDSERVER" Type="Int32" Nullable="false" />
           <Property Name="ORDER" Type="Int32" Nullable="false" />
           <Property Name="TABLE" Type="Int32" Nullable="false" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15278,6 +15437,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ADDRDOPINFO" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="METROSTATION" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="ZIPCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15311,6 +15471,10 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="INITAT" Type="DateTime" Precision="3" />
           <Property Name="DONEAT" Type="DateTime" Precision="3" />
           <Property Name="TAKEAT" Type="DateTime" Precision="3" />
+          <Property Name="COLLECTAT" Type="DateTime" Precision="3" />
+          <Property Name="COLLECTEDAT" Type="DateTime" Precision="3" />
+          <Property Name="STARTPARKAT" Type="DateTime" Precision="3" />
+          <Property Name="ENDPARKAT" Type="DateTime" Precision="3" />
           <Property Name="COOKTM" Type="Double" />
           <Property Name="MENUCOOKTIME" Type="Double" />
           <Property Name="MENUCATEGORY" Type="Int32" />
@@ -15319,7 +15483,12 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="INITMANAGERID" Type="Int32" />
           <Property Name="DONEMANAGERID" Type="Int32" />
           <Property Name="TAKEMANAGERID" Type="Int32" />
+          <Property Name="COLLECTMANAGERID" Type="Int32" />
+          <Property Name="COLLECTEDMANAGERID" Type="Int32" />
+          <Property Name="STARTPARKMANAGERID" Type="Int32" />
+          <Property Name="ENDPARKMANAGERID" Type="Int32" />
           <Property Name="KDSSTATIONID" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15339,6 +15508,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="FROMSTATION" Type="Int32" />
           <Property Name="ADDEDAT" Type="DateTime" Precision="3" />
           <Property Name="REPEATCOUNT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15425,6 +15595,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CRC32" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FISCORDERSTATE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15454,6 +15625,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ITRADEGROUP" Type="Int32" />
           <Property Name="ISTATION" Type="Int32" />
           <Property Name="EXTRAVISIT" Type="Int32" />
+          <Property Name="EXTRAORDERIDENT" Type="Int32" />
           <Property Name="EXTRAUNI" Type="Int32" />
           <Property Name="COMMONVISIT" Type="Int32" />
           <Property Name="COMMONUNI" Type="Int32" />
@@ -15473,6 +15645,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="NORMTIME" Type="Int32" />
           <Property Name="UNIQUEID" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="ICOSTSCALE" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15489,6 +15663,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="MIDSERVER" Type="Int32" Nullable="false" />
           <Property Name="ORDER" Type="Int32" Nullable="false" />
           <Property Name="WAITER" Type="Int32" Nullable="false" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15518,6 +15693,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CONSUMATIONSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="SEAT" Type="Int16" />
           <Property Name="STATE" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="COSTSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15576,6 +15753,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="IDRAWERSHIFT" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="WASTRANSFERRED" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15605,6 +15783,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="NEEDCONFIRMAFTERPRINT" Type="Int16" />
           <Property Name="TERMINALPRINTDETAILIDENT" Type="Int32" />
           <Property Name="BANKTRANSACTIONTYPE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15709,6 +15888,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="SQI" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="PAYFISCALSUM" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="RECEIPTTAXTYPE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15756,6 +15937,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ICLOSEMANAGER" Type="Int32" />
           <Property Name="ISTARTSTATION" Type="Int32" />
           <Property Name="ICLOSESTATION" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15815,6 +15997,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="COMBODISHUNI" Type="Int32" />
           <Property Name="COMBOMODIUNI" Type="Int32" />
           <Property Name="COMBODISCUNI" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
+          <Property Name="CREATIONDATETIME" Type="DateTime" Precision="3" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15877,6 +16061,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TARIFFTYPEID" Type="Int32" />
           <Property Name="REBOOTING" Type="Int16" />
           <Property Name="EXTNUMBER" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DISBALLANCE" Type="Int64" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15900,6 +16086,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="TAXFLAGS" Type="Int16" />
           <Property Name="SUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="NATIONALSUM" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15923,6 +16110,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="CLIENTID" Type="Int64" />
           <Property Name="ADDRESSID" Type="Int64" />
           <Property Name="FISCORDERSTATE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -15957,6 +16145,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="IQUITCOMMONSHIFT" Type="Int32" />
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="UNICOUNT" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="TEMPDATAKIND" Type="Int32" />
           <Property Name="TEMPDATASIGN" Type="Int32" />
@@ -16118,6 +16307,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="ADDRESSID" Type="Int64" />
           <Property Name="TRANSACT_GUID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="FISCORDERSTATE" Type="Int16" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="VISITS">
           <Key>
@@ -16149,6 +16339,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="GUIDSTRING" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
           <Property Name="UNICOUNT" Type="Int32" />
           <Property Name="RESERVSTATE" Type="Int32" />
+          <Property Name="DBSTATUS" Type="Int32" />
         </EntityType>
         <EntityType Name="WARNGROUPS">
           <Key>
@@ -16549,7 +16740,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <Property Name="PRLISTSUM" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="QUANTITY" Type="Single" />
         </EntityType>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -16680,6 +16871,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="AWARDSPENALTIESDATA">
             <EntityTypeMapping TypeName="RK7Model.AWARDSPENALTIESDATA">
               <MappingFragment StoreEntitySet="AWARDSPENALTIESDATA">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FACTORVALUE" ColumnName="FACTORVALUE" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -16703,9 +16895,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="AWARDSPENALTIESGROUPS">
             <EntityTypeMapping TypeName="RK7Model.AWARDSPENALTIESGROUPS">
               <MappingFragment StoreEntitySet="AWARDSPENALTIESGROUPS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="ITEMSKIND" ColumnName="ITEMSKIND" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="EDITRIGHT" ColumnName="EDITRIGHT" />
                 <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
@@ -16720,18 +16912,18 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="AWARDSPENALTIESTYPES">
             <EntityTypeMapping TypeName="RK7Model.AWARDSPENALTIESTYPES">
               <MappingFragment StoreEntitySet="AWARDSPENALTIESTYPES">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="SHOWPROGRESSBAR" ColumnName="SHOWPROGRESSBAR" />
                 <ScalarProperty Name="SHOWONORDERFORM" ColumnName="SHOWONORDERFORM" />
                 <ScalarProperty Name="RESTRICTMANUAL" ColumnName="RESTRICTMANUAL" />
-                <ScalarProperty Name="CALCINTERVAL" ColumnName="CALCINTERVAL" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="OBJECTID3" ColumnName="OBJECTID3" />
                 <ScalarProperty Name="OBJECTID2" ColumnName="OBJECTID2" />
                 <ScalarProperty Name="OBJECTID1" ColumnName="OBJECTID1" />
                 <ScalarProperty Name="OBJECTKIND" ColumnName="OBJECTKIND" />
+                <ScalarProperty Name="CALCINTERVAL" ColumnName="CALCINTERVAL" />
+                <ScalarProperty Name="ROUNDRULE" ColumnName="ROUNDRULE" />
                 <ScalarProperty Name="APMAXTIMELIMIT" ColumnName="APMAXTIMELIMIT" />
                 <ScalarProperty Name="APMINTIMELIMIT" ColumnName="APMINTIMELIMIT" />
-                <ScalarProperty Name="ROUNDRULE" ColumnName="ROUNDRULE" />
                 <ScalarProperty Name="APMAXLIMIT" ColumnName="APMAXLIMIT" />
                 <ScalarProperty Name="APMINLIMIT" ColumnName="APMINLIMIT" />
                 <ScalarProperty Name="APMAXVALUE" ColumnName="APMAXVALUE" />
@@ -16826,11 +17018,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CASHES">
             <EntityTypeMapping TypeName="RK7Model.CASHES">
               <MappingFragment StoreEntitySet="CASHES">
-                <ScalarProperty Name="DATASENDTIMEOUT" ColumnName="DATASENDTIMEOUT" />
-                <ScalarProperty Name="WAITDATASENDED" ColumnName="WAITDATASENDED" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="DATASENDTIMEOUT" ColumnName="DATASENDTIMEOUT" />
                 <ScalarProperty Name="SYNCSTATESFLAGS" ColumnName="SYNCSTATESFLAGS" />
                 <ScalarProperty Name="AFTERSHIFTCLOSURE" ColumnName="AFTERSHIFTCLOSURE" />
+                <ScalarProperty Name="WAITDATASENDED" ColumnName="WAITDATASENDED" />
                 <ScalarProperty Name="GRAPHICPARAMETERS" ColumnName="GRAPHICPARAMETERS" />
                 <ScalarProperty Name="FILEMANAGERPATH" ColumnName="FILEMANAGERPATH" />
                 <ScalarProperty Name="DEVICENAME" ColumnName="DEVICENAME" />
@@ -16902,6 +17094,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CASHINOUT">
             <EntityTypeMapping TypeName="RK7Model.CASHINOUT">
               <MappingFragment StoreEntitySet="CASHINOUT">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="PAYGUIDSTRING" ColumnName="PAYGUIDSTRING" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="IAUTHOR" ColumnName="IAUTHOR" />
@@ -17220,8 +17413,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CLASSIFICATORGROUPS">
             <EntityTypeMapping TypeName="RK7Model.CLASSIFICATORGROUPS">
               <MappingFragment StoreEntitySet="CLASSIFICATORGROUPS">
-                <ScalarProperty Name="MODISCHEME" ColumnName="MODISCHEME" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="MODISCHEME" ColumnName="MODISCHEME" />
                 <ScalarProperty Name="EXTRESTID" ColumnName="EXTRESTID" />
                 <ScalarProperty Name="EXTCODE" ColumnName="EXTCODE" />
                 <ScalarProperty Name="DEPARTCODE" ColumnName="DEPARTCODE" />
@@ -17266,8 +17459,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CLASSINFOS">
             <EntityTypeMapping TypeName="RK7Model.CLASSINFOS">
               <MappingFragment StoreEntitySet="CLASSINFOS">
-                <ScalarProperty Name="HHCONTEXTID" ColumnName="HHCONTEXTID" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="HHCONTEXTID" ColumnName="HHCONTEXTID" />
                 <ScalarProperty Name="CIUPDATERIGHT" ColumnName="CIUPDATERIGHT" />
                 <ScalarProperty Name="CIDONTCHECKPROPS" ColumnName="CIDONTCHECKPROPS" />
                 <ScalarProperty Name="CIPARENTPOWCODE" ColumnName="CIPARENTPOWCODE" />
@@ -17299,6 +17492,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CLOCKRECS">
             <EntityTypeMapping TypeName="RK7Model.CLOCKRECS">
               <MappingFragment StoreEntitySet="CLOCKRECS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="MANUALLYCHANGED" ColumnName="MANUALLYCHANGED" />
@@ -17409,11 +17603,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CURRENCIES">
             <EntityTypeMapping TypeName="RK7Model.CURRENCIES">
               <MappingFragment StoreEntitySet="CURRENCIES">
-                <ScalarProperty Name="FORENCASHMENT" ColumnName="FORENCASHMENT" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="AUTHPURPOSE" ColumnName="AUTHPURPOSE" />
                 <ScalarProperty Name="AUTOFILLMODE" ColumnName="AUTOFILLMODE" />
                 <ScalarProperty Name="USEBONUSPERCENT" ColumnName="USEBONUSPERCENT" />
+                <ScalarProperty Name="FORENCASHMENT" ColumnName="FORENCASHMENT" />
                 <ScalarProperty Name="MAXPERCENT" ColumnName="MAXPERCENT" />
                 <ScalarProperty Name="FCSUBACCOUNT" ColumnName="FCSUBACCOUNT" />
                 <ScalarProperty Name="FCPAYTRANSACTION" ColumnName="FCPAYTRANSACTION" />
@@ -17434,6 +17628,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="VISUALTYPE_TEXTCOLOR" ColumnName="VISUALTYPE_TEXTCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_BCOLOR" ColumnName="VISUALTYPE_BCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_IMAGE" ColumnName="VISUALTYPE_IMAGE" />
+                <ScalarProperty Name="MINIMALAMOUNT" ColumnName="MINIMALAMOUNT" />
                 <ScalarProperty Name="TAXPAYTYPE" ColumnName="TAXPAYTYPE" />
                 <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
                 <ScalarProperty Name="RIGHTLVL" ColumnName="RIGHTLVL" />
@@ -17500,6 +17695,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="CURRLINES">
             <EntityTypeMapping TypeName="RK7Model.CURRLINES">
               <MappingFragment StoreEntitySet="CURRLINES">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="FISCREGUNFISCTYPE" ColumnName="FISCREGUNFISCTYPE" />
                 <ScalarProperty Name="OWNERINFO" ColumnName="OWNERINFO" />
@@ -18433,6 +18629,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DELIVERYDATA">
             <EntityTypeMapping TypeName="RK7Model.DELIVERYDATA">
               <MappingFragment StoreEntitySet="DELIVERYDATA">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="DELIVERYREADYTIME" ColumnName="DELIVERYREADYTIME" />
                 <ScalarProperty Name="DELIVERYMINCOOKTIME" ColumnName="DELIVERYMINCOOKTIME" />
                 <ScalarProperty Name="DELIVERYLASTPROCESSTIME" ColumnName="DELIVERYLASTPROCESSTIME" />
@@ -18504,7 +18701,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DEPOSITCOLLECTREASONS">
             <EntityTypeMapping TypeName="RK7Model.DEPOSITCOLLECTREASONS">
               <MappingFragment StoreEntitySet="DEPOSITCOLLECTREASONS">
-                <ScalarProperty Name="LATEDELETEMARKUP" ColumnName="LATEDELETEMARKUP" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="ACCOUNTINGPLACE" ColumnName="ACCOUNTINGPLACE" />
                 <ScalarProperty Name="COT" ColumnName="COT" />
@@ -18515,6 +18711,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="VISUALTYPE_IMAGE" ColumnName="VISUALTYPE_IMAGE" />
                 <ScalarProperty Name="RIGHTLVL" ColumnName="RIGHTLVL" />
                 <ScalarProperty Name="FORMAT" ColumnName="FORMAT" />
+                <ScalarProperty Name="LATEDELETEMARKUP" ColumnName="LATEDELETEMARKUP" />
                 <ScalarProperty Name="UNDISTRMARKUP" ColumnName="UNDISTRMARKUP" />
                 <ScalarProperty Name="TRANSACTIONCODE" ColumnName="TRANSACTIONCODE" />
                 <ScalarProperty Name="CARDWITHDRAWAL" ColumnName="CARDWITHDRAWAL" />
@@ -18548,16 +18745,16 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DEVICES">
             <EntityTypeMapping TypeName="RK7Model.DEVICES">
               <MappingFragment StoreEntitySet="DEVICES">
-                <ScalarProperty Name="DISHXMLATTRS" ColumnName="DISHXMLATTRS" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="DISHXMLATTRS" ColumnName="DISHXMLATTRS" />
                 <ScalarProperty Name="ALWAYSCLOSESHIFT" ColumnName="ALWAYSCLOSESHIFT" />
-                <ScalarProperty Name="NONFISCALONLY" ColumnName="NONFISCALONLY" />
                 <ScalarProperty Name="RECEIPTXMLSCRIPT" ColumnName="RECEIPTXMLSCRIPT" />
                 <ScalarProperty Name="CURRENCIESORDER" ColumnName="CURRENCIESORDER" />
                 <ScalarProperty Name="CSCLINKPASSWORD" ColumnName="CSCLINKPASSWORD" />
                 <ScalarProperty Name="CSCLINKLOGIN" ColumnName="CSCLINKLOGIN" />
                 <ScalarProperty Name="CSCLINKININAME" ColumnName="CSCLINKININAME" />
                 <ScalarProperty Name="MAXPAYTEXTFORMAT" ColumnName="MAXPAYTEXTFORMAT" />
+                <ScalarProperty Name="NONFISCALONLY" ColumnName="NONFISCALONLY" />
                 <ScalarProperty Name="DOSERDEVICE" ColumnName="DOSERDEVICE" />
                 <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
                 <ScalarProperty Name="DEFINTFDLL" ColumnName="DEFINTFDLL" />
@@ -18585,14 +18782,14 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
             <EntityTypeMapping TypeName="RK7Model.DISCOUNTCOMPOSITIONS">
               <MappingFragment StoreEntitySet="DISCOUNTCOMPOSITIONS">
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
-                <ScalarProperty Name="DISCOUNT7" ColumnName="DISCOUNT7" />
-                <ScalarProperty Name="DISCOUNT6" ColumnName="DISCOUNT6" />
-                <ScalarProperty Name="DISCOUNT5" ColumnName="DISCOUNT5" />
                 <ScalarProperty Name="SCRIPT" ColumnName="SCRIPT" />
                 <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
                 <ScalarProperty Name="MAXPERCENT" ColumnName="MAXPERCENT" />
                 <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
                 <ScalarProperty Name="DISCOP" ColumnName="DISCOP" />
+                <ScalarProperty Name="DISCOUNT7" ColumnName="DISCOUNT7" />
+                <ScalarProperty Name="DISCOUNT6" ColumnName="DISCOUNT6" />
+                <ScalarProperty Name="DISCOUNT5" ColumnName="DISCOUNT5" />
                 <ScalarProperty Name="DISCOUNT4" ColumnName="DISCOUNT4" />
                 <ScalarProperty Name="DISCOUNT3" ColumnName="DISCOUNT3" />
                 <ScalarProperty Name="DISCOUNT2" ColumnName="DISCOUNT2" />
@@ -18606,11 +18803,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISCOUNTDETAILS">
             <EntityTypeMapping TypeName="RK7Model.DISCOUNTDETAILS">
               <MappingFragment StoreEntitySet="DISCOUNTDETAILS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="UOT" ColumnName="UOT" />
                 <ScalarProperty Name="DETAILFRANCHISE" ColumnName="DETAILFRANCHISE" />
                 <ScalarProperty Name="DETAILREGION" ColumnName="DETAILREGION" />
                 <ScalarProperty Name="DETAILCONCEPT" ColumnName="DETAILCONCEPT" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
-                <ScalarProperty Name="UOT" ColumnName="UOT" />
                 <ScalarProperty Name="DETAILRESTAURANT" ColumnName="DETAILRESTAURANT" />
                 <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
                 <ScalarProperty Name="BONUSPERCENTVAL" ColumnName="BONUSPERCENTVAL" />
@@ -18695,6 +18892,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISCPARTS">
             <EntityTypeMapping TypeName="RK7Model.DISCPARTS">
               <MappingFragment StoreEntitySet="DISCPARTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="CALCSUM" ColumnName="CALCSUM" />
                 <ScalarProperty Name="BONUSSUM" ColumnName="BONUSSUM" />
@@ -18715,6 +18913,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISHCONSUMATORS">
             <EntityTypeMapping TypeName="RK7Model.DISHCONSUMATORS">
               <MappingFragment StoreEntitySet="DISHCONSUMATORS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="GLOBALIDENT" ColumnName="GLOBALIDENT" />
@@ -18741,6 +18940,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISHDISCOUNTS">
             <EntityTypeMapping TypeName="RK7Model.DISHDISCOUNTS">
               <MappingFragment StoreEntitySet="DISHDISCOUNTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="COUPONCOUNT" ColumnName="COUPONCOUNT" />
                 <ScalarProperty Name="PERSONID" ColumnName="PERSONID" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -18801,6 +19001,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISHMODIFIERS">
             <EntityTypeMapping TypeName="RK7Model.DISHMODIFIERS">
               <MappingFragment StoreEntitySet="DISHMODIFIERS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="SRCPRICE" ColumnName="SRCPRICE" />
                 <ScalarProperty Name="FREEMODICNT" ColumnName="FREEMODICNT" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -18831,6 +19032,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISHRESTS">
             <EntityTypeMapping TypeName="RK7Model.DISHRESTS">
               <MappingFragment StoreEntitySet="DISHRESTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ISQNTREST" ColumnName="ISQNTREST" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="ABSENT" ColumnName="ABSENT" />
@@ -18846,6 +19048,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISHVOIDS">
             <EntityTypeMapping TypeName="RK7Model.DISHVOIDS">
               <MappingFragment StoreEntitySet="DISHVOIDS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="AFTERBILLUNDO" ColumnName="AFTERBILLUNDO" />
@@ -18878,10 +19081,10 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="DISPLAYRESOLUTIONS">
             <EntityTypeMapping TypeName="RK7Model.DISPLAYRESOLUTIONS">
               <MappingFragment StoreEntitySet="DISPLAYRESOLUTIONS">
-                <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="HEIGHT" ColumnName="HEIGHT" />
                 <ScalarProperty Name="WIDTH" ColumnName="WIDTH" />
+                <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="SIFR" ColumnName="SIFR" />
               </MappingFragment>
@@ -19122,6 +19325,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="EXTERNALIDS">
             <EntityTypeMapping TypeName="RK7Model.EXTERNALIDS">
               <MappingFragment StoreEntitySet="EXTERNALIDS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="EXTID" ColumnName="EXTID" />
                 <ScalarProperty Name="EXTSOURCE" ColumnName="EXTSOURCE" />
@@ -19134,6 +19338,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="EXTRATABLES">
             <EntityTypeMapping TypeName="RK7Model.EXTRATABLES">
               <MappingFragment StoreEntitySet="EXTRATABLES">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="TABLE" ColumnName="TABLE" />
                 <ScalarProperty Name="ORDER" ColumnName="ORDER" />
@@ -19145,8 +19350,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="FILTERS">
             <EntityTypeMapping TypeName="RK7Model.FILTERS">
               <MappingFragment StoreEntitySet="FILTERS">
-                <ScalarProperty Name="FILTER_KURS" ColumnName="FILTER_KURS" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="FILTER_KURS" ColumnName="FILTER_KURS" />
                 <ScalarProperty Name="FILTER_FRANCHISE" ColumnName="FILTER_FRANCHISE" />
                 <ScalarProperty Name="FILTER_REGION" ColumnName="FILTER_REGION" />
                 <ScalarProperty Name="FILTER_CONCEPT" ColumnName="FILTER_CONCEPT" />
@@ -19183,7 +19388,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="FISCDEVPARAMS">
             <EntityTypeMapping TypeName="RK7Model.FISCDEVPARAMS">
               <MappingFragment StoreEntitySet="FISCDEVPARAMS">
-                <ScalarProperty Name="UNILIBRARY" ColumnName="UNILIBRARY" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="TAXDEFAULT" ColumnName="TAXDEFAULT" />
                 <ScalarProperty Name="TAXPARAMNO" ColumnName="TAXPARAMNO" />
@@ -19193,6 +19397,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TAXMINTYPE" ColumnName="TAXMINTYPE" />
                 <ScalarProperty Name="PAYMAXTYPE" ColumnName="PAYMAXTYPE" />
                 <ScalarProperty Name="PAYMINTYPE" ColumnName="PAYMINTYPE" />
+                <ScalarProperty Name="UNILIBRARY" ColumnName="UNILIBRARY" />
                 <ScalarProperty Name="PRPNAME" ColumnName="PRPNAME" />
                 <ScalarProperty Name="DLLNAME" ColumnName="DLLNAME" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
@@ -19250,8 +19455,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="FORMSCHEMECHILDS">
             <EntityTypeMapping TypeName="RK7Model.FORMSCHEMECHILDS">
               <MappingFragment StoreEntitySet="FORMSCHEMECHILDS">
-                <ScalarProperty Name="LINKREFNO" ColumnName="LINKREFNO" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="LINKREFNO" ColumnName="LINKREFNO" />
                 <ScalarProperty Name="LINKSIFR" ColumnName="LINKSIFR" />
                 <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="SIFT" ColumnName="SIFT" />
@@ -19342,9 +19547,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="GENERATEDPROPGROUPS">
             <EntityTypeMapping TypeName="RK7Model.GENERATEDPROPGROUPS">
               <MappingFragment StoreEntitySet="GENERATEDPROPGROUPS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="GROUPKIND" ColumnName="GROUPKIND" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
@@ -19358,18 +19563,18 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="GENERATEDPROPTYPES">
             <EntityTypeMapping TypeName="RK7Model.GENERATEDPROPTYPES">
               <MappingFragment StoreEntitySet="GENERATEDPROPTYPES">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="SHOWONFORM" ColumnName="SHOWONFORM" />
+                <ScalarProperty Name="PARENT" ColumnName="PARENT" />
+                <ScalarProperty Name="RKENUMLINK" ColumnName="RKENUMLINK" />
+                <ScalarProperty Name="RKPROPCOMM" ColumnName="RKPROPCOMM" />
+                <ScalarProperty Name="RKPROPNAME" ColumnName="RKPROPNAME" />
+                <ScalarProperty Name="RKTYPENAME" ColumnName="RKTYPENAME" />
+                <ScalarProperty Name="RKPROPKIND" ColumnName="RKPROPKIND" />
                 <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
-                <ScalarProperty Name="PARENT" ColumnName="PARENT" />
-                <ScalarProperty Name="RKENUMLINK" ColumnName="RKENUMLINK" />
-                <ScalarProperty Name="RKPROPKIND" ColumnName="RKPROPKIND" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
-                <ScalarProperty Name="RKPROPCOMM" ColumnName="RKPROPCOMM" />
-                <ScalarProperty Name="RKPROPNAME" ColumnName="RKPROPNAME" />
-                <ScalarProperty Name="RKTYPENAME" ColumnName="RKTYPENAME" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="SIFR" ColumnName="SIFR" />
               </MappingFragment>
@@ -19592,6 +19797,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="INVOICES">
             <EntityTypeMapping TypeName="RK7Model.INVOICES">
               <MappingFragment StoreEntitySet="INVOICES">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ZIPCODE" ColumnName="ZIPCODE" />
                 <ScalarProperty Name="METROSTATION" ColumnName="METROSTATION" />
                 <ScalarProperty Name="ADDRDOPINFO" ColumnName="ADDRDOPINFO" />
@@ -19836,6 +20042,15 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="KDSDATA">
             <EntityTypeMapping TypeName="RK7Model.KDSDATA">
               <MappingFragment StoreEntitySet="KDSDATA">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="ENDPARKMANAGERID" ColumnName="ENDPARKMANAGERID" />
+                <ScalarProperty Name="STARTPARKMANAGERID" ColumnName="STARTPARKMANAGERID" />
+                <ScalarProperty Name="COLLECTEDMANAGERID" ColumnName="COLLECTEDMANAGERID" />
+                <ScalarProperty Name="COLLECTMANAGERID" ColumnName="COLLECTMANAGERID" />
+                <ScalarProperty Name="ENDPARKAT" ColumnName="ENDPARKAT" />
+                <ScalarProperty Name="STARTPARKAT" ColumnName="STARTPARKAT" />
+                <ScalarProperty Name="COLLECTEDAT" ColumnName="COLLECTEDAT" />
+                <ScalarProperty Name="COLLECTAT" ColumnName="COLLECTAT" />
                 <ScalarProperty Name="KDSSTATIONID" ColumnName="KDSSTATIONID" />
                 <ScalarProperty Name="TAKEMANAGERID" ColumnName="TAKEMANAGERID" />
                 <ScalarProperty Name="DONEMANAGERID" ColumnName="DONEMANAGERID" />
@@ -19881,6 +20096,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
             <EntityTypeMapping TypeName="RK7Model.LINKEDSYSTEMSCONFS">
               <MappingFragment StoreEntitySet="LINKEDSYSTEMSCONFS">
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="COPIEDFROM" ColumnName="COPIEDFROM" />
                 <ScalarProperty Name="CONFIGRAWXML" ColumnName="CONFIGRAWXML" />
                 <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
@@ -19895,9 +20111,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="LINKEDSYSTEMSTYPES">
             <EntityTypeMapping TypeName="RK7Model.LINKEDSYSTEMSTYPES">
               <MappingFragment StoreEntitySet="LINKEDSYSTEMSTYPES">
-                <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
-                <ScalarProperty Name="LICENSEKIND" ColumnName="LICENSEKIND" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
+                <ScalarProperty Name="ISTEMPLATE" ColumnName="ISTEMPLATE" />
+                <ScalarProperty Name="PARENT" ColumnName="PARENT" />
+                <ScalarProperty Name="LICENSEKIND" ColumnName="LICENSEKIND" />
                 <ScalarProperty Name="CONFIGSCHEME" ColumnName="CONFIGSCHEME" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
@@ -19939,6 +20157,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="MAKETSCHEMEDETAILS">
             <EntityTypeMapping TypeName="RK7Model.MAKETSCHEMEDETAILS">
               <MappingFragment StoreEntitySet="MAKETSCHEMEDETAILS">
+                <ScalarProperty Name="DEVICETYPES" ColumnName="DEVICETYPES" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="COPIES" ColumnName="COPIES" />
                 <ScalarProperty Name="MAKET10" ColumnName="MAKET10" />
@@ -20201,8 +20420,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="MCRALGORITHMS">
             <EntityTypeMapping TypeName="RK7Model.MCRALGORITHMS">
               <MappingFragment StoreEntitySet="MCRALGORITHMS">
-                <ScalarProperty Name="ONLYLONELY" ColumnName="ONLYLONELY" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="ONLYLONELY" ColumnName="ONLYLONELY" />
                 <ScalarProperty Name="MCRDEVICEIDENT" ColumnName="MCRDEVICEIDENT" />
                 <ScalarProperty Name="LOOKUPTABLEMODE" ColumnName="LOOKUPTABLEMODE" />
                 <ScalarProperty Name="LINKEDSCRIPT" ColumnName="LINKEDSCRIPT" />
@@ -20291,6 +20510,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="MESSAGES">
             <EntityTypeMapping TypeName="RK7Model.MESSAGES">
               <MappingFragment StoreEntitySet="MESSAGES">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="REPEATCOUNT" ColumnName="REPEATCOUNT" />
                 <ScalarProperty Name="ADDEDAT" ColumnName="ADDEDAT" />
@@ -20590,9 +20810,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="OPERATIONS">
             <EntityTypeMapping TypeName="RK7Model.OPERATIONS">
               <MappingFragment StoreEntitySet="OPERATIONS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="ALTCONFIRMATIONTEXT" ColumnName="ALTCONFIRMATIONTEXT" />
                 <ScalarProperty Name="CONFIRMATIONTEXT" ColumnName="CONFIRMATIONTEXT" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="EXTRACONFIRMATION" ColumnName="EXTRACONFIRMATION" />
                 <ScalarProperty Name="LINKEDSCRIPT" ColumnName="LINKEDSCRIPT" />
                 <ScalarProperty Name="OPERATION" ColumnName="OPERATION" />
@@ -20643,6 +20863,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="ORDERS">
             <EntityTypeMapping TypeName="RK7Model.ORDERS">
               <MappingFragment StoreEntitySet="ORDERS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FISCORDERSTATE" ColumnName="FISCORDERSTATE" />
                 <ScalarProperty Name="ISBANQUET" ColumnName="ISBANQUET" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -20698,6 +20919,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="ORDERSESSIONS">
             <EntityTypeMapping TypeName="RK7Model.ORDERSESSIONS">
               <MappingFragment StoreEntitySet="ORDERSESSIONS">
+                <ScalarProperty Name="ICOSTSCALE" ColumnName="ICOSTSCALE" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="EXTRAORDERIDENT" ColumnName="EXTRAORDERIDENT" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="UNIQUEID" ColumnName="UNIQUEID" />
@@ -20742,7 +20966,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="ORDERVOIDS">
             <EntityTypeMapping TypeName="RK7Model.ORDERVOIDS">
               <MappingFragment StoreEntitySet="ORDERVOIDS">
-                <ScalarProperty Name="IMPLONNONPRINTEDDISH" ColumnName="IMPLONNONPRINTEDDISH" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="FORMAT" ColumnName="FORMAT" />
                 <ScalarProperty Name="EXTRESTID" ColumnName="EXTRESTID" />
@@ -20753,6 +20976,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="VISUALTYPE_TEXTCOLOR" ColumnName="VISUALTYPE_TEXTCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_BCOLOR" ColumnName="VISUALTYPE_BCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_IMAGE" ColumnName="VISUALTYPE_IMAGE" />
+                <ScalarProperty Name="IMPLONPRINTEDDISH" ColumnName="IMPLONPRINTEDDISH" />
+                <ScalarProperty Name="IMPLONUNPRINTEDDISH" ColumnName="IMPLONUNPRINTEDDISH" />
                 <ScalarProperty Name="RIGHTLVL" ColumnName="RIGHTLVL" />
                 <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
@@ -20766,6 +20991,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="ORDERWAITERS">
             <EntityTypeMapping TypeName="RK7Model.ORDERWAITERS">
               <MappingFragment StoreEntitySet="ORDERWAITERS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="WAITER" ColumnName="WAITER" />
                 <ScalarProperty Name="ORDER" ColumnName="ORDER" />
@@ -20833,6 +21059,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PAYBINDINGS">
             <EntityTypeMapping TypeName="RK7Model.PAYBINDINGS">
               <MappingFragment StoreEntitySet="PAYBINDINGS">
+                <ScalarProperty Name="COSTSUM" ColumnName="COSTSUM" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="SEAT" ColumnName="SEAT" />
@@ -20858,6 +21086,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PAYMENTS">
             <EntityTypeMapping TypeName="RK7Model.PAYMENTS">
               <MappingFragment StoreEntitySet="PAYMENTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="WASTRANSFERRED" ColumnName="WASTRANSFERRED" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
@@ -20912,6 +21141,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PAYMENTSEXTRA">
             <EntityTypeMapping TypeName="RK7Model.PAYMENTSEXTRA">
               <MappingFragment StoreEntitySet="PAYMENTSEXTRA">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="SLIP" ColumnName="SLIP" />
                 <ScalarProperty Name="BANKTRANSACTIONTYPE" ColumnName="BANKTRANSACTIONTYPE" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -20994,8 +21224,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PERIODS">
             <EntityTypeMapping TypeName="RK7Model.PERIODS">
               <MappingFragment StoreEntitySet="PERIODS">
-                <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="PARENT" ColumnName="PARENT" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="VISUALTYPE_FLAGS" ColumnName="VISUALTYPE_FLAGS" />
                 <ScalarProperty Name="VISUALTYPE_TEXTCOLOR" ColumnName="VISUALTYPE_TEXTCOLOR" />
@@ -21072,8 +21302,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PRICETYPES">
             <EntityTypeMapping TypeName="RK7Model.PRICETYPES">
               <MappingFragment StoreEntitySet="PRICETYPES">
-                <ScalarProperty Name="ALLOWOVERRIDINGS" ColumnName="ALLOWOVERRIDINGS" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="ALLOWOVERRIDINGS" ColumnName="ALLOWOVERRIDINGS" />
                 <ScalarProperty Name="SHSETTINGSLINK" ColumnName="SHSETTINGSLINK" />
                 <ScalarProperty Name="SHSTOREHOUSE" ColumnName="SHSTOREHOUSE" />
                 <ScalarProperty Name="SHCOMMODITYGROUP" ColumnName="SHCOMMODITYGROUP" />
@@ -21106,6 +21336,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PRINTCHECKS">
             <EntityTypeMapping TypeName="RK7Model.PRINTCHECKS">
               <MappingFragment StoreEntitySet="PRINTCHECKS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="RECEIPTTAXTYPE" ColumnName="RECEIPTTAXTYPE" />
                 <ScalarProperty Name="ISTARERECEIPT" ColumnName="ISTARERECEIPT" />
                 <ScalarProperty Name="BILLDATETIME" ColumnName="BILLDATETIME" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
@@ -21197,8 +21429,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="PRINTERPURPOSES">
             <EntityTypeMapping TypeName="RK7Model.PRINTERPURPOSES">
               <MappingFragment StoreEntitySet="PRINTERPURPOSES">
-                <ScalarProperty Name="LOCALSONLY" ColumnName="LOCALSONLY" />
+                <ScalarProperty Name="DEVICETYPES" ColumnName="DEVICETYPES" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="LOCALSONLY" ColumnName="LOCALSONLY" />
                 <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
                 <ScalarProperty Name="UCSPRESET" ColumnName="UCSPRESET" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
@@ -21297,6 +21530,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="REGISTRATIONS">
             <EntityTypeMapping TypeName="RK7Model.REGISTRATIONS">
               <MappingFragment StoreEntitySet="REGISTRATIONS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="ICLOSESTATION" ColumnName="ICLOSESTATION" />
                 <ScalarProperty Name="ISTARTSTATION" ColumnName="ISTARTSTATION" />
@@ -21319,10 +21553,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="REPORTINGSERVERS">
             <EntityTypeMapping TypeName="RK7Model.REPORTINGSERVERS">
               <MappingFragment StoreEntitySet="REPORTINGSERVERS">
-                <ScalarProperty Name="LOGBASEPASS" ColumnName="LOGBASEPASS" />
-                <ScalarProperty Name="LOGBASENAME" ColumnName="LOGBASENAME" />
-                <ScalarProperty Name="LOGBASECONF" ColumnName="LOGBASECONF" />
-                <ScalarProperty Name="LICHARDINFONEW" ColumnName="LICHARDINFONEW" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="HTTPXMLPRIVILEGE" ColumnName="HTTPXMLPRIVILEGE" />
                 <ScalarProperty Name="HTTPAPIPRIVILEGE" ColumnName="HTTPAPIPRIVILEGE" />
@@ -21351,6 +21581,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="ITEMSRIGHTS" ColumnName="ITEMSRIGHTS" />
                 <ScalarProperty Name="CUBETIMEOUT" ColumnName="CUBETIMEOUT" />
                 <ScalarProperty Name="LOGGINGTYPE" ColumnName="LOGGINGTYPE" />
+                <ScalarProperty Name="LOGBASEPASS" ColumnName="LOGBASEPASS" />
+                <ScalarProperty Name="LOGBASENAME" ColumnName="LOGBASENAME" />
+                <ScalarProperty Name="LOGBASECONF" ColumnName="LOGBASECONF" />
                 <ScalarProperty Name="EXTBASEPASS" ColumnName="EXTBASEPASS" />
                 <ScalarProperty Name="EXTBASENAME" ColumnName="EXTBASENAME" />
                 <ScalarProperty Name="EXTBASECONF" ColumnName="EXTBASECONF" />
@@ -21359,6 +21592,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="LICHARDKEYN" ColumnName="LICHARDKEYN" />
                 <ScalarProperty Name="LICENSEKEYN" ColumnName="LICENSEKEYN" />
                 <ScalarProperty Name="LICEXPIREAT" ColumnName="LICEXPIREAT" />
+                <ScalarProperty Name="LICHARDINFONEW" ColumnName="LICHARDINFONEW" />
                 <ScalarProperty Name="LICHARDINFO" ColumnName="LICHARDINFO" />
                 <ScalarProperty Name="LICENSE" ColumnName="LICENSE" />
                 <ScalarProperty Name="FLAGS" ColumnName="FLAGS" />
@@ -21429,8 +21663,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="RESTAURANTREGIONS">
             <EntityTypeMapping TypeName="RK7Model.RESTAURANTREGIONS">
               <MappingFragment StoreEntitySet="RESTAURANTREGIONS">
-                <ScalarProperty Name="UTCOFFSETS" ColumnName="UTCOFFSETS" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
+                <ScalarProperty Name="UTCOFFSETS" ColumnName="UTCOFFSETS" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
                 <ScalarProperty Name="NAME" ColumnName="NAME" />
@@ -21443,11 +21677,11 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="RESTAURANTS">
             <EntityTypeMapping TypeName="RK7Model.RESTAURANTS">
               <MappingFragment StoreEntitySet="RESTAURANTS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="OPERATIONALHOURS" ColumnName="OPERATIONALHOURS" />
                 <ScalarProperty Name="ADDRESSGUID" ColumnName="ADDRESSGUID" />
                 <ScalarProperty Name="LOCATIONLONG" ColumnName="LOCATIONLONG" />
                 <ScalarProperty Name="LOCATIONLAT" ColumnName="LOCATIONLAT" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="HANDLESRESTAURANTS" ColumnName="HANDLESRESTAURANTS" />
                 <ScalarProperty Name="OPENINGDATE" ColumnName="OPENINGDATE" />
                 <ScalarProperty Name="STOREHOUSECODE" ColumnName="STOREHOUSECODE" />
@@ -21670,9 +21904,9 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="SELECTORS">
             <EntityTypeMapping TypeName="RK7Model.SELECTORS">
               <MappingFragment StoreEntitySet="SELECTORS">
+                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="LARGEIMAGEPATH" ColumnName="LARGEIMAGEPATH" />
                 <ScalarProperty Name="AUTOTRANSLATE" ColumnName="AUTOTRANSLATE" />
-                <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="RIGHTLVL" ColumnName="RIGHTLVL" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="FORMHEIGHT" ColumnName="FORMHEIGHT" />
@@ -21778,6 +22012,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="SESSIONDISHES">
             <EntityTypeMapping TypeName="RK7Model.SESSIONDISHES">
               <MappingFragment StoreEntitySet="SESSIONDISHES">
+                <ScalarProperty Name="CREATIONDATETIME" ColumnName="CREATIONDATETIME" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ADDBYALGORITHM" ColumnName="ADDBYALGORITHM" />
                 <ScalarProperty Name="SOURCEGUIDSTRING" ColumnName="SOURCEGUIDSTRING" />
                 <ScalarProperty Name="MENUITEMPRICE" ColumnName="MENUITEMPRICE" />
@@ -22015,6 +22251,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="TARIFFDATA">
             <EntityTypeMapping TypeName="RK7Model.TARIFFDATA">
               <MappingFragment StoreEntitySet="TARIFFDATA">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="DISBALLANCE" ColumnName="DISBALLANCE" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="EXTNUMBER" ColumnName="EXTNUMBER" />
                 <ScalarProperty Name="REBOOTING" ColumnName="REBOOTING" />
@@ -22070,7 +22308,6 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="TARIFFICATIONTYPES">
             <EntityTypeMapping TypeName="RK7Model.TARIFFICATIONTYPES">
               <MappingFragment StoreEntitySet="TARIFFICATIONTYPES">
-                <ScalarProperty Name="PAUSETIME" ColumnName="PAUSETIME" />
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="PERIOD" ColumnName="PERIOD" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
@@ -22078,6 +22315,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="VISUALTYPE_TEXTCOLOR" ColumnName="VISUALTYPE_TEXTCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_BCOLOR" ColumnName="VISUALTYPE_BCOLOR" />
                 <ScalarProperty Name="VISUALTYPE_IMAGE" ColumnName="VISUALTYPE_IMAGE" />
+                <ScalarProperty Name="PAUSETIME" ColumnName="PAUSETIME" />
                 <ScalarProperty Name="TARIFFTYPEPERIOD" ColumnName="TARIFFTYPEPERIOD" />
                 <ScalarProperty Name="RIGHTLVL" ColumnName="RIGHTLVL" />
                 <ScalarProperty Name="ALTNAME" ColumnName="ALTNAME" />
@@ -22093,6 +22331,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
               <MappingFragment StoreEntitySet="TAXDISHRULES">
                 <ScalarProperty Name="RECSTAMP" ColumnName="RECSTAMP" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="RECEIPTTAXTYPE" ColumnName="RECEIPTTAXTYPE" />
                 <ScalarProperty Name="UOT" ColumnName="UOT" />
                 <ScalarProperty Name="COT" ColumnName="COT" />
                 <ScalarProperty Name="CODE" ColumnName="CODE" />
@@ -22138,6 +22377,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="TAXPARTS">
             <EntityTypeMapping TypeName="RK7Model.TAXPARTS">
               <MappingFragment StoreEntitySet="TAXPARTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="NATIONALSUM" ColumnName="NATIONALSUM" />
                 <ScalarProperty Name="SUM" ColumnName="SUM" />
@@ -22219,6 +22459,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FACTORVALUE" ColumnName="FACTORVALUE" />
                 <ScalarProperty Name="CLOCKRECID" ColumnName="CLOCKRECID" />
                 <ScalarProperty Name="COMMENT" ColumnName="COMMENT" />
@@ -22245,6 +22486,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="PAYGUIDSTRING" ColumnName="PAYGUIDSTRING" />
                 <ScalarProperty Name="IAUTHOR" ColumnName="IAUTHOR" />
                 <ScalarProperty Name="OPENREASONNAME" ColumnName="OPENREASONNAME" />
@@ -22281,6 +22523,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="STATUS" ColumnName="STATUS" />
                 <ScalarProperty Name="MANUALLYCHANGED" ColumnName="MANUALLYCHANGED" />
                 <ScalarProperty Name="LATENESS" ColumnName="LATENESS" />
@@ -22315,6 +22558,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FISCREGUNFISCTYPE" ColumnName="FISCREGUNFISCTYPE" />
                 <ScalarProperty Name="OWNERINFO" ColumnName="OWNERINFO" />
                 <ScalarProperty Name="PAYUNIFOROWNERINFO" ColumnName="PAYUNIFOROWNERINFO" />
@@ -22345,6 +22589,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="DELIVERYMINCOOKTIME" ColumnName="DELIVERYMINCOOKTIME" />
                 <ScalarProperty Name="DELIVERYTAKEOUT" ColumnName="DELIVERYTAKEOUT" />
@@ -22374,6 +22619,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="CALCSUM" ColumnName="CALCSUM" />
                 <ScalarProperty Name="BONUSSUM" ColumnName="BONUSSUM" />
                 <ScalarProperty Name="SUM" ColumnName="SUM" />
@@ -22397,6 +22643,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="GLOBALIDENT" ColumnName="GLOBALIDENT" />
                 <ScalarProperty Name="CPERCENT" ColumnName="CPERCENT" />
@@ -22426,6 +22673,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="COUPONCOUNT" ColumnName="COUPONCOUNT" />
                 <ScalarProperty Name="PERSONID" ColumnName="PERSONID" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
@@ -22477,6 +22725,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FREEMODICNT" ColumnName="FREEMODICNT" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="COMBODISHUNI" ColumnName="COMBODISHUNI" />
@@ -22510,6 +22759,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ISQNTREST" ColumnName="ISQNTREST" />
                 <ScalarProperty Name="ABSENT" ColumnName="ABSENT" />
                 <ScalarProperty Name="NOTICED" ColumnName="NOTICED" />
@@ -22528,6 +22778,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="AFTERBILLUNDO" ColumnName="AFTERBILLUNDO" />
                 <ScalarProperty Name="STOREDINFM" ColumnName="STOREDINFM" />
@@ -22584,6 +22835,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="EXTID" ColumnName="EXTID" />
                 <ScalarProperty Name="EXTSOURCE" ColumnName="EXTSOURCE" />
                 <ScalarProperty Name="ORDER" ColumnName="ORDER" />
@@ -22599,6 +22851,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="TABLE" ColumnName="TABLE" />
                 <ScalarProperty Name="ORDER" ColumnName="ORDER" />
                 <ScalarProperty Name="MIDSERVER" ColumnName="MIDSERVER" />
@@ -22705,6 +22958,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ZIPCODE" ColumnName="ZIPCODE" />
                 <ScalarProperty Name="METROSTATION" ColumnName="METROSTATION" />
                 <ScalarProperty Name="ADDRDOPINFO" ColumnName="ADDRDOPINFO" />
@@ -22761,7 +23015,12 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="KDSSTATIONID" ColumnName="KDSSTATIONID" />
+                <ScalarProperty Name="ENDPARKMANAGERID" ColumnName="ENDPARKMANAGERID" />
+                <ScalarProperty Name="STARTPARKMANAGERID" ColumnName="STARTPARKMANAGERID" />
+                <ScalarProperty Name="COLLECTEDMANAGERID" ColumnName="COLLECTEDMANAGERID" />
+                <ScalarProperty Name="COLLECTMANAGERID" ColumnName="COLLECTMANAGERID" />
                 <ScalarProperty Name="TAKEMANAGERID" ColumnName="TAKEMANAGERID" />
                 <ScalarProperty Name="DONEMANAGERID" ColumnName="DONEMANAGERID" />
                 <ScalarProperty Name="INITMANAGERID" ColumnName="INITMANAGERID" />
@@ -22770,6 +23029,10 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="MENUCATEGORY" ColumnName="MENUCATEGORY" />
                 <ScalarProperty Name="MENUCOOKTIME" ColumnName="MENUCOOKTIME" />
                 <ScalarProperty Name="COOKTM" ColumnName="COOKTM" />
+                <ScalarProperty Name="ENDPARKAT" ColumnName="ENDPARKAT" />
+                <ScalarProperty Name="STARTPARKAT" ColumnName="STARTPARKAT" />
+                <ScalarProperty Name="COLLECTEDAT" ColumnName="COLLECTEDAT" />
+                <ScalarProperty Name="COLLECTAT" ColumnName="COLLECTAT" />
                 <ScalarProperty Name="TAKEAT" ColumnName="TAKEAT" />
                 <ScalarProperty Name="DONEAT" ColumnName="DONEAT" />
                 <ScalarProperty Name="INITAT" ColumnName="INITAT" />
@@ -22789,6 +23052,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="REPEATCOUNT" ColumnName="REPEATCOUNT" />
                 <ScalarProperty Name="ADDEDAT" ColumnName="ADDEDAT" />
                 <ScalarProperty Name="FROMSTATION" ColumnName="FROMSTATION" />
@@ -22836,6 +23100,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FISCORDERSTATE" ColumnName="FISCORDERSTATE" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="CRC32" ColumnName="CRC32" />
@@ -22894,6 +23159,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="ICOSTSCALE" ColumnName="ICOSTSCALE" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="UNIQUEID" ColumnName="UNIQUEID" />
                 <ScalarProperty Name="NORMTIME" ColumnName="NORMTIME" />
@@ -22913,6 +23180,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="COMMONUNI" ColumnName="COMMONUNI" />
                 <ScalarProperty Name="COMMONVISIT" ColumnName="COMMONVISIT" />
                 <ScalarProperty Name="EXTRAUNI" ColumnName="EXTRAUNI" />
+                <ScalarProperty Name="EXTRAORDERIDENT" ColumnName="EXTRAORDERIDENT" />
                 <ScalarProperty Name="EXTRAVISIT" ColumnName="EXTRAVISIT" />
                 <ScalarProperty Name="ISTATION" ColumnName="ISTATION" />
                 <ScalarProperty Name="ITRADEGROUP" ColumnName="ITRADEGROUP" />
@@ -22941,6 +23209,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="WAITER" ColumnName="WAITER" />
                 <ScalarProperty Name="ORDER" ColumnName="ORDER" />
                 <ScalarProperty Name="MIDSERVER" ColumnName="MIDSERVER" />
@@ -22955,6 +23224,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="COSTSUM" ColumnName="COSTSUM" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="STATE" ColumnName="STATE" />
                 <ScalarProperty Name="SEAT" ColumnName="SEAT" />
                 <ScalarProperty Name="CONSUMATIONSUM" ColumnName="CONSUMATIONSUM" />
@@ -22983,6 +23254,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="WASTRANSFERRED" ColumnName="WASTRANSFERRED" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="IDRAWERSHIFT" ColumnName="IDRAWERSHIFT" />
@@ -23040,6 +23312,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="BANKTRANSACTIONTYPE" ColumnName="BANKTRANSACTIONTYPE" />
                 <ScalarProperty Name="TERMINALPRINTDETAILIDENT" ColumnName="TERMINALPRINTDETAILIDENT" />
                 <ScalarProperty Name="NEEDCONFIRMAFTERPRINT" ColumnName="NEEDCONFIRMAFTERPRINT" />
@@ -23096,6 +23369,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="RECEIPTTAXTYPE" ColumnName="RECEIPTTAXTYPE" />
                 <ScalarProperty Name="PAYFISCALSUM" ColumnName="PAYFISCALSUM" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="SQI" ColumnName="SQI" />
@@ -23193,6 +23468,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="ICLOSESTATION" ColumnName="ICLOSESTATION" />
                 <ScalarProperty Name="ISTARTSTATION" ColumnName="ISTARTSTATION" />
                 <ScalarProperty Name="ICLOSEMANAGER" ColumnName="ICLOSEMANAGER" />
@@ -23218,6 +23494,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="CREATIONDATETIME" ColumnName="CREATIONDATETIME" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="COMBODISCUNI" ColumnName="COMBODISCUNI" />
                 <ScalarProperty Name="COMBOMODIUNI" ColumnName="COMBOMODIUNI" />
                 <ScalarProperty Name="COMBODISHUNI" ColumnName="COMBODISHUNI" />
@@ -23308,6 +23586,8 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
+                <ScalarProperty Name="DISBALLANCE" ColumnName="DISBALLANCE" />
                 <ScalarProperty Name="EXTNUMBER" ColumnName="EXTNUMBER" />
                 <ScalarProperty Name="REBOOTING" ColumnName="REBOOTING" />
                 <ScalarProperty Name="TARIFFTYPEID" ColumnName="TARIFFTYPEID" />
@@ -23336,6 +23616,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="NATIONALSUM" ColumnName="NATIONALSUM" />
                 <ScalarProperty Name="SUM" ColumnName="SUM" />
                 <ScalarProperty Name="TAXFLAGS" ColumnName="TAXFLAGS" />
@@ -23357,6 +23638,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FISCORDERSTATE" ColumnName="FISCORDERSTATE" />
                 <ScalarProperty Name="ADDRESSID" ColumnName="ADDRESSID" />
                 <ScalarProperty Name="CLIENTID" ColumnName="CLIENTID" />
@@ -23379,6 +23661,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
                 <ScalarProperty Name="TEMPDATASIGN" ColumnName="TEMPDATASIGN" />
                 <ScalarProperty Name="TEMPDATAKIND" ColumnName="TEMPDATAKIND" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="UNICOUNT" ColumnName="UNICOUNT" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
                 <ScalarProperty Name="IQUITCOMMONSHIFT" ColumnName="IQUITCOMMONSHIFT" />
@@ -23548,6 +23831,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="VISITGUESTS">
             <EntityTypeMapping TypeName="RK7Model.VISITGUESTS">
               <MappingFragment StoreEntitySet="VISITGUESTS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="FISCORDERSTATE" ColumnName="FISCORDERSTATE" />
                 <ScalarProperty Name="TRANSACT_GUID" ColumnName="TRANSACT_GUID" />
                 <ScalarProperty Name="ADDRESSID" ColumnName="ADDRESSID" />
@@ -23567,6 +23851,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
           <EntitySetMapping Name="VISITS">
             <EntityTypeMapping TypeName="RK7Model.VISITS">
               <MappingFragment StoreEntitySet="VISITS">
+                <ScalarProperty Name="DBSTATUS" ColumnName="DBSTATUS" />
                 <ScalarProperty Name="RESERVSTATE" ColumnName="RESERVSTATE" />
                 <ScalarProperty Name="UNICOUNT" ColumnName="UNICOUNT" />
                 <ScalarProperty Name="GUIDSTRING" ColumnName="GUIDSTRING" />
@@ -24002,7 +24287,7 @@ warning 6013: The table/view 'RK7.dbo.UPGRADEHISTORY' does not have a primary ke
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

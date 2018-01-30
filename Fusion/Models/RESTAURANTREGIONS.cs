@@ -20,7 +20,7 @@ namespace Fusion.Models
         public string NAME { get; set; }
         public string ALTNAME { get; set; }
         public Nullable<short> STATUS { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<long> UTCOFFSETS { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

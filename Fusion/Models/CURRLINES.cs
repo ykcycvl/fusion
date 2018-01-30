@@ -35,5 +35,6 @@ namespace Fusion.Models
         public string OWNERINFO { get; set; }
         public Nullable<int> FISCREGUNFISCTYPE { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

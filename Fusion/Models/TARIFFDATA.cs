@@ -33,5 +33,7 @@ namespace Fusion.Models
         public Nullable<short> REBOOTING { get; set; }
         public string EXTNUMBER { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<long> DISBALLANCE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

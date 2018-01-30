@@ -17,7 +17,7 @@ namespace Fusion.Models
         public int SIFT { get; set; }
         public Nullable<int> PARENT { get; set; }
         public Nullable<int> LINKSIFR { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> LINKREFNO { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

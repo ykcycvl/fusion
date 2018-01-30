@@ -10,7 +10,7 @@
 
     for (int i = 1; i <= DateTime.DaysInMonth(Model.Period.Year, Model.Period.Month); i++)
     {
-        rules += "\"d" + i.ToString() + "\": function(value){ if(isNaN(value) || value == \"\") return true; if($.isNumeric(value) && value <= 16) return true; else return false; },";
+        rules += "\"d" + i.ToString() + "\": function(value){ if(isNaN(value) || value == \"\") return true; if($.isNumeric(value) && value <= 17) return true; else return false; },";
 
         if (System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Сб" || System.Globalization.CultureInfo.GetCultureInfo("ru-RU").DateTimeFormat.GetAbbreviatedDayName(new DateTime(Model.Period.Year, Model.Period.Month, i).DayOfWeek) == "Вс")
         {
@@ -270,8 +270,8 @@
 
         if (!grid.validate())
         {
-            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице. Обратите внимание, что теперь невозможно поставить более 16 часов в день!" });
-            return;
+            /*webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице. Обратите внимание, что теперь невозможно поставить более 16 часов в день!" });
+            return;*/
         }
             
 

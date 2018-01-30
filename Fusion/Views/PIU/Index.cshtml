@@ -1,0 +1,33 @@
+﻿@model Fusion.Models.PIU
+@{
+    ViewBag.Title = "ПИУ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ПИУ</h2>
+
+<div class="row">
+    @using (Html.BeginForm("Get", "PIU", FormMethod.Get, new { id = "Form" }))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.Organization)
+                @Html.DropDownListFor(m => m.Organization, Model.OrganizationsSelectList, new { @class = "form-control" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.StartDate)
+                @Html.TextBoxFor(m => m.StartDate, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+            <div class="col-md-3">
+                @Html.LabelFor(m => m.EndDate)
+                @Html.TextBoxFor(m => m.EndDate, "{0:dd.MM.yyyy}", new { @class = "form-control date" })
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-3">
+                <input type="submit" class="btn btn-default" value="ОК" />
+            </div>
+        </div>
+    }
+</div>

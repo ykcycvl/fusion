@@ -32,7 +32,7 @@ namespace Fusion.Models
         public Nullable<short> DEPARTCODE { get; set; }
         public Nullable<int> EXTCODE { get; set; }
         public Nullable<int> EXTRESTID { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> MODISCHEME { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Fusion.Models
         public int SIFR { get; set; }
         public string GUIDSTRING { get; set; }
         public Nullable<int> FORMCLASS { get; set; }
-        public Nullable<short> RESOLUTION { get; set; }
+        public Nullable<int> RESOLUTION { get; set; }
         public Nullable<short> TOUCHSCREEN { get; set; }
         public string COMMENT { get; set; }
         public string ALTCOMMENT { get; set; }

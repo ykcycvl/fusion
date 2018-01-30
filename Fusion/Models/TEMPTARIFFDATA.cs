@@ -32,6 +32,8 @@ namespace Fusion.Models
         public Nullable<int> TARIFFTYPEID { get; set; }
         public Nullable<short> REBOOTING { get; set; }
         public string EXTNUMBER { get; set; }
+        public Nullable<long> DISBALLANCE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

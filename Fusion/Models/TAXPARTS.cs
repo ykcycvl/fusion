@@ -26,5 +26,6 @@ namespace Fusion.Models
         public Nullable<decimal> SUM { get; set; }
         public Nullable<decimal> NATIONALSUM { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

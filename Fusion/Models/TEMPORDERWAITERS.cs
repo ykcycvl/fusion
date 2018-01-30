@@ -18,6 +18,7 @@ namespace Fusion.Models
         public int MIDSERVER { get; set; }
         public int ORDER { get; set; }
         public int WAITER { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

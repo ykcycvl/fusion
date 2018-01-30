@@ -62,5 +62,6 @@ namespace Fusion.Models
         public string GUIDSTRING { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<short> WASTRANSFERRED { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

@@ -33,10 +33,10 @@ namespace Fusion.Models
         public Nullable<double> BONUSPERCENTVAL { get; set; }
         public Nullable<int> PRIORITY { get; set; }
         public Nullable<int> DETAILRESTAURANT { get; set; }
-        public Nullable<int> UOT { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> DETAILCONCEPT { get; set; }
         public Nullable<int> DETAILREGION { get; set; }
         public Nullable<int> DETAILFRANCHISE { get; set; }
+        public Nullable<int> UOT { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

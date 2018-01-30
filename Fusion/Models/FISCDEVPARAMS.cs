@@ -18,6 +18,7 @@ namespace Fusion.Models
         public string GUIDSTRING { get; set; }
         public string DLLNAME { get; set; }
         public string PRPNAME { get; set; }
+        public string UNILIBRARY { get; set; }
         public Nullable<int> PAYMINTYPE { get; set; }
         public Nullable<int> PAYMAXTYPE { get; set; }
         public Nullable<int> TAXMINTYPE { get; set; }
@@ -27,6 +28,5 @@ namespace Fusion.Models
         public Nullable<int> TAXPARAMNO { get; set; }
         public Nullable<int> TAXDEFAULT { get; set; }
         public string RECSTAMP { get; set; }
-        public string UNILIBRARY { get; set; }
     }
 }

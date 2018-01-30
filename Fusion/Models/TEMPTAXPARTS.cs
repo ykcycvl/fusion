@@ -25,6 +25,7 @@ namespace Fusion.Models
         public Nullable<short> TAXFLAGS { get; set; }
         public Nullable<decimal> SUM { get; set; }
         public Nullable<decimal> NATIONALSUM { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

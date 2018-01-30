@@ -34,5 +34,6 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<short> BANKTRANSACTIONTYPE { get; set; }
         public byte[] SLIP { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace Fusion.Models
         public Nullable<int> ICLOSEMANAGER { get; set; }
         public Nullable<int> ISTARTSTATION { get; set; }
         public Nullable<int> ICLOSESTATION { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

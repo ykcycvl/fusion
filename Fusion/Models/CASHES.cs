@@ -23,7 +23,7 @@ namespace Fusion.Models
         public Nullable<int> CASHGROUP { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<short> RIGHTLVL { get; set; }
-        public Nullable<short> RESOLUTION { get; set; }
+        public Nullable<int> RESOLUTION { get; set; }
         public Nullable<short> COLORS { get; set; }
         public Nullable<int> DEFHALLPLANID { get; set; }
         public byte[] RIGHTS { get; set; }
@@ -32,10 +32,10 @@ namespace Fusion.Models
         public string DEVICENAME { get; set; }
         public string FILEMANAGERPATH { get; set; }
         public Nullable<short> GRAPHICPARAMETERS { get; set; }
+        public Nullable<short> WAITDATASENDED { get; set; }
         public Nullable<short> AFTERSHIFTCLOSURE { get; set; }
         public Nullable<short> SYNCSTATESFLAGS { get; set; }
-        public string RECSTAMP { get; set; }
-        public Nullable<short> WAITDATASENDED { get; set; }
         public Nullable<int> DATASENDTIMEOUT { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

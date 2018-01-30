@@ -32,6 +32,7 @@ namespace Fusion.Models
         public Nullable<int> ITRADEGROUP { get; set; }
         public Nullable<int> ISTATION { get; set; }
         public Nullable<int> EXTRAVISIT { get; set; }
+        public Nullable<int> EXTRAORDERIDENT { get; set; }
         public Nullable<int> EXTRAUNI { get; set; }
         public Nullable<int> COMMONVISIT { get; set; }
         public Nullable<int> COMMONUNI { get; set; }
@@ -51,6 +52,8 @@ namespace Fusion.Models
         public Nullable<int> NORMTIME { get; set; }
         public Nullable<int> UNIQUEID { get; set; }
         public string GUIDSTRING { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<int> ICOSTSCALE { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

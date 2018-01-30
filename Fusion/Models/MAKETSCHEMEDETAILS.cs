@@ -47,5 +47,6 @@ namespace Fusion.Models
         public Nullable<int> MAKET10 { get; set; }
         public Nullable<short> COPIES { get; set; }
         public string RECSTAMP { get; set; }
+        public Nullable<int> DEVICETYPES { get; set; }
     }
 }

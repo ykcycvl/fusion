@@ -16,17 +16,17 @@ namespace Fusion.Models
     {
         public int SIFR { get; set; }
         public string GUIDSTRING { get; set; }
-        public string RKTYPENAME { get; set; }
-        public string RKPROPNAME { get; set; }
-        public string RKPROPCOMM { get; set; }
-        public string RECSTAMP { get; set; }
-        public Nullable<int> RKPROPKIND { get; set; }
-        public Nullable<int> RKENUMLINK { get; set; }
-        public Nullable<int> PARENT { get; set; }
         public string NAME { get; set; }
         public string ALTNAME { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<short> UCSPRESET { get; set; }
+        public Nullable<int> RKPROPKIND { get; set; }
+        public string RKTYPENAME { get; set; }
+        public string RKPROPNAME { get; set; }
+        public string RKPROPCOMM { get; set; }
+        public Nullable<int> RKENUMLINK { get; set; }
+        public Nullable<int> PARENT { get; set; }
         public Nullable<short> SHOWONFORM { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

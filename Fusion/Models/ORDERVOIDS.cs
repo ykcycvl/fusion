@@ -21,6 +21,8 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public Nullable<short> RIGHTLVL { get; set; }
+        public Nullable<short> IMPLONUNPRINTEDDISH { get; set; }
+        public Nullable<short> IMPLONPRINTEDDISH { get; set; }
         public Nullable<int> VISUALTYPE_IMAGE { get; set; }
         public Nullable<int> VISUALTYPE_BCOLOR { get; set; }
         public Nullable<int> VISUALTYPE_TEXTCOLOR { get; set; }
@@ -31,6 +33,5 @@ namespace Fusion.Models
         public Nullable<int> EXTRESTID { get; set; }
         public string FORMAT { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<short> IMPLONNONPRINTEDDISH { get; set; }
     }
 }

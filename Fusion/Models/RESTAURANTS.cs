@@ -35,10 +35,10 @@ namespace Fusion.Models
         public string STOREHOUSECODE { get; set; }
         public Nullable<System.DateTime> OPENINGDATE { get; set; }
         public Nullable<int> HANDLESRESTAURANTS { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<long> LOCATIONLAT { get; set; }
         public Nullable<long> LOCATIONLONG { get; set; }
         public string ADDRESSGUID { get; set; }
         public Nullable<long> OPERATIONALHOURS { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

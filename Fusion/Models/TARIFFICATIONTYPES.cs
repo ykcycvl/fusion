@@ -21,6 +21,7 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<int> RIGHTLVL { get; set; }
         public Nullable<int> TARIFFTYPEPERIOD { get; set; }
+        public Nullable<int> PAUSETIME { get; set; }
         public Nullable<int> VISUALTYPE_IMAGE { get; set; }
         public Nullable<int> VISUALTYPE_BCOLOR { get; set; }
         public Nullable<int> VISUALTYPE_TEXTCOLOR { get; set; }
@@ -28,6 +29,5 @@ namespace Fusion.Models
         public Nullable<short> STATUS { get; set; }
         public Nullable<int> PERIOD { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<int> PAUSETIME { get; set; }
     }
 }

@@ -32,6 +32,8 @@ namespace Fusion.Models
         public Nullable<decimal> CONSUMATIONSUM { get; set; }
         public Nullable<short> SEAT { get; set; }
         public Nullable<int> STATE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<decimal> COSTSUM { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

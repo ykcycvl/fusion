@@ -21,14 +21,14 @@ namespace Fusion.Models
         public Nullable<int> DISCOUNT2 { get; set; }
         public Nullable<int> DISCOUNT3 { get; set; }
         public Nullable<int> DISCOUNT4 { get; set; }
+        public Nullable<int> DISCOUNT5 { get; set; }
+        public Nullable<int> DISCOUNT6 { get; set; }
+        public Nullable<int> DISCOUNT7 { get; set; }
         public Nullable<short> DISCOP { get; set; }
         public Nullable<int> DISCOUNT { get; set; }
         public Nullable<double> MAXPERCENT { get; set; }
         public Nullable<short> FLAGS { get; set; }
         public byte[] SCRIPT { get; set; }
-        public Nullable<int> DISCOUNT5 { get; set; }
-        public Nullable<int> DISCOUNT6 { get; set; }
-        public Nullable<int> DISCOUNT7 { get; set; }
         public string RECSTAMP { get; set; }
     }
 }

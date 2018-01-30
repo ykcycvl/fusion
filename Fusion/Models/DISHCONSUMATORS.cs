@@ -34,5 +34,6 @@ namespace Fusion.Models
         public string GLOBALIDENT { get; set; }
         public string GUIDSTRING { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

@@ -41,5 +41,6 @@ namespace Fusion.Models
         public Nullable<int> IAUTHOR { get; set; }
         public string TRANSACT_GUID { get; set; }
         public string PAYGUIDSTRING { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

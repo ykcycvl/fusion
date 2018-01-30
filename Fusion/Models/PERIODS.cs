@@ -25,7 +25,7 @@ namespace Fusion.Models
         public Nullable<int> VISUALTYPE_TEXTCOLOR { get; set; }
         public Nullable<short> VISUALTYPE_FLAGS { get; set; }
         public Nullable<short> STATUS { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> PARENT { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

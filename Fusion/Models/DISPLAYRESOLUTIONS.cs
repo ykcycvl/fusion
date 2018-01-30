@@ -16,9 +16,9 @@ namespace Fusion.Models
     {
         public int SIFR { get; set; }
         public string GUIDSTRING { get; set; }
+        public Nullable<short> UCSPRESET { get; set; }
         public Nullable<int> WIDTH { get; set; }
         public Nullable<int> HEIGHT { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<short> UCSPRESET { get; set; }
     }
 }

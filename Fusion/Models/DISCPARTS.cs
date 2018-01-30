@@ -28,5 +28,6 @@ namespace Fusion.Models
         public Nullable<decimal> BONUSSUM { get; set; }
         public Nullable<decimal> CALCSUM { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

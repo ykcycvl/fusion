@@ -62,6 +62,8 @@ namespace Fusion.Models
         public Nullable<int> COMBODISHUNI { get; set; }
         public Nullable<int> COMBOMODIUNI { get; set; }
         public Nullable<int> COMBODISCUNI { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<System.DateTime> CREATIONDATETIME { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

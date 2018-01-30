@@ -56,5 +56,6 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<long> PERSONID { get; set; }
         public Nullable<int> COUPONCOUNT { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace Fusion.Models
         public string SHCOMMODITYGROUP { get; set; }
         public string SHSTOREHOUSE { get; set; }
         public Nullable<int> SHSETTINGSLINK { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<short> ALLOWOVERRIDINGS { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

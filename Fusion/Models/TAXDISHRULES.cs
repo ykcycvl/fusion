@@ -21,6 +21,7 @@ namespace Fusion.Models
         public Nullable<int> CODE { get; set; }
         public Nullable<int> COT { get; set; }
         public Nullable<int> UOT { get; set; }
+        public Nullable<int> RECEIPTTAXTYPE { get; set; }
         public Nullable<short> STATUS { get; set; }
         public string RECSTAMP { get; set; }
     }

@@ -63,5 +63,7 @@ namespace Fusion.Models
         public Nullable<decimal> MENUITEMPRICE { get; set; }
         public string SOURCEGUIDSTRING { get; set; }
         public Nullable<int> ADDBYALGORITHM { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<System.DateTime> CREATIONDATETIME { get; set; }
     }
 }

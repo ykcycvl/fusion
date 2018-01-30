@@ -294,6 +294,8 @@ namespace Fusion.Models
                         if (sli != null)
                             sli.Selected = true;
 
+                        Orgs.Add(new SelectListItem() { Text = "Токио", Value = "Токио" });
+
                         return Orgs;
                     }
                 }

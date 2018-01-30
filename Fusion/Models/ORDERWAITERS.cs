@@ -19,5 +19,6 @@ namespace Fusion.Models
         public int ORDER { get; set; }
         public int WAITER { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

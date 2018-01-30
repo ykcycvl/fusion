@@ -30,6 +30,7 @@ namespace Fusion.Models
         public string COMMENT { get; set; }
         public Nullable<int> CLOCKRECID { get; set; }
         public Nullable<decimal> FACTORVALUE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

@@ -39,5 +39,6 @@ namespace Fusion.Models
         public string GUIDSTRING { get; set; }
         public Nullable<int> UNICOUNT { get; set; }
         public Nullable<int> RESERVSTATE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

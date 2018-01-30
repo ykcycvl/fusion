@@ -31,5 +31,6 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> STATE { get; set; }
         public Nullable<decimal> FACTORVALUE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

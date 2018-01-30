@@ -21,8 +21,8 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<short> STATUS { get; set; }
         public Nullable<int> PARENT { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<short> GROUPKIND { get; set; }
         public Nullable<short> UCSPRESET { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

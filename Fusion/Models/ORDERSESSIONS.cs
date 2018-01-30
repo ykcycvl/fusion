@@ -52,5 +52,8 @@ namespace Fusion.Models
         public Nullable<int> UNIQUEID { get; set; }
         public string GUIDSTRING { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> EXTRAORDERIDENT { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
+        public Nullable<int> ICOSTSCALE { get; set; }
     }
 }

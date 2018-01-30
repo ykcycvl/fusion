@@ -38,6 +38,7 @@ namespace Fusion.Models
         public Nullable<short> LATENESS { get; set; }
         public Nullable<short> MANUALLYCHANGED { get; set; }
         public Nullable<int> STATUS { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

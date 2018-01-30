@@ -31,8 +31,8 @@ namespace Fusion.Models
         public string OPERATION { get; set; }
         public Nullable<int> LINKEDSCRIPT { get; set; }
         public Nullable<int> EXTRACONFIRMATION { get; set; }
-        public string RECSTAMP { get; set; }
         public string CONFIRMATIONTEXT { get; set; }
         public string ALTCONFIRMATIONTEXT { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

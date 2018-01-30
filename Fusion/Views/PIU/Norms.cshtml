@@ -1,0 +1,230 @@
+﻿@model Fusion.Models.PIU
+
+@{
+    ViewBag.Title = "Нормы";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string TableData = "";
+    string tdl2 = "";
+    string tdl3 = "";
+
+    foreach (var l in Model.Tree.Levels1)
+    {
+        TableData += "{ id: \"" + l.Code + "\", parent: \"\", level: \"1\", code: \"" + l.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l.Name + "\"";
+        TableData += ", sumNorm: \"" + l.SumNorm.ToString() + "\" ";
+        TableData += ", maxDev: \"" + l.SumNormMax.ToString() + "\" ";
+
+        foreach (var l2 in l.Levels2)
+        {
+            tdl2 += "{ id: \"" + l2.Code + "\", parent: \"" + l.Code + "\", level: \"2\", code: \"" + l2.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l2.Name + "\"";
+            tdl2 += ", sumNorm: \"" + l2.SumNorm.ToString() + "\"";
+            tdl2 += ", maxDev: \"" + l2.SumNormMax.ToString() + "\" ";
+            tdl2 += ", $css:\"level2css\" },\r\n";
+
+            foreach (var l3 in l2.Levels3)
+            {
+                tdl3 += "{ id: \"" + l3.Code + "\", parent: \"" + l2.Code + "\", level: \"3\", code: \"" + l3.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l3.Name + "\"";
+                tdl3 += ", sumNorm: \"" + l3.SumNorm.ToString() + "\"";
+                tdl3 += ", maxDev: \"" + l3.SumNormMax.ToString() + "\" ";
+                tdl3 += ", $cellCss: { name: \"level3css\" }, $css:\"level2css\" },\r\n";
+            }
+
+            tdl2 += tdl3;
+            tdl3 = "";
+        }
+
+        TableData += ", $css:\"level1css\" }," + tdl2;
+        tdl2 = "";
+    }
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
+<style>
+    .webix_template {
+        padding: 0 !important;
+    }
+
+    .level1css {
+        font-weight: bold;
+        color: #000;
+    }
+
+    .level2css {
+        color: #000;
+    }
+
+    .level3css {
+        text-align: right;
+        font-style: italic;
+        color: #555;
+    }
+
+    .rightAlign {
+        text-align: right;
+    }
+
+    .factColumn {
+        text-align: right;
+        background-color: #ddd;
+    }
+
+    .planColumn {
+        text-align: right;
+    }
+
+    .divColumn {
+        text-align: right;
+        background-color: #ffddf3;
+    }
+
+    .itogColumn {
+        text-align: right;
+        background-color: #c8c8c8;
+    }
+</style>
+
+<script src="~/Scripts/jqueryui/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.date-picker').datepicker({
+            changeMonth: false,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                blur();
+            }
+        });
+        $.datepicker.setDefaults($.datepicker.regional["ru"]);
+    });
+
+    webix.ready(function () {
+        grid_rub = webix.ui({
+            container: "tabl_rub",
+            id: "grid_rub",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                { id: "id", header: "id", hidden: "true" },
+                { id: "code", header: "code", hidden: "true" },
+                { id: "parent", header: "parent", hidden: "true" },
+                { id: "organization", header: "organization", hidden: "true" },
+                { id: "name", header: "Наименование", width: 350 },
+                { id: "sumNorm", header: "Норма (%)", editor: 'text', css: "planColumn" },
+                { id: "maxDev", header: "Откл.(max)", editor: 'text', css: "planColumn" }
+            ],
+            data: {
+                data: [
+                    @Html.Raw(TableData)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 450,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid_rub);
+
+        grid_rub.attachEvent("onPaste", function (code, e) {
+            grid_rub.refreshColumns();
+        });
+    });
+
+    function ExportToExcel() {
+        var grid = $$("grid_rub");
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        var serializedData = JSON.stringify(grid.serialize());
+        $("#tableData").val(serializedData);
+        return false;
+    }
+
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
+    function Save() {
+        var grid_rub = $$("grid_rub");
+
+        if (!grid_rub.validate())
+        {
+            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице." });
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var serializedData = grid_rub.serialize();
+        webix.ajax().post("/PIU/SaveNorms", { data: serializedData, date: $("#date").val() }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+</script>
+
+<script>
+    $(function () {
+        $("#start_dt").datepicker({
+            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            firstDay: 1,
+            dateFormat: "dd.mm.yy"
+        });
+        $("#end_dt").datepicker({
+            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            firstDay: 1,
+            dateFormat: "dd.mm.yy"
+        });
+        $(".date").datepicker({
+            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            firstDay: 1,
+            dateFormat: "dd.mm.yy"
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Организация: <b>@Model.Organization</b>
+        </div>
+    </div>
+    <div class="col-md-2 text-center">
+        <div class=" alert alert-info">
+            <input type="text" class="date-picker form-control" id="date" value="@DateTime.Today.Year.ToString()" />
+        </div>
+    </div>
+</div>
+
+<input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+<br />
+<div id="tabl_rub"></div>
+
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>

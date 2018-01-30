@@ -27,5 +27,6 @@ namespace Fusion.Models
         public Nullable<long> ADDRESSID { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<short> FISCORDERSTATE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

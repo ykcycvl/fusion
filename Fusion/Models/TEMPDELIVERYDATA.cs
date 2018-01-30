@@ -33,6 +33,7 @@ namespace Fusion.Models
         public Nullable<short> DELIVERYTAKEOUT { get; set; }
         public Nullable<System.DateTime> DELIVERYMINCOOKTIME { get; set; }
         public string GUIDSTRING { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
         public Nullable<int> TEMPDATAKIND { get; set; }
         public Nullable<int> TEMPDATASIGN { get; set; }

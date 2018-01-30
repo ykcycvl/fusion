@@ -44,7 +44,7 @@ namespace Fusion.Models
         public Nullable<int> FILTER_CONCEPT { get; set; }
         public Nullable<int> FILTER_REGION { get; set; }
         public Nullable<int> FILTER_FRANCHISE { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> FILTER_KURS { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace Fusion.Models
         public Nullable<short> STATUS { get; set; }
         public Nullable<int> PARENT { get; set; }
         public byte[] CONFIGRAWXML { get; set; }
+        public Nullable<int> COPIEDFROM { get; set; }
         public string RECSTAMP { get; set; }
     }
 }

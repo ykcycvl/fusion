@@ -80,5 +80,7 @@ namespace Fusion.Models
         public string TRANSACT_GUID { get; set; }
         public Nullable<System.DateTime> BILLDATETIME { get; set; }
         public Nullable<short> ISTARERECEIPT { get; set; }
+        public Nullable<short> RECEIPTTAXTYPE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

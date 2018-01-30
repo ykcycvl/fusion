@@ -46,5 +46,6 @@ namespace Fusion.Models
         public string ADDRDOPINFO { get; set; }
         public string METROSTATION { get; set; }
         public string ZIPCODE { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

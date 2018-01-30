@@ -39,5 +39,6 @@ namespace Fusion.Models
         public Nullable<short> MANUALLYCHANGED { get; set; }
         public Nullable<int> STATUS { get; set; }
         public string TRANSACT_GUID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

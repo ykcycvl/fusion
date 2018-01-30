@@ -39,7 +39,7 @@ namespace Fusion.Models
         public Nullable<short> CIPARENTPOWCODE { get; set; }
         public byte[] CIDONTCHECKPROPS { get; set; }
         public Nullable<short> CIUPDATERIGHT { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<int> HHCONTEXTID { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

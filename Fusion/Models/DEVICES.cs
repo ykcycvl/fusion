@@ -34,15 +34,15 @@ namespace Fusion.Models
         public string DEFINTFDLL { get; set; }
         public Nullable<int> FLAGS { get; set; }
         public Nullable<int> DOSERDEVICE { get; set; }
+        public Nullable<short> NONFISCALONLY { get; set; }
         public string MAXPAYTEXTFORMAT { get; set; }
         public string CSCLINKININAME { get; set; }
         public string CSCLINKLOGIN { get; set; }
         public string CSCLINKPASSWORD { get; set; }
         public string CURRENCIESORDER { get; set; }
         public Nullable<int> RECEIPTXMLSCRIPT { get; set; }
-        public Nullable<short> NONFISCALONLY { get; set; }
         public Nullable<short> ALWAYSCLOSESHIFT { get; set; }
-        public string RECSTAMP { get; set; }
         public string DISHXMLATTRS { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

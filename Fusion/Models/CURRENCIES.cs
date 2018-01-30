@@ -31,6 +31,7 @@ namespace Fusion.Models
         public Nullable<short> RIGHTLVL { get; set; }
         public Nullable<int> DISCOUNT { get; set; }
         public Nullable<int> TAXPAYTYPE { get; set; }
+        public Nullable<decimal> MINIMALAMOUNT { get; set; }
         public Nullable<int> VISUALTYPE_IMAGE { get; set; }
         public Nullable<int> VISUALTYPE_BCOLOR { get; set; }
         public Nullable<int> VISUALTYPE_TEXTCOLOR { get; set; }
@@ -51,10 +52,10 @@ namespace Fusion.Models
         public Nullable<short> FCPAYTRANSACTION { get; set; }
         public Nullable<int> FCSUBACCOUNT { get; set; }
         public Nullable<double> MAXPERCENT { get; set; }
+        public Nullable<int> FORENCASHMENT { get; set; }
         public Nullable<double> USEBONUSPERCENT { get; set; }
         public Nullable<int> AUTOFILLMODE { get; set; }
         public Nullable<int> AUTHPURPOSE { get; set; }
         public string RECSTAMP { get; set; }
-        public Nullable<int> FORENCASHMENT { get; set; }
     }
 }

@@ -20,7 +20,8 @@ namespace Fusion.Models
         public string ALTNAME { get; set; }
         public Nullable<short> UCSPRESET { get; set; }
         public Nullable<int> FLAGS { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<short> LOCALSONLY { get; set; }
+        public string RECSTAMP { get; set; }
+        public Nullable<int> DEVICETYPES { get; set; }
     }
 }

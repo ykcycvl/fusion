@@ -33,5 +33,14 @@ namespace Fusion.Models
         public Nullable<int> DONEMANAGERID { get; set; }
         public Nullable<int> TAKEMANAGERID { get; set; }
         public Nullable<int> KDSSTATIONID { get; set; }
+        public Nullable<System.DateTime> COLLECTAT { get; set; }
+        public Nullable<System.DateTime> COLLECTEDAT { get; set; }
+        public Nullable<System.DateTime> STARTPARKAT { get; set; }
+        public Nullable<System.DateTime> ENDPARKAT { get; set; }
+        public Nullable<int> COLLECTMANAGERID { get; set; }
+        public Nullable<int> COLLECTEDMANAGERID { get; set; }
+        public Nullable<int> STARTPARKMANAGERID { get; set; }
+        public Nullable<int> ENDPARKMANAGERID { get; set; }
+        public Nullable<int> DBSTATUS { get; set; }
     }
 }

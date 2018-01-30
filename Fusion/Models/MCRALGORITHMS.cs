@@ -34,7 +34,7 @@ namespace Fusion.Models
         public Nullable<int> LINKEDSCRIPT { get; set; }
         public Nullable<short> LOOKUPTABLEMODE { get; set; }
         public Nullable<int> MCRDEVICEIDENT { get; set; }
-        public string RECSTAMP { get; set; }
         public Nullable<short> ONLYLONELY { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

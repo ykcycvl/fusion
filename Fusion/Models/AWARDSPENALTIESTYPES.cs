@@ -30,17 +30,17 @@ namespace Fusion.Models
         public Nullable<decimal> APMAXVALUE { get; set; }
         public Nullable<decimal> APMINLIMIT { get; set; }
         public Nullable<decimal> APMAXLIMIT { get; set; }
-        public Nullable<int> ROUNDRULE { get; set; }
         public Nullable<int> APMINTIMELIMIT { get; set; }
         public Nullable<int> APMAXTIMELIMIT { get; set; }
+        public Nullable<int> ROUNDRULE { get; set; }
+        public Nullable<int> CALCINTERVAL { get; set; }
         public Nullable<int> OBJECTKIND { get; set; }
         public Nullable<int> OBJECTID1 { get; set; }
         public Nullable<int> OBJECTID2 { get; set; }
         public Nullable<int> OBJECTID3 { get; set; }
-        public string RECSTAMP { get; set; }
-        public Nullable<int> CALCINTERVAL { get; set; }
         public Nullable<short> RESTRICTMANUAL { get; set; }
         public Nullable<short> SHOWONORDERFORM { get; set; }
         public Nullable<short> SHOWPROGRESSBAR { get; set; }
+        public string RECSTAMP { get; set; }
     }
 }

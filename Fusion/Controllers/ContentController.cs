@@ -29,7 +29,8 @@ namespace Fusion.Controllers
         [MyAuthorize(Roles = "FusionAdmin, ContentEditor")]
         public ActionResult Add()
         {
-            return View();
+            EmailTemplate model = new EmailTemplate();
+            return View(model);
         }
 
         [MyAuthorize(Roles = "FusionAdmin, ContentEditor")]
