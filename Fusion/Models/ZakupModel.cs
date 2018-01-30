@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using Jitbit.Utils;
 using System.Web.Script.Serialization;
@@ -986,10 +985,13 @@ namespace Fusion.Models
             {
                 foreach(var it in files)
                 {
-                    int id = list.bd_reclamation.ToList().Last().id;
-                    fileName = System.IO.Path.GetFileName(it.FileName);
-                    it.SaveAs(HttpContext.Current.Server.MapPath("~/Files/" + fileName));
-                    list.bd_reclamation_files.Add(new bd_reclamation_files { reclamation_id = id, file = fileName });
+                    if(!string.IsNullOrEmpty(it.FileName))
+                    {
+                        int id = list.bd_reclamation.ToList().Last().id;
+                        fileName = System.IO.Path.GetFileName(it.FileName);
+                        it.SaveAs(HttpContext.Current.Server.MapPath("~/Files/" + fileName));
+                        list.bd_reclamation_files.Add(new bd_reclamation_files { reclamation_id = id, file = fileName });
+                    }
                 }
             }
             list.SaveChanges();
