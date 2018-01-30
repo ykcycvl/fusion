@@ -198,7 +198,7 @@ namespace Fusion.PiuWS {
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://srv-1c_g/autopiu#fsn_PIU:PutNorms", RequestNamespace="http://srv-1c_g/autopiu", ResponseNamespace="http://srv-1c_g/autopiu", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         [return: System.Xml.Serialization.XmlElementAttribute("return")]
-        public string PutNorms(string UserName, string Organization, string Period, object ДревоДанных) {
+        public string PutNorms(string UserName, string Organization, string Period, Tree ДревоДанных) {
             object[] results = this.Invoke("PutNorms", new object[] {
                         UserName,
                         Organization,
@@ -208,12 +208,12 @@ namespace Fusion.PiuWS {
         }
         
         /// <remarks/>
-        public void PutNormsAsync(string UserName, string Organization, string Period, object ДревоДанных) {
+        public void PutNormsAsync(string UserName, string Organization, string Period, Tree ДревоДанных) {
             this.PutNormsAsync(UserName, Organization, Period, ДревоДанных, null);
         }
         
         /// <remarks/>
-        public void PutNormsAsync(string UserName, string Organization, string Period, object ДревоДанных, object userState) {
+        public void PutNormsAsync(string UserName, string Organization, string Period, Tree ДревоДанных, object userState) {
             if ((this.PutNormsOperationCompleted == null)) {
                 this.PutNormsOperationCompleted = new System.Threading.SendOrPostCallback(this.OnPutNormsOperationCompleted);
             }

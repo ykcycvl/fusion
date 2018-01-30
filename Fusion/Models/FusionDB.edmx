@@ -111,6 +111,14 @@
           <Property Name="state_id" Type="int" />
           <Property Name="comment" Type="text" />
         </EntityType>
+        <EntityType Name="bd_reclamation_files">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="reclamation_id" Type="int" />
+          <Property Name="file" Type="varchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="bd_reclamation_problems">
           <Key>
             <PropertyRef Name="id" />
@@ -600,6 +608,18 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_bd_reclamation_files_reclamation_id">
+          <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="0..1" />
+          <End Role="bd_reclamation_files" Type="Self.bd_reclamation_files" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_reclamation">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation_files">
+              <PropertyRef Name="reclamation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_bd_reclamation_nomenclature_id">
           <End Role="bd_nomenclature" Type="Self.bd_nomenclature" Multiplicity="1" />
           <End Role="bd_reclamation" Type="Self.bd_reclamation" Multiplicity="*" />
@@ -923,6 +943,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="bd_order" EntityType="Self.bd_order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_organization" EntityType="Self.bd_organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_reclamation" EntityType="Self.bd_reclamation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bd_reclamation_files" EntityType="Self.bd_reclamation_files" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_reclamation_problems" EntityType="Self.bd_reclamation_problems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_rests" EntityType="Self.bd_rests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="bd_states" EntityType="Self.bd_states" Schema="dbo" store:Type="Tables" />
@@ -1016,6 +1037,10 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <AssociationSet Name="FK_bd_order_state" Association="Self.FK_bd_order_state">
             <End Role="bd_states" EntitySet="bd_states" />
             <End Role="bd_order" EntitySet="bd_order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bd_reclamation_files_reclamation_id" Association="Self.FK_bd_reclamation_files_reclamation_id">
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+            <End Role="bd_reclamation_files" EntitySet="bd_reclamation_files" />
           </AssociationSet>
           <AssociationSet Name="FK_bd_reclamation_nomenclature_id" Association="Self.FK_bd_reclamation_nomenclature_id">
             <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
@@ -1320,6 +1345,11 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_nomenclature" EntitySet="bd_nomenclature" />
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
           </AssociationSet>
+          <EntitySet Name="bd_reclamation_files" EntityType="FusionDBModels.bd_reclamation_files" />
+          <AssociationSet Name="FK_bd_reclamation_files_reclamation_id" Association="FusionDBModels.FK_bd_reclamation_files_reclamation_id">
+            <End Role="bd_reclamation" EntitySet="bd_reclamation" />
+            <End Role="bd_reclamation_files" EntitySet="bd_reclamation_files" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -1405,6 +1435,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="bd_states" Relationship="FusionDBModels.FK_bd_reclamation_state_id" FromRole="bd_reclamation" ToRole="bd_states" />
           <NavigationProperty Name="bd_nomenclature" Relationship="FusionDBModels.FK_bd_reclamation_nomenclature_id" FromRole="bd_reclamation" ToRole="bd_nomenclature" />
+          <NavigationProperty Name="bd_reclamation_files" Relationship="FusionDBModels.FK_bd_reclamation_files_reclamation_id" FromRole="bd_reclamation" ToRole="bd_reclamation_files" />
         </EntityType>
         <EntityType Name="bd_reclamation_problems">
           <Key>
@@ -2270,6 +2301,27 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="bd_reclamation_files">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reclamation_id" Type="Int32" />
+          <Property Name="file" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="bd_reclamation" Relationship="FusionDBModels.FK_bd_reclamation_files_reclamation_id" FromRole="bd_reclamation_files" ToRole="bd_reclamation" />
+        </EntityType>
+        <Association Name="FK_bd_reclamation_files_reclamation_id">
+          <End Type="FusionDBModels.bd_reclamation" Role="bd_reclamation" Multiplicity="0..1" />
+          <End Type="FusionDBModels.bd_reclamation_files" Role="bd_reclamation_files" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bd_reclamation">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bd_reclamation_files">
+              <PropertyRef Name="reclamation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2763,6 +2815,15 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="nomenclature_id" ColumnName="nomenclature_id" />
                 <ScalarProperty Name="employee" ColumnName="employee" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bd_reclamation_files">
+            <EntityTypeMapping TypeName="FusionDBModels.bd_reclamation_files">
+              <MappingFragment StoreEntitySet="bd_reclamation_files">
+                <ScalarProperty Name="file" ColumnName="file" />
+                <ScalarProperty Name="reclamation_id" ColumnName="reclamation_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

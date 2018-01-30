@@ -168,7 +168,7 @@
             <xs:element name="UserName" type="xs:string" />
             <xs:element name="Organization" type="xs:string" />
             <xs:element name="Period" type="xs:string" />
-            <xs:element name="ДревоДанных" type="xs:anyType" />
+            <xs:element name="ДревоДанных" type="xs1:Tree" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>

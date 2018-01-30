@@ -59,7 +59,7 @@ namespace Fusion.Models
             Tree = model.GetPIUData("tv", org, date1, date2);
         }
 
-        public bool Save(string data, string UserName)
+        public bool Save(string data, string UserName, bool Confirm)
         {
             bool res = false;
 
@@ -68,6 +68,14 @@ namespace Fusion.Models
                 var serializer = new JavaScriptSerializer();
                 var heapdata = serializer.DeserializeObject(data);
                 Tree = new PiuWS.Tree();
+
+                if (Confirm)
+                {
+                    Tree.Reconciliations = new PiuWS.Reconciliation[1];
+                    Tree.Reconciliations[0].UserName = UserName;
+                    Tree.Reconciliations[0].Agreed = true;
+                }
+
                 string org = "";
 
                 PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
@@ -179,7 +187,7 @@ namespace Fusion.Models
 
                 if (!String.IsNullOrEmpty(org))
                 {
-                    model.PutPIUData(UserName, "Токио", "01.09.2017", this.Tree.Levels1);
+                    model.PutPIUData(UserName, "Токио", "01.09.2017", this.Tree);
                     res = true;
                 }
                 else
@@ -296,7 +304,7 @@ namespace Fusion.Models
                 if (!String.IsNullOrEmpty(org))
                 {
                     res = true;
-                    model.PutNorms(UserName, org, "01.01." + year, this.Tree.Levels1);
+                    model.PutNorms(UserName, org, "01.01." + year, this.Tree);
                 }
                 else
                     res = false;

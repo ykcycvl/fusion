@@ -57,7 +57,7 @@
                 dataColumns += "{ id: \"sumplan_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>План\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
                 dataColumns += "{ id: \"sumfact_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>Факт\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
                 dataColumns += "{ id: \"div_" + c.Period.ToString("MMyy") + "\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
-                dataColumnsPrc += "{ id: \"sumplan_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>план\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                dataColumnsPrc += "{ id: \"sumplan_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"" + c.Period.ToString("MMM. yy") + "<br/>план\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), cssFormat:markRO },\r\n";
                 dataColumnsPrc += "{ id: \"sumfact_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"Факт\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
                 dataColumnsPrc += "{ id: \"div_" + c.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
                 dataColumnsPrc += "{ id: \"prcNorm\", header: \"Норма<br/>" + c.Period.ToString("MMM yy") + "\", editor: '', css: \"normColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
@@ -290,6 +290,9 @@
     .misMatch {
         background-color: #ff8787;
     }
+    .readonly {
+        background-color: #999;
+    }
 </style>
 
 <script type="text/javascript">
@@ -474,6 +477,34 @@
 
         return value;
     }
+
+    function markRO(value, config) {
+        if (config["readonly"])
+            return "readonly";
+
+        return value;
+    }
+
+    function Confirm()
+    {
+        var grid_rub = $$("grid_rub");
+
+        if (!grid_rub.validate()) {
+            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице." });
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var serializedData = grid_rub.serialize();
+        webix.ajax().post("/PIU/Confirm", { data: serializedData }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
 </script>
 
 <h2>@ViewBag.Title</h2>
@@ -499,7 +530,22 @@
 <div id="areaA"></div>
 <div id="areaRub">
     <h3>ПиУ, руб.</h3>
-    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" /><input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
+
+    @if (Model.Tree.Reconciliations != null)
+    {
+        var r = Model.Tree.Reconciliations.FirstOrDefault(p => p.UserName == User.Identity.Name);
+
+        if (r != null)
+        {
+            <input type="button" value="Согласовать" onclick="Confirm()" class="btn btn-primary" />
+        }
+    }
+    else
+    {
+        
+    }
+    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+    <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
     <br/>
     <div id="tabl_rub"></div>
     <form action="ExportToExcel" method="post" target="_blank" id="excelForm">

@@ -315,6 +315,9 @@
     <Compile Include="Models\bd_reclamation.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\bd_reclamation_files.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\bd_reclamation_problems.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>

@@ -14,6 +14,11 @@ namespace Fusion.Models
     
     public partial class bd_reclamation
     {
+        public bd_reclamation()
+        {
+            this.bd_reclamation_files = new HashSet<bd_reclamation_files>();
+        }
+    
         public int id { get; set; }
         public int restaurant_id { get; set; }
         public System.DateTime date { get; set; }
@@ -30,5 +35,6 @@ namespace Fusion.Models
         public virtual bd_vendor bd_vendor { get; set; }
         public virtual bd_states bd_states { get; set; }
         public virtual bd_nomenclature bd_nomenclature { get; set; }
+        public virtual ICollection<bd_reclamation_files> bd_reclamation_files { get; set; }
     }
 }

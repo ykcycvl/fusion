@@ -51,7 +51,30 @@ namespace Fusion.Controllers
 
             try
             {
-                if (model.Save(data, User.Identity.Name))
+                if (model.Save(data, User.Identity.Name, false))
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"" }";
+                else
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+            }
+            catch (Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка: " + ex.Message + @""" }";
+            }
+
+            return result;
+        }
+
+        [HttpPost]
+        public ContentResult Confirm(string data)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+
+            PIU model = new PIU();
+
+            try
+            {
+                if (model.Save(data, User.Identity.Name, true))
                     result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"" }";
                 else
                     result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
