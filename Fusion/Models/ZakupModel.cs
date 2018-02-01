@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Configuration;
 using System.Reflection;
 using System.Web.Mvc;
+using System.Net.Mail;
+using System.Net;
 using System.ComponentModel.DataAnnotations;
 using Jitbit.Utils;
 using System.Web.Script.Serialization;
@@ -557,7 +559,25 @@ namespace Fusion.Models
                 }
             }
         }
-
+        public void sendMail(string to, string body, string subject)
+        {
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                MailMessage mail = new MailMessage();
+                string FROM = "no-reply@tokyo-bar.ru";
+                mail.Body = body;
+                mail.From = new MailAddress(FROM);
+                mail.To.Add(new MailAddress(to));
+                mail.Subject = subject;
+                smtp.Host = "srv-ex00.fg.local";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(mail);
+                mail.Dispose();
+            }
+        }
         public void getNomenclatures()
         {
             items = list.bd_nomenclature.OrderBy(m => m.vendor_id).ToList();
@@ -974,11 +994,22 @@ namespace Fusion.Models
                 reclamation_id = reclamation_item.id;
                 list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).solution = reclamation_item.solution;
                 list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).comment = reclamation_item.comment;
-                list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).state_id = reclamation_item.state_id;
+                if(list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_item.id).state_id != reclamation_item.state_id)
+                {
+                    list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).state_id = reclamation_item.state_id;
+                    string body = string.Format("У рекламации за {0} изменился статус на {1}, поставщик - {2}",reclamation_item.date.ToShortDateString() ,states.FirstOrDefault(m => m.id == reclamation_item.state_id).name, vendorList.FirstOrDefault(m => m.id == reclamation_item.vendor_id).name);
+                    string to = string.Format("{0}@tokyo-bar.ru", usersList.FirstOrDefault(m => m.subdiv_id == reclamation_item.restaurant_id).domain_login);
+                    string subject = "Изменение статуса рекламации";
+                    sendMail(to, body, subject);
+                }
             }
             else
             {
-                list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
+                    list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
+                    string to = "reclamations@tokyo-bar.ru";
+                    string body = String.Format("Пришла новая рекламация от {0} \r\nПоставщик - {1} \r\nРесторан - {2} \r\nПричина - {3}.", reclamation_item.date.Date, vendorList.FirstOrDefault(m => m.id == reclamation_item.vendor_id).name, usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.name, reclamation_problems.FirstOrDefault(m => m.id == reclamation_item.problem_id).problem);
+                    string subject = "Новая рекламация";
+                sendMail(to, body, subject);
             }
             list.SaveChanges();
             if (files.Any())

@@ -47,7 +47,19 @@
             @Html.HiddenFor(m => m.reclamation_item.id)
             <div class="form-group">
                 <label for=@Model.reclamation_item.date>Дата</label>
-                @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control " + className, @type = "date", @required = "true", @Value = Model.reclamation_item.date.ToString("yyyy-MM-dd") })
+                @if (Model.reclamation_item.id == 0)
+                {
+                    @Html.TextBoxFor(m => m.reclamation_item.date, new { @class = "form-control " + className, @type = "date", @required = "true", @Value = Model.reclamation_item.date.ToString("yyyy-MM-dd") })
+                }
+                else
+                {
+                    <br />
+                    @Model.reclamation_item.date.ToShortDateString();
+                    @Html.HiddenFor(m => m.reclamation_item.date)
+                    @Html.HiddenFor(m => m.reclamation_item.restaurant_id)
+                    @Html.HiddenFor(m => m.reclamation_item.vendor_id)
+                }
+
             </div>
             <div class="form-group">
                 <label for=@Model.reclamation_item.vendor_id>Поставщик</label>

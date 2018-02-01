@@ -472,6 +472,8 @@ namespace Fusion.Controllers
                 files.Add(file);
             }
             model.getUsers();
+            model.getVendors();
+            model.getReclamations();
             model.sendReclamation(files);
             return Redirect("~/Zakup/Reclamation");
         }
