@@ -1,6 +1,6 @@
 ﻿@model Fusion.Models.ZakupModel
 @{
-    ViewBag.Title = "addReclamation";
+    ViewBag.Title = "Рекламация";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
     string className = "";
     if (Model.reclamation_item.id != 0)
@@ -19,19 +19,17 @@
 <script src="~/Scripts/chosen.jquery.min.js"></script>
 <script>
     $(function () {
-        $("#reclamation_item_nomenclature_id").chosen({
-            search_contains: true
-        });
-        $("#reclamation_item_vendor_id").chosen({
-            search_contains: true
-        });
-    });
-    $(document).ready(function () {
-        if ($("#className").val() != "") {
-            $(".disabled").attr("disabled", true);
-            $(".chosen-container").addClass("chosen-disable chosen-disabled")
+        if ($('select').is("#reclamation_item_nomenclature_id")) {
+            $("#reclamation_item_nomenclature_id").chosen({
+                search_contains: true
+            });
+            $("#reclamation_item_vendor_id").chosen({
+                search_contains: true
+            });
         }
+
     });
+
 </script>
 <div class="panel panel-yellow">
     <div class="panel-heading">
@@ -54,7 +52,7 @@
                 else
                 {
                     <br />
-                    @Model.reclamation_item.date.ToShortDateString();
+                    @Model.reclamation_item.date.ToShortDateString()
                     @Html.HiddenFor(m => m.reclamation_item.date)
                     @Html.HiddenFor(m => m.reclamation_item.restaurant_id)
                     @Html.HiddenFor(m => m.reclamation_item.vendor_id)

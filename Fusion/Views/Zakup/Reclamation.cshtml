@@ -1,13 +1,38 @@
 ﻿@model Fusion.Models.ZakupModel
 @{
-    ViewBag.Title = "Reclamation";
+    ViewBag.Title = "Рекламации";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    string tableData = "";
+    foreach (var it in Model.reclamations)
+    {
+        tableData += "{id: \"" + it.id + "\", Details: \""+it.id+"\", Date: \"" + it.date.Date + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", State: \"" + it.bd_states.name + "\", Word: \""+it.id+"\"";
+        tableData += "}, \r\n";
+    }
 }
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
 <style>
-    #Form a {
+    #dataset a {
+        color: inherit;
         text-decoration: underline;
     }
+    .highlight_red {
+        background-color: #fb541e;
+        color: white;
+    }
+
+    .highlight_green {
+        background-color: #669966;
+        color: white;
+    }
+
+    .highlight_blue {
+        background-color: #337ab7;
+        color: white;
+    }
 </style>
+<!--
 <div class="panel panel-yellow">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -78,3 +103,69 @@
 }
     </div>
 </div>
+    -->
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Рекламации
+        </h3>
+    </div>
+    <div class="panel-body">
+        @Html.ActionLink("Добавить рекламацию", "addReclamation", null, new { @class = "btn btn-primary" })
+        <div id="dataset">
+
+        </div>
+    </div>
+</div>
+<script>
+    webix.ready(function () {
+        webix.i18n.parseFormat = "%d.%m.%Y";
+        webix.i18n.setLocale("ru-RU");
+        grid = webix.ui({
+            container: "dataset",
+            rows: [
+				{
+				    id: "grid",
+				    view: "datatable",
+				    columns: [
+                { id: "id", header: "id", width: 40, sort: "int" },
+                {
+                    id: "Details", header: "Подробности",
+                    template: "<a href='/Zakup/addReclamation/#id#'>Подробнее</a>",
+                    adjust: true
+                },
+                { id: "Date", header: "Дата", adjust: true, sort: "date" },
+                { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", adjust: true },
+                { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", adjust: true },
+                { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", adjust: true },
+                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", adjust: true },
+                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", adjust: true},
+                {
+                    id: "Word", header: "Word",
+                    template: "<a href='/Zakup/ReclamationExport?reclamation_id=#id#'>Скачать</a>",
+                    adjust: true
+                }
+            ],
+				    data: {
+				        data: [
+                        @Html.Raw(tableData)
+				        ]
+				    },
+				    autoheight: true,
+                    autowidth: true,
+                    scheme: {
+                        $change: function (item) {
+                            if (item.State == "Выполнено")
+                                item.$css = "highlight_green";
+                            if (item.State == "Ожидается")
+                                item.$css = "highlight_red";
+                            if (item.State == "Принято")
+                                item.$css = "highlight_blue";
+                        }
+                    }
+				},
+            ]
+
+        });
+    });
+</script>

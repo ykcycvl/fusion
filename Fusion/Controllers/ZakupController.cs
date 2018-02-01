@@ -348,6 +348,7 @@ namespace Fusion.Controllers
             model.getVendors();
             model.getNomenclatures();
             model.getUsers();
+            model.getReclamations();
             return View(model);
         }
         public ActionResult Remnants(int? GroupID, int storehouse_name)
@@ -535,5 +536,5 @@ namespace Fusion.Controllers
         {
             return View();
         }
-    }
+    }   
 }
