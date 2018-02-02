@@ -132,18 +132,18 @@
                 {
                     id: "Details", header: "Подробности",
                     template: "<a href='/Zakup/addReclamation/#id#'>Подробнее</a>",
-                    adjust: true
+                    width: 108
                 },
-                { id: "Date", header: "Дата", adjust: true, sort: "date" },
-                { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", adjust: true },
-                { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", adjust: true },
-                { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", adjust: true },
-                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", adjust: true },
-                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", adjust: true},
+                { id: "Date", header: "Дата", width: 143, sort: "date" },
+                { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", width: 117 },
+                { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", width: 220 },
+                { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", width: 325 },
+                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", width: 178 },
+                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", width: 96 },
                 {
                     id: "Word", header: "Word",
                     template: "<a href='/Zakup/ReclamationExport?reclamation_id=#id#'>Скачать</a>",
-                    adjust: true
+                    width: 75
                 }
             ],
 				    data: {

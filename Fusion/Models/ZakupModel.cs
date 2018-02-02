@@ -402,7 +402,7 @@ namespace Fusion.Models
                 for (int i = 0; i < Goods.Count; i++)
                 {
                     DateTime dtStart = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
-                    DateTime dtEnd = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                    DateTime dtEnd = DateTime.Parse(DateTime.Today.Day + "." + DateTime.Today.Month + "." + DateTime.Today.Year);
                     int res = sh4.GsFifo(Goods[i].id, 0, dtStart.ToOADate(), dtEnd.ToOADate());
 
                     if (res >= 0)
@@ -499,7 +499,7 @@ namespace Fusion.Models
             if (GoodsBalances.Count > 0)
             {
                 DateTime startdate = DateTime.Parse("01." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
-                DateTime enddate = DateTime.Parse(DateTime.DaysInMonth(DateTime.Today.AddMonths(-1).Year, DateTime.Today.AddMonths(-1).Month) + "." + DateTime.Today.AddMonths(-1).Month + "." + DateTime.Today.AddMonths(-1).Year);
+                DateTime enddate = DateTime.Parse(DateTime.Today.Day + "." + DateTime.Today.Month + "." + DateTime.Today.Year);
 
                 //Себестоимость
                 for (int i = 0; i < GoodsBalances.Count; i++)
