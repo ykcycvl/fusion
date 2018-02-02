@@ -9,19 +9,22 @@
     int vendCount = 0;
 }
 <style>
-    .wrapper_orders a:hover {
+    .panel-info .panel-title a:hover {
+        color: inherit;
+    }
+    .panel-yellow a:hover {
         color: white !important;
     }
 
-    .wrapper_orders a:active {
+    .panel-yellow a:active {
         color: white !important;
     }
 
-    .wrapper_orders a:visited {
+    .panel-yellow a:visited {
         color: white !important;
     }
 
-    .wrapper_orders a:focus {
+    .panel-yellow a:focus {
         color: white !important;
     }
 
@@ -51,129 +54,180 @@
 @Html.TextBoxFor(m => m.analyticsDate, new { @class = "monthpicker from-control" })
 <div class="wrapper_orders">
     <br />
-    <div class="panel panel-yellow">
-        <div class="panel-heading">
-            <a class="panel-title" data-toggle="collapse" href="#orders_by_restaurant">Количество заявок по ресторанам</a>
-        </div>
-        <div class="panel-collapse collapse" id="orders_by_restaurant">
-            <div class="panel-body">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr class="info">
-                            <th>Название ресторана</th>
-                            <th>Кол-во заявок</th>
-                            <th>Общая сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
-                        {
-                            if (i != Model.orders.Count())
-                            {
-                                <tr>
-                                    <td>@it.name</td>
-                                    <td>@it.count</td>
-                                    <td>@it.summ</td>
-                                </tr>
-                                i++;
-                                vendCount += it.count;
-                                vendSum += it.summ;
-                            }
-                            else
-                            {
-                                <tr class="panel-footer">
-                                    <td>Итого: </td>
-                                    <td>@vendCount</td>
-                                    <td>@vendSum</td>
-                                </tr>
-                            }
-
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
     <div class="panel panel-yellow">
         <div class="panel-heading">
-            <a class="panel-title" data-toggle="collapse" href="#orders_by_vendors">Кол-во заявок по постащикам</a>
+            <a class="panel-title" data-toggle="collapse" href="#orders">Статистика по заявкам</a>
         </div>
-        <div class="panel-collapse collapse" id="orders_by_vendors">
+        <div class="panel-collapse collapse" id="orders">
             <div class="panel-body">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr class="info">
-                            <th>Название</th>
-                            <th>Кол-во заявок</th>
-                            <th>Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
-                        {
+                <div class="panel panel-info"">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#orders_by_restaurant">Количество заявок по ресторанам</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="orders_by_restaurant">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-responsive">
+                                <thead>
+                                    <tr class="info">
+                                        <th>Название ресторана</th>
+                                        <th>Кол-во заявок</th>
+                                        <th>Общая сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                                    {
+                                        if (i != Model.orders.Count())
+                                        {
+                                            <tr>
+                                                <td>@it.name</td>
+                                                <td>@it.count</td>
+                                                <td>@it.summ</td>
+                                            </tr>
+                                            i++;
+                                            vendCount += it.count;
+                                            vendSum += it.summ;
+                                        }
+                                        else
+                                        {
+                                            <tr class="panel-footer">
+                                                <td>Итого: </td>
+                                                <td>@vendCount</td>
+                                                <td>@vendSum</td>
+                                            </tr>
+                                        }
 
-                            <tr>
-                                <td>@it.name</td>
-                                <td>@it.count</td>
-                                <td>@it.summ</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="panel panel-yellow">
-        <div class="panel-heading">
-            <a class="panel-title" data-toggle="collapse" href="#orders_by_nomenclatures">По номенклатурам</a>
-        </div>
-        <div class="panel-collapse collapse" id="orders_by_nomenclatures">
-            <div class="panel-body">
-                <table class="table table-bordered table-responsive">
-                    <thead>
-                        <tr class="info">
-                            <th>Наименование</th>
-                            <th>Кол-во заявок по номенклатуре</th>
-                            <th>Кол-во заказанных номенклатур</th>
-                            <th>Ед. измерения</th>
-                            <th>Цена</th>
-                            <th>Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new {measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price), price = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_nomenclature.Price, countNom = g.FirstOrDefault(m => m.bd_nomenclature.name == g.Key).count }))
-                        {
-                            <tr>
-                                <td>@it.name</td>
-                                <td>@it.count</td>
-                                <td>@it.countNom</td>
-                                <td>@it.measurement</td>
-                                <td>@it.price</td>
-                                <td>@it.summ</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="panel panel-yellow">
-        <div class="panel-heading">
-            <a class="panel-title" data-toggle="collapse" href="#reclamations">Статистика по рекламациям</a>
-        </div>
-        <div class="panel-collapse collapse" id="reclamations">
-            <div class="panel-body">
-                <div>
-                    <div class="col-md-12">Общее количество рекламаций: @Model.reclamations.Count()</div>
-                    <div class="col-md-12">Количество рекламаций за месяц: @Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year).Count()</div>
-                    @foreach(var it in Model.states.Where(m => m.id != 1))
-                    {
-                        <div class="col-md-12">@it.name : @Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year && m.state_id == it.id).Count()</div>
-                    }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-info"">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#orders_by_vendors">Кол-во заявок по постащикам</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="orders_by_vendors">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-responsive">
+                                <thead>
+                                    <tr class="info">
+                                        <th>Название</th>
+                                        <th>Кол-во заявок</th>
+                                        <th>Сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                                    {
+
+                                        <tr>
+                                            <td>@it.name</td>
+                                            <td>@it.count</td>
+                                            <td>@it.summ</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info"">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#orders_by_nomenclatures">По номенклатурам</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="orders_by_nomenclatures">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-responsive">
+                                <thead>
+                                    <tr class="info">
+                                        <th>Наименование</th>
+                                        <th>Кол-во заявок по номенклатуре</th>
+                                        <th>Кол-во заказанных номенклатур</th>
+                                        <th>Ед. измерения</th>
+                                        <th>Цена</th>
+                                        <th>Сумма</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new { measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price), price = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_nomenclature.Price, countNom = g.FirstOrDefault(m => m.bd_nomenclature.name == g.Key).count }))
+                                    {
+                                        <tr>
+                                            <td>@it.name</td>
+                                            <td>@it.count</td>
+                                            <td>@it.countNom</td>
+                                            <td>@it.measurement</td>
+                                            <td>@it.price</td>
+                                            <td>@it.summ</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <a class="panel-title" data-toggle="collapse" href="#reclamations">По номенклатурам</a>
+            </div>
+        </div>
+        <div class="panel-collapse collapse" id="reclamations">
+            <div class="panel-body">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#reclamations_overall">Общая статистика по рекламациям</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="reclamations_overall">
+                        <div class="panel-body">
+                            <div>
+                                <div class="col-md-12">Общее количество рекламаций: @Model.reclamations.Count()</div>
+                                <div class="col-md-12">Количество рекламаций за месяц: @Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year).Count()</div>
+                                @foreach (var it in Model.states.Where(m => m.id != 1))
+                                {
+                                    <div class="col-md-12">@it.name : @Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year && m.state_id == it.id).Count()</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info"">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#reclamations_vendors">Статистика по рекламациям (поставщики)</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="reclamations_vendors">
+                        <div class="panel-body">
+                            <div>
+                                @foreach (var it in Model.reclamations.GroupBy(m => m.vendor_id).Select(g => new { count = Model.reclamations.Where(m => m.vendor_id == g.Key).Count(), Vendor = Model.vendorList.FirstOrDefault(m => m.id == g.Key).name }))
+                                {
+                                    <div class="col-md-12">@it.Vendor : @it.count</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info"">
+                    <div class="panel-heading">
+                        <a class="panel-title" data-toggle="collapse" href="#reclamations_nomenclatures">Статистика по рекламациям (номенклатуры)</a>
+                    </div>
+                    <div class="panel-collapse collapse" id="reclamations_nomenclatures">
+                        <div class="panel-body">
+                            <div>
+                                @foreach (var it in Model.reclamations.GroupBy(m => m.nomenclature_id).Select(g => new { count = Model.reclamations.Where(m => m.nomenclature_id == g.Key).Count(), Nomenclature = Model.items.FirstOrDefault(m => m.id == g.Key).name }))
+                                {
+                                    <div class="col-md-12">@it.Nomenclature : @it.count</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
