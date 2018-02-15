@@ -925,9 +925,11 @@ namespace Fusion.Models
             reclamation_problems = list.bd_reclamation_problems.ToList();
             reclamation_files = list.bd_reclamation_files.ToList();
             states = list.bd_states.ToList();
+            /*foreach(var it in reclamations)
             {
                 ReclamationDataWebix += "{id: \"" + it.id + "\", Details: \"" + it.id + "\", Date: \"" + it.date.ToShortDateString() + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", State: \"" + it.bd_states.name + "\", Word: \"" + it.id + "\"";
                 ReclamationDataWebix += "}, \r\n";
+            }*/
         }
         public IEnumerable<SelectListItem> reclamation_problemsSelectList
         {

@@ -243,24 +243,67 @@
     <script>
         filterTable(document.getElementById("target"), {
             1: new filterTable.Filter(document.getElementById("namef"),
+                /* Коллбэк ф-ция валидации */
+                function (value, filters, i) {
+                    var c_value = value.toLowerCase(),
+                        f_value = filters[i].value.toLowerCase();
+                    return c_value.indexOf(f_value) === 0;
+                },
+                /* Будем вызывать валидацию по событию onkeyup фильтра */
+                "onkeyup"
+            ),
             2: document.getElementById("reitf"),
             3: new filterTable.Filter(document.getElementById("numf"),
+                /* Коллбэк ф-ция валидации */
+                function (value, filters, i) {
+                    return value.indexOf(filters[i].value) === 0;
+                },
+                /* Будем вызывать валидацию по событию onkeyup фильтра */
+                "onkeyup"
+            ),
             4: new filterTable.Filter(document.getElementById("datenew2"),
+                /* Коллбэк ф-ция валидации */
+                function (value, filters, i) {
+                    return value.indexOf(filters[i].value) === 0;
+                },
+                /* Будем вызывать валидацию по событию onkeyup фильтра */
+                "onkeyup"
+            ),
             //document.getElementById("datenew2"),
             5: new filterTable.Filter(document.getElementById("dateclose"),
+                /* Коллбэк ф-ция валидации */
+                function (value, filters, i) {
+                    return value.indexOf(filters[i].value) === 0;
+                },
+                /* Будем вызывать валидацию по событию onkeyup фильтра */
+                "onkeyup"
+            ),
             //document.getElementById("dateclose"),
             6: document.getElementById("unitf"),
             7: document.getElementById("digits"),
             8: document.getElementById("typef"),
             9: document.getElementById("sourcef"),
             10: new filterTable.Filter([document.getElementById("nalid")],
+                function (value, filters, i) {
+                    if (false === filters[i].checked) return true;
+                    return filters[0].checked && filters[0].value !== value;
+                }
             ),
             11: new filterTable.Filter([document.getElementById("bonusid")],
+                function (value, filters, i) {
+                    if (false === filters[i].checked) return true;
+                    return filters[0].checked && filters[0].value !== value;
+                }
             ),
             12: new filterTable.Filter([document.getElementById("sertid")],
+                function (value, filters, i) {
+                    if (false === filters[i].checked) return true;
+                    return filters[0].checked && filters[0].value !== value;
+                }
             ),
             14: document.getElementById("payer")
         }
+        );
 
     </script>
 

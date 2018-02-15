@@ -5,7 +5,11 @@
     string tableData = "";
     foreach (var it in Model.reclamations)
     {
-        tableData += "{id: \"" + it.id + "\", Details: \""+it.id+"\", Date: \"" + it.date.Date + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", State: \"" + it.bd_states.name + "\", Word: \""+it.id+"\"";
+        if (it.comment != "" && it.comment != null)
+        {
+            it.comment = it.comment.Trim().Replace('"', '\'').Replace("\r\n", " ");
+        }
+        tableData += "{id: \"" + it.id + "\", Details: \"" + it.id + "\", Date: \"" + it.date.ToShortDateString() + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", Сomment: \"" + it.comment + "\", State: \"" + it.bd_states.name + "\", Word: \"" + it.id + "\"";
         tableData += "}, \r\n";
     }
 }
@@ -17,6 +21,7 @@
         color: inherit;
         text-decoration: underline;
     }
+
     .highlight_red {
         background-color: #fb541e;
         color: white;
@@ -128,18 +133,19 @@
 				    id: "grid",
 				    view: "datatable",
 				    columns: [
-                { id: "id", header: "id", width: 40, sort: "int" },
+				{ id: "id", header: "id", width: 40, sort: "int" },
                 {
                     id: "Details", header: "Подробности",
                     template: "<a href='/Zakup/addReclamation/#id#'>Подробнее</a>",
-                    width: 108
+                    width: 85
                 },
-                { id: "Date", header: "Дата", width: 143, sort: "date" },
-                { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", width: 117 },
-                { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", width: 220 },
-                { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", width: 325 },
-                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", width: 178 },
-                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", width: 96 },
+                { id: "Date", header: "Дата", width: 73, sort: "date" },
+                { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", width: 110 },
+                { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", fillspace: true },
+                { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", fillspace: true },
+                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", fillspace: true },
+				{ id: "Сomment", header: "Примечание", width: 178 },
+                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", fillspace: true },
                 {
                     id: "Word", header: "Word",
                     template: "<a href='/Zakup/ReclamationExport?reclamation_id=#id#'>Скачать</a>",
@@ -152,7 +158,6 @@
 				        ]
 				    },
 				    autoheight: true,
-                    autowidth: true,
                     scheme: {
                         $change: function (item) {
                             if (item.State == "Выполнено")
