@@ -8,8 +8,23 @@
         color: white;
     }
 </style>
+<script>
+    $(document).ready(function () {
+        $('.monthpicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'm.yy',
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+                window.location.href = '/SB_Problems/Problem_top?period=' + $("#Period").val();
+            }
+        });
+    });
+</script>
 @using (Html.BeginForm("Problem_top", "SB_Problems", FormMethod.Post, new { id = "Form" }))
 {
+    @Html.TextBoxFor(m => m.Period, new { @class = "monthpicker" })
     <div class="panel panel-yellow" id="problems">
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -30,14 +45,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for(int i = 0; i < Model.problems_top.Count(); i++)
+                    @for (int i = 0; i < Model.problems_top.Count(); i++)
                     {
                         Model.RestaurantName = Model.problems_top[i].sb_restaurants.restaurant_name;
                         <tr>
                             <td style="display:none">@Html.HiddenFor(m => Model.problems_top[i].id)</td>
                             <td>@Html.TextBoxFor(m => Model.problems_top[i].date, new { @type = "date", @class = "form-control", @Value = Model.problems_top[i].date.ToString("yyyy-MM-dd") })</td>
                             <td>@Html.TextBoxFor(m => Model.problems_top[i].problem, new { @class = "form-control" })</td>
-                            <td>@Html.TextBoxFor(m => Model.problems_top[i].solution, new { @class="form-control" })</td>
+                            <td>@Html.TextBoxFor(m => Model.problems_top[i].solution, new { @class = "form-control" })</td>
                             <td>@Html.DropDownListFor(m => Model.problems_top[i].restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })</td>
                         </tr>
                     }

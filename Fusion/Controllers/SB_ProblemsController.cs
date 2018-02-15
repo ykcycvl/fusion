@@ -65,11 +65,19 @@ namespace Fusion.Controllers
 
 
         [MyAuthorize(Roles = "FusionAdmin, SB_Admin")]
-        public ActionResult Problem_top()
+        public ActionResult Problem_top(string period)
         {
             SB model = new SB();
+            if (!string.IsNullOrEmpty(period))
+            {
+                model.Period = DateTime.Parse(period);
+            }
+            else
+            {
+                model.Period = DateTime.Today;
+            }
             model.getProblems();
-            model.getProblemsTop();
+            model.getProblemsTop(model.Period);
             return View(model);
         }
         [HttpPost]
@@ -87,7 +95,7 @@ namespace Fusion.Controllers
             SB model = new SB();
             model.createProblem();
             model.getProblems();
-            model.getProblemsTop();
+            model.getProblemsTop(DateTime.Today);
             return View(model);
         }
         [HttpPost]

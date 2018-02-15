@@ -133,10 +133,10 @@ namespace Fusion.Models
             list.sb_problems.Add(new sb_problems { date = problem.date, problem = problem.problem, restaurant_id = problem.restaurant_id, solution = problem.solution, id = list.sb_problems.Count() + 1, mgr_id = problem.manager_id });
             list.SaveChanges();
         }
-        public void getProblemsTop()
+        public void getProblemsTop(DateTime period)
         {
             restaurants = list.sb_restaurants.ToList();
-            problems_top = list.sb_top.ToList();
+            problems_top = list.sb_top.Where(m => m.date.Month == period.Month && m.date.Year == period.Year).ToList();
         }
         public void sendProblemTop()
         {

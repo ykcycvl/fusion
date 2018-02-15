@@ -35,5 +35,21 @@
         <mvcSiteMapNode title="Начисления и удержания" controller="Salary" action="AAD" />
       </mvcSiteMapNode>
     </mvcSiteMapNode>
+  <mvcSiteMapNode title="Закуп" controller="Zakup" action="Index">
+    <mvcSiteMapNode title="Номенклатуры" action="Nomenclatures" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Склады" action="storehouses" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Минимальные остатки" action="Remnants_rest" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Поставщики" action="Vendors" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Заявки" action="orders" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Заявки по поставщикам" action="Orders_by_vendors" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Мои заявки" action="Orders_by_employees" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Товароведы" action="Users" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Рестораны" action="Restaurants" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Аналитика" action="Analytics" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Рекламации" action="Reclamation" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Создать заявку" action="CreateOrder" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Создать рекламацию" action="addReclamation" controller="Zakup"></mvcSiteMapNode>
+    <mvcSiteMapNode title="Добавить поставщика" action="addVendor" controller="Zakup"></mvcSiteMapNode>
+  </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>
