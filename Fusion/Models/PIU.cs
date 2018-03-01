@@ -287,6 +287,83 @@ namespace Fusion.Models
             return articleData;
         }
 
+        private string ProcessArticlePlan(PiuWS.Article article, string userName, string parent)
+        {
+            if (!article.ToConfirm)
+                ToConfirm = false;
+
+            string articleData = "{" + String.Format("id:\"{0}\", name:\"{1}\", parent:\"{2}\", toConfirm:\"{3}\"", article.Code, article.Name, parent, article.ToConfirm) + "},\r\n";
+            articleData += "{" + String.Format("id:\"{0}\", level:\"{1}\"", article.Code, article.Level) + "},\r\n";
+
+            if (article.Allowed != null)
+            {
+                var a = article.Allowed.ToList().FirstOrDefault(p => p.NameCFR.ToLower() == userName.ToLower());
+
+                if (a != null && article.ToConfirm)
+                    Confirmation = true;
+
+                if (a == null || !a.WriteRole || article.ToConfirm)
+                    articleData += "{" + String.Format("id:\"{0}\", readonly:\"true\", allow:\"true\"", article.Code) + "},\r\n";
+            }
+
+            this.ColumnsRub = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"code\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"parent\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"organization\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsRub += "{id: \"level:\", hidden: \"true\" },\r\n";
+
+            string planItogFormula = "";
+
+            foreach (var adata in article.DataForPeriod)
+            {
+                this.ColumnsRub += "{ id: \"sumplan_" + adata.Period.ToString("MMyy") + "\", header: \"" + adata.Period.ToString("MMM. yy") + "<br/>План\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+
+                // Формулы расчета статей, если есть.
+                string formula = "";
+
+                // Суммируемые ячейки
+                if (article.Additional != null)
+                    foreach (var add in article.Additional)
+                        if (!String.IsNullOrEmpty(add.Code))
+                            formula += " + [" + add.Code + ", sumplan_" + adata.Period.ToString("MMyy") + "]";
+
+                // Вычитаемые ячейки
+                if (article.Exception != null)
+                    foreach (var div in article.Exception)
+                        if (!String.IsNullOrEmpty(div.Code))
+                            formula += " + [" + div.Code + ", sumplan_" + adata.Period.ToString("MMyy") + "]";
+
+                string css = "";
+
+                if (article.Level == 1)
+                    css = "level1css";
+
+                if (article.Level == 2)
+                    css = "level2css";
+
+                if (article.Level == 3)
+                    css = "level3css";
+
+                if (article.ToConfirm)
+                    css += " toAllow";
+
+                if (!String.IsNullOrEmpty(formula))
+                    articleData += "{" + string.Format("id:\"{0}\", sumplan_{1}:\"= {2}\", $css:\"{3}\"", article.Code, adata.Period.ToString("MMyy"), formula, css) + "},\r\n";
+                else
+                    articleData += "{" + string.Format("id:\"{0}\", sumplan_{1}:\"{2}\", $css:\"{3}\"", article.Code, adata.Period.ToString("MMyy"), adata.SumPlan, css) + "},\r\n";
+
+                planItogFormula += " + [$r, sumplan_" + adata.Period.ToString("MMyy") + "]";
+            }
+
+            foreach (var child in article.Child)
+                articleData += ProcessArticle(child, userName, article.Code);
+
+
+            this.ColumnsRub += "{id: \"itogPlan\", header: \"Итог<br/>План\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + planItogFormula + "\"},";
+            return articleData;
+        }
+
         private string ProcessArticleConsolidated(PiuWS.Article article, string userName, string organizationCode)
         {
             string articleData = "{" + String.Format("id:\"{0}\", name:\"{1}\", maxDiv:\"{2}\", level:\"{3}\"", article.Code, article.Name, article.SumNormMax, article.Level);
@@ -612,6 +689,45 @@ namespace Fusion.Models
                 foreach (var a in entry.Articles)
                 {
                     s += ProcessArticle(a, UserName, a.Code);
+                }
+            }
+
+            this.Data = s;
+        }
+
+        public void GetPlan()
+        {
+            ToConfirm = true;
+
+            if (Organization == null)
+                Organization = "";
+
+            PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
+            model.Timeout = 300000;
+
+            //bool b = model.Test(ar.ToArray());
+
+            PiuWS.PIU t = model.GetPIUData2(UserName, Organization, DateTime.Parse(StartDate), DateTime.Parse(EndDate), "0");
+            //model.PutPIUData2("tv", "2018-01-01", t);
+
+            var r = t.Reconciliations.FirstOrDefault(p => p.UserName == UserName);
+
+            if (r == null)
+                CanConfirm = false;
+
+            if (r != null && r.Agreed)
+            {
+                CanConfirm = true;
+                ToConfirm = false;
+            }
+
+            string s = "";
+
+            foreach (var entry in t.Entries)
+            {
+                foreach (var a in entry.Articles)
+                {
+                    s += ProcessArticlePlan(a, UserName, a.Code);
                 }
             }
 

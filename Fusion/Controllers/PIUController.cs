@@ -75,7 +75,7 @@ namespace Fusion.Controllers
             model.Quarter = quarter;
             model.UserName = User.Identity.Name;
             model.ToConfirm = true;
-            model.Get();
+            model.GetPlan();
             return View(model);
         }
 
