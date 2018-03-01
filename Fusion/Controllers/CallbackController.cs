@@ -675,7 +675,14 @@ namespace Fusion.Controllers
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Send(mail);
+            try
+            {
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Упс! Письмо с отзывом не отправилось! Обратитесь к администратору почтового сервера",ex);
+            }            
             mail.Dispose();
             /*Конец кода*/
             return View();
