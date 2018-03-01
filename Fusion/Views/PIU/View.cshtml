@@ -1,0 +1,51 @@
+﻿@model Fusion.Models.PIU
+@{
+    ViewBag.Title = "ПиУ: отчетность";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ПиУ: отчетность</h2>
+
+<style>
+    .ui-datepicker-calendar {
+        display: none !important;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    Организация
+                </th>
+                <th>
+                    С
+                </th>
+                <th>
+                    По
+                </th>
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+            @using (Html.BeginForm("ViewPlan", "PIU", FormMethod.Get, new { id = "Form" }))
+            {
+                <tr>
+                    <td>
+                        @Html.DropDownListFor(m => m.Organization, Model.OrganizationsSelectList, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.StartDate, "{0:MMM yyyy}", new { @class = "form-control dateM", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.EndDate, "{0:MMM yyyy}", new { @class = "form-control dateM", @readonly = "readonly" })
+                    </td>
+                    <td>
+                        <input type="submit" class="btn btn-default" value="Показать" />
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

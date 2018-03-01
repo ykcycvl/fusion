@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fusion</RootNamespace>
     <AssemblyName>Fusion</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -2144,6 +2144,9 @@
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SB.cs" />
+    <Compile Include="Models\sber.cs">
+      <DependentUpon>FusionDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\sb_managers.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
@@ -2686,6 +2689,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\Sberbank\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\ZupWS\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -2719,6 +2727,7 @@
     <Content Include="Content\pivot.min.css" />
     <Content Include="data.js" />
     <Content Include="data\events.xml" />
+    <Content Include="images\8pm76v.gif" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
     <Content Include="images\Ispug1.png" />
     <Content Include="images\phone-2-xxl.png" />
@@ -5626,18 +5635,84 @@
     <Content Include="Views\Settings\UserSettings.cshtml" />
     <Content Include="Views\PIU\GetTest.cshtml" />
     <Content Include="Views\Callback\SendEmail.cshtml" />
-    <Content Include="Views\PIU\Edit.cshtml" />
+    <Content Include="Views\PIU\EditPlan.cshtml" />
     <Content Include="Views\PIU\Index.cshtml" />
     <Content Include="Views\PIU\Norms.cshtml" />
+    <Content Include="Views\PIU\CR.cshtml" />
+    <Content Include="Views\PIU\Budgeting.cshtml" />
+    <Content Include="Views\PIU\Report.cshtml" />
+    <Content Include="Views\InternetOrders\Sberbank.cshtml" />
+    <Content Include="Web References\PiuWS\Article.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Views\PIU\View.cshtml" />
+    <Content Include="Views\PIU\ViewPlan.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\PiuWS\PIU.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
     <None Include="Web References\PiuWS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Web References\PiuWS\Tree.datasource">
+    <Content Include="Web References\Sberbank\androidPayPaymentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\applePayPaymentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\createBindingNoPaymentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\extendBindingResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\finishThreeDSResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\getBindingsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\getLastOrdersForMerchantsResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\getOrderStatusExtendedResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\Sberbank\MerchantService.wsdl" />
+    <None Include="Web References\Sberbank\MerchantServiceImplService.wsdl" />
+    <Content Include="Web References\Sberbank\orderInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\orderResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\orderStatusResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\paymentOrderOtherWayResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\paymentOrderResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\recurrentPaymentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\Sberbank\registerOrderResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\samsungPayPaymentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\Sberbank\verifyEnrollmentResponse.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
     <None Include="Web References\ZupWS\Reference.map">
@@ -5699,16 +5774,27 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Fusion_ZupWS_VegaWS</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://srv-1c_g/TokyoTest/ws/vegapiu.1cws%3fwsdl">
+    <WebReferenceUrl Include="http://srv-1c_g/Tokio/ws/vegapiu.1cws%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\PiuWS\</RelPath>
-      <UpdateFromURL>http://srv-1c_g/TokyoTest/ws/vegapiu.1cws%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>http://srv-1c_g/Tokio/ws/vegapiu.1cws%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Fusion_PiuWS_fsn_PIU</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://securepayments.sberbank.ru/payment/webservices/merchant-ws%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\Sberbank\</RelPath>
+      <UpdateFromURL>https://securepayments.sberbank.ru/payment/webservices/merchant-ws%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Fusion_Sberbank_MerchantServiceImplService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>

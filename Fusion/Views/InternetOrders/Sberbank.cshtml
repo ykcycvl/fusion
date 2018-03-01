@@ -1,0 +1,52 @@
+﻿@model Fusion.Models.InternetOrders.Sberbank
+@{
+    ViewBag.Title = "Sberbank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Sberbank</h2>
+
+@using (Html.BeginForm("Sberbank", "InternetOrders", FormMethod.Get, new { id = "Form" }))
+{
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.OrderNumber, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Найти" />
+            </div>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th>
+            Номер заказа
+        </th>
+        <th>
+            Сообщение
+        </th>
+        <th>
+            Ресторан
+        </th>
+        <th>
+            Сумма
+        </th>
+    </tr>
+    <tr>
+        <td>
+            @Model.OrderNumber
+        </td>
+        <td>
+            @Model.ErrorMessage
+        </td>
+        <td>
+            @Model.Restaurant
+        </td>
+        <td>
+            @Model.Amount.ToString("0.00")
+        </td>
+    </tr>
+</table>

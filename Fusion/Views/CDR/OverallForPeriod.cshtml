@@ -491,24 +491,21 @@
                 <table class="table_empty" style="font-size:11px !important">
                     <tr>
                         <th style="width: 50px">Дата</th>
-                        <th>Принято</th>
-                        <th>Время ответа (AVG)</th>
-                        <th>Время ответа (MAX)</th>
-                        <th>Время вх. разг (AVG)</th>
-                        <th>Пот. всего</th>
-                        <th>Пот. после 10 сек.</th>
-                        <th>Время пот (AVG)</th>
-                        <th>Время пот (MAX)</th>
-                        <th>Исх.</th>
-                        <th>Время исх. разг (AVG)</th>
-                        <th>Время разг. на линии</th>
-                        <th>Время перерывов</th>
-                        <th>Время обработки Интернет-заказов</th>
-                        <th>Своб. время на линии</th>
+                        <th style="text-align:right !important">Принято</th>
+                        <th style="text-align:right !important">Время ответа (AVG)</th>
+                        <th style="text-align:right !important">Время ответа (MAX)</th>
+                        <th style="text-align:right !important">Время вх. разг (AVG)</th>
+                        <th style="text-align:right !important">Пот. всего</th>
+                        <th style="text-align:right !important">Пот. после 10 сек.</th>
+                        <th style="text-align:right !important">Время пот (AVG)</th>
+                        <th style="text-align:right !important">Время пот (MAX)</th>
+                        <th style="text-align:right !important">Исх.</th>
+                        <th style="text-align:right !important">Время исх. разг (AVG)</th>
+                        <th style="text-align:right !important">% пот(10)</th>
                     </tr>
                     <tr style="background: #ff0 !important;font-weight:bold">
-                        <td>Итого:</td>
-                        <td>@a.AnsweredTotal</td>
+                        <td style="text-align:right !important">Итого:</td>
+                        <td style="text-align:right !important">@a.AnsweredTotal</td>
                         <td style="text-align:right !important">
                             @if (a.AvgAnswerTime.TotalSeconds < 60)
                             {
@@ -614,10 +611,18 @@
                                 }
                             }
                         </td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right">0</td>
-                        <td style="text-align:right">0</td>
+                        @if (a.AnsweredTotal > 0 || a.AbandonTotal > 0)
+                        {
+                            <td style="text-align:right">
+                                @((@a.Abandonafter10 * 100.00 / (@a.AnsweredTotal + @a.AbandonTotal)).ToString("0.00"))
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="text-align:right">
+                                0
+                            </td>
+                        }
                     </tr>
                     @foreach (var tp in a._HHPStat)
                     {
@@ -676,7 +681,7 @@
                                 }
                             </td>
                             <td style="text-align:right">@tp.AbandonTotal</td>
-                            <td>@tp.Abandonafter10</td>
+                            <td style="text-align:right !important">@tp.Abandonafter10</td>
                             <td style="text-align:right !important">
                                 @if (tp.AbandonAvgWaitTime.TotalSeconds < 60)
                                 {
@@ -729,10 +734,18 @@
                                     }
                                 }
                             </td>
-                            <td style="text-align:right">0</td>
-                            <td style="text-align:right">0</td>
-                            <td style="text-align:right">0</td>
-                            <td style="text-align:right">0</td>
+                                @if (tp.Answered > 0 || tp.AbandonTotal > 0)
+                                {
+                                    <td style="text-align:right">
+                                        @((@tp.Abandonafter10 * 100.00 / (@tp.Answered + @tp.AbandonTotal)).ToString("0.00"))
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="text-align:right">
+                                        0
+                                    </td>
+                                }
                         </tr>
                     }
                 </table>

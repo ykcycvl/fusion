@@ -6,7 +6,10 @@
       <Value Profile="(Default)">http://srv-1c_g/service/ws/vegaws.1cws</Value>
     </Setting>
     <Setting Name="Fusion_PiuWS_fsn_PIU" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://srv-1c_g/TokyoTest/ws/vegapiu.1cws</Value>
+      <Value Profile="(Default)">http://srv-1c_g/Tokio/ws/vegapiu.1cws</Value>
+    </Setting>
+    <Setting Name="Fusion_Sberbank_MerchantServiceImplService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://securepayments.sberbank.ru/payment/webservices/merchant-ws</Value>
     </Setting>
   </Settings>
 </SettingsFile>

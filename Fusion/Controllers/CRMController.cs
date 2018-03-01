@@ -54,10 +54,9 @@ namespace Fusion.Controllers
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]
         public ActionResult Persons(CRMViewModels.PersonsViewModel model)
         {
-            if (model.count <= 0)
-                model.count = 100;
+            if (model.count > 0)
+                model.Search();
 
-            model.Search();
             return View(model);
         }
         [MyAuthorize(Roles = "BonusClubManager, BonusClubAdmin, FusionAdmin")]

@@ -71,5 +71,6 @@ namespace Fusion.Models
         public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
         public virtual DbSet<bd_order> bd_order { get; set; }
         public virtual DbSet<bd_reclamation_files> bd_reclamation_files { get; set; }
+        public virtual DbSet<sber> sber { get; set; }
     }
 }

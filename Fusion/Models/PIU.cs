@@ -10,14 +10,54 @@ namespace Fusion.Models
 {
     public class PIU
     {
-        public PiuWS.Tree Tree;
         [Display(Name="Начало периода")]
         public string StartDate { get; set; }
         [Display(Name = "Конец периода")]
         public string EndDate { get; set; }
         [Display(Name = "Подразделение")]
         public string Organization { get; set; }
-        public string userName { get; set; }
+        public string OrganizationCode { get; set; }
+        public string UserName { get; set; }
+        public string Data { get; set; }
+        public string ColumnsRub { get; set; }
+        public string ColumnsPrc { get; set; }
+        public bool ToConfirm { get; set; }
+        public bool Confirmation { get; set; }
+        public bool Confirmed { get; set; }
+        public bool CanConfirm { get; set; }
+        private byte _quarter { get; set; }
+        public string OrgPool { get; set; }
+        public byte Quarter
+        {
+            get
+            {
+                return _quarter;
+            }
+            set
+            {
+                _quarter = value;
+
+                switch (value)
+                {
+                    case 1:
+                        StartDate = "01.01.2018";
+                        EndDate = "01.03.2018";
+                        break;
+                    case 2:
+                        StartDate = "01.04.2018";
+                        EndDate = "01.06.2018";
+                        break;
+                    case 3:
+                        StartDate = "01.07.2018";
+                        EndDate = "01.09.2018";
+                        break;
+                    case 4:
+                        StartDate = "01.10.2018";
+                        EndDate = "01.12.2018";
+                        break;
+                }
+            }
+        }
 
         public class PIUViewModel
         {
@@ -30,6 +70,30 @@ namespace Fusion.Models
             public List<PIUViewModel> ChildItems { get; set; }
         }
 
+        public IEnumerable<SelectListItem> Quarters
+        {
+            get
+            {
+                List<SelectListItem> q = new List<SelectListItem>();
+                q.Add(new SelectListItem() { Text = "1 квартал", Value = "1" });
+                q.Add(new SelectListItem() { Text = "2 квартал", Value = "2" });
+                q.Add(new SelectListItem() { Text = "3 квартал", Value = "3" });
+                q.Add(new SelectListItem() { Text = "4 квартал", Value = "4" });
+                return q;
+            }
+        }
+
+        public IEnumerable<SelectListItem> OrgPoolSelectList
+        {
+            get
+            {
+                List<SelectListItem> op = new List<SelectListItem>();
+                op.Add(new SelectListItem() { Text = "Все рестораны", Value = "0" });
+                op.Add(new SelectListItem() { Text = "Рестораны Токио", Value = "1" });
+                return op;
+            }
+        }
+
         public IEnumerable<SelectListItem> OrganizationsSelectList
         {
             get
@@ -39,7 +103,7 @@ namespace Fusion.Models
                 using (PiuWS.fsn_PIU service = new PiuWS.fsn_PIU())
                 {
                     service.SoapVersion = System.Web.Services.Protocols.SoapProtocolVersion.Soap12;
-                    var Organizations = service.GetOrganizations(userName).ToList();
+                    var Organizations = service.GetOrganizations(UserName, "0").ToList();
 
                     foreach (PiuWS.Organization org in Organizations)
                         Orgs.Add(new SelectListItem() { Text = org.Name, Value = org.Name });
@@ -54,12 +118,246 @@ namespace Fusion.Models
             string org = "Токио";
             string date1 = "01.09.2017";
             string date2 = "30.11.2017";
+            string userName = "tv";
 
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            Tree = model.GetPIUData("tv", org, date1, date2);
+            PiuWS.PIU t = model.GetPIUData2(userName, org, DateTime.Parse(date1), DateTime.Parse(date2), "0");
+            string s = "";
+
+            foreach (var entry in t.Entries)
+            {
+                foreach (var a in entry.Articles)
+                {
+                    //s += ProcessArticle(a, userName);
+                }
+            }
+
+            this.Data = s;
         }
 
-        public bool Save(string data, string UserName, bool Confirm)
+        public void GetConsolidatedReport(string OrgPool)
+        {
+            PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
+            model.Timeout = 180000;
+            PiuWS.PIU t = model.GetPIUData2(UserName, "", DateTime.Parse(StartDate), DateTime.Parse(StartDate), OrgPool);
+
+            string s = "";
+
+            int i = 0;
+
+            this.ColumnsRub = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsRub += "{id: \"level\", hidden: \"true\" },\r\n";
+
+            this.ColumnsPrc = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsPrc += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsPrc += "{id: \"maxDiv\", hidden: \"true\"},\r\n";
+
+            string planItogFormula = "";
+            string factItogFormula = "";
+
+            foreach (var entry in t.Entries)
+            {
+                i++;
+                entry.Organization.Code = entry.Organization.Code.Replace("-", "");
+
+                this.ColumnsRub += "{ id: \"" + entry.Organization.Code + "\", hidden: \"true\" },\r\n";
+                this.ColumnsRub += "{ id: \"sumplan_" + entry.Organization.Code + "\", header: \"" + entry.Organization.Name + "<br/>План\", css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                this.ColumnsRub += "{ id: \"sumfact_" + entry.Organization.Code + "\", header: \"" + entry.Organization.Name + "<br/>Факт\", css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                this.ColumnsRub += "{ id: \"div_" + entry.Organization.Code + "\", header: \"" + entry.Organization.Name + "<br/>Откл.\", css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+
+                this.ColumnsPrc += "{ id: \"sumplan_" + entry.Organization.Code + "\", hidden: \"true\", header: \"" + entry.Organization.Name + "<br/>план\", css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), cssFormat:markRO },\r\n";
+                this.ColumnsPrc += "{ id: \"div_" + entry.Organization.Code + "\", hidden: \"true\", header: \"Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                this.ColumnsPrc += "{ id: \"prcNorm\", header: \"Норма\", css: \"normColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                this.ColumnsPrc += "{ id: \"prc_" + entry.Organization.Code + "\", header: \"Факт<br/>" + entry.Organization.Name + "\", css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), },\r\n";
+                this.ColumnsPrc += "{ id: \"prcDiv_" + entry.Organization.Code + "\", header: \"Откл.<br/>" + entry.Organization.Name + "\", math:\"[$r, prcNorm] - [$r, prc_" + entry.Organization.Code + "]\", css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), cssFormat:markDiv },\r\n";
+
+                s += "{" + String.Format("id:\"{0}\", org_{1}:\"{2}\"", "01.000.000", entry.Organization.Code, entry.Organization.Name) + "},\r\n";
+
+                foreach (var a in entry.Articles)
+                    s += ProcessArticleConsolidated(a, UserName, entry.Organization.Code);
+
+                planItogFormula += " + [$r, sumplan_" + entry.Organization.Code + "]";
+                factItogFormula += " + [$r, sumfact_" + entry.Organization.Code + "]";
+            }
+
+            this.ColumnsRub += "{id: \"itogPlan\", header: \"Итог<br/>План\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + planItogFormula + "\"},";
+            this.ColumnsRub += "{id: \"itogFact\", header: \"Итог<br/>Факт\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + factItogFormula + "\"},";
+            this.ColumnsRub += "{id: \"itogDiv\", header: \"Итог<br/>Откл.\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math:\"[$r, itogPlan] - [$r, itogFact]\" },";
+            this.Data = s;
+        }
+
+        private string ProcessArticle(PiuWS.Article article, string userName, string parent)
+        {
+            if (!article.ToConfirm)
+                ToConfirm = false;
+
+            string articleData = "{" + String.Format("id:\"{0}\", name:\"{1}\", criticalDev:\"{2}\", parent:\"{3}\", toConfirm:\"{4}\"", article.Code, article.Name, article.SumNormMax, parent, article.ToConfirm) + "},\r\n";
+            articleData += "{" + String.Format("id:\"{0}\", maxDiv:\"{1}\"", article.Code, article.SumNormMax) + "},\r\n";
+            articleData += "{" + String.Format("id:\"{0}\", level:\"{1}\"", article.Code, article.Level) + "},\r\n";
+
+            if (article.Allowed != null)
+            {
+                var a = article.Allowed.ToList().FirstOrDefault(p => p.NameCFR.ToLower() == userName.ToLower());
+
+                if (a != null && article.ToConfirm)
+                    Confirmation = true;
+
+                if(a == null || !a.WriteRole || article.ToConfirm)
+                    articleData += "{" + String.Format("id:\"{0}\", readonly:\"true\", allow:\"true\"", article.Code) + "},\r\n";
+            }
+
+            this.ColumnsRub = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"code\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"parent\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"organization\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsRub += "{id: \"level:\", hidden: \"true\" },\r\n";
+
+            this.ColumnsPrc = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsPrc += "{id: \"parent\", hidden: \"true\" },\r\n";
+            this.ColumnsPrc += "{id: \"code\", hidden: \"true\" },\r\n";
+            this.ColumnsPrc += "{id: \"organization\", hidden: \"true\" },\r\n";
+            this.ColumnsPrc += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsPrc += "{id: \"maxDiv\", hidden: \"true\"},\r\n";
+
+            string factItogFormula = "";
+            string planItogFormula = "";
+
+            foreach (var adata in article.DataForPeriod)
+            {
+                this.ColumnsRub += "{ id: \"sumplan_" + adata.Period.ToString("MMyy") + "\", header: \"" + adata.Period.ToString("MMM. yy") + "<br/>План\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                this.ColumnsRub += "{ id: \"sumfact_" + adata.Period.ToString("MMyy") + "\", header: \"" + adata.Period.ToString("MMM. yy") + "<br/>Факт\", css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+                this.ColumnsRub += "{ id: \"div_" + adata.Period.ToString("MMyy") + "\", header: \"" + adata.Period.ToString("MMM. yy") + "<br/>Откл.\", css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }) },\r\n";
+
+                this.ColumnsPrc += "{ id: \"sumplan_" + adata.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"" + adata.Period.ToString("MMM yy") + "<br/>план\", editor: 'text', css: \"planColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), cssFormat:markRO },\r\n";
+                this.ColumnsPrc += "{ id: \"div_" + adata.Period.ToString("MMyy") + "\", hidden: \"true\", header: \"Откл, %\", editor: '', css: \"divColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                this.ColumnsPrc += "{ id: \"prcNorm\", header: \"Норма\", css: \"normColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+                this.ColumnsPrc += "{ id: \"prc_" + adata.Period.ToString("MMyy") + "\", header: \"Факт<br/>" + adata.Period.ToString("MMM yy") + "\", editor: '', css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), },\r\n";
+                this.ColumnsPrc += "{ id: \"prcDiv_" + adata.Period.ToString("MMyy") + "\", header: \"Откл.<br/>" + adata.Period.ToString("MMM yy") + "\", editor: '', math:\"[$r, prcNorm] - [$r, prc_" + adata.Period.ToString("MMyy") + "]\", css: \"factColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), cssFormat:markDiv },\r\n";
+
+                articleData += "{" + String.Format("id:\"{0}\", prcNorm:\"{1}\"", article.Code, adata.SumNorm) + "},\r\n";
+                articleData += "{" + String.Format("id:\"{0}\", prc_{1}:\"=GetVal({2})\"", article.Code, adata.Period.ToString("MMyy"), "([" + article.Code + ", sumfact_" + adata.Period.ToString("MMyy") + "] / [01.000.000, sumfact_" + adata.Period.ToString("MMyy") + "]) * 100") + "},\r\n";
+
+                // Формулы расчета статей, если есть.
+                string formula = "";
+
+                // Суммируемые ячейки
+                if (article.Additional != null)
+                    foreach (var add in article.Additional)
+                        if (!String.IsNullOrEmpty(add.Code))
+                            formula += " + [" + add.Code + ", sumplan_" + adata.Period.ToString("MMyy") + "]";
+
+                // Вычитаемые ячейки
+                if (article.Exception != null)
+                    foreach (var div in article.Exception)
+                        if (!String.IsNullOrEmpty(div.Code))
+                            formula += " + [" + div.Code + ", sumplan_" + adata.Period.ToString("MMyy") + "]";
+
+                string css = "";
+
+                if (article.Level == 1)
+                    css = "level1css";
+
+                if (article.Level == 2)
+                    css = "level2css";
+
+                if (article.Level == 3)
+                    css = "level3css";
+
+                if (article.ToConfirm)
+                    css += " toAllow";
+
+                if (!String.IsNullOrEmpty(formula))
+                    articleData += "{" + string.Format("id:\"{0}\", sumfact_{2}:\"{3}\", sumplan_{2}:\"= {4}\", div_{2}:\"=[{0}, sumplan_{2}] - [{0}, sumfact_{2}]\", $css:\"{5}\"", article.Code, article.Name, adata.Period.ToString("MMyy"), adata.SumFact, formula, css) + "},\r\n";
+                else
+                    articleData += "{" + string.Format("id:\"{0}\", sumfact_{2}:\"{3}\", sumplan_{2}:\"{4}\", div_{2}:\"=[{0}, sumplan_{2}] - [{0}, sumfact_{2}]\", $css:\"{5}\"", article.Code, article.Name, adata.Period.ToString("MMyy"), adata.SumFact, adata.SumPlan, css) + "},\r\n";
+
+                factItogFormula += " + [$r, sumfact_" + adata.Period.ToString("MMyy") + "]";
+                planItogFormula += " + [$r, sumplan_" + adata.Period.ToString("MMyy") + "]";
+            }
+
+            foreach (var child in article.Child)
+                articleData += ProcessArticle(child, userName, article.Code);
+
+
+            this.ColumnsRub += "{id: \"itogPlan\", header: \"Итог<br/>План\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + planItogFormula + "\"},";
+            this.ColumnsRub += "{id: \"itogFact\", header: \"Итог<br/>Факт\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + factItogFormula + "\"},";
+            this.ColumnsRub += "{id: \"itogDiv\", header: \"Итог<br/>Откл.\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math:\"[$r, itogPlan] - [$r, itogFact]\" },";
+            return articleData;
+        }
+
+        private string ProcessArticleConsolidated(PiuWS.Article article, string userName, string organizationCode)
+        {
+            string articleData = "{" + String.Format("id:\"{0}\", name:\"{1}\", maxDiv:\"{2}\", level:\"{3}\"", article.Code, article.Name, article.SumNormMax, article.Level);
+
+            foreach (var adata in article.DataForPeriod)
+            {
+                articleData += String.Format(", prcNorm:\"{0}\"", adata.SumNorm);
+                articleData += String.Format(", prc_{0}:\"=GetVal({1})\"", organizationCode, "([" + article.Code + ", sumfact_" + organizationCode + "] / [01.000.000, sumfact_" + organizationCode + "]) * 100");
+
+                string css = "";
+
+                if (article.Level == 1)
+                    css = "level1css";
+
+                if (article.Level == 2)
+                    css = "level2css";
+
+                if (article.Level == 3)
+                    css = "level3css";
+
+                articleData += String.Format(", sumfact_{1}:\"{2}\", sumplan_{1}:\"{3}\", div_{1}:\"=[{0}, sumplan_{1}] - [{0}, sumfact_{1}]\", $css:\"{4}\"", article.Code, organizationCode, adata.SumFact, adata.SumPlan, css);
+            }
+
+            articleData += "},\r\n";
+
+            foreach (var child in article.Child)
+                articleData += ProcessArticleConsolidated(child, userName, organizationCode);
+
+            return articleData;
+        }
+        private string ProcessArticleForNorms(PiuWS.Article article, string userName, string parent)
+        {
+            if (!article.ToConfirm)
+                ToConfirm = false;
+
+            string articleData = "{" + String.Format("id:\"{0}\", name:\"{1}\", criticalDev:\"{2}\", parent:\"{3}\"", article.Code, article.Name, article.SumNormMax, parent) + "},\r\n";
+            articleData += "{" + String.Format("id:\"{0}\", maxDiv:\"{1}\"", article.Code, article.SumNormMax) + "},\r\n";
+            articleData += "{" + String.Format("id:\"{0}\", level:\"{1}\"", article.Code, article.Level) + "},\r\n";
+
+            this.ColumnsRub = "{id: \"id\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"code\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"parent\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"organization\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{id: \"name\", header: \"Наименование\", width: 400 },\r\n";
+            this.ColumnsRub += "{id: \"level:\", hidden: \"true\" },\r\n";
+            this.ColumnsRub += "{ id: \"prcNorm\", header: \"Норма\", editor: 'text', css: \"normColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+            this.ColumnsRub += "{id: \"maxDiv:\", header: \"Макс. откл.\", editor: 'text', format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }) },\r\n";
+
+            foreach (var adata in article.DataForPeriod)
+            {
+                string css = "";
+
+                if (article.Level == 1)
+                    css = "level1css";
+
+                if (article.Level == 2)
+                    css = "level2css";
+
+                if (article.Level == 3)
+                    css = "level3css";
+
+                articleData += "{" + string.Format("id:\"{0}\", name:\"{1}\", prcNorm:\"{2}\", maxDiv:\"{3}\", $css:\"{4}\"", article.Code, article.Name, adata.SumNorm, article.SumNormMax, css) + "},\r\n";
+            }
+
+            foreach (var child in article.Child)
+                articleData += ProcessArticleForNorms(child, userName, article.Code);
+
+            return articleData;
+        }
+
+        public bool Save(string data, string UserName, bool ToConfirm, bool Confirm, string organization, string date)
         {
             bool res = false;
 
@@ -67,21 +365,23 @@ namespace Fusion.Models
             {
                 var serializer = new JavaScriptSerializer();
                 var heapdata = serializer.DeserializeObject(data);
-                Tree = new PiuWS.Tree();
+                PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
+
+                PiuWS.PIU piu = new PiuWS.PIU();
+                piu.DateStart = DateTime.Parse(date);
+                piu.DateEnd = DateTime.Parse(date);
+                piu.Confirmed = false;
 
                 if (Confirm)
                 {
-                    Tree.Reconciliations = new PiuWS.Reconciliation[1];
-                    Tree.Reconciliations[0].UserName = UserName;
-                    Tree.Reconciliations[0].Agreed = true;
+                    piu.Reconciliations = new PiuWS.Reconciliation[0];
+                    piu.Reconciliations.ToList().Add(new PiuWS.Reconciliation() { UserName = UserName, Agreed = true });
                 }
 
-                string org = "";
-
-                PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-                List<PiuWS.Level1> levels1 = new List<PiuWS.Level1>();
-                List<PiuWS.Level2> levels2 = new List<PiuWS.Level2>();
-                List<PiuWS.Level3> levels3 = new List<PiuWS.Level3>();
+                List<PiuWS.Entry> entries = new List<PiuWS.Entry>();
+                entries.Add(new PiuWS.Entry() { Organization = new PiuWS.Organization() { Code = "", FullName = organization, Name = organization, ShortName = organization, Deleted = false }, Articles = new PiuWS.Article[0] });
+                piu.Entries = entries.ToArray();
+                piu.ToConfirm = true;
 
                 foreach (var undata in (Array)heapdata)
                 {
@@ -93,20 +393,53 @@ namespace Fusion.Models
                     r.TryGetValue("parent", out parent);
                     object level = null;
                     r.TryGetValue("level", out level);
-                    object code = null;
-                    r.TryGetValue("code", out code);
                     object name = null;
                     r.TryGetValue("name", out name);
-                    object organization = null;
-                    r.TryGetValue("organization", out organization);
+                    object allow = null;
+                    r.TryGetValue("allow", out allow);
+                    object toConfirm = null;
+                    r.TryGetValue("toConfirm", out toConfirm);
 
-                    if (org == "" && organization != null)
-                        org = organization.ToString();
+                    //Если нет пометки "на согласование", значит статья не для согласования
+                    if (toConfirm == null)
+                        toConfirm = false;
+
+                    //Если нет разрешения для редактирования статьи
+                    if (allow == null)
+                        allow = false;
+
+                    //Если есть разрешение на редактирование статьи и стоит отметка "на согласование", выставляем флаг согласования для статьи
+                    if (Convert.ToBoolean(allow) && ToConfirm)
+                        toConfirm = true;
+
+                    piu.Reconciliations = new PiuWS.Reconciliation[0];
+
+                    //Если хоть одна статья не была отправлена на согласование, весь документ остается в режиме редактирования и его не могут согласовать
+                    if (!Convert.ToBoolean(toConfirm))
+                        piu.ToConfirm = false;
 
                     if (level != null && level.ToString() == "1")
                     {
-                        if (Tree.Levels1 == null)
-                            Tree.Levels1 = new PiuWS.Level1[0];
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.ToList();
+                        articles.Add(new PiuWS.Article()
+                        {
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = Convert.ToBoolean(toConfirm),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
+
+                        if (Convert.ToBoolean(toConfirm))
+                        {
+                            string tres = "159";
+                        }
+
+                        piu.Entries[0].Articles = articles.ToArray(); ;
 
                         var t = r.Where(p => p.Key.StartsWith("sumplan"));
 
@@ -123,19 +456,39 @@ namespace Fusion.Models
                                 if (String.IsNullOrEmpty(sumplan.ToString()))
                                     sumplan = "0";
 
-                                var l1 = Tree.Levels1.ToList();
-                                l1.Add(new PiuWS.Level1() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan), Levels2 = new PiuWS.Level2[0] });
-                                Tree.Levels1 = l1.ToArray();
+                                var dfp = piu.Entries[0].Articles.Last().DataForPeriod.ToList();
+                                dfp.Add(new PiuWS.DataArticle()
+                                {
+                                    Period = Convert.ToDateTime(period),
+                                    SumPlan = Convert.ToDecimal(sumplan)
+                                });
+                                piu.Entries.Last().Articles.Last().DataForPeriod = dfp.ToArray();
                             }
                         }
                     }
 
                     if (level != null && level.ToString() == "2")
                     {
-                        if (parent != null)
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.Last().Child.ToList();
+                        articles.Add(new PiuWS.Article()
                         {
-                            var t = r.Where(p => p.Key.StartsWith("sumplan"));
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = Convert.ToBoolean(toConfirm),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
 
+                        piu.Entries[0].Articles.Last().Child = articles.ToArray(); ;
+
+                        var t = r.Where(p => p.Key.StartsWith("sumplan"));
+
+                        if (t != null)
+                        {
                             foreach (var v in t.ToList())
                             {
                                 object period = null;
@@ -144,20 +497,42 @@ namespace Fusion.Models
                                 object sumplan = null;
                                 sumplan = v.Value;
 
-                                var l1 = Tree.Levels1.FirstOrDefault(p => p.Code == parent.ToString() && p.Period == DateTime.Parse(period.ToString()));
-                                var l2 = l1.Levels2.ToList();
-                                l2.Add(new PiuWS.Level2() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan), Levels3 = new PiuWS.Level3[0] });
-                                l1.Levels2 = l2.ToArray();
+                                if (String.IsNullOrEmpty(sumplan.ToString()))
+                                    sumplan = "0";
+
+                                var dfp = piu.Entries[0].Articles.Last().Child.Last().DataForPeriod.ToList();
+                                dfp.Add(new PiuWS.DataArticle()
+                                {
+                                    Period = Convert.ToDateTime(period),
+                                    SumPlan = Convert.ToDecimal(sumplan)
+                                });
+                                piu.Entries[0].Articles.Last().Child.Last().DataForPeriod = dfp.ToArray();
                             }
                         }
                     }
 
                     if (level != null && level.ToString() == "3")
                     {
-                        if (parent != null)
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.Last().Child.Last().Child.ToList();
+                        articles.Add(new PiuWS.Article()
                         {
-                            var t = r.Where(p => p.Key.StartsWith("sumplan"));
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = Convert.ToBoolean(toConfirm),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
 
+                        piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray(); ;
+
+                        var t = r.Where(p => p.Key.StartsWith("sumplan"));
+
+                        if (t != null)
+                        {
                             foreach (var v in t.ToList())
                             {
                                 object period = null;
@@ -166,28 +541,31 @@ namespace Fusion.Models
                                 object sumplan = null;
                                 sumplan = v.Value;
 
-                                var lvl1 = Tree.Levels1.Where(p => p.Period == DateTime.Parse(period.ToString()));
+                                if (String.IsNullOrEmpty(sumplan.ToString()))
+                                    sumplan = "0";
 
-                                foreach (var l in lvl1.ToList())
+                                var dfp = piu.Entries[0].Articles.Last().Child.Last().Child.Last().DataForPeriod.ToList();
+                                dfp.Add(new PiuWS.DataArticle()
                                 {
-                                    var l2 = l.Levels2.FirstOrDefault(p => p.Code == parent.ToString() && p.Period == DateTime.Parse(period.ToString()));
-
-                                    if (l2 == null)
-                                        continue;
-
-                                    var l3 = l2.Levels3.ToList();
-
-                                    l3.Add(new PiuWS.Level3() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), Period = DateTime.Parse(period.ToString()), SumPlan = Convert.ToDecimal(sumplan) });
-                                    l2.Levels3 = l3.ToArray();
-                                }                                
+                                    Period = Convert.ToDateTime(period),
+                                    SumPlan = Convert.ToDecimal(sumplan)
+                                });
+                                piu.Entries[0].Articles.Last().Child.Last().Child.Last().DataForPeriod = dfp.ToArray();
                             }
                         }
                     }
                 }
 
-                if (!String.IsNullOrEmpty(org))
+                if (!String.IsNullOrEmpty(organization))
                 {
-                    model.PutPIUData(UserName, "Токио", "01.09.2017", this.Tree);
+                    if (Confirm)
+                    {
+                        List<PiuWS.Reconciliation> rec = new List<PiuWS.Reconciliation>();
+                        rec.Add(new PiuWS.Reconciliation() { UserName = UserName, Agreed = true });
+                        piu.Reconciliations = rec.ToArray();
+                    }
+
+                    model.PutPIUData2(UserName, DateTime.Parse(date), piu);
                     res = true;
                 }
                 else
@@ -201,22 +579,64 @@ namespace Fusion.Models
             return res;
         }
 
-        public void Get(string UserName)
+        public void Get()
         {
+            ToConfirm = true;
+
             if (Organization == null)
                 Organization = "";
 
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            Tree = model.GetPIUData(UserName, Organization, StartDate, EndDate);
+            model.Timeout = 300000;
+
+            //bool b = model.Test(ar.ToArray());
+
+            PiuWS.PIU t = model.GetPIUData2(UserName, Organization, DateTime.Parse(StartDate), DateTime.Parse(EndDate), "0");
+            //model.PutPIUData2("tv", "2018-01-01", t);
+
+            var r = t.Reconciliations.FirstOrDefault(p => p.UserName == UserName);
+
+            if (r == null)
+                CanConfirm = false;
+
+            if (r != null && r.Agreed)
+            {
+                CanConfirm = true;
+                ToConfirm = false;
+            }
+
+            string s = "";
+
+            foreach (var entry in t.Entries)
+            {
+                foreach (var a in entry.Articles)
+                {
+                    s += ProcessArticle(a, UserName, a.Code);
+                }
+            }
+
+            this.Data = s;
         }
 
-        public void GetNorms(string UserName, DateTime dt)
+        public void GetNorms(string UserName, string Organization, DateTime dt)
         {
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            Tree = model.GetNorms(UserName, Organization, dt.ToString("dd.MM.yyyy"));
+            PiuWS.PIU piu = model.GetNorms2(UserName, Organization, dt);
+
+            string s = "";
+
+            foreach (var entry in piu.Entries)
+            {
+                foreach (var a in entry.Articles)
+                {
+                    s += ProcessArticleForNorms(a, UserName, a.Code);
+                }
+            }
+
+            this.Data = s;
         }
 
-        public bool SaveNorms(string data, string UserName, string year)
+        public bool SaveNorms(string data, string UserName, string date)
         {
             bool res = false;
 
@@ -224,14 +644,17 @@ namespace Fusion.Models
             {
                 var serializer = new JavaScriptSerializer();
                 var heapdata = serializer.DeserializeObject(data);
-                Tree = new PiuWS.Tree();
-                string org = "";
-
                 PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-                List<PiuWS.Level1> levels1 = new List<PiuWS.Level1>();
-                List<PiuWS.Level2> levels2 = new List<PiuWS.Level2>();
-                List<PiuWS.Level3> levels3 = new List<PiuWS.Level3>();
-                string lastL1Code = "";
+
+                PiuWS.PIU piu = new PiuWS.PIU();
+                piu.DateStart = DateTime.Parse(date);
+                piu.DateEnd = DateTime.Parse(date);
+                piu.Confirmed = false;
+
+                List<PiuWS.Entry> entries = new List<PiuWS.Entry>();
+                entries.Add(new PiuWS.Entry() { Organization = new PiuWS.Organization() { Code = "", FullName = "", Name = "", ShortName = "", Deleted = false }, Articles = new PiuWS.Article[0] });
+                piu.Entries = entries.ToArray();
+                piu.ToConfirm = true;
 
                 foreach (var undata in (Array)heapdata)
                 {
@@ -239,75 +662,117 @@ namespace Fusion.Models
 
                     object id = null;
                     r.TryGetValue("id", out id);
-                    object parent = null;
-                    r.TryGetValue("parent", out parent);
-                    object level = null;
-                    r.TryGetValue("level", out level);
-                    object code = null;
-                    r.TryGetValue("code", out code);
                     object name = null;
                     r.TryGetValue("name", out name);
-                    object organization = null;
-                    r.TryGetValue("organization", out organization);
-                    object sumNorm = null;
-                    r.TryGetValue("sumNorm", out sumNorm);
-                    object maxDev = null;
-                    r.TryGetValue("maxDev", out maxDev);
+                    object criticalDev = null;
+                    r.TryGetValue("criticalDev", out criticalDev);
+                    object parent = null;
+                    r.TryGetValue("parent", out parent);
+                    object maxDiv = null;
+                    r.TryGetValue("maxDiv", out maxDiv);
+                    object level = null;
+                    r.TryGetValue("level", out level);
+                    object prcNorm = null;
+                    r.TryGetValue("prcNorm", out prcNorm);
 
-                    if (sumNorm == null || sumNorm.ToString() == "")
-                        sumNorm = "0";
+                    if (criticalDev == null)
+                        criticalDev = 0;
 
-                    if (maxDev == null || maxDev.ToString() == "")
-                        maxDev = "0";
+                    if (maxDiv == null)
+                        maxDiv = 0;
 
-                    sumNorm = sumNorm.ToString().Replace(",", ".");
-                    maxDev = maxDev.ToString().Replace(",", ".");
+                    if (prcNorm == null)
+                        prcNorm = 0;
 
-                    if (org == "" && organization != null)
-                        org = organization.ToString();
+                    piu.Reconciliations = new PiuWS.Reconciliation[0];
 
                     if (level != null && level.ToString() == "1")
                     {
-                        if (Tree.Levels1 == null)
-                            Tree.Levels1 = new PiuWS.Level1[0];
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.ToList();
+                        articles.Add(new PiuWS.Article()
+                        {
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = false,
+                            SumNormMax = Convert.ToDecimal(maxDiv),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
 
-                        var l1 = Tree.Levels1.ToList();
-                        l1.Add(new PiuWS.Level1() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), SumNorm = Convert.ToDecimal(sumNorm), SumNormMax = Convert.ToDecimal(maxDev), Levels2 = new PiuWS.Level2[0] });
-                        Tree.Levels1 = l1.ToArray();
+                        piu.Entries[0].Articles = articles.ToArray();
+
+                        var dfp = piu.Entries[0].Articles.Last().DataForPeriod.ToList();
+                        dfp.Add(new PiuWS.DataArticle()
+                        {
+                            Period = DateTime.Parse(date),
+                            SumNorm = Convert.ToDecimal(prcNorm)
+                        });
+                        piu.Entries.Last().Articles.Last().DataForPeriod = dfp.ToArray();
                     }
 
                     if (level != null && level.ToString() == "2")
                     {
-                        if (parent != null)
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.Last().Child.ToList();
+                        articles.Add(new PiuWS.Article()
                         {
-                            var l1 = Tree.Levels1.FirstOrDefault(p => p.Code == parent.ToString());
-                            lastL1Code = parent.ToString();
-                            var l2 = l1.Levels2.ToList();
-                            l2.Add(new PiuWS.Level2() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), SumNorm = Convert.ToDecimal(sumNorm), SumNormMax = Convert.ToDecimal(maxDev), Levels3 = new PiuWS.Level3[0] });
-                            l1.Levels2 = l2.ToArray();
-                        }
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = false,
+                            SumNormMax = Convert.ToDecimal(maxDiv),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
+
+                        piu.Entries[0].Articles.Last().Child = articles.ToArray();
+
+                        var dfp = piu.Entries[0].Articles.Last().Child.Last().DataForPeriod.ToList();
+                        dfp.Add(new PiuWS.DataArticle()
+                        {
+                            Period = DateTime.Parse(date),
+                            SumNorm = Convert.ToDecimal(prcNorm)
+                        });
+                        piu.Entries[0].Articles.Last().Child.Last().DataForPeriod = dfp.ToArray();
                     }
 
                     if (level != null && level.ToString() == "3")
                     {
-                        if (parent != null)
+                        List<PiuWS.Article> articles = piu.Entries[0].Articles.Last().Child.Last().Child.ToList();
+                        articles.Add(new PiuWS.Article()
                         {
-                            var l1 = Tree.Levels1.FirstOrDefault(p => p.Code == lastL1Code);
-                            var l2 = l1.Levels2.FirstOrDefault(x => x.Code == parent.ToString());
-                            var l3 = l2.Levels3.ToList();
-                            l3.Add(new PiuWS.Level3() { Code = code.ToString(), Organization = organization.ToString(), Name = name.ToString(), SumNorm = Convert.ToDecimal(sumNorm), SumNormMax = Convert.ToDecimal(maxDev) });
-                            l2.Levels3 = l3.ToArray();
-                        }
+                            Additional = new PiuWS.Rated[0],
+                            Exception = new PiuWS.Rated[0],
+                            Allowed = new PiuWS.GroupCFR[0],
+                            Child = new List<PiuWS.Article>().ToArray(),
+                            Code = id.ToString(),
+                            Level = Convert.ToInt32(level),
+                            Name = name.ToString(),
+                            ToConfirm = false,
+                            SumNormMax = Convert.ToDecimal(maxDiv),
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                        });
+
+                        piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray();
+
+                        var dfp = piu.Entries[0].Articles.Last().Child.Last().Child.Last().DataForPeriod.ToList();
+                        dfp.Add(new PiuWS.DataArticle()
+                        {
+                            Period = DateTime.Parse(date),
+                            SumNorm = Convert.ToDecimal(prcNorm)
+                        });
+                        piu.Entries[0].Articles.Last().Child.Last().Child.Last().DataForPeriod = dfp.ToArray();
                     }
                 }
 
-                if (!String.IsNullOrEmpty(org))
-                {
-                    res = true;
-                    model.PutNorms(UserName, org, "01.01." + year, this.Tree);
-                }
-                else
-                    res = false;
+                model.PutNorms2(UserName, DateTime.Parse(date), piu);
+                res = true;
             }
             catch (Exception ex)
             {
@@ -315,6 +780,12 @@ namespace Fusion.Models
             }
 
             return res;
+        }
+
+        public void GetRoles(string userName, string organization)
+        {
+            PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
+            var t = model.GetRoles(userName, organization, DateTime.Today);
         }
     }
 }

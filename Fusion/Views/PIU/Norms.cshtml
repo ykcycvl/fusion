@@ -3,39 +3,6 @@
 @{
     ViewBag.Title = "Нормы";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    string TableData = "";
-    string tdl2 = "";
-    string tdl3 = "";
-
-    foreach (var l in Model.Tree.Levels1)
-    {
-        TableData += "{ id: \"" + l.Code + "\", parent: \"\", level: \"1\", code: \"" + l.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l.Name + "\"";
-        TableData += ", sumNorm: \"" + l.SumNorm.ToString() + "\" ";
-        TableData += ", maxDev: \"" + l.SumNormMax.ToString() + "\" ";
-
-        foreach (var l2 in l.Levels2)
-        {
-            tdl2 += "{ id: \"" + l2.Code + "\", parent: \"" + l.Code + "\", level: \"2\", code: \"" + l2.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l2.Name + "\"";
-            tdl2 += ", sumNorm: \"" + l2.SumNorm.ToString() + "\"";
-            tdl2 += ", maxDev: \"" + l2.SumNormMax.ToString() + "\" ";
-            tdl2 += ", $css:\"level2css\" },\r\n";
-
-            foreach (var l3 in l2.Levels3)
-            {
-                tdl3 += "{ id: \"" + l3.Code + "\", parent: \"" + l2.Code + "\", level: \"3\", code: \"" + l3.Code + "\", organization: \"" + l.Organization + "\", name: \"" + l3.Name + "\"";
-                tdl3 += ", sumNorm: \"" + l3.SumNorm.ToString() + "\"";
-                tdl3 += ", maxDev: \"" + l3.SumNormMax.ToString() + "\" ";
-                tdl3 += ", $cellCss: { name: \"level3css\" }, $css:\"level2css\" },\r\n";
-            }
-
-            tdl2 += tdl3;
-            tdl3 = "";
-        }
-
-        TableData += ", $css:\"level1css\" }," + tdl2;
-        tdl2 = "";
-    }
 }
 
 <script src="~/Scripts/codebase/webix.js"></script>
@@ -43,6 +10,21 @@
 <script src="~/Scripts/codebase/i18n/ru.js"></script>
 
 <style>
+    #areaA {
+        margin: 0;
+        width: 100%;
+        height: 600px;
+        float: left;
+        padding: 0;
+    }
+
+    .webix_hcell {
+        height: 46px !important;
+        line-height: 23px !important;
+        text-align: center;
+        font-size: 12px;
+    }
+
     .webix_template {
         padding: 0 !important;
     }
@@ -50,6 +32,7 @@
     .level1css {
         font-weight: bold;
         color: #000;
+        background-color: #b7dee8;
     }
 
     .level2css {
@@ -58,7 +41,6 @@
 
     .level3css {
         text-align: right;
-        font-style: italic;
         color: #555;
     }
 
@@ -71,8 +53,15 @@
         background-color: #ddd;
     }
 
+    .normColumn {
+        border-left: 1px solid #000;
+        background: #b7e8c6;
+        text-align: right;
+    }
+
     .planColumn {
         text-align: right;
+        border-left: 1px solid #000;
     }
 
     .divColumn {
@@ -83,6 +72,14 @@
     .itogColumn {
         text-align: right;
         background-color: #c8c8c8;
+    }
+
+    .misMatch {
+        background-color: #ff8787;
+    }
+
+    .readonly {
+        background-color: #999;
     }
 </style>
 
@@ -112,17 +109,11 @@
             rowHeight: 23,
             padding: 5,
             columns: [
-                { id: "id", header: "id", hidden: "true" },
-                { id: "code", header: "code", hidden: "true" },
-                { id: "parent", header: "parent", hidden: "true" },
-                { id: "organization", header: "organization", hidden: "true" },
-                { id: "name", header: "Наименование", width: 350 },
-                { id: "sumNorm", header: "Норма (%)", editor: 'text', css: "planColumn" },
-                { id: "maxDev", header: "Откл.(max)", editor: 'text', css: "planColumn" }
+                @Html.Raw(Model.ColumnsRub)
             ],
             data: {
                 data: [
-                    @Html.Raw(TableData)
+                    @Html.Raw(Model.Data)
                 ]
             },
             editable: true,
@@ -154,11 +145,21 @@
         return false;
     }
 
+    function GetVal(val) {
+        if (!IsNumber(val))
+            return '';
+        else
+            return val;
+    };
+
     function IsNumber(value){
-        if(typeof value == "undefined" || value == "")
+        if (typeof value == "undefined" || value == "")
             return true;
         else
+        {
+            value.Replace(',', '.');
             return $.isNumeric(value);
+        }
     }
 
     function Save() {
@@ -183,29 +184,6 @@
     }
 </script>
 
-<script>
-    $(function () {
-        $("#start_dt").datepicker({
-            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            firstDay: 1,
-            dateFormat: "dd.mm.yy"
-        });
-        $("#end_dt").datepicker({
-            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            firstDay: 1,
-            dateFormat: "dd.mm.yy"
-        });
-        $(".date").datepicker({
-            monthNames: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-            dayNamesMin: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            firstDay: 1,
-            dateFormat: "dd.mm.yy"
-        });
-    });
-</script>
-
 <h2>@ViewBag.Title</h2>
 
 <div class="row">
@@ -216,7 +194,7 @@
     </div>
     <div class="col-md-2 text-center">
         <div class=" alert alert-info">
-            <input type="text" class="date-picker form-control" id="date" value="@DateTime.Today.Year.ToString()" />
+            <input type="text" class="form-control dateM" id="date", readonly = "readonly", value="@DateTime.Today.ToString("MMMM yyyy")" />
         </div>
     </div>
 </div>

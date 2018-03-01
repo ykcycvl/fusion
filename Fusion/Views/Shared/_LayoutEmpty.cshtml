@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Vega</title>
+    <title>@ViewBag.Title - Vega \(^-^)/﻿</title>
     <link href="~/Content/Site.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -26,15 +26,6 @@
                     <div class="navbar-collapse collapse">
                         <img src="~/Content/Vega_48.png" style="float:left" />
                         <ul class="nav navbar-nav">
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">БК<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("БК", "Index", "BC")</li>
-                                    <li>@Html.ActionLink("Участники БК", "Persons", "BC")</li>
-                                    <li>@Html.ActionLink("Карты БК", "Cards", "BC")</li>
-                                    <li>@Html.ActionLink("Список всех чеков", "Transactions", "BC")</li>
-                                </ul>
-                            </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">CRM<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
@@ -72,6 +63,9 @@
                             <li>
                                 @Html.ActionLink("ОЗ", "Index", "Zakup")
                             </li>
+                            <li>
+                                @Html.ActionLink("ПиУ", "Index", "PIU")
+                            </li>
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
                             <li class="dropdown">
@@ -104,7 +98,7 @@
                 <hr />
                 <footer class="bd-footer text-muted">
                     <div class="container">
-                        <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио.</p>
+                        <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио. \(^-^)/﻿</p>
                     </div>
                 </footer>
             </div>

@@ -36,10 +36,20 @@ namespace Fusion.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-1c_g/TokyoTest/ws/vegapiu.1cws")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://srv-1c_g/Tokio/ws/vegapiu.1cws")]
         public string Fusion_PiuWS_fsn_PIU {
             get {
                 return ((string)(this["Fusion_PiuWS_fsn_PIU"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://securepayments.sberbank.ru/payment/webservices/merchant-ws")]
+        public string Fusion_Sberbank_MerchantServiceImplService {
+            get {
+                return ((string)(this["Fusion_Sberbank_MerchantServiceImplService"]));
             }
         }
     }

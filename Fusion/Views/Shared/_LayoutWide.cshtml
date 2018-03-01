@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Vega</title>
+    <title>@ViewBag.Title - Vega \(^-^)/﻿</title>
     <link href="~/Content/Site.css" rel="stylesheet" />
    
     @Styles.Render("~/Content/css")
@@ -56,15 +56,6 @@
                         <img src="~/Content/Vega_48.png" style="float:left" />
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">БК<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("БК", "Index", "BC")</li>
-                                    <li>@Html.ActionLink("Участники БК", "Persons", "BC")</li>
-                                    <li>@Html.ActionLink("Карты БК", "Cards", "BC")</li>
-                                    <li>@Html.ActionLink("Список всех чеков", "Transactions", "BC")</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">CRM<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Общая информация", "Index", "CRM")</li>
@@ -79,7 +70,7 @@
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Отчеты", "Index", "CallCenter")</li>
                                     <li>@Html.ActionLink("Интернет-заказы", "Index", "InternetOrders")</li>
-                                    <li>@Html.ActionLink("Bringo", "Index", "Bringo")</li>
+                                    <li>@Html.ActionLink("Сбербанк", "Sberbank", "InternetOrders")</li>
                                 </ul>
                             </li>
                             <li>
@@ -101,6 +92,9 @@
                             </li>
                             <li>
                                 @Html.ActionLink("ОЗ", "Index", "Zakup")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Фин. отчетность", "Index", "PIU")
                             </li>
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
@@ -134,7 +128,7 @@
                 <hr />
                 <footer class="bd-footer text-muted">
                     <div class="container">
-                        <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио.</p>
+                        <p>@DateTime.Today.Year - Vega. Сеть ресторанов Токио. \(^-^)/﻿</p>
                     </div>
                 </footer>
             </div>

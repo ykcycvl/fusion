@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<definitions xmlns:xsd1="http://srv-1c_g/autopiu" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://srv-1c_g/autopiu" name="fsn_PIU" targetNamespace="http://srv-1c_g/autopiu" xmlns="http://schemas.xmlsoap.org/wsdl/">
+<definitions xmlns:xsd1="http://srv-1c_g/autopiu2" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:tns="http://srv-1c_g/autopiu2" name="fsn_PIU" targetNamespace="http://srv-1c_g/autopiu2" xmlns="http://schemas.xmlsoap.org/wsdl/">
   <types>
-    <xs:schema xmlns:xs1="http://srv-1c_g/autopiu" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://srv-1c_g/autopiu" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema xmlns:xs1="http://srv-1c_g/autopiu2" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://srv-1c_g/autopiu2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayElement">
+        <xs:sequence>
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Children" type="xs1:TestArray" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Article">
+        <xs:sequence>
+          <xs:element name="Code" type="xs:string" />
+          <xs:element name="Name" type="xs:string" />
+          <xs:element name="Additional" type="xs1:Rateds" />
+          <xs:element name="Exception" type="xs1:Rateds" />
+          <xs:element name="SumNormMax" type="xs:decimal" />
+          <xs:element name="Child" type="xs1:Articles" />
+          <xs:element name="ToConfirm" type="xs:boolean" />
+          <xs:element name="DataForPeriod" type="xs1:MasDataArticle" />
+          <xs:element name="Allowed" type="xs1:GroupsCFR" />
+          <xs:element name="Level" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Articles">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Article" type="xs1:Article" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="DataArticle">
+        <xs:sequence>
+          <xs:element name="SumFact" type="xs:decimal" />
+          <xs:element name="SumPlan" type="xs:decimal" />
+          <xs:element name="SumNorm" type="xs:decimal" />
+          <xs:element name="Period" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Entries">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Entry" type="xs1:Entry" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="Entry">
+        <xs:sequence>
+          <xs:element name="Organization" type="xs1:Organization" />
+          <xs:element name="Articles" type="xs1:Articles" />
+        </xs:sequence>
+      </xs:complexType>
       <xs:complexType name="GroupCFR">
         <xs:sequence>
           <xs:element name="NameCFR" type="xs:string" />
@@ -11,67 +55,12 @@
       </xs:complexType>
       <xs:complexType name="GroupsCFR">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="GroupCFR" type="xs1:GroupCFR" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GroupCFR" type="xs1:GroupCFR" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="Level1">
+      <xs:complexType name="MasDataArticle">
         <xs:sequence>
-          <xs:element name="Levels2" type="xs1:Levels2" />
-          <xs:element name="SumFact" type="xs:decimal" />
-          <xs:element name="SumPlan" type="xs:decimal" />
-          <xs:element name="SumNorm" type="xs:decimal" />
-          <xs:element name="Period" type="xs:date" />
-          <xs:element name="Organization" type="xs:string" />
-          <xs:element name="Name" type="xs:string" />
-          <xs:element name="Code" type="xs:string" />
-          <xs:element name="Additional" type="xs1:Rateds" />
-          <xs:element name="Exception" type="xs1:Rateds" />
-          <xs:element name="Allowed" type="xs1:GroupsCFR" />
-          <xs:element name="SumNormMax" type="xs:decimal" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="Level2">
-        <xs:sequence>
-          <xs:element name="Levels3" type="xs1:Levels3" />
-          <xs:element name="SumFact" type="xs:decimal" />
-          <xs:element name="SumPlan" type="xs:decimal" />
-          <xs:element name="SumNorm" type="xs:decimal" />
-          <xs:element name="Period" type="xs:date" />
-          <xs:element name="Organization" type="xs:string" />
-          <xs:element name="Name" type="xs:string" />
-          <xs:element name="Code" type="xs:string" />
-          <xs:element name="Additional" type="xs1:Rateds" />
-          <xs:element name="Exception" type="xs1:Rateds" />
-          <xs:element name="Allowed" type="xs1:GroupsCFR" />
-          <xs:element name="SumNormMax" type="xs:decimal" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="Level3">
-        <xs:sequence>
-          <xs:element name="SumFact" type="xs:decimal" />
-          <xs:element name="SumPlan" type="xs:decimal" />
-          <xs:element name="SumNorm" type="xs:decimal" />
-          <xs:element name="Period" type="xs:date" />
-          <xs:element name="Organization" type="xs:string" />
-          <xs:element name="Name" type="xs:string" />
-          <xs:element name="Code" type="xs:string" />
-          <xs:element name="Allowed" type="xs1:GroupsCFR" />
-          <xs:element name="SumNormMax" type="xs:decimal" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="Levels1">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Level1" type="xs1:Level1" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="Levels2">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Level2" type="xs1:Level2" />
-        </xs:sequence>
-      </xs:complexType>
-      <xs:complexType name="Levels3">
-        <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Level3" type="xs1:Level3" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DataArticle" type="xs1:DataArticle" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Organization">
@@ -80,11 +69,22 @@
           <xs:element name="Name" type="xs:string" />
           <xs:element name="FullName" type="xs:string" />
           <xs:element name="ShortName" type="xs:string" />
+          <xs:element name="Code" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Organizations">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Organization" type="xs1:Organization" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Organization" type="xs1:Organization" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PIU">
+        <xs:sequence>
+          <xs:element name="DateStart" type="xs:dateTime" />
+          <xs:element name="DateEnd" type="xs:dateTime" />
+          <xs:element name="Entries" type="xs1:Entries" />
+          <xs:element name="Reconciliations" type="xs1:Reconciliations" />
+          <xs:element name="ToConfirm" type="xs:boolean" />
+          <xs:element name="Confirmed" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Rated">
@@ -94,64 +94,31 @@
       </xs:complexType>
       <xs:complexType name="Rateds">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Rated" type="xs1:Rated" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Rated" type="xs1:Rated" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Reconciliation">
         <xs:sequence>
           <xs:element name="UserName" type="xs:string" />
+          <xs:element name="Order" type="xs:decimal" />
           <xs:element name="Agreed" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Reconciliations">
         <xs:sequence>
-          <xs:element maxOccurs="unbounded" name="Reconciliation" type="xs1:Reconciliation" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Reconciliation" type="xs1:Reconciliation" />
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="Tree">
+      <xs:complexType name="TestArray">
         <xs:sequence>
-          <xs:element name="Levels1" type="xs1:Levels1" />
-          <xs:element name="Reconciliations" type="xs1:Reconciliations" />
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ArrayElements" type="xs1:ArrayElement" />
         </xs:sequence>
       </xs:complexType>
-      <xs:element name="GetPIUData">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="UserName" type="xs:string" />
-            <xs:element name="Organization" type="xs:string" />
-            <xs:element name="PeriodBegin" type="xs:string" />
-            <xs:element name="PeriodEnd" type="xs:string" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="GetPIUDataResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="return" nillable="true" type="xs1:Tree" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="PutPIUData">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="UserName" type="xs:string" />
-            <xs:element name="Organization" type="xs:string" />
-            <xs:element name="Period" type="xs:string" />
-            <xs:element name="ДревоДанных" type="xs:anyType" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:element name="PutPIUDataResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="return" nillable="true" type="xs1:Tree" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
       <xs:element name="GetOrganizations">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Direct" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -162,115 +129,206 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="PutNorms">
+      <xs:element name="GetPIUData2">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="UserName" type="xs:string" />
             <xs:element name="Organization" type="xs:string" />
-            <xs:element name="Period" type="xs:string" />
-            <xs:element name="ДревоДанных" type="xs1:Tree" />
+            <xs:element name="PeriodBegin" type="xs:date" />
+            <xs:element name="PeriodEnd" type="xs:date" />
+            <xs:element name="Direct" type="xs:string" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="PutNormsResponse">
+      <xs:element name="GetPIUData2Response">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="return" type="xs:string" />
+            <xs:element name="return" type="xs1:PIU" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetNorms">
+      <xs:element name="PutPIUData2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Period" type="xs:dateTime" />
+            <xs:element name="DataPIU" type="xs1:PIU" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutPIUData2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetNorms2">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="UserName" type="xs:string" />
             <xs:element name="Organization" type="xs:string" />
-            <xs:element name="Period" type="xs:string" />
+            <xs:element name="Period" type="xs:date" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetNormsResponse">
+      <xs:element name="GetNorms2Response">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="return" type="xs1:Tree" />
+            <xs:element name="return" type="xs1:PIU" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutNorms2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Period" type="xs:date" />
+            <xs:element name="DataPIU" type="xs1:PIU" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutNorms2Response">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Organization" type="xs:string" />
+            <xs:element name="Period" type="xs:date" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:PIU" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutRoles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Period" type="xs:date" />
+            <xs:element name="DataPIU" type="xs1:PIU" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PutRolesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:boolean" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetArticles">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Period" type="xs:date" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetArticlesResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs1:Articles" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
     </xs:schema>
   </types>
-  <message name="GetPIUDataRequestMessage">
-    <part name="parameters" element="tns:GetPIUData" />
-  </message>
-  <message name="GetPIUDataResponseMessage">
-    <part name="parameters" element="tns:GetPIUDataResponse" />
-  </message>
-  <message name="PutPIUDataRequestMessage">
-    <part name="parameters" element="tns:PutPIUData" />
-  </message>
-  <message name="PutPIUDataResponseMessage">
-    <part name="parameters" element="tns:PutPIUDataResponse" />
-  </message>
   <message name="GetOrganizationsRequestMessage">
     <part name="parameters" element="tns:GetOrganizations" />
   </message>
   <message name="GetOrganizationsResponseMessage">
     <part name="parameters" element="tns:GetOrganizationsResponse" />
   </message>
-  <message name="PutNormsRequestMessage">
-    <part name="parameters" element="tns:PutNorms" />
+  <message name="GetPIUData2RequestMessage">
+    <part name="parameters" element="tns:GetPIUData2" />
   </message>
-  <message name="PutNormsResponseMessage">
-    <part name="parameters" element="tns:PutNormsResponse" />
+  <message name="GetPIUData2ResponseMessage">
+    <part name="parameters" element="tns:GetPIUData2Response" />
   </message>
-  <message name="GetNormsRequestMessage">
-    <part name="parameters" element="tns:GetNorms" />
+  <message name="PutPIUData2RequestMessage">
+    <part name="parameters" element="tns:PutPIUData2" />
   </message>
-  <message name="GetNormsResponseMessage">
-    <part name="parameters" element="tns:GetNormsResponse" />
+  <message name="PutPIUData2ResponseMessage">
+    <part name="parameters" element="tns:PutPIUData2Response" />
+  </message>
+  <message name="GetNorms2RequestMessage">
+    <part name="parameters" element="tns:GetNorms2" />
+  </message>
+  <message name="GetNorms2ResponseMessage">
+    <part name="parameters" element="tns:GetNorms2Response" />
+  </message>
+  <message name="PutNorms2RequestMessage">
+    <part name="parameters" element="tns:PutNorms2" />
+  </message>
+  <message name="PutNorms2ResponseMessage">
+    <part name="parameters" element="tns:PutNorms2Response" />
+  </message>
+  <message name="GetRolesRequestMessage">
+    <part name="parameters" element="tns:GetRoles" />
+  </message>
+  <message name="GetRolesResponseMessage">
+    <part name="parameters" element="tns:GetRolesResponse" />
+  </message>
+  <message name="PutRolesRequestMessage">
+    <part name="parameters" element="tns:PutRoles" />
+  </message>
+  <message name="PutRolesResponseMessage">
+    <part name="parameters" element="tns:PutRolesResponse" />
+  </message>
+  <message name="GetArticlesRequestMessage">
+    <part name="parameters" element="tns:GetArticles" />
+  </message>
+  <message name="GetArticlesResponseMessage">
+    <part name="parameters" element="tns:GetArticlesResponse" />
   </message>
   <portType name="fsn_PIUPortType">
-    <operation name="GetPIUData">
-      <input message="tns:GetPIUDataRequestMessage" />
-      <output message="tns:GetPIUDataResponseMessage" />
-    </operation>
-    <operation name="PutPIUData">
-      <input message="tns:PutPIUDataRequestMessage" />
-      <output message="tns:PutPIUDataResponseMessage" />
-    </operation>
     <operation name="GetOrganizations">
       <input message="tns:GetOrganizationsRequestMessage" />
       <output message="tns:GetOrganizationsResponseMessage" />
     </operation>
-    <operation name="PutNorms">
-      <input message="tns:PutNormsRequestMessage" />
-      <output message="tns:PutNormsResponseMessage" />
+    <operation name="GetPIUData2">
+      <input message="tns:GetPIUData2RequestMessage" />
+      <output message="tns:GetPIUData2ResponseMessage" />
     </operation>
-    <operation name="GetNorms">
-      <input message="tns:GetNormsRequestMessage" />
-      <output message="tns:GetNormsResponseMessage" />
+    <operation name="PutPIUData2">
+      <input message="tns:PutPIUData2RequestMessage" />
+      <output message="tns:PutPIUData2ResponseMessage" />
+    </operation>
+    <operation name="GetNorms2">
+      <input message="tns:GetNorms2RequestMessage" />
+      <output message="tns:GetNorms2ResponseMessage" />
+    </operation>
+    <operation name="PutNorms2">
+      <input message="tns:PutNorms2RequestMessage" />
+      <output message="tns:PutNorms2ResponseMessage" />
+    </operation>
+    <operation name="GetRoles">
+      <input message="tns:GetRolesRequestMessage" />
+      <output message="tns:GetRolesResponseMessage" />
+    </operation>
+    <operation name="PutRoles">
+      <input message="tns:PutRolesRequestMessage" />
+      <output message="tns:PutRolesResponseMessage" />
+    </operation>
+    <operation name="GetArticles">
+      <input message="tns:GetArticlesRequestMessage" />
+      <output message="tns:GetArticlesResponseMessage" />
     </operation>
   </portType>
   <binding name="fsn_PIUSoapBinding" type="tns:fsn_PIUPortType">
     <soapbind:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <operation name="GetPIUData">
-      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetPIUData" style="document" />
-      <input>
-        <soapbind:body use="literal" />
-      </input>
-      <output>
-        <soapbind:body use="literal" />
-      </output>
-    </operation>
-    <operation name="PutPIUData">
-      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutPIUData" style="document" />
-      <input>
-        <soapbind:body use="literal" />
-      </input>
-      <output>
-        <soapbind:body use="literal" />
-      </output>
-    </operation>
     <operation name="GetOrganizations">
-      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetOrganizations" style="document" />
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetOrganizations" style="document" />
       <input>
         <soapbind:body use="literal" />
       </input>
@@ -278,8 +336,8 @@
         <soapbind:body use="literal" />
       </output>
     </operation>
-    <operation name="PutNorms">
-      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutNorms" style="document" />
+    <operation name="GetPIUData2">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetPIUData2" style="document" />
       <input>
         <soapbind:body use="literal" />
       </input>
@@ -287,8 +345,53 @@
         <soapbind:body use="literal" />
       </output>
     </operation>
-    <operation name="GetNorms">
-      <soapbind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetNorms" style="document" />
+    <operation name="PutPIUData2">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutPIUData2" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNorms2">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetNorms2" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutNorms2">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutNorms2" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRoles">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetRoles" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutRoles">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutRoles" style="document" />
+      <input>
+        <soapbind:body use="literal" />
+      </input>
+      <output>
+        <soapbind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetArticles">
+      <soapbind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetArticles" style="document" />
       <input>
         <soapbind:body use="literal" />
       </input>
@@ -299,26 +402,8 @@
   </binding>
   <binding name="fsn_PIUSoap12Binding" type="tns:fsn_PIUPortType">
     <soap12bind:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <operation name="GetPIUData">
-      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetPIUData" style="document" />
-      <input>
-        <soap12bind:body use="literal" />
-      </input>
-      <output>
-        <soap12bind:body use="literal" />
-      </output>
-    </operation>
-    <operation name="PutPIUData">
-      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutPIUData" style="document" />
-      <input>
-        <soap12bind:body use="literal" />
-      </input>
-      <output>
-        <soap12bind:body use="literal" />
-      </output>
-    </operation>
     <operation name="GetOrganizations">
-      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetOrganizations" style="document" />
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetOrganizations" style="document" />
       <input>
         <soap12bind:body use="literal" />
       </input>
@@ -326,8 +411,8 @@
         <soap12bind:body use="literal" />
       </output>
     </operation>
-    <operation name="PutNorms">
-      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:PutNorms" style="document" />
+    <operation name="GetPIUData2">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetPIUData2" style="document" />
       <input>
         <soap12bind:body use="literal" />
       </input>
@@ -335,8 +420,53 @@
         <soap12bind:body use="literal" />
       </output>
     </operation>
-    <operation name="GetNorms">
-      <soap12bind:operation soapAction="http://srv-1c_g/autopiu#fsn_PIU:GetNorms" style="document" />
+    <operation name="PutPIUData2">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutPIUData2" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetNorms2">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetNorms2" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutNorms2">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutNorms2" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetRoles">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetRoles" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="PutRoles">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:PutRoles" style="document" />
+      <input>
+        <soap12bind:body use="literal" />
+      </input>
+      <output>
+        <soap12bind:body use="literal" />
+      </output>
+    </operation>
+    <operation name="GetArticles">
+      <soap12bind:operation soapAction="http://srv-1c_g/autopiu2#fsn_PIU:GetArticles" style="document" />
       <input>
         <soap12bind:body use="literal" />
       </input>
@@ -350,10 +480,10 @@
       <documentation>
         <wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/" conformsTo="http://ws-i.org/profiles/basic/1.1" />
       </documentation>
-      <soapbind:address location="http://srv-1c_g/TokyoTest/ws/vegapiu.1cws" />
+      <soapbind:address location="http://srv-1c_g/Tokio/ws/vegapiu.1cws" />
     </port>
     <port name="fsn_PIUSoap12" binding="tns:fsn_PIUSoap12Binding">
-      <soap12bind:address location="http://srv-1c_g/TokyoTest/ws/vegapiu.1cws" />
+      <soap12bind:address location="http://srv-1c_g/Tokio/ws/vegapiu.1cws" />
     </port>
   </service>
 </definitions>

@@ -409,6 +409,15 @@ warning 6002: The table/view 'Fusion.dbo.hostip' does not have a primary key def
           <Property Name="restaurant_id" Type="int" Nullable="false" />
           <Property Name="solution" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="sber">
+          <Key>
+            <PropertyRef Name="login" />
+          </Key>
+          <Property Name="login" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="organization" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="restaurant" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="server">
           <Key>
             <PropertyRef Name="id" />
@@ -973,6 +982,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="sb_restaurants" EntityType="Self.sb_restaurants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_rights" EntityType="Self.sb_rights" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sb_top" EntityType="Self.sb_top" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sber" EntityType="Self.sber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="server" EntityType="Self.server" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stoplist" EntityType="Self.stoplist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="storage" EntityType="Self.storage" Schema="dbo" store:Type="Tables" />
@@ -1350,6 +1360,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="bd_reclamation" EntitySet="bd_reclamation" />
             <End Role="bd_reclamation_files" EntitySet="bd_reclamation_files" />
           </AssociationSet>
+          <EntitySet Name="sber" EntityType="FusionDBModels.sber" />
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -2322,6 +2333,15 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="sber">
+          <Key>
+            <PropertyRef Name="login" />
+          </Key>
+          <Property Name="login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="organization" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="restaurant" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2825,6 +2845,16 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
                 <ScalarProperty Name="file" ColumnName="file" />
                 <ScalarProperty Name="reclamation_id" ColumnName="reclamation_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sber">
+            <EntityTypeMapping TypeName="FusionDBModels.sber">
+              <MappingFragment StoreEntitySet="sber">
+                <ScalarProperty Name="restaurant" ColumnName="restaurant" />
+                <ScalarProperty Name="organization" ColumnName="organization" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="login" ColumnName="login" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

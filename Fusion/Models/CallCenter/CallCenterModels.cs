@@ -10,6 +10,9 @@ using FirebirdSql.Data.FirebirdClient;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text;
+using System.Net;
+using System.IO;
+using System.Web.Script.Serialization;
 
 namespace Fusion.Models.CallCenter
 {

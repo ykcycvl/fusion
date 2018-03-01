@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using System.Net.Sockets;
 using System.Threading;
+using System.Web.Script.Serialization;
 
 namespace Fusion.Models
 {
@@ -1192,6 +1193,167 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
 
             rdr.Close();
             con.Close();
+        }
+
+        public class Sberbank
+        {
+            public string OrderNumber { get; set; }
+            public string Restaurant { get; set; }
+            public string Organization { get; set; }
+            public string ErrorMessage { get; set; }
+            public Decimal Amount { get; set; }
+            public bool payed = false;
+            public void SearchOrderPayment(string orderNumber)
+            {
+                OrderNumber = orderNumber;
+                Entities db = new Entities();
+                var sberdata = db.sber.ToList();
+
+                Fusion.Sberbank.MerchantServiceImplService s = new Fusion.Sberbank.MerchantServiceImplService();
+
+                foreach (var sd in sberdata)
+                {
+                    string json = string.Empty;
+                    string url = String.Format(@"https://securepayments.sberbank.ru/payment/rest/getOrderStatusExtended.do?userName={0}&password={1}&language=ru&orderNumber={2}", sd.login, sd.password, orderNumber);
+
+                    try
+                    {
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                        request.UserAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
+                        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                        using (Stream stream = response.GetResponseStream())
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            json = reader.ReadToEnd();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string a005 = ex.Message;
+                    }
+
+                    if (!string.IsNullOrEmpty(json))
+                    {
+                        int status = -1;
+
+                        var serializer = new JavaScriptSerializer();
+                        var heapdata = serializer.DeserializeObject(json);
+                        var r = (Dictionary<string, object>)heapdata;
+                        object errorCode = null;
+                        r.TryGetValue("errorCode", out errorCode);
+                        object errorMessage = null;
+                        r.TryGetValue("errorMessage", out errorMessage);
+                        object amount = null;
+                        r.TryGetValue("amount", out amount);
+                        object orderStatus = null;
+                        r.TryGetValue("orderStatus", out orderStatus);
+
+                        if (errorCode == null)
+                            errorCode = "-1";
+
+                        if (errorMessage == null)
+                            errorMessage = "";
+
+                        if (amount == null)
+                            amount = "0";
+
+                        ErrorMessage = errorMessage.ToString();
+                        Amount = Convert.ToDecimal(amount) / 100;
+
+                        if (orderStatus != null)
+                            status = Convert.ToInt32(orderStatus);
+
+                        if (Convert.ToInt32(errorCode) == 0)
+                        {
+                            switch (status)
+                            {
+                                case 0:
+                                    ErrorMessage = "Создан";
+                                    break;
+                                case 1:
+                                    ErrorMessage = "1";
+                                    break;
+                                case 2:
+                                    ErrorMessage = "Завершен";
+                                    payed = true;
+                                    break;
+                                case 4:
+                                    ErrorMessage = "Возврат";
+                                    break;
+                                case 6:
+                                    ErrorMessage = "Отклонен";
+                                    break;
+                                default:
+                                    ErrorMessage = "Дефолт";
+                                    break;
+                            }
+
+                            Restaurant = sd.restaurant;
+                            Organization = sd.organization;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        ErrorMessage = "Заказ не обнаружен";
+                    }
+                }
+            }
+
+            public void PayCheck()
+            {
+                List<string> orders = new List<string>();
+
+                MySqlConnection con = GetConnection();
+                #region query
+                MySqlCommand com = new MySqlCommand(String.Format(@"
+select o.id
+from 
+  b_sale_order o
+  INNER JOIN b_sale_pay_system bsps ON o.PAY_SYSTEM_ID = bsps.ID
+WHERE
+  bsps.ID = 4
+  AND
+  o.DATE_STATUS > '{0}'
+  AND
+  o.PAYED <> 'Y'
+  AND
+  o.STATUS_ID NOT IN ('C', 'F')
+", DateTime.Today.ToString("yyyy-MM-dd")), con);
+                #endregion
+
+                MySqlDataReader rdr = com.ExecuteReader();
+
+                if (rdr.HasRows)
+                {
+                    while (rdr.Read())
+                    {
+                        orders.Add(rdr["id"].ToString());
+                    }
+                }
+
+                rdr.Close();
+
+                foreach (var order in orders)
+                {
+                    if (string.IsNullOrEmpty(order))
+                        continue;
+
+                    payed = false;
+                    SearchOrderPayment(order);
+
+                    if (payed)
+                    {
+                        com = new MySqlCommand(String.Format(@"UPDATE b_sale_order SET payed = 'Y' WHERE id = {0}", order), con);
+                        com.ExecuteNonQuery();
+                    }
+                }
+
+                con.Close();
+            }
         }
     }
     public class QuasiPhone

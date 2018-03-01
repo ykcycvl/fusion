@@ -193,5 +193,23 @@ namespace Fusion.Controllers
                 return View(response);
             }
         }
+
+        public void PayCheck()
+        {
+            InternetOrders.Sberbank model = new InternetOrders.Sberbank();
+            model.PayCheck();
+        }
+
+        public ActionResult Sberbank(string orderNumber)
+        {
+            InternetOrders.Sberbank model = new InternetOrders.Sberbank();
+
+            if (!String.IsNullOrEmpty(orderNumber))
+            {
+                model.SearchOrderPayment(orderNumber);
+            }
+
+            return View(model);
+        }
     }
 }

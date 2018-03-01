@@ -89,6 +89,7 @@
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
         <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_files" Width="1.5" PointX="7.5" PointY="7.125" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_files_reclamation_id" />
+        <EntityTypeShape EntityType="FusionDBModels.sber" Width="1.5" PointX="16.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

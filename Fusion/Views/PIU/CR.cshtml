@@ -1,0 +1,237 @@
+﻿@model Fusion.Models.PIU
+
+@{
+    ViewBag.Title = "Сводный отчет";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+<style>
+    #areaA {
+        margin: 0;
+        width: 100%;
+        height: 600px;
+        float: left;
+        padding: 0;
+    }
+
+    .webix_hcell {
+        height: 46px !important;
+        line-height: 23px !important;
+        text-align: center;
+    }
+
+    .webix_template {
+        padding: 0 !important;
+    }
+
+    .level1css {
+        font-weight: bold;
+        color: #000;
+        background-color: #b7dee8;
+    }
+
+    .level2css {
+        color: #000;
+    }
+
+    .level3css {
+        text-align: right;
+        font-style: italic;
+        color: #555;
+    }
+
+    .rightAlign {
+        text-align: right;
+    }
+
+    .factColumn {
+        text-align: right;
+        background-color: #ddd;
+    }
+
+    .normColumn {
+        border-left: 1px solid #000;
+        background: #b7e8c6;
+        text-align: right;
+    }
+
+    .planColumn {
+        text-align: right;
+    }
+
+    .divColumn {
+        text-align: right;
+        background-color: #ffddf3;
+        border-right: 1px solid #000;
+    }
+
+    .itogColumn {
+        text-align: right;
+        background-color: #c8c8c8;
+    }
+
+    .misMatch {
+        background-color: #ff8787;
+    }
+
+    .readonly {
+        background-color: #999;
+    }
+</style>
+
+<script type="text/javascript">
+    webix.ready(function () {
+        grid_rub = webix.ui({
+            container: "tabl_rub",
+            id: "grid_rub",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                @Html.Raw(Model.ColumnsRub)
+            ],
+            data: {
+                data: [
+                    @Html.Raw(Model.Data)
+                ]
+            },
+            on: {
+                onBeforeEditStart: function (id) {
+                    var row = id.row;
+                    return !this.getItem(row)["readonly"];
+                }
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 500,
+            math: true
+        });
+
+        //Проценты
+        grid_prc = webix.ui({
+            container: "tabl_prc",
+            id: "grid_prc",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                @Html.Raw(Model.ColumnsPrc)
+            ],
+            data: {
+                data: [
+                    @Html.Raw(Model.Data)
+                ]
+            },
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            height: 500,
+            math: true
+        });
+
+        var tabbar = {
+            view: "tabbar", type: "bottom", multiview: true, options: [
+                { value: "<span class='webix_icon fa-rub'></span><span style='padding-left: 4px'>ПиУ, руб.</span>", id: 'rubView' },
+                { value: "<span class='webix_icon fa-tasks'></span><span style='padding-left: 4px'>ПиУ, %</span>", id: 'prcView' },
+            ], height: 30
+        };
+        var data = {
+            cells: [
+                {
+                    id: "rubView",
+                    content: "areaRub",
+                    select: true
+                },
+                {
+                    id: "prcView",
+                    content: "areaPrc"
+                }
+            ]
+        };
+
+        webix.ui({
+            container: "areaA",
+            rows: [
+                data,
+                tabbar
+            ]
+        });
+    });
+
+    function ExportToExcelConsolidated() {
+        var grid = $$("grid_rub");
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        var serializedData = JSON.stringify(grid.serialize());
+        $("#tableData").val(serializedData);
+        $("#excelForm").submit();
+        return false;
+    }
+
+    function IsNumber(value){
+        if(typeof value == "undefined" || value == "")
+            return true;
+        else
+            return $.isNumeric(value);
+    }
+
+    function GetVal(val)
+    {
+        if (!IsNumber(val))
+            return '';
+        else
+            return val;
+    };
+
+    function markDiv(value, config) {
+        if (Math.abs(value) > config["maxDiv"])
+            return "misMatch";
+
+        return value;
+    }
+
+    function markRO(value, config) {
+        if (config["readonly"])
+            return "readonly";
+
+        return value;
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Период: <b>@Model.StartDate</b>
+        </div>
+    </div>
+</div>
+
+<div id="areaA"></div>
+<div id="areaRub">
+    <input type="button" value="Скачать Excel" onclick="ExportToExcelConsolidated()" class="btn btn-danger" style="float:right" />
+    <div id="tabl_rub"></div>
+    <form action="ExportToExcelConsolidated" method="post" target="_blank" id="excelForm">
+        <input type="hidden" name="data" id="tableData" />
+        <input type="hidden" name="period" id="period" value="@Model.StartDate" />
+    </form>
+</div>
+<div id="areaPrc">
+    <h3>Пиу, %</h3>
+    <div id="tabl_prc"></div>
+</div>
+
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
