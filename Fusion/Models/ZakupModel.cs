@@ -13,7 +13,7 @@ using System.Web.Script.Serialization;
 using Sh4Ole;
 using System.Text;
 using System.Data.SqlClient;
-using Microsoft.AspNet.SignalR;
+
 //using DevExtreme.AspNet;
 //using DevExtreme.AspNet.Mvc;
 namespace Fusion.Models
@@ -573,7 +573,7 @@ namespace Fusion.Models
                     mail.To.Add(new MailAddress(to));
                     mail.Subject = subject;
                     smtp.Host = "srv-ex00.fg.local";
-                    smtp.Port = 2525;
+                    smtp.Port = 587;
                     smtp.EnableSsl = true;
                     smtp.Credentials = new NetworkCredential("noreply", "123456zZ");
                     smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
