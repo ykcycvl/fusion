@@ -475,7 +475,14 @@ namespace Fusion.Controllers
             model.getUsers();
             model.getVendors();
             model.getReclamations();
-            model.sendReclamation(files);
+            try
+            {
+                model.sendReclamation(files);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Произошла ошибка, попробуйте отправить рекламацию еще раз", ex);
+            }
             return Redirect("~/Zakup/Reclamation");
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin, ZakupUser")]

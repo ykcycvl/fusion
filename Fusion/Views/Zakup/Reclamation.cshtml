@@ -9,7 +9,11 @@
         {
             it.comment = it.comment.Trim().Replace('"', '\'').Replace("\r\n", " ");
         }
-        tableData += "{id: \"" + it.id + "\", Details: \"" + it.id + "\", Date: \"" + it.date.ToShortDateString() + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", Сomment: \"" + it.comment + "\", State: \"" + it.bd_states.name + "\", Word: \"" + it.id + "\"";
+		if (it.solution != "" && it.solution != null)
+        {
+            it.solution = it.solution.Trim().Replace('"', '\'').Replace("\r\n", " ");
+        }
+        tableData += "{id: \"" + it.id + "\", Details: \"" + it.id + "\", Date: \"" + it.date.ToShortDateString() + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", Сomment: \"" + it.comment + "\", Solution: \"" + it.solution + "\", State: \"" + it.bd_states.name + "\", Word: \"" + it.id + "\"";
         tableData += "}, \r\n";
     }
 }
@@ -143,9 +147,10 @@
                 { id: "Restaurant", header: ["Ресторан", { content: "textFilter" }], sort: "string", width: 110 },
                 { id: "Vendor", header: ["Поставщик", { content: "textFilter" }], sort: "string", fillspace: true },
                 { id: "Nomenclature", header: ["Номенклатура", { content: "textFilter" }], sort: "string", fillspace: true },
-                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", fillspace: true },
-				{ id: "Сomment", header: "Примечание", width: 178 },
-                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", fillspace: true },
+                { id: "Problem", header: ["Проблема", { content: "textFilter" }], sort: "string", width:200 },
+				{ id: "Сomment", header: "Примечание", fillspace:true },
+                { id: "State", header: ["Статус", { content: "textFilter" }], sort: "string", width: 100 },
+                { id: "Solution", header: "Решение", sort: "string", fillspace:true },
                 {
                     id: "Word", header: "Word",
                     template: "<a href='/Zakup/ReclamationExport?reclamation_id=#id#'>Скачать</a>",
