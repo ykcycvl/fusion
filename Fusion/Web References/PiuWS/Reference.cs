@@ -663,6 +663,10 @@ namespace Fusion.PiuWS {
         
         private int levelField;
         
+        private string commentField;
+        
+        private bool confirmedField;
+        
         /// <remarks/>
         public string Code {
             get {
@@ -765,6 +769,26 @@ namespace Fusion.PiuWS {
             }
             set {
                 this.levelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string Comment {
+            get {
+                return this.commentField;
+            }
+            set {
+                this.commentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public bool Confirmed {
+            get {
+                return this.confirmedField;
+            }
+            set {
+                this.confirmedField = value;
             }
         }
     }

@@ -18,7 +18,7 @@
     }
 
     .toAllow {
-        color: #f00 !important;
+        color: #000 !important;
     }
 
     .webix_hcell {
@@ -61,6 +61,15 @@
         background: #b7e8c6;
         text-align: right;
     }
+
+    .checkColumn {
+        text-align: right;
+    }
+
+    .commentColumn {
+        text-align: left;
+        color: #ff8787;
+    } 
 
     .planColumn {
         text-align: right;
@@ -112,7 +121,7 @@
             clipboard: "block",
             navigation: "true",
             editaction: "dblclick",
-            height: 450,
+            height: 600,
             math: true
         });
 
@@ -123,70 +132,6 @@
 
         grid_rub.attachEvent("onPaste", function (code, e) {
             grid_rub.refreshColumns();
-        });
-
-        //Проценты
-        grid_prc = webix.ui({
-            container: "tabl_prc",
-            id: "grid_prc",
-            view: "datatable",
-            leftSplit: 2,
-            rowHeight: 23,
-            padding: 5,
-            columns: [
-                @Html.Raw(Model.ColumnsPrc)
-            ],
-            data: {
-                data: [
-                    @Html.Raw(Model.Data)
-                ]
-            },
-            editable: true,
-            select: "cell",
-            multiselect: true,
-            blockselect: true,
-            clipboard: "block",
-            navigation: "true",
-            editaction: "dblclick",
-            height: 500,
-            math: true
-        });
-
-        webix.UIManager.addHotKey("any", function (view) {
-            var pos = view.getSelectedId();
-            view.edit(pos);
-        }, grid_prc);
-
-        grid_prc.attachEvent("onPaste", function (code, e) {
-            grid_prc.refreshColumns();
-        });
-
-        var tabbar = {
-            view: "tabbar", type: "bottom", multiview: true, options: [
-                { value: "<span class='webix_icon fa-rub'></span><span style='padding-left: 4px'>ПиУ, руб.</span>", id: 'rubView' },
-                { value: "<span class='webix_icon fa-tasks'></span><span style='padding-left: 4px'>ПиУ, %</span>", id: 'prcView' },
-            ], height: 30
-        };
-        var data = {
-            cells: [
-                {
-                    id: "rubView",
-                    content: "areaRub",
-                    select: true
-                },
-                {
-                    id: "prcView",
-                    content: "areaPrc"
-                }
-            ]
-        };
-
-        webix.ui({
-            container: "areaA",
-            rows: [
-                data,
-                tabbar
-            ]
         });
     });
 
@@ -311,35 +256,15 @@
     </div>
 </div>
 
-<div id="areaA"></div>
 <div id="areaRub">
     <h3>ПиУ, руб.</h3>
-    @if (Model.ToConfirm && Model.CanConfirm)
-    {
-        <input type="button" value="Согласовать" onclick="Confirm()" class="btn btn-success" />
-    }
-    else
-    {
-        if (!Model.ToConfirm && !Model.CanConfirm && !Model.Confirmation)
-        {
-            <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
-            <input type="button" value="Отправить на согласование" onclick="ToConfirm()" class="btn btn-danger" />
-        }
-        else
-        {
-            <div class="alert">Документ находится на согласовании</div>
-        }
-    }
+    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
     <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
     <br/>
     <div id="tabl_rub"></div>
     <form action="ExportToExcel" method="post" target="_blank" id="excelForm">
         <input type="hidden" name="data" id="tableData" />
     </form>
-</div>
-<div id="areaPrc">
-    <h3>Пиу, %</h3>
-    <div id="tabl_prc"></div>
 </div>
 
 <div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
