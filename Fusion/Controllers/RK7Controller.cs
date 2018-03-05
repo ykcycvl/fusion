@@ -22,5 +22,11 @@ namespace Fusion.Controllers
             model = model.Deserialize(model.GetMenuItemsFromRK());
             return View(model);
         }
+        public ActionResult MenuPortions()
+        {
+            RK7APIModels model = new RK7APIModels();
+            model.getMenuItemsGeneratedProps();
+            return View(model.Props);
+        }
     }
 }

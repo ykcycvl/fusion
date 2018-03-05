@@ -6,6 +6,10 @@ using System.Net.Sockets;
 using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Data;
+using System.Data.SqlClient;
+using System.Xml;
+using System.Web.Configuration;
 using System.IO;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -14,6 +18,33 @@ namespace Fusion.Models
 {
     public class RK7APIModels
     {
+        public class MenuItemProperties
+        {
+            public string name { get; set; }
+            public string coef { get; set; }
+        }
+        public List<MenuItemProperties> Props { get; set; }
+        public void getMenuItemsGeneratedProps()
+        {
+            Props = new List<MenuItemProperties>();
+
+            string connectionstring = WebConfigurationManager.ConnectionStrings["RKConnectionString"].ConnectionString;
+            SqlConnection con = new SqlConnection(connectionstring);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader reader;
+            cmd.CommandText = "SELECT m.NAME, m.STATUS, g.PROPERTYVAL FROM GENERATEDPROPDATAS g LEFT JOIN MENUITEMS m ON m.SIFR = g.OBJECTIDENT WHERE g.RKTYPEIDENT = '1000002' AND m.STATUS = '3'";
+            cmd.CommandType = CommandType.Text;
+            cmd.Connection = con;
+
+            con.Open();
+
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Props.Add(new MenuItemProperties() { name = reader["NAME"].ToString(), coef = reader["PROPERTYVAL"].ToString() });
+            }
+            con.Close();
+        }
         public static string HttpPost(string PostData)
         {
             var request = (HttpWebRequest)WebRequest.Create("http://10.1.0.22:8095/Delivery/SendOrder");
@@ -87,7 +118,7 @@ namespace Fusion.Models
             { 
                 string query = @"<?xml version=""1.0"" encoding=""utf-8""?>
                     <RK7Query>
-                    <RK7CMD CMD=""GetRefDataFiltered"" RefName = ""MenuItems"">
+                    <RK7CMD CMD=""GetRefData"" RefName = ""MenuItems"">
    
                     </RK7CMD>
                     </RK7Query>";
