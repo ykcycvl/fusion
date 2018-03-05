@@ -5656,6 +5656,7 @@
     </Content>
     <Content Include="Views\PIU\View.cshtml" />
     <Content Include="Views\PIU\ViewPlan.cshtml" />
+    <Content Include="Views\RK7\MenuPortions.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
       <DependentUpon>Reference.map</DependentUpon>
