@@ -62,6 +62,15 @@
         text-align: right;
     }
 
+    .checkColumn {
+        text-align: right;
+    }
+
+    .commentColumn {
+        text-align: left;
+        color: #ff8787;
+    } 
+
     .planColumn {
         text-align: right;
         border-left: 1px solid #000;
@@ -249,22 +258,7 @@
 
 <div id="areaRub">
     <h3>ПиУ, руб.</h3>
-    @if (Model.ToConfirm && Model.CanConfirm)
-    {
-        <input type="button" value="Согласовать" onclick="Confirm()" class="btn btn-success" />
-    }
-    else
-    {
-        if (!Model.ToConfirm && !Model.CanConfirm && !Model.Confirmation)
-        {
-            <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
-            <input type="button" value="Отправить на согласование" onclick="ToConfirm()" class="btn btn-danger" />
-        }
-        else
-        {
-            <div class="alert">Документ находится на согласовании</div>
-        }
-    }
+    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
     <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
     <br/>
     <div id="tabl_rub"></div>

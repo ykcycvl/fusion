@@ -20,6 +20,8 @@
           <xs:element name="DataForPeriod" type="xs1:MasDataArticle" />
           <xs:element name="Allowed" type="xs1:GroupsCFR" />
           <xs:element name="Level" type="xs:int" />
+          <xs:element name="Comment" type="xs:string" />
+          <xs:element name="Confirmed" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Articles">

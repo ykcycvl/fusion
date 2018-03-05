@@ -302,7 +302,7 @@ namespace Fusion.Models
                 if (a != null && article.ToConfirm)
                     Confirmation = true;
 
-                if (a == null || !a.WriteRole || article.ToConfirm)
+                if (a == null || !a.WriteRole)
                     articleData += "{" + String.Format("id:\"{0}\", readonly:\"true\", allow:\"true\"", article.Code) + "},\r\n";
             }
 
@@ -357,7 +357,7 @@ namespace Fusion.Models
             }
 
             foreach (var child in article.Child)
-                articleData += ProcessArticle(child, userName, article.Code);
+                articleData += ProcessArticlePlan(child, userName, article.Code);
 
 
             this.ColumnsRub += "{id: \"itogPlan\", header: \"Итог<br/>План\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + planItogFormula + "\"},";
@@ -476,10 +476,20 @@ namespace Fusion.Models
                     r.TryGetValue("allow", out allow);
                     object toConfirm = null;
                     r.TryGetValue("toConfirm", out toConfirm);
+                    object confirmed = null;
+                    r.TryGetValue("confirmed", out confirmed);
+                    object comment = null;
+                    r.TryGetValue("comment", out comment);
 
                     //Если нет пометки "на согласование", значит статья не для согласования
                     if (toConfirm == null)
                         toConfirm = false;
+
+                    if (comment == null)
+                        comment = "";
+
+                    if (confirmed == null)
+                        Confirm = false;
 
                     //Если нет разрешения для редактирования статьи
                     if (allow == null)
@@ -508,13 +518,10 @@ namespace Fusion.Models
                             Level = Convert.ToInt32(level),
                             Name = name.ToString(),
                             ToConfirm = Convert.ToBoolean(toConfirm),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = comment.ToString(),
+                            Confirmed = Convert.ToBoolean(confirmed)
                         });
-
-                        if (Convert.ToBoolean(toConfirm))
-                        {
-                            string tres = "159";
-                        }
 
                         piu.Entries[0].Articles = articles.ToArray(); ;
 
@@ -557,7 +564,9 @@ namespace Fusion.Models
                             Level = Convert.ToInt32(level),
                             Name = name.ToString(),
                             ToConfirm = Convert.ToBoolean(toConfirm),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = comment.ToString(),
+                            Confirmed = Convert.ToBoolean(confirmed)
                         });
 
                         piu.Entries[0].Articles.Last().Child = articles.ToArray(); ;
@@ -601,7 +610,9 @@ namespace Fusion.Models
                             Level = Convert.ToInt32(level),
                             Name = name.ToString(),
                             ToConfirm = Convert.ToBoolean(toConfirm),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = comment.ToString(),
+                            Confirmed = Convert.ToBoolean(confirmed)
                         });
 
                         piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray(); ;
@@ -665,11 +676,7 @@ namespace Fusion.Models
 
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
             model.Timeout = 300000;
-
-            //bool b = model.Test(ar.ToArray());
-
             PiuWS.PIU t = model.GetPIUData2(UserName, Organization, DateTime.Parse(StartDate), DateTime.Parse(EndDate), "0");
-            //model.PutPIUData2("tv", "2018-01-01", t);
 
             var r = t.Reconciliations.FirstOrDefault(p => p.UserName == UserName);
 
@@ -731,6 +738,12 @@ namespace Fusion.Models
                 }
             }
 
+            if (t.Reconciliations.FirstOrDefault(p => p.UserName.ToLower() == this.UserName) != null)
+            {
+                this.ColumnsRub += "{ id:\"confirmed\", header:{ content:\"masterCheckbox\" }, checkValue:'on', uncheckValue:'off', template:\"{common.checkbox()}\", width:40, css: \"checkColumn\" }, ";
+                this.ColumnsRub += "{ id:\"comment\", header:\"Примечание\", editor: 'text', width: 250, css: \"commentColumn\" }";
+            }
+            
             this.Data = s;
         }
 
