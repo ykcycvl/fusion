@@ -39,21 +39,25 @@ namespace Fusion.Models
 
                 switch (value)
                 {
+                    case 0:
+                        StartDate = "01.01.2018";
+                        EndDate = "31.12.2018";
+                        break;
                     case 1:
                         StartDate = "01.01.2018";
-                        EndDate = "01.03.2018";
+                        EndDate = "31.03.2018";
                         break;
                     case 2:
                         StartDate = "01.04.2018";
-                        EndDate = "01.06.2018";
+                        EndDate = "30.06.2018";
                         break;
                     case 3:
                         StartDate = "01.07.2018";
-                        EndDate = "01.09.2018";
+                        EndDate = "30.09.2018";
                         break;
                     case 4:
                         StartDate = "01.10.2018";
-                        EndDate = "01.12.2018";
+                        EndDate = "31.12.2018";
                         break;
                 }
             }
@@ -79,6 +83,7 @@ namespace Fusion.Models
                 q.Add(new SelectListItem() { Text = "2 квартал", Value = "2" });
                 q.Add(new SelectListItem() { Text = "3 квартал", Value = "3" });
                 q.Add(new SelectListItem() { Text = "4 квартал", Value = "4" });
+                q.Add(new SelectListItem() { Text = "Год", Value = "0" });
                 return q;
             }
         }
