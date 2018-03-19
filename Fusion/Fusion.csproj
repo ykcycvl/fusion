@@ -2280,6 +2280,8 @@
     <Compile Include="Models\SHIFTS.cs">
       <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SKKModels.cs" />
+    <Compile Include="Models\SKKInterfaces.cs" />
     <Compile Include="Models\SmsMessageStatus.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
