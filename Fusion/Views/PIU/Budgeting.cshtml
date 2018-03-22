@@ -16,6 +16,9 @@
                 Квартал
             </th>
             <th>
+                Год
+            </th>
+            <th>
                 &nbsp;
             </th>
         </tr>
@@ -26,7 +29,10 @@
                     @Html.DropDownListFor(m => m.Organization, Model.OrganizationsSelectList, new { @class = "form-control" })
                 </td>
                 <td>
-                    @Html.DropDownListFor(m => m.Quarter, Model.Quarters, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.DropDownListFor(m => m.Period, Model.Periods, new { @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.Year, Model.Years, new { @class = "form-control", @readonly = "readonly" })
                 </td>
                 <td>
                     <input type="submit" class="btn btn-default" value="Показать" />

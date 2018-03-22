@@ -171,10 +171,10 @@
     });
 
     function ExportToExcelConsolidated() {
-        var grid = $$("grid_rub");
+        var rubgrid = $$("grid_rub");
         webix.message({ type: "default", text: "Подготовка данных..." });
-        var serializedData = JSON.stringify(grid.serialize());
-        $("#tableData").val(serializedData);
+        var serializedDataRUB = JSON.stringify(rubgrid.serialize());
+        $("#tableDataRUB").val(serializedDataRUB);
         $("#excelForm").submit();
         return false;
     }
@@ -223,7 +223,7 @@
     <input type="button" value="Скачать Excel" onclick="ExportToExcelConsolidated()" class="btn btn-danger" style="float:right" />
     <div id="tabl_rub"></div>
     <form action="ExportToExcelConsolidated" method="post" target="_blank" id="excelForm">
-        <input type="hidden" name="data" id="tableData" />
+        <input type="hidden" name="tableDataRUB" id="tableDataRUB" />
         <input type="hidden" name="period" id="period" value="@Model.StartDate" />
     </form>
 </div>

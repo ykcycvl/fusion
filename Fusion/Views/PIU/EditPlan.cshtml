@@ -1,7 +1,7 @@
 ﻿@model Fusion.Models.PIU
 
 @{
-    ViewBag.Title = "Редактирование ПИУ";
+    ViewBag.Title = "Бюджетирование";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
 }
 
@@ -111,6 +111,16 @@
             on: {
                 onBeforeEditStart: function (id) {
                     var row = id.row;
+                    var canConfirm = @Model.CanConfirm.ToString().ToLower();
+
+                    if (id.column == "comment")
+                    {
+                        if(canConfirm)
+                        {
+                            return true;
+                        }
+                    }
+
                     return !this.getItem(row)["readonly"];
                 }
             },
@@ -163,7 +173,7 @@
         webix.message({ type: "default", text: "Сохранение документа..." });
         $("#loader").show();
         var serializedData = grid_rub.serialize();
-        webix.ajax().post("/PIU/Save?organization=@Model.Organization&toConfirm=false&quarter=@Model.Quarter", { data: serializedData }, function (result) {
+        webix.ajax().post("/PIU/Save?organization=@Model.Organization&toConfirm=false&Period=@Model.Period&Year=@Model.Year", { data: serializedData }, function (result) {
             $("#loader").hide();
             var response = JSON.parse(result)
             webix.message({ type: response.result, text: response.message });
@@ -183,7 +193,7 @@
         webix.message({ type: "default", text: "Сохранение документа..." });
         $("#loader").show();
         var serializedData = grid_rub.serialize();
-        webix.ajax().post("/PIU/Save?organization=@Model.Organization&toConfirm=true&quarter=@Model.Quarter", { data: serializedData }, function (result) {
+        webix.ajax().post("/PIU/Save?organization=@Model.Organization&toConfirm=true&Period=@Model.Period&Year=@Model.Year", { data: serializedData }, function (result) {
             $("#loader").hide();
             var response = JSON.parse(result)
             webix.message({ type: response.result, text: response.message });
@@ -204,7 +214,7 @@
         webix.message({ type: "default", text: "Согласование..." });
         $("#loader").show();
         var serializedData = grid_rub.serialize();
-        webix.ajax().post("/PIU/Confirm?organization=@Model.Organization&date=@Model.StartDate", { data: serializedData }, function (result) {
+        webix.ajax().post("/PIU/Confirm?organization=@Model.Organization&Period=@Model.Period&Year=@Model.Year", { data: serializedData }, function (result) {
             $("#loader").hide();
             var response = JSON.parse(result)
             webix.message({ type: response.result, text: response.message });
@@ -257,9 +267,18 @@
 </div>
 
 <div id="areaRub">
-    <h3>ПиУ, руб.</h3>
-    <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
-    <input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
+    <button onclick="Save()" class="btn btn-circle btn-success" aria-label="Left Align" title="Сохранить">
+        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+    </button>
+    @if (!Model.CanConfirm)
+    {
+        <button onclick="ToConfirm()" class="btn btn-circle btn-primary" aria-label="Left Align" title="Отправить на согласование">
+            <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+        </button>
+    }
+    <button onclick="ExportToExcel()" class="btn btn-circle btn-danger" aria-label="Left Align" style="float: right" title="Экспорт в Excel">
+        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+    </button>
     <br/>
     <div id="tabl_rub"></div>
     <form action="ExportToExcel" method="post" target="_blank" id="excelForm">

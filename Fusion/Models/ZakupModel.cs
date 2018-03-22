@@ -564,22 +564,22 @@ namespace Fusion.Models
         }
         public void sendMail(string to, string body, string subject)
         {
-                using (SmtpClient smtp = new SmtpClient())
-                {
-                    MailMessage mail = new MailMessage();
-                    string FROM = "noreply@tokyo-bar.ru";
-                    mail.Body = body;
-                    mail.From = new MailAddress(FROM);
-                    mail.To.Add(new MailAddress(to));
-                    mail.Subject = subject;
-                    smtp.Host = "srv-ex00.fg.local";
-                    smtp.Port = 587;
-                    smtp.EnableSsl = true;
-                    smtp.Credentials = new NetworkCredential("noreply", "123456zZ");
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.Send(mail);
-                    mail.Dispose();
-                } 
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                MailMessage mail = new MailMessage();
+                string FROM = "noreply@tokyo-bar.ru";
+                mail.Body = body;
+                mail.From = new MailAddress(FROM);
+                mail.To.Add(new MailAddress(to));
+                mail.Subject = subject;
+                smtp.Host = "srv-ex00.fg.local";
+                smtp.Port = 2525;
+                smtp.EnableSsl = false;
+                smtp.Credentials = new NetworkCredential("noreply", "123456zZ");
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.Send(mail);
+                mail.Dispose();
+            }
         }
         public void getNomenclatures()
         {

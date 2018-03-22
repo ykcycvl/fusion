@@ -10,7 +10,7 @@ namespace Fusion.Models
 {
     public class PIU
     {
-        [Display(Name="Начало периода")]
+        [Display(Name = "Начало периода")]
         public string StartDate { get; set; }
         [Display(Name = "Конец периода")]
         public string EndDate { get; set; }
@@ -26,8 +26,18 @@ namespace Fusion.Models
         public bool Confirmed { get; set; }
         public bool CanConfirm { get; set; }
         private byte _quarter { get; set; }
+        private int _year { get; set; }
         public string OrgPool { get; set; }
-        public byte Quarter
+        public int Year
+        {
+            get { return _year; }
+            set
+            {
+                _year = value;
+                Period = _quarter;
+            }
+        }
+        public byte Period
         {
             get
             {
@@ -40,24 +50,24 @@ namespace Fusion.Models
                 switch (value)
                 {
                     case 0:
-                        StartDate = "01.01.2018";
-                        EndDate = "31.12.2018";
+                        StartDate = new DateTime(_year, 1, 1).ToString("dd.MM.yyyy");
+                        EndDate = new DateTime(_year, 12, 31).ToString("dd.MM.yyyy");
                         break;
                     case 1:
-                        StartDate = "01.01.2018";
-                        EndDate = "31.03.2018";
+                        StartDate = new DateTime(_year, 1, 1).ToString("dd.MM.yyyy");
+                        EndDate = new DateTime(_year, 3, 31).ToString("dd.MM.yyyy");
                         break;
                     case 2:
-                        StartDate = "01.04.2018";
-                        EndDate = "30.06.2018";
+                        StartDate = new DateTime(_year, 4, 1).ToString("dd.MM.yyyy");
+                        EndDate = new DateTime(_year, 6, 30).ToString("dd.MM.yyyy");
                         break;
                     case 3:
-                        StartDate = "01.07.2018";
-                        EndDate = "30.09.2018";
+                        StartDate = new DateTime(_year, 7, 1).ToString("dd.MM.yyyy");
+                        EndDate = new DateTime(_year, 9, 30).ToString("dd.MM.yyyy");
                         break;
                     case 4:
-                        StartDate = "01.10.2018";
-                        EndDate = "31.12.2018";
+                        StartDate = new DateTime(_year, 10, 1).ToString("dd.MM.yyyy");
+                        EndDate = new DateTime(_year, 12, 31).ToString("dd.MM.yyyy");
                         break;
                 }
             }
@@ -74,7 +84,7 @@ namespace Fusion.Models
             public List<PIUViewModel> ChildItems { get; set; }
         }
 
-        public IEnumerable<SelectListItem> Quarters
+        public IEnumerable<SelectListItem> Periods
         {
             get
             {
@@ -84,6 +94,22 @@ namespace Fusion.Models
                 q.Add(new SelectListItem() { Text = "3 квартал", Value = "3" });
                 q.Add(new SelectListItem() { Text = "4 квартал", Value = "4" });
                 q.Add(new SelectListItem() { Text = "Год", Value = "0" });
+                return q;
+            }
+        }
+        public IEnumerable<SelectListItem> Years
+        {
+            get
+            {
+                int initYear = DateTime.Today.Year;
+                List<SelectListItem> q = new List<SelectListItem>();
+
+                for (int i = 0; i < 5; i++)
+                {
+                    q.Add(new SelectListItem() { Text = initYear.ToString(), Value = initYear.ToString() });
+                    initYear++;
+                }
+
                 return q;
             }
         }
@@ -143,7 +169,7 @@ namespace Fusion.Models
         public void GetConsolidatedReport(string OrgPool)
         {
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            model.Timeout = 180000;
+            model.Timeout = 600000;
             PiuWS.PIU t = model.GetPIUData2(UserName, "", DateTime.Parse(StartDate), DateTime.Parse(StartDate), OrgPool);
 
             string s = "";
@@ -304,11 +330,13 @@ namespace Fusion.Models
             {
                 var a = article.Allowed.ToList().FirstOrDefault(p => p.NameCFR.ToLower() == userName.ToLower());
 
-                if (a != null && article.ToConfirm)
-                    Confirmation = true;
+                if(a != null)
+                    articleData += "{" + String.Format("id:\"{0}\", allow:\"true\"", article.Code) + "},\r\n";
+                else
+                    articleData += "{" + String.Format("id:\"{0}\", allow:\"false\"", article.Code) + "},\r\n";
 
-                if (a == null || !a.WriteRole)
-                    articleData += "{" + String.Format("id:\"{0}\", readonly:\"true\", allow:\"true\"", article.Code) + "},\r\n";
+                if(a == null && article.ToConfirm)
+                    articleData += "{" + String.Format("id:\"{0}\", readonly:\"true\"", article.Code) + "},\r\n";
             }
 
             this.ColumnsRub = "{id: \"id\", hidden: \"true\" },\r\n";
@@ -439,7 +467,7 @@ namespace Fusion.Models
             return articleData;
         }
 
-        public bool Save(string data, string UserName, bool ToConfirm, bool Confirm, string organization, string date)
+        public bool Save(string data, string UserName, bool ToConfirm, string organization)
         {
             bool res = false;
 
@@ -450,51 +478,37 @@ namespace Fusion.Models
                 PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
 
                 PiuWS.PIU piu = new PiuWS.PIU();
-                piu.DateStart = DateTime.Parse(date);
-                piu.DateEnd = DateTime.Parse(date);
+                piu.DateStart = DateTime.Parse(StartDate);
+                piu.DateEnd = DateTime.Parse(EndDate);
                 piu.Confirmed = false;
-
-                if (Confirm)
-                {
-                    piu.Reconciliations = new PiuWS.Reconciliation[0];
-                    piu.Reconciliations.ToList().Add(new PiuWS.Reconciliation() { UserName = UserName, Agreed = true });
-                }
 
                 List<PiuWS.Entry> entries = new List<PiuWS.Entry>();
                 entries.Add(new PiuWS.Entry() { Organization = new PiuWS.Organization() { Code = "", FullName = organization, Name = organization, ShortName = organization, Deleted = false }, Articles = new PiuWS.Article[0] });
                 piu.Entries = entries.ToArray();
-                piu.ToConfirm = true;
 
                 foreach (var undata in (Array)heapdata)
                 {
+                    bool toConfirm = false;
                     var r = (Dictionary<string, object>)undata;
 
                     object id = null;
                     r.TryGetValue("id", out id);
-                    object parent = null;
-                    r.TryGetValue("parent", out parent);
                     object level = null;
                     r.TryGetValue("level", out level);
                     object name = null;
                     r.TryGetValue("name", out name);
                     object allow = null;
                     r.TryGetValue("allow", out allow);
-                    object toConfirm = null;
-                    r.TryGetValue("toConfirm", out toConfirm);
                     object confirmed = null;
                     r.TryGetValue("confirmed", out confirmed);
                     object comment = null;
                     r.TryGetValue("comment", out comment);
 
-                    //Если нет пометки "на согласование", значит статья не для согласования
-                    if (toConfirm == null)
-                        toConfirm = false;
-
                     if (comment == null)
                         comment = "";
 
                     if (confirmed == null)
-                        Confirm = false;
+                        confirmed = false;
 
                     //Если нет разрешения для редактирования статьи
                     if (allow == null)
@@ -505,10 +519,6 @@ namespace Fusion.Models
                         toConfirm = true;
 
                     piu.Reconciliations = new PiuWS.Reconciliation[0];
-
-                    //Если хоть одна статья не была отправлена на согласование, весь документ остается в режиме редактирования и его не могут согласовать
-                    if (!Convert.ToBoolean(toConfirm))
-                        piu.ToConfirm = false;
 
                     if (level != null && level.ToString() == "1")
                     {
@@ -528,7 +538,7 @@ namespace Fusion.Models
                             Confirmed = Convert.ToBoolean(confirmed)
                         });
 
-                        piu.Entries[0].Articles = articles.ToArray(); ;
+                        piu.Entries[0].Articles = articles.ToArray();
 
                         var t = r.Where(p => p.Key.StartsWith("sumplan"));
 
@@ -574,7 +584,7 @@ namespace Fusion.Models
                             Confirmed = Convert.ToBoolean(confirmed)
                         });
 
-                        piu.Entries[0].Articles.Last().Child = articles.ToArray(); ;
+                        piu.Entries[0].Articles.Last().Child = articles.ToArray();
 
                         var t = r.Where(p => p.Key.StartsWith("sumplan"));
 
@@ -620,7 +630,7 @@ namespace Fusion.Models
                             Confirmed = Convert.ToBoolean(confirmed)
                         });
 
-                        piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray(); ;
+                        piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray();
 
                         var t = r.Where(p => p.Key.StartsWith("sumplan"));
 
@@ -651,14 +661,7 @@ namespace Fusion.Models
 
                 if (!String.IsNullOrEmpty(organization))
                 {
-                    if (Confirm)
-                    {
-                        List<PiuWS.Reconciliation> rec = new List<PiuWS.Reconciliation>();
-                        rec.Add(new PiuWS.Reconciliation() { UserName = UserName, Agreed = true });
-                        piu.Reconciliations = rec.ToArray();
-                    }
-
-                    model.PutPIUData2(UserName, DateTime.Parse(date), piu);
+                    model.PutPIUData2(UserName, DateTime.Parse(StartDate), piu);
                     res = true;
                 }
                 else
@@ -727,7 +730,8 @@ namespace Fusion.Models
             if (r == null)
                 CanConfirm = false;
 
-            if (r != null && r.Agreed)
+            //if (r != null && r.Agreed)
+            if (r != null)
             {
                 CanConfirm = true;
                 ToConfirm = false;
@@ -743,19 +747,23 @@ namespace Fusion.Models
                 }
             }
 
-            if (t.Reconciliations.FirstOrDefault(p => p.UserName.ToLower() == this.UserName) != null)
+            if (CanConfirm)
             {
-                this.ColumnsRub += "{ id:\"confirmed\", header:{ content:\"masterCheckbox\" }, checkValue:'on', uncheckValue:'off', template:\"{common.checkbox()}\", width:40, css: \"checkColumn\" }, ";
-                this.ColumnsRub += "{ id:\"comment\", header:\"Примечание\", editor: 'text', width: 250, css: \"commentColumn\" }";
+                this.ColumnsRub += "{ id:\"confirmed\", header:{ content:\"masterCheckbox\" }, checkValue:'true', uncheckValue:'false', template:\"{common.checkbox()}\", width:40, css: \"checkColumn\" }, ";
+                this.ColumnsRub += "{ id:\"comment\", header:\"Примечание\", editor: 'text', width: 300, css: \"commentColumn\" }";
+            }
+            else
+            {
+                this.ColumnsRub += "{ id:\"comment\", header:\"Примечание\", width: 300, css: \"commentColumn\" }";
             }
             
             this.Data = s;
         }
 
-        public void GetNorms(string UserName, string Organization, DateTime dt)
+        public void GetNorms(string UserName, string Organization)
         {
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            PiuWS.PIU piu = model.GetNorms2(UserName, Organization, dt);
+            PiuWS.PIU piu = model.GetNorms2(UserName, Organization, DateTime.Parse(StartDate));
 
             string s = "";
 
@@ -770,7 +778,7 @@ namespace Fusion.Models
             this.Data = s;
         }
 
-        public bool SaveNorms(string data, string UserName, string date)
+        public bool SaveNorms(string data, string UserName, string date, string Organization)
         {
             bool res = false;
 
@@ -834,7 +842,9 @@ namespace Fusion.Models
                             Name = name.ToString(),
                             ToConfirm = false,
                             SumNormMax = Convert.ToDecimal(maxDiv),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = "",
+                            Confirmed = false
                         });
 
                         piu.Entries[0].Articles = articles.ToArray();
@@ -862,7 +872,9 @@ namespace Fusion.Models
                             Name = name.ToString(),
                             ToConfirm = false,
                             SumNormMax = Convert.ToDecimal(maxDiv),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = "",
+                            Confirmed = false
                         });
 
                         piu.Entries[0].Articles.Last().Child = articles.ToArray();
@@ -890,7 +902,9 @@ namespace Fusion.Models
                             Name = name.ToString(),
                             ToConfirm = false,
                             SumNormMax = Convert.ToDecimal(maxDiv),
-                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray()
+                            DataForPeriod = new List<PiuWS.DataArticle>().ToArray(),
+                            Comment = "",
+                            Confirmed = false
                         });
 
                         piu.Entries[0].Articles.Last().Child.Last().Child = articles.ToArray();
@@ -905,7 +919,7 @@ namespace Fusion.Models
                     }
                 }
 
-                model.PutNorms2(UserName, DateTime.Parse(date), piu);
+                model.PutNorms2(UserName, Organization, DateTime.Parse(date), piu);
                 res = true;
             }
             catch (Exception ex)

@@ -29,6 +29,12 @@
                 <span class="pull-left">@Html.ActionLink("Свод", "Report")</span>
                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                 <div class="clearfix"></div>
+                @if (LoginViewModel.IsMemberOf(User.Identity.Name, "GD") || LoginViewModel.IsMemberOf(User.Identity.Name, "FD"))
+                {
+                    <span class="pull-left">@Html.ActionLink("Нормы", "Norms")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                }
             </div>
         </div>
     </div>

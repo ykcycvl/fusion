@@ -185,6 +185,7 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element name="UserName" type="xs:string" />
+            <xs:element name="Organization" type="xs:string" />
             <xs:element name="Period" type="xs:date" />
             <xs:element name="DataPIU" type="xs1:PIU" />
           </xs:sequence>

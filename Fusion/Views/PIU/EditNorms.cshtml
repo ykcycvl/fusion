@@ -1,0 +1,199 @@
+﻿@model Fusion.Models.PIU
+
+@{
+    ViewBag.Title = "Нормы";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
+<style>
+    #areaA {
+        margin: 0;
+        width: 100%;
+        height: 600px;
+        float: left;
+        padding: 0;
+    }
+
+    .webix_hcell {
+        height: 46px !important;
+        line-height: 23px !important;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .webix_template {
+        padding: 0 !important;
+    }
+
+    .level1css {
+        font-weight: bold;
+        color: #000;
+        background-color: #b7dee8;
+    }
+
+    .level2css {
+        color: #000;
+    }
+
+    .level3css {
+        text-align: right;
+        color: #555;
+    }
+
+    .rightAlign {
+        text-align: right;
+    }
+
+    .factColumn {
+        text-align: right;
+        background-color: #ddd;
+    }
+
+    .normColumn {
+        border-left: 1px solid #000;
+        background: #b7e8c6;
+        text-align: right;
+    }
+
+    .planColumn {
+        text-align: right;
+        border-left: 1px solid #000;
+    }
+
+    .divColumn {
+        text-align: right;
+        background-color: #ffddf3;
+    }
+
+    .itogColumn {
+        text-align: right;
+        background-color: #c8c8c8;
+    }
+
+    .misMatch {
+        background-color: #ff8787;
+    }
+
+    .readonly {
+        background-color: #999;
+    }
+</style>
+
+<script src="~/Scripts/jqueryui/ui/i18n/jquery.ui.datepicker-ru.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#Organization").change(function () {
+            $("#loader").show();
+            window.location.href = "/PIU/EditNorms?Organization=" + $("#Organization").val() + "&StartDate=@Model.StartDate";
+        });
+    });
+
+    webix.ready(function () {
+        grid_rub = webix.ui({
+            container: "tabl_rub",
+            id: "grid_rub",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                @Html.Raw(Model.ColumnsRub)
+            ],
+            data: {
+                data: [
+                    @Html.Raw(Model.Data)
+                ]
+            },
+            editable: true,
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 450,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid_rub);
+
+        grid_rub.attachEvent("onPaste", function (code, e) {
+            grid_rub.refreshColumns();
+        });
+    });
+
+    function ExportToExcel() {
+        var grid = $$("grid_rub");
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        var serializedData = JSON.stringify(grid.serialize());
+        $("#tableData").val(serializedData);
+        return false;
+    }
+
+    function GetVal(val) {
+        if (!IsNumber(val))
+            return '';
+        else
+            return val;
+    };
+
+    function IsNumber(value){
+        if (typeof value == "undefined" || value == "")
+            return true;
+        else
+        {
+            value.Replace(',', '.');
+            return $.isNumeric(value);
+        }
+    }
+
+    function Save() {
+        var grid_rub = $$("grid_rub");
+
+        if (!grid_rub.validate())
+        {
+            webix.message({ type: "error", text: "Сохранение невозможно, так как есть некорректные данные в таблице." });
+            return;
+        }
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var serializedData = grid_rub.serialize();
+        webix.ajax().post("/PIU/SaveNorms", { data: serializedData, date: '@Model.StartDate', Organization: '@Model.Organization' }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+</script>
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-3 text-center">
+        <div class=" alert alert-info">
+            Организация: @Html.DropDownListFor(m => m.Organization, Model.OrganizationsSelectList, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="col-md-2 text-center">
+        <div class=" alert alert-info">
+            Дата: @Html.TextBoxFor(m => m.StartDate, new { @class="form-control", @readonly="readonly" })
+        </div>
+    </div>
+</div>
+
+<input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
+<br />
+<div id="tabl_rub"></div>
+
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/031c63cfe7b947ed94b884816ad98b5b.gif') no-repeat center; display: none;z-index:9999;opacity:0.6;" id="loader">
+</div>
