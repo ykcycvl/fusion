@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Web.Configuration;
 
 
 namespace Fusion.Controllers
@@ -53,7 +54,7 @@ namespace Fusion.Controllers
             {
                 model.id = id;
                 #region dbConn
-                string connPRTS = @"server=10.1.0.90;user Id=feedback;database=feedback;port=3306;password=73915;";
+                string connPRTS = WebConfigurationManager.ConnectionStrings["FeedbackConnectionString"].ConnectionString;
                 MySqlConnection conn = new MySqlConnection(connPRTS);
                 bool testCon = true;
                 try
@@ -576,7 +577,7 @@ namespace Fusion.Controllers
             #endregion
 
             #region dbConn
-            string connPRTS = @"server=10.1.0.90;user Id=feedback;database=feedback;port=3306;password=73915;";
+            string connPRTS = WebConfigurationManager.ConnectionStrings["FeedbackConnectionString"].ConnectionString;
             MySqlConnection conn = new MySqlConnection(connPRTS);
             bool testCon = true;
             try
@@ -633,7 +634,7 @@ namespace Fusion.Controllers
                     mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
                     SmtpClient client = new SmtpClient();//ivermak@tokyo-bar.ru,ag@tokyo-bar.ru
                     client.Host = "srv-ex00.fg.local";//smtp.mail.ru
-                    client.Port = 587;
+                    client.Port = 25; //587
                     client.EnableSsl = true;
                     //для mail.ru - не сплитовать (полный адрес), для gmail и yandex - сплитовать
                     client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L"); //FROM.Split('@')[0]
@@ -671,7 +672,7 @@ namespace Fusion.Controllers
             mail.IsBodyHtml = true;
             SmtpClient client = new SmtpClient();
             client.Host = "srv-ex00.fg.local";
-            client.Port = 587;
+            client.Port = 25; //587
             client.EnableSsl = true;
             client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
             client.DeliveryMethod = SmtpDeliveryMethod.Network;

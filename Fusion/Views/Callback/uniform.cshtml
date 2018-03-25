@@ -64,6 +64,15 @@
                 case 'Маркетинг/сайт':
                     document.getElementById("markid").selected = true;
                     break
+                case 'Закуп':
+                    document.getElementById("zakupid").selected = true;
+                    break
+                case 'Тех. служба':
+                    document.getElementById("techid").selected = true;
+                    break
+                case 'Инф. тех.':
+                    document.getElementById("informid").selected = true;
+                    break
             }
         }
         //ресторан
@@ -134,6 +143,12 @@
             case 'БК':
                 document.getElementById("sbcid").selected = true;
                 break
+            case 'Почта':
+                document.getElementById("emailid").selected = true;
+                break
+            case 'Приложение':
+                document.getElementById("applicid").selected = true;
+                break
         }
         //рейтинг
         switch (document.getElementById("ratind").value) {
@@ -190,6 +205,15 @@
                 break
             case 'Прочее':
                 document.getElementById("otherid").selected = true;
+                break
+            case 'Предложение':
+                document.getElementById("offerid").selected = true;
+                break
+            case 'Коммерческое предложение':
+                document.getElementById("commerceofferid").selected = true;
+                break
+            case 'Неполный комплимент':
+                document.getElementById("setid").selected = true;
                 break
         }
         //кто оплатил
@@ -275,7 +299,10 @@
                     <option value="Доставка" id="gotoid">Доставка</option>
                     <option value="КЦ" id="ccid">КЦ</option>
                     <option value="БК" id="bcid">БК</option>
-                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>
+                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>                                        
+                    <option value="Закуп" id="zakupid">Отдел закупа</option>
+                    <option value="Тех. служба" id="techid">Тех. служба</option>
+                    <option value="Инф. тех." id="informid">Инф. тех.</option>
                 </select>
             </li>
             <li>
@@ -287,6 +314,9 @@
                     <option value="Качество/Сервис" id="quaservid">Качество/Сервис</option>
                     <option value="Скорость" id="speedid">Скорость</option>
                     <option value="Прочее" id="otherid">Прочее</option>
+                    <option value="Предложение" id="offerid">Качество/Сервис</option>
+                    <option value="Коммерческое предложение" id="commerceofferid">Скорость</option>
+                    <option value="Неполный комплимент" id="setid">Прочее</option>
                 </select>
             </li>
             <li>
@@ -328,6 +358,8 @@
                     <option value="Лично/Жалобная книга" id="bookid">Лично/Жалобная книга</option>
                     <option value="КЦ" id="sccid">КЦ</option>
                     <option value="БК" id="sbcid">БК</option>
+                    <option value="Почта" id="emailid">Почта</option>
+                    <option value="Приложение" id="applicid">Приложение</option>
                 </select>
             </li>
             <li>
