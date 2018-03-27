@@ -634,8 +634,8 @@ namespace Fusion.Controllers
                     mail.Subject = "Новый отзыв"; //добавить свич-кейс для определения ресторана и назначении разных тем письма
                     SmtpClient client = new SmtpClient();//ivermak@tokyo-bar.ru,ag@tokyo-bar.ru
                     client.Host = "srv-ex00.fg.local";//smtp.mail.ru
-                    client.Port = 25; //587
-                    client.EnableSsl = true;
+                    client.Port = 587; //587
+                    client.EnableSsl = false;
                     //для mail.ru - не сплитовать (полный адрес), для gmail и yandex - сплитовать
                     client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L"); //FROM.Split('@')[0]
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -672,8 +672,8 @@ namespace Fusion.Controllers
             mail.IsBodyHtml = true;
             SmtpClient client = new SmtpClient();
             client.Host = "srv-ex00.fg.local";
-            client.Port = 25; //587
-            client.EnableSsl = true;
+            client.Port = 587; //587
+            client.EnableSsl = false;
             client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             try
