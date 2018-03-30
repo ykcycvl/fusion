@@ -498,6 +498,9 @@ namespace Fusion.Controllers
             rubDT.Columns.Add("Итого факт", typeof(string));
             rubDT.Columns.Add("Итого откл.", typeof(string));
 
+            prcDT.Columns.Add("Ср. факт", typeof(string));
+            prcDT.Columns.Add("Ср. откл.", typeof(string));
+
             Dictionary<string, Decimal> MainSums = new Dictionary<string, decimal>();
 
             foreach (var undata in (Array)heapdata)
@@ -557,6 +560,8 @@ namespace Fusion.Controllers
                 Decimal.TryParse(itogFact.ToString(), out itogFactD);
                 Decimal.TryParse(itogDiv.ToString(), out itogDivD);
 
+                Decimal itogDivPrcD = 0;
+
                 row["Итого план"] = itogPlanD;
                 row["Итого факт"] = itogFactD;
                 row["Итого откл."] = itogDivD;
@@ -577,8 +582,14 @@ namespace Fusion.Controllers
                     row[o.Value.ToString() + " план"] = val.ToString("N", numberFormatInfo);
                 }
 
+                Decimal prcFactAvg = 0;
+                int cnt = 0;
+
+                Decimal prcNrm = 0;
+                Decimal.TryParse(prcNorm.ToString(), out prcNrm);
+
                 foreach (var c in sf)
-                {                    
+                {
                     Decimal val = 0;
                     object orgCode = null;
                     orgCode = c.Key.Split('_')[1].ToString();
@@ -598,15 +609,19 @@ namespace Fusion.Controllers
                     Decimal prc = 0;
 
                     if (MainSums[orgCode.ToString()] != 0)
-                        prc = (val / MainSums[orgCode.ToString()]) * 100;
-
-                    Decimal prcNrm = 0;
-                    Decimal.TryParse(prcNorm.ToString(), out prcNrm);
+                        prc = (val / MainSums[orgCode.ToString()]);
 
                     rowPrc["Норма " + o.Value.ToString()] = prcNrm.ToString("N", numberFormatInfo);
                     rowPrc["Факт " + o.Value.ToString()] = prc.ToString("N", numberFormatInfo);
                     rowPrc["Откл. " + o.Value.ToString()] = (prcNrm - prc).ToString("N", numberFormatInfo);
+                    cnt++;
+                    prcFactAvg += prc;
                 }
+
+                if (cnt == 0)
+                    cnt = 1;
+
+                prcFactAvg = prcFactAvg / cnt;
 
                 foreach (var c in dv)
                 {
@@ -623,6 +638,9 @@ namespace Fusion.Controllers
                     Decimal.TryParse(valObj.ToString(), out val);
                     row[o.Value.ToString() + " откл."] = val.ToString("N", numberFormatInfo);
                 }
+
+                rowPrc["Ср. факт"] = prcFactAvg;
+                rowPrc["Ср. откл."] = prcNrm - prcFactAvg;
 
                 rubDT.Rows.Add(row);
                 prcDT.Rows.Add(rowPrc);
@@ -771,6 +789,57 @@ namespace Fusion.Controllers
    <Interior ss:Color=""#DDEBF7"" ss:Pattern=""Solid""/>
    <NumberFormat ss:Format=""Standard""/>
   </Style>");
+            ExcelXML.Append(@"<Style ss:ID=""NormPrc"">
+   <Alignment ss:Vertical=""Bottom"" ss:WrapText=""1""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Left"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Right"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Top"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+   </Borders>
+   <Font ss:FontName=""Calibri"" ss:Color=""#000000"" ss:Bold=""1""/>
+   <Interior ss:Color=""#FFFFFF"" ss:Pattern=""Solid""/>
+   <NumberFormat ss:Format=""Percent""/>
+  </Style>");
+
+            ExcelXML.Append(@"<Style ss:ID=""NonPlanPrc"">
+<Alignment ss:Vertical=""Bottom"" ss:WrapText=""1""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Left"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Right"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Top"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+   </Borders>
+   <Font ss:FontName=""Calibri"" x:CharSet=""204"" x:Family=""Swiss"" ss:Color=""#000000""/>
+   <Interior ss:Color=""#DDDDDD"" ss:Pattern=""Solid""/>
+<NumberFormat ss:Format=""Percent""/>
+</Style>");
+
+            ExcelXML.Append(@"<Style ss:ID=""SubHeaderPrc"">
+<Alignment ss:Vertical=""Bottom"" ss:WrapText=""1""/>
+   <Borders>
+    <Border ss:Position=""Bottom"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Left"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Right"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+    <Border ss:Position=""Top"" ss:LineStyle=""Continuous"" ss:Weight=""1""
+     ss:Color=""#000000""/>
+   </Borders>
+   <Font ss:FontName=""Calibri"" x:CharSet=""204"" x:Family=""Swiss"" ss:Color=""#000000""
+    ss:Bold=""1""/>
+   <Interior ss:Color=""#B7DEE8"" ss:Pattern=""Solid""/>
+<NumberFormat ss:Format=""Percent""/>
+</Style>");
 
             ExcelXML.Append(@"</Styles>");
             #endregion
@@ -868,18 +937,18 @@ namespace Fusion.Controllers
                 for (int y = 0; y < dt.Columns.Count; y++)
                 {
                     if (dt.Columns[y].ColumnName.Contains("Норма"))
-                        styleID = "Plan";
+                        styleID = "NormPrc";
                     else
                     {
                         if (dt.Columns[y].ColumnName.Contains("Факт") || dt.Columns[y].ColumnName.Contains("Откл."))
-                            styleID = "NonPlan";
+                            styleID = "NonPlanPrc";
                     }
 
                     if (x[0].ToString().Trim() == "1")
                         styleID = "SubHeaderRegular";
 
                     if (x[0].ToString().Trim() == "1" && !dt.Columns[y].ColumnName.Contains("Наименование") && !dt.Columns[y].ColumnName.Contains("Уровень"))
-                        styleID = "SubHeaderNumber";
+                        styleID = "SubHeaderPrc";
 
                     if (x[0].ToString().Trim() == "3" && dt.Columns[y].ColumnName.Contains("Наименование"))
                         styleID = "ThirdLevel";

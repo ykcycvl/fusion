@@ -186,6 +186,8 @@ namespace Fusion.Models
 
             string planItogFormula = "";
             string factItogFormula = "";
+            string prcFactItogFormula = "(";
+            string prcDivItogFormula = "(";
 
             foreach (var entry in t.Entries)
             {
@@ -210,11 +212,23 @@ namespace Fusion.Models
 
                 planItogFormula += " + [$r, sumplan_" + entry.Organization.Code + "]";
                 factItogFormula += " + [$r, sumfact_" + entry.Organization.Code + "]";
+
+                prcFactItogFormula += " + [$r, prc_" + entry.Organization.Code + "]";
+                prcDivItogFormula += " + [$r, prcDiv_" + entry.Organization.Code + "]";
             }
+
+            if (i == 0)
+                i = 1;
+
+            prcFactItogFormula += ") / " + i.ToString();
+            prcDivItogFormula += ") / " + i.ToString();
 
             this.ColumnsRub += "{id: \"itogPlan\", header: \"Итог<br/>План\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + planItogFormula + "\"},";
             this.ColumnsRub += "{id: \"itogFact\", header: \"Итог<br/>Факт\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math: \"" + factItogFormula + "\"},";
             this.ColumnsRub += "{id: \"itogDiv\", header: \"Итог<br/>Откл.\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 0 }), math:\"[$r, itogPlan] - [$r, itogFact]\" },";
+
+            this.ColumnsPrc += "{id: \"itogFactPrc\", header: \"Итог<br/>Ср. факт\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), math: \"" + prcFactItogFormula + "\"},";
+            this.ColumnsPrc += "{id: \"itogDivPrc\", header: \"Итог<br/>Ср. откл.\", css: \"itogColumn\", format: webix.Number.numToStr({ groupDelimiter: \" \", groupSize: 3, decimalDelimiter: \".\", decimalSize: 2 }), math: \"" + prcDivItogFormula + "\"},";
             this.Data = s;
         }
 

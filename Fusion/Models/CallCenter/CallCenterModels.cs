@@ -284,7 +284,7 @@ namespace Fusion.Models.CallCenter
                                             CAST(dlo.apply_time as DATE) as apply_time,
                                         --    dlo.apply_time,
                                             SUM(dlo.order_summ) as order_summ,
-                                            SUM(dlo.payed_summ) as payed_summ,
+                                            SUM(dlo.SUMM_WCD) as SUMM_WCD,
                                             COUNT(dlo.ORDER_ID) as order_cnt
                                         FROM
                                             dlv_orders as dlo
@@ -292,9 +292,11 @@ namespace Fusion.Models.CallCenter
                                         WHERE
                                             deleted = 0
                                             AND
-                                            apply_time >= '{0}'
+                                            work_time >= '{0}'
                                             and
-                                            apply_time < '{1}'
+                                            work_time < '{1}'
+                                            and
+                                            dlo.status IN (2, 3, 4, 5, 8)
                                         GROUP BY dlo.operator_name, 2
                                         order BY
                                         apply_time,
@@ -312,7 +314,7 @@ namespace Fusion.Models.CallCenter
                         //od.applyDate = Convert.ToDateTime(rdr["apply_time"]).Day.ToString() + "." + Convert.ToDateTime(rdr["apply_time"]).Month.ToString() + "." + Convert.ToDateTime(rdr["apply_time"]).Year.ToString();
                         od.applyDate = String.Format("{0: dd.MM.yyyy}", Convert.ToDateTime(rdr["apply_time"]));
                         od.orderSum = rdr["order_summ"].ToString();
-                        od.payedSum = rdr["payed_summ"].ToString();
+                        od.payedSum = rdr["SUMM_WCD"].ToString();
                         od.ordersCount = rdr["order_cnt"].ToString();
                         CCOperatorsReportData.Add(od);
                     }
