@@ -41,6 +41,8 @@
             @Html.EditorFor(m => m.DateNEW1, new { @required = true, @type = "date", @ID = "daten1", @value = Model.DateNEW1 })
             @Html.EditorFor(m => m.DateNEW2, new { @required = true, @type = "date", @ID = "daten2", @value = Model.DateNEW2 })
             <button type="submit" class="btn btn-primary" id="">Вывести отзывы</button>
+            @* кнопка для отчёта *@
+            <button type="button" class="btn btn-danger" id="AddTransactionBtn">Отчет</button>
         </div>
 
         <div id="filters">
@@ -115,9 +117,7 @@
                 <option value="БК">БК</option>
                 <option value="Почта">Почта</option>
                 <option value="Приложение">Приложение</option>
-            </select>
-            @* кнопка для отчёта *@
-            <button type="button" class="btn btn-danger" id="AddTransactionBtn">Отчет</button>
+            </select>            
 
             <script>
                 $(function () {
