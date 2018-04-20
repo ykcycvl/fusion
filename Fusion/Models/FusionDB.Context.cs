@@ -30,12 +30,18 @@ namespace Fusion.Models
         public virtual DbSet<bd_category> bd_category { get; set; }
         public virtual DbSet<bd_employee> bd_employee { get; set; }
         public virtual DbSet<bd_measurement> bd_measurement { get; set; }
+        public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
+        public virtual DbSet<bd_nomenclature_state> bd_nomenclature_state { get; set; }
+        public virtual DbSet<bd_order> bd_order { get; set; }
         public virtual DbSet<bd_organization> bd_organization { get; set; }
         public virtual DbSet<bd_reclamation> bd_reclamation { get; set; }
+        public virtual DbSet<bd_reclamation_files> bd_reclamation_files { get; set; }
         public virtual DbSet<bd_reclamation_problems> bd_reclamation_problems { get; set; }
+        public virtual DbSet<bd_rests> bd_rests { get; set; }
         public virtual DbSet<bd_states> bd_states { get; set; }
         public virtual DbSet<bd_subdivision> bd_subdivision { get; set; }
         public virtual DbSet<bd_vendor> bd_vendor { get; set; }
+        public virtual DbSet<bitrixUser> bitrixUser { get; set; }
         public virtual DbSet<CRMSegment> CRMSegment { get; set; }
         public virtual DbSet<CRMSended> CRMSended { get; set; }
         public virtual DbSet<CRMToSend> CRMToSend { get; set; }
@@ -59,18 +65,12 @@ namespace Fusion.Models
         public virtual DbSet<sb_restaurants> sb_restaurants { get; set; }
         public virtual DbSet<sb_rights> sb_rights { get; set; }
         public virtual DbSet<sb_top> sb_top { get; set; }
+        public virtual DbSet<sber> sber { get; set; }
         public virtual DbSet<server> server { get; set; }
         public virtual DbSet<stoplist> stoplist { get; set; }
         public virtual DbSet<storage> storage { get; set; }
         public virtual DbSet<VegaPersonalSetting> VegaPersonalSetting { get; set; }
         public virtual DbSet<VegaSetting> VegaSetting { get; set; }
         public virtual DbSet<hostip> hostip { get; set; }
-        public virtual DbSet<bd_nomenclature_state> bd_nomenclature_state { get; set; }
-        public virtual DbSet<bd_rests> bd_rests { get; set; }
-        public virtual DbSet<bitrixUser> bitrixUser { get; set; }
-        public virtual DbSet<bd_nomenclature> bd_nomenclature { get; set; }
-        public virtual DbSet<bd_order> bd_order { get; set; }
-        public virtual DbSet<bd_reclamation_files> bd_reclamation_files { get; set; }
-        public virtual DbSet<sber> sber { get; set; }
     }
 }

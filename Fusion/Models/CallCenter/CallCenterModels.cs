@@ -281,7 +281,7 @@ namespace Fusion.Models.CallCenter
 
                 FbCommand fbcmd = new FbCommand(String.Format(@"SELECT
                                             dlo.operator_name,
-                                            CAST(dlo.apply_time as DATE) as apply_time,
+                                            CAST(dlo.wait_delivery_time as DATE) as apply_time,
                                         --    dlo.apply_time,
                                             SUM(dlo.order_summ) as order_summ,
                                             SUM(dlo.SUMM_WCD) as SUMM_WCD,
@@ -292,15 +292,15 @@ namespace Fusion.Models.CallCenter
                                         WHERE
                                             deleted = 0
                                             AND
-                                            work_time >= '{0}'
+                                            wait_delivery_time >= '{0}'
                                             and
-                                            work_time < '{1}'
+                                            wait_delivery_time <= '{1}'
                                             and
                                             dlo.status IN (2, 3, 4, 5, 8)
                                         GROUP BY dlo.operator_name, 2
                                         order BY
                                         apply_time,
-										dlo.operator_name", start_dt, end_dt.AddDays(1).ToShortDateString()), fbcon);
+										dlo.operator_name", start_dt.ToString("dd.MM.yyyy 05:00"), end_dt.AddDays(1).ToString("dd.MM.yyyy 05:00")), fbcon);
 
                 string ttt = fbcmd.CommandText;
                 FbDataReader rdr = fbcmd.ExecuteReader();

@@ -30,11 +30,11 @@ namespace Fusion.Models
         public Nullable<int> state_id { get; set; }
         public string comment { get; set; }
     
-        public virtual bd_reclamation_problems bd_reclamation_problems { get; set; }
-        public virtual bd_subdivision bd_subdivision { get; set; }
-        public virtual bd_vendor bd_vendor { get; set; }
-        public virtual bd_states bd_states { get; set; }
         public virtual bd_nomenclature bd_nomenclature { get; set; }
         public virtual ICollection<bd_reclamation_files> bd_reclamation_files { get; set; }
+        public virtual bd_reclamation_problems bd_reclamation_problems { get; set; }
+        public virtual bd_subdivision bd_subdivision { get; set; }
+        public virtual bd_states bd_states { get; set; }
+        public virtual bd_vendor bd_vendor { get; set; }
     }
 }

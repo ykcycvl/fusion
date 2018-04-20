@@ -16,14 +16,14 @@ namespace Fusion.Models
     {
         public bd_states()
         {
-            this.bd_reclamation = new HashSet<bd_reclamation>();
             this.bd_order = new HashSet<bd_order>();
+            this.bd_reclamation = new HashSet<bd_reclamation>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
     
-        public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
         public virtual ICollection<bd_order> bd_order { get; set; }
+        public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
     }
 }

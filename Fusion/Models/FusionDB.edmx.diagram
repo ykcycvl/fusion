@@ -5,52 +5,73 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="76b99e2d78ed4ba4bda89c52469b6478" Name="Diagram1">
-        <EntityTypeShape EntityType="FusionDBModels.Article" Width="1.5" PointX="3" PointY="19.75" />
-        <EntityTypeShape EntityType="FusionDBModels.ArticleCategory" Width="1.5" PointX="0.75" PointY="20.25" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="13.375" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_employee" Width="1.5" PointX="5.25" PointY="11" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="16" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_organization" Width="1.5" PointX="0.75" PointY="6.875" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation" Width="1.5" PointX="5.25" PointY="6" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_problems" Width="1.5" PointX="3" PointY="2.75" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_states" Width="1.5" PointX="5.25" PointY="14.125" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_subdivision" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_vendor" Width="1.5" PointX="0.75" PointY="10.125" />
-        <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="15" PointY="17" />
-        <EntityTypeShape EntityType="FusionDBModels.CRMSended" Width="1.5" PointX="19.75" PointY="5.5" />
-        <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="17.25" PointY="20.375" />
-        <EntityTypeShape EntityType="FusionDBModels.DLVOrder" Width="1.5" PointX="17.75" PointY="17" />
-        <EntityTypeShape EntityType="FusionDBModels.DLVOrderLog" Width="1.5" PointX="20" PointY="16.625" />
-        <EntityTypeShape EntityType="FusionDBModels.EmailStatus" Width="1.5" PointX="15" PointY="23.75" />
-        <EntityTypeShape EntityType="FusionDBModels.EmailTemplate" Width="1.5" PointX="12.75" PointY="18.625" />
-        <EntityTypeShape EntityType="FusionDBModels.host" Width="1.5" PointX="19.75" PointY="9.5" />
-        <EntityTypeShape EntityType="FusionDBModels.iptable" Width="1.5" PointX="16.75" PointY="1.875" />
-        <EntityTypeShape EntityType="FusionDBModels.Mail" Width="1.5" PointX="15" PointY="20.5" />
-        <EntityTypeShape EntityType="FusionDBModels.mc_extra" Width="1.5" PointX="10" PointY="16.75" />
-        <EntityTypeShape EntityType="FusionDBModels.mc_task" Width="1.5" PointX="7.75" PointY="17.75" />
-        <EntityTypeShape EntityType="FusionDBModels.mc_userTask" Width="1.5" PointX="10" PointY="19.5" />
-        <EntityTypeShape EntityType="FusionDBModels.ortus_log" Width="1.5" PointX="19.75" PointY="12.5" />
-        <EntityTypeShape EntityType="FusionDBModels.p_status" Width="1.5" PointX="9.75" PointY="12.625" />
-        <EntityTypeShape EntityType="FusionDBModels.p_task" Width="1.5" PointX="12" PointY="12.25" />
-        <EntityTypeShape EntityType="FusionDBModels.p_taskChecklist" Width="1.5" PointX="14.25" PointY="12.25" />
-        <EntityTypeShape EntityType="FusionDBModels.p_userTask" Width="1.5" PointX="17.25" PointY="12.625" />
-        <EntityTypeShape EntityType="FusionDBModels.sb_managers" Width="1.5" PointX="12" PointY="3.25" />
-        <EntityTypeShape EntityType="FusionDBModels.sb_problems" Width="1.5" PointX="14.25" PointY="3.25" />
-        <EntityTypeShape EntityType="FusionDBModels.sb_restaurants" Width="1.5" PointX="9.75" PointY="3.5" />
-        <EntityTypeShape EntityType="FusionDBModels.sb_rights" Width="1.5" PointX="9.75" PointY="0.75" />
-        <EntityTypeShape EntityType="FusionDBModels.sb_top" Width="1.5" PointX="12" PointY="6.75" />
-        <EntityTypeShape EntityType="FusionDBModels.server" Width="1.5" PointX="19" PointY="1.625" />
-        <EntityTypeShape EntityType="FusionDBModels.stoplist" Width="1.5" PointX="19.75" PointY="20.5" />
-        <EntityTypeShape EntityType="FusionDBModels.storage" Width="1.5" PointX="5.75" PointY="21.5" />
-        <EntityTypeShape EntityType="FusionDBModels.VegaPersonalSetting" Width="1.5" PointX="17" PointY="7.75" />
-        <EntityTypeShape EntityType="FusionDBModels.VegaSetting" Width="1.5" PointX="14.75" PointY="7.625" />
-        <EntityTypeShape EntityType="FusionDBModels.hostip" Width="1.5" PointX="2.75" PointY="17.5" />
+        <EntityTypeShape EntityType="FusionDBModels.Article" Width="1.5" PointX="22" PointY="16.5" />
+        <EntityTypeShape EntityType="FusionDBModels.ArticleCategory" Width="1.5" PointX="19.75" PointY="17" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_employee" Width="1.5" PointX="6" PointY="15.625" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="2" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="1.5" PointX="0.75" PointY="11" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="8.25" PointY="4.125" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_organization" Width="1.5" PointX="1.5" PointY="15.625" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_files" Width="1.5" PointX="7.5" PointY="9.375" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_problems" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_rests" Width="1.5" PointX="6" PointY="18.625" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_states" Width="1.5" PointX="6" PointY="0.75" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_subdivision" Width="1.5" PointX="3.75" PointY="15.25" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_vendor" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="2.75" PointY="9.25" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMSegment" Width="1.5" PointX="20" PointY="4.75" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMSended" Width="1.5" PointX="4.75" PointY="9.25" />
+        <EntityTypeShape EntityType="FusionDBModels.CRMToSend" Width="1.5" PointX="22.25" PointY="1.625" />
+        <EntityTypeShape EntityType="FusionDBModels.DLVOrder" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="FusionDBModels.DLVOrderLog" Width="1.5" PointX="3" PointY="19.375" />
+        <EntityTypeShape EntityType="FusionDBModels.EmailStatus" Width="1.5" PointX="20" PointY="9" />
+        <EntityTypeShape EntityType="FusionDBModels.EmailTemplate" Width="1.5" PointX="17.75" PointY="3.375" />
+        <EntityTypeShape EntityType="FusionDBModels.host" Width="1.5" PointX="10.75" PointY="7.25" />
+        <EntityTypeShape EntityType="FusionDBModels.iptable" Width="1.5" PointX="8.75" PointY="18.625" />
+        <EntityTypeShape EntityType="FusionDBModels.Mail" Width="1.5" PointX="20" PointY="1.75" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_extra" Width="1.5" PointX="17" PointY="15.5" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_task" Width="1.5" PointX="14.75" PointY="16.5" />
+        <EntityTypeShape EntityType="FusionDBModels.mc_userTask" Width="1.5" PointX="17" PointY="18.25" />
+        <EntityTypeShape EntityType="FusionDBModels.ortus_log" Width="1.5" PointX="6.75" PointY="12.25" />
+        <EntityTypeShape EntityType="FusionDBModels.p_status" Width="1.5" PointX="10.75" PointY="3.375" />
+        <EntityTypeShape EntityType="FusionDBModels.p_task" Width="1.5" PointX="13" PointY="3" />
+        <EntityTypeShape EntityType="FusionDBModels.p_taskChecklist" Width="1.5" PointX="15.25" PointY="6" />
+        <EntityTypeShape EntityType="FusionDBModels.p_userTask" Width="1.5" PointX="15.25" PointY="2.25" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_managers" Width="1.5" PointX="12" PointY="11" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_problems" Width="1.5" PointX="14.25" PointY="11" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_restaurants" Width="1.5" PointX="9.75" PointY="11.25" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_rights" Width="1.5" PointX="9.75" PointY="14.5" />
+        <EntityTypeShape EntityType="FusionDBModels.sb_top" Width="1.5" PointX="12" PointY="14.5" />
+        <EntityTypeShape EntityType="FusionDBModels.sber" Width="1.5" PointX="13.75" PointY="20.25" />
+        <EntityTypeShape EntityType="FusionDBModels.server" Width="1.5" PointX="11" PointY="18.375" />
+        <EntityTypeShape EntityType="FusionDBModels.stoplist" Width="1.5" PointX="15.75" PointY="21.25" />
+        <EntityTypeShape EntityType="FusionDBModels.storage" Width="1.5" PointX="17.75" PointY="21.25" />
+        <EntityTypeShape EntityType="FusionDBModels.VegaPersonalSetting" Width="1.5" PointX="19" PointY="12.5" />
+        <EntityTypeShape EntityType="FusionDBModels.VegaSetting" Width="1.5" PointX="16.75" PointY="12.375" />
+        <EntityTypeShape EntityType="FusionDBModels.hostip" Width="1.5" PointX="8.75" PointY="1.25" />
         <AssociationConnector Association="FusionDBModels.FK_Article_ArticleCategory" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_category_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_category_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_employee_subdiv_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_employee" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_measurement_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_measurement_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_vendor_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_order_state" />
         <AssociationConnector Association="FusionDBModels.FK_bd_subdivision_organization_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_files_reclamation_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_problem_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_restaurant_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_state_id" />
         <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_vendor_id" />
+        <AssociationConnector Association="FusionDBModels.FK_bd_rests_restaurant_id" />
         <AssociationConnector Association="FusionDBModels.FK_CRMSegment_EmailTemplate" />
         <AssociationConnector Association="FusionDBModels.FK_CRMToSend_CRMToSend" />
         <AssociationConnector Association="FusionDBModels.FK_CRMToSend_Mail" />
@@ -69,27 +90,6 @@
         <AssociationConnector Association="FusionDBModels.FK_sb_top_restaurant_id" />
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <AssociationConnector Association="FusionDBModels.serverip" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_state_id" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="3.75" PointX="0.75" PointY="4.375" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_rests" Width="1.5" PointX="5.25" PointY="17.25" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_rests_restaurant_id" />
-        <EntityTypeShape EntityType="FusionDBModels.bitrixUser" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="5.25" PointY="24.625" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="7.5" PointY="10.25" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_category_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_category_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_employee" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_measurement_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_measurement_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_state" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_nomenclature_vendor_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_nomenclature_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_organization_id" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_order_state" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_nomenclature_id" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_reclamation_files" Width="1.5" PointX="7.5" PointY="7.125" />
-        <AssociationConnector Association="FusionDBModels.FK_bd_reclamation_files_reclamation_id" />
-        <EntityTypeShape EntityType="FusionDBModels.sber" Width="1.5" PointX="16.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -16,8 +16,8 @@ namespace Fusion.Models
     {
         public bd_vendor()
         {
-            this.bd_reclamation = new HashSet<bd_reclamation>();
             this.bd_nomenclature = new HashSet<bd_nomenclature>();
+            this.bd_reclamation = new HashSet<bd_reclamation>();
         }
     
         public int id { get; set; }
@@ -27,7 +27,7 @@ namespace Fusion.Models
         public string INN { get; set; }
         public string KPP { get; set; }
     
-        public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
         public virtual ICollection<bd_nomenclature> bd_nomenclature { get; set; }
+        public virtual ICollection<bd_reclamation> bd_reclamation { get; set; }
     }
 }

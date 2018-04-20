@@ -583,7 +583,7 @@ namespace Fusion.Models
         }
         public void getNomenclatures()
         {
-            items = list.bd_nomenclature.OrderBy(m => m.vendor_id).ToList();
+            items = list.bd_nomenclature.Where(p => p.state == 1).OrderBy(m => m.vendor_id).ToList();
             nomeclature_states = list.bd_nomenclature_state.ToList();
             categ = list.bd_category.ToList();
             maesurements = list.bd_measurement.ToList();
@@ -887,7 +887,7 @@ namespace Fusion.Models
                 items1 item = new items1();
                 item.id = Int32.Parse(id.ToString());
                 item.name = name.ToString();
-                item.price = Int32.Parse(price.ToString());
+                item.price = Decimal.Parse(price.ToString());
                 item.vendor_name = vendor_name.ToString();
                 item.vendor_id = vendorList.FirstOrDefault(m => m.name == item.vendor_name).id;
                 item.measurement_name = measurement_name.ToString();
