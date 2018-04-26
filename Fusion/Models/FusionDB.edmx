@@ -62,8 +62,8 @@
           <Property Name="category_id" Type="int" Nullable="false" />
           <Property Name="vendor_id" Type="int" Nullable="false" />
           <Property Name="measurement_id" Type="int" Nullable="false" />
-          <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
-          <Property Name="Count" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Price" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="Count" Type="numeric" Precision="18" Scale="2" />
           <Property Name="state" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="bd_nomenclature_state">
@@ -83,7 +83,7 @@
           <Property Name="date" Type="datetime" />
           <Property Name="measurement_id" Type="int" />
           <Property Name="category_id" Type="int" />
-          <Property Name="count" Type="numeric" Precision="6" Scale="2" />
+          <Property Name="count" Type="numeric" Precision="18" Scale="2" />
           <Property Name="organization_id" Type="int" />
           <Property Name="date_end" Type="datetime" />
           <Property Name="comment" Type="varchar" MaxLength="500" />
@@ -1427,8 +1427,8 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="category_id" Type="Int32" Nullable="false" />
           <Property Name="vendor_id" Type="Int32" Nullable="false" />
           <Property Name="measurement_id" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Count" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Count" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="state" Type="Int32" Nullable="false" />
           <NavigationProperty Name="bd_category" Relationship="FusionDBModels.FK_bd_nomenclature_category_id" FromRole="bd_nomenclature" ToRole="bd_category" />
           <NavigationProperty Name="bd_measurement" Relationship="FusionDBModels.FK_bd_nomenclature_measurement_id" FromRole="bd_nomenclature" ToRole="bd_measurement" />
@@ -1455,7 +1455,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <Property Name="date" Type="DateTime" Precision="3" />
           <Property Name="measurement_id" Type="Int32" />
           <Property Name="category_id" Type="Int32" />
-          <Property Name="count" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="count" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="organization_id" Type="Int32" />
           <Property Name="date_end" Type="DateTime" Precision="3" />
           <Property Name="comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />

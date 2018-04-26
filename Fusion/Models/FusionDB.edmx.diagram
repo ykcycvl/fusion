@@ -4,14 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="76b99e2d78ed4ba4bda89c52469b6478" Name="Diagram1">
+      <Diagram DiagramId="76b99e2d78ed4ba4bda89c52469b6478" Name="Diagram1" ZoomLevel="86">
         <EntityTypeShape EntityType="FusionDBModels.Article" Width="1.5" PointX="22" PointY="16.5" />
         <EntityTypeShape EntityType="FusionDBModels.ArticleCategory" Width="1.5" PointX="19.75" PointY="17" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="8.5" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_category" Width="1.5" PointX="0.75" PointY="11.875" />
         <EntityTypeShape EntityType="FusionDBModels.bd_employee" Width="1.5" PointX="6" PointY="15.625" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="2" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_measurement" Width="1.5" PointX="0.75" PointY="9.25" />
         <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature" Width="1.5" PointX="3" PointY="4.5" />
-        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="1.5" PointX="0.75" PointY="11" />
+        <EntityTypeShape EntityType="FusionDBModels.bd_nomenclature_state" Width="1.5" PointX="0.75" PointY="2" />
         <EntityTypeShape EntityType="FusionDBModels.bd_order" Width="1.5" PointX="8.25" PointY="4.125" />
         <EntityTypeShape EntityType="FusionDBModels.bd_organization" Width="1.5" PointX="1.5" PointY="15.625" />
         <EntityTypeShape EntityType="FusionDBModels.bd_reclamation" Width="1.5" PointX="5.25" PointY="4.25" />
