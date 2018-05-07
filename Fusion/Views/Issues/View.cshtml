@@ -1,0 +1,24 @@
+﻿@model Fusion.Models.IssuesModels.IssueModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>@Model.Title</h3>
+@Html.Raw(Model.Content)
+
+<div class="row">
+    <div class="col-md-5 alert alert-success">
+        <small>Автор: @Model.Author</small>
+        <br/>
+        <small>Создан: @Model.Created.ToString("dd.MM.yyyy")</small>
+    </div>
+    <div class="col-md-5 col-md-offset-2 alert alert-success">
+        <small>Последнее изменение: @Model.LastModified</small>
+        <br />
+        <small>Последний изменивший: @Model.LastEditor</small>
+    </div>
+</div>
+<div class="row">
+    <small>@Model.Tags</small>
+</div>

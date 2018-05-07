@@ -1,0 +1,33 @@
+﻿@model List<Fusion.Models.Issue>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>База знаний</h2>
+@if (LoginViewModel.IsMemberOf(User.Identity.Name, "Knowledge Base Adm"))
+{
+    @Html.ActionLink("Добавить", "New", "Issues", new { @class = "btn btn-default btn-xs" })
+}
+
+<table class="table table-responsive">
+    @foreach (var i in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(i.id.ToString(), "View", new { @id = i.id })
+            </td>
+            <td>
+                @Html.ActionLink(i.Title, "View", new { @id = i.id })
+                <br />
+                <span style="font-size: 10px">@i.Tags</span>
+            </td>
+            <td>
+                @i.Created.ToString("dd.MM.yyyy")
+            </td>
+            <td>
+                @i.Author
+            </td>
+        </tr>
+    }
+</table>

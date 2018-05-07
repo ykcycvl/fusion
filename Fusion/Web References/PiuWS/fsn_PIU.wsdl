@@ -35,6 +35,7 @@
           <xs:element name="SumPlan" type="xs:decimal" />
           <xs:element name="SumNorm" type="xs:decimal" />
           <xs:element name="Period" type="xs:dateTime" />
+          <xs:element name="SumNorm2" type="xs:decimal" />
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="Entries">

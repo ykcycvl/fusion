@@ -575,6 +575,8 @@ namespace Fusion.PiuWS {
         
         private System.DateTime periodField;
         
+        private decimal sumNorm2Field;
+        
         /// <remarks/>
         public decimal SumFact {
             get {
@@ -612,6 +614,16 @@ namespace Fusion.PiuWS {
             }
             set {
                 this.periodField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public decimal SumNorm2 {
+            get {
+                return this.sumNorm2Field;
+            }
+            set {
+                this.sumNorm2Field = value;
             }
         }
     }

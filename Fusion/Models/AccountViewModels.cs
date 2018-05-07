@@ -42,6 +42,9 @@ public class LoginViewModel
 
     public static bool IsMemberOf(string accountName, string GroupName)
     {
+        if (string.IsNullOrEmpty(accountName))
+            return false;
+
         PrincipalContext context = new PrincipalContext(ContextType.Domain, "fg.local");
         UserPrincipal upUser = UserPrincipal.FindByIdentity(context, accountName);
         if (upUser != null)

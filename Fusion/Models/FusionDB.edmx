@@ -271,6 +271,19 @@ warning 6002: The table/view 'Fusion.dbo.hostip' does not have a primary key def
           <Property Name="ipv4" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ipv6" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="Issue">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="text" Nullable="false" />
+          <Property Name="IssueContent" Type="text" Nullable="false" />
+          <Property Name="Tags" Type="varchar" MaxLength="255" />
+          <Property Name="Author" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="LastModified" Type="datetime" Nullable="false" />
+          <Property Name="LastEditor" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="Mail">
           <Key>
             <PropertyRef Name="id" />
@@ -968,6 +981,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <EntitySet Name="EmailTemplate" EntityType="Self.EmailTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="host" EntityType="Self.host" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="iptable" EntityType="Self.iptable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Issue" EntityType="Self.Issue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Mail" EntityType="Self.Mail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_extra" EntityType="Self.mc_extra" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="mc_task" EntityType="Self.mc_task" Schema="dbo" store:Type="Tables" />
@@ -1361,6 +1375,7 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
             <End Role="iptable" EntitySet="iptable" />
             <End Role="server" EntitySet="server" />
           </AssociationSet>
+          <EntitySet Name="Issue" EntityType="FusionDBModels.Issue" />
         </EntityContainer>
         <EntityType Name="Article">
           <Key>
@@ -2342,6 +2357,19 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
           <End Type="FusionDBModels.iptable" Role="iptable" Multiplicity="*" />
           <End Type="FusionDBModels.server" Role="server" Multiplicity="*" />
         </Association>
+        <EntityType Name="Issue">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IssueContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Tags" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastModified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastEditor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2858,6 +2886,20 @@ warning 6002: The table/view 'Fusion.dbo.serverip' does not have a primary key d
               <ScalarProperty Name="id" ColumnName="ipaddressid" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Issue">
+            <EntityTypeMapping TypeName="FusionDBModels.Issue">
+              <MappingFragment StoreEntitySet="Issue">
+                <ScalarProperty Name="LastEditor" ColumnName="LastEditor" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="IssueContent" ColumnName="IssueContent" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
