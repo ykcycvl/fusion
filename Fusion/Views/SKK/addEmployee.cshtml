@@ -1,0 +1,33 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "addEmployee";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    Model.PositionName = "Шеф-повар";
+}
+<div class="col-md-6 col-md-push-3">
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Добавить сотрудника
+            </h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("addEmployee", "SKK", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <label for="@Model.employee.domain_name">Доменное имя</label>
+                    @Html.TextBoxFor(m => m.employee.domain_name, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.employee.full_name">Полное имя</label>
+                    @Html.TextBoxFor(m => m.employee.full_name, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.employee.position_id">Должность</label>
+                    @Html.DropDownListFor(m => m.employee.position_id, Model.PositionsSelectList, new { @class = "form-control" })
+                </div>
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            }
+        </div>
+    </div>
+</div>

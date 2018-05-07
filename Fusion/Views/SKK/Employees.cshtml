@@ -1,0 +1,35 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Employees";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">Сотрудники</h3>
+    </div>
+    <div class="panel-body">
+        @Html.ActionLink("Добавить работника", "addEmployee", null, new { @class = "btn btn-success" })
+        <table class="table table-bordered">
+            <thead>
+                <tr class="info">
+                    <th style="display: none">id</th>
+                    <th>Полное имя</th>
+                    <th>Должность</th>
+                    <th>Редактировать</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var it in Model.Employees)
+                {
+                    <tr>
+                        <td style="display: none">@it.id</td>
+                        <td>@it.full_name</td>
+                        <td>@it.Position.name</td>
+                        <td>@Html.ActionLink("Редактировать", "addEmployee", new { id = it.id })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

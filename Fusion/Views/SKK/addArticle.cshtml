@@ -1,0 +1,40 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "addArticle";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    if (Model.Article.id == 0)
+    {
+        Model.Article.name = "";
+        Model.Article.weight = 0;
+        Model.Article.block_id = 0;
+        Model.BlockName = "";
+    }
+}
+
+<div class="col-md-6 col-md-push-3">
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Добавить статью
+            </h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("addArticle", "SKK", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <label for="@Model.Article.name">Название</label>
+                    @Html.TextBoxFor(m => m.Article.name, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.Article.weight">Вес</label>
+                    @Html.TextBoxFor(m => m.Article.weight, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.Article.block_id">Блок</label>
+                    @Html.DropDownListFor(m => m.Article.block_id, Model.BlocksSelectList , new { @class = "form-control" })
+                </div>
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            }
+        </div>
+    </div>
+</div>

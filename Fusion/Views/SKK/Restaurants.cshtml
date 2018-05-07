@@ -1,0 +1,65 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Restaurants";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    @@media screen and (min-device-width: 10px) and (max-device-width: 600px) {
+        .table {
+            font-size: 0.7em;
+            word-break: break-word;
+        }
+    }
+</style>
+<div class="panel panel-yellow">
+    <div class="panel-heading">
+        <h3 class="panel-title">Работники ножа и топора</h3>
+    </div>
+    <div class="panel-body">
+        @Html.ActionLink("Добавить ресторан", "addRestaurant", null, new { @class="btn btn-success" })
+        <table class="table table-bordered">
+            <thead>
+                <tr class="info">
+                    <th style="display: none">id</th>
+                    <th>Название</th>
+                    <th>Управляющий</th>
+                    <th>Шеф-повар</th>
+                    <th>Су-шеф</th>
+                    <th>Менеджер зала</th>
+                    <th>Редактировать</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var it in Model.Restaurants)
+                {
+                    if(it.Employee != null)
+                    {
+                        Model.DirectorName = it.Employee.full_name;
+                    }
+                    if(it.Employee1 != null)
+                    {
+                        Model.ChiefName = it.Employee1.full_name;
+                    }
+                    if(it.Employee2 != null)
+                    {
+                        Model.ManagerName = it.Employee2.full_name;
+                    }
+                    if(it.Employee3 != null)
+                    {
+                        Model.SuChiefName = it.Employee3.full_name;
+                    }
+
+                <tr>
+                    <td style="display: none">@it.id</td>
+                    <td>@it.name</td>
+                    <td>@it.Employee.full_name</td>
+                    <td>@it.Employee1.full_name</td>
+                    <td>@it.Employee3.full_name</td>
+                    <td>@it.Employee2.full_name</td>
+                    <td>@Html.ActionLink("Редактировать", "addRestaurant", new { id = it.id })</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

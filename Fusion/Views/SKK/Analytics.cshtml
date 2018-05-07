@@ -1,0 +1,225 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Analytics";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    string chartTitle = String.Format("'Результаты ресторанов в динамике {0}.{1}/{2}.{3}'", DateTime.Today.Month - 1, DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Year);
+    string DataTable = "[";
+    string DataTable2 = "[";
+    foreach (var it in Model.PercentsList)
+    {
+        DataTable += "{";
+        DataTable += String.Format("'arg':'{0}', 'val1': {1}, 'val2': {2}", it.restaurantName, it.percent_prev, it.percent_today);
+        DataTable += "},\r\n";
+    }
+    DataTable += "]";
+    double? mediana = 0;
+    double? medianaBlock = 0;
+    foreach (var it in Model.PercentsList)
+    {
+        mediana += it.percent_today;
+    }
+    mediana = mediana / Model.PercentsList.Count;
+    int i = 0;
+    foreach (var it in Model.percentsBlockList.GroupBy(n => n.blockName).Select(j => new { rating = j.Sum(m => m.rating) / Model.percentsBlockList.Where(y => y.blockName == j.Key).Count(), j.Key }))
+    {
+        DataTable2 += "{";
+        DataTable2 += String.Format("'arg':'{0}', 'val1': {1}", it.Key, it.rating);
+        DataTable2 += "},\r\n";
+        medianaBlock += it.rating;
+        i++;
+    }
+    medianaBlock = medianaBlock / i;
+    DataTable2 += "]";
+}
+
+<script src="~/Scripts/cldr.js"></script>
+<script src="~/Scripts/cldr/event.js"></script>
+<script src="~/Scripts/cldr/supplemental.js"></script>
+<script src="~/Scripts/cldr/unresolved.js"></script>
+<script src="~/Scripts/globalize.js"></script>
+<script src="~/Scripts/globalize/message.js"></script>
+<script src="~/Scripts/globalize/number.js"></script>
+<script src="~/Scripts/globalize/currency.js"></script>
+<script src="~/Scripts/globalize/date.js"></script>
+<link href="~/Content/dx.spa.css" rel="stylesheet" />
+<link href="~/Content/dx.common.css" rel="stylesheet" />
+<link href="~/Content/dx.light.compact.css" rel="stylesheet" />
+<script src="~/Scripts/dx.all.js"></script>
+<script>
+    $(function () {
+        var pivotGridChart = $("#pivotgrid-chart").dxChart({
+            commonSeriesSettings: {
+                argumentField: "arg",
+                type: "bar",
+                showInLegend: false
+            },
+            series: [
+                    {
+                        label: {
+                            visible : true
+                        }
+                    },
+                    { valueField: "val1", color: "#007bff" },
+                    { valueField: "val2" }
+                ],
+            size: {
+                height: 320
+            },
+            tooltip: {
+                enabled: true
+            },
+            animation: {
+                duration: 1000,
+                easing: "easeOutCubic",
+                enabled: true,
+                maxPointCountSupported: 300
+            },
+            title: {
+                text: @Html.Raw(chartTitle)
+            },
+            adaptiveLayout: {
+                width: 450
+            },
+            dataSource:
+                @Html.Raw(DataTable),
+        });
+        var pivotGridChart2 = $("#pivotgrid-chart2").dxChart({
+            commonSeriesSettings: {
+                argumentField: "arg",
+                type: "bar",
+                showInLegend: false,
+                valueField: "val2",
+                color: "#BA4D51"
+            },
+            series: [
+                    {
+                        label: {
+                            visible : true
+                        }
+                    }
+            ],
+            size: {
+                height: 320
+            },
+            tooltip: {
+                enabled: true
+            },
+            animation: {
+                duration: 1000,
+                easing: "easeOutCubic",
+                enabled: true,
+                maxPointCountSupported: 300
+            },
+            title: {
+                text: "Результаты ресторанов за текущий месяц"
+            },
+            adaptiveLayout: {
+                width: 450
+            },
+            valueAxis: [{
+                constantLines: [{
+                    value: @Html.Raw(mediana),
+                    color: "#fc3535",
+                    dashStyle: "dash",
+                    width: 2,
+                    label: { visible: true }
+                }]
+            }],
+            dataSource:
+                @Html.Raw(DataTable),
+        });
+        var pivotGridChart3 = $("#pivotgrid-chart3").dxChart({
+            commonSeriesSettings: {
+                argumentField: "arg",
+                type: "bar",
+                showInLegend: false,
+                valueField: "val1",
+                color: "#BA4D51"
+            },
+            series: [
+                    {
+                        label: {
+                            visible : true
+                        }
+                    }
+            ],
+            size: {
+                height: 320
+            },
+            tooltip: {
+                enabled: true
+            },
+            animation: {
+                duration: 1000,
+                easing: "easeOutCubic",
+                enabled: true,
+                maxPointCountSupported: 300
+            },
+            title: {
+                text: "Результаты ресторанов за текущий месяц по блокам"
+            },
+            adaptiveLayout: {
+                width: 450
+            },
+            valueAxis: [{
+                constantLines: [{
+                    value: @Html.Raw(medianaBlock),
+                    color: "#fc3535",
+                    dashStyle: "dash",
+                    width: 2,
+                    label: { visible: true }
+                }]
+            }],
+            dataSource:
+                @Html.Raw(DataTable2),
+        });
+    });
+
+</script>
+<div class="row">
+    <div class="col-md-10 col-md-push-1">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Итоговые результаты по сети
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Ресторан</th>
+                            <th>Общий процент</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.PercentsList)
+                        {
+                            <tr>
+                                <th>@it.restaurantID</th>
+                                <th>@it.restaurantName</th>
+                                <th>@it.percent%</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="demo-container">
+                    <div id="pivotgrid-demo">
+                        <div id="pivotgrid-chart"></div>
+                    </div>
+                </div>
+                <div class="demo-container">
+                    <div id="pivotgrid-demo">
+                        <div id="pivotgrid-chart2"></div>
+                    </div>
+                </div>
+                <div class="demo-container">
+                    <div id="pivotgrid-demo">
+                        <div id="pivotgrid-chart3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

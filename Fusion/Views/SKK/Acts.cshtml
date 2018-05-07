@@ -1,0 +1,54 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Acts";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    @@media screen and (min-device-width: 10px) and (max-device-width: 600px){
+        .table {
+            font-size: 0.7em;
+            word-break: break-word;
+        }
+    }
+</style>
+<div class="row">
+    <div class="col-md-10 col-md-push-1 col-xs-12">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Акты СКК
+                </h3>
+            </div>
+            <div class="panel-body">
+                @Html.ActionLink("Создать акт", "addAct", null, new { @class = "btn btn-success" })
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr class="info">
+                            <th style="display: none">id</th>
+                            <th>Ресторан</th>
+                            <th>Описание</th>
+                            <th>Дата</th>
+                            <th>Аудитор</th>
+                            <th>Редактировать</th>
+                            <th>Excel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.Acts)
+                        {
+                            <tr>
+                                <td style="display: none">@it.id</td>
+                                <td>@it.Restaurant.name</td>
+                                <td>@it.description</td>
+                                <td>@it.date.Value.ToShortDateString()</td>
+                                <td>@it.Employee4.full_name</td>
+                                <td>@Html.ActionLink("Редактировать", "addActData", new { actId = it.id })</td>
+                                <td>@Html.ActionLink("Скачать", "ExportToExcel", new { actID = it.id }, new { @target="_blank" })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

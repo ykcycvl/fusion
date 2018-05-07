@@ -1,0 +1,39 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "ArticleBlocks";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Блоки СКК
+                </h3>
+            </div>
+            <div class="panel-body">
+                @Html.ActionLink("Добавить блок", "addBlock", null, new { @class="btn btn-success" })
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="info">
+                            <th style="display: none">id</th>
+                            <th>Название</th>
+                            <th>Редактировать</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.ArticleBlocks)
+                        {
+                            <tr>
+                                <td style="display: none">@it.id</td>
+                                <td>@it.name</td>
+                                <td>@Html.ActionLink("Редактировать", "addBlock", new { id = it.id })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>

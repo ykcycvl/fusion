@@ -1,0 +1,45 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Создание акта СКК";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+    if (Model.Act.id == 0)
+    {
+        Model.RestaurantName = "";
+        Model.AuditorName = "";
+        Model.Act.description = "";
+        Model.Act.date = DateTime.Today;
+    }
+}
+
+
+<div class="col-md-6 col-md-push-3">
+    <div class="panel panel-yellow">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Добавить акт
+            </h3>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm("addAct", "SKK", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
+            {
+                <div class="form-group">
+                    <label for="@Model.Act.restaurant_id">Ресторан</label>
+                    @Html.DropDownListFor(m => m.Act.restaurant_id, Model.RestaurantsSelectList, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.Act.auditor_id">Аудитор</label>
+                    @Html.DropDownListFor(m => m.Act.auditor_id, Model.AuditorsSelectList, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.Act.description">Описание</label>
+                    @Html.TextBoxFor(m => m.Act.description, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label for="@Model.Act.date">Дата</label>
+                    @Html.TextBoxFor(m => m.Act.date, new { @class = "form-control", @type = "date", @required="true" })
+                </div>
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            }
+        </div>
+    </div>
+</div>

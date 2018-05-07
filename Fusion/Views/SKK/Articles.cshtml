@@ -1,0 +1,50 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Articles";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+<style>
+    @@media screen and (min-device-width: 10px) and (max-device-width: 600px) {
+        .table {
+            font-size: 0.7em;
+            word-break: break-word;
+        }
+    }
+</style>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Статьи СКК
+                </h3>
+            </div>
+            <div class="panel-body">
+                @Html.ActionLink("Добавить статью", "addArticle", null, new { @class="btn btn-success" })
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="info">
+                            <th style="display: none">id</th>
+                            <th style="width:45%">Название</th>
+                            <th>Вес</th>
+                            <th>Блок</th>
+                            <th>Редактировать</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var it in Model.Articles)
+                        {
+                            <tr>
+                                <td style="display: none">@it.id</td>
+                                <td>@it.name</td>
+                                <td>@it.weight</td>
+                                <td>@it.ArticleBlock.name</td>
+                                <td>@Html.ActionLink("Редактировать", "addArticle", new { id = it.id })</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

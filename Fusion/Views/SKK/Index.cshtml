@@ -1,0 +1,64 @@
+﻿@model Fusion.Models.SKKModels
+@{
+    ViewBag.Title = "Служба контроля качества";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <h2>@ViewBag.Title</h2>
+        <div class="col-lg-3 col-md-3">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h4>Акты проверки СКК</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span class="pull-left">@Html.ActionLink("Акты", "Acts")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                    <span class="pull-left">@Html.ActionLink("Отчетность", "Analytics")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                    <span class="pull-left">@Html.ActionLink("Блоки СКК", "ArticleBlocks")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                    <span class="pull-left">@Html.ActionLink("Статьи СКК", "Articles")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-tasks fa-4x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <h4>Общая информация</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <span class="pull-left">@Html.ActionLink("Рестораны", "Restaurants")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                    <span class="pull-left">@Html.ActionLink("Сотрудники", "Employees")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                    <span class="pull-left">@Html.ActionLink("Должности", "Positions")</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
