@@ -23,7 +23,7 @@
     foreach (var it in Model.percentsBlockList.GroupBy(n => n.blockName).Select(j => new { rating = j.Sum(m => m.rating) / Model.percentsBlockList.Where(y => y.blockName == j.Key).Count(), j.Key }))
     {
         DataTable2 += "{";
-        DataTable2 += String.Format("'arg':'{0}', 'val1': {1}", it.Key, it.rating);
+        DataTable2 += String.Format("'arg':'{0}', 'val1': {1}", it.Key, Math.Round((double)it.rating, 2));
         DataTable2 += "},\r\n";
         medianaBlock += it.rating;
         i++;
@@ -163,7 +163,7 @@
             },
             valueAxis: [{
                 constantLines: [{
-                    value: @Html.Raw(medianaBlock),
+                    value: @Html.Raw(Math.Round((double)medianaBlock, 1)),
                     color: "#fc3535",
                     dashStyle: "dash",
                     width: 2,

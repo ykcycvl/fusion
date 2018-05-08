@@ -128,7 +128,7 @@ namespace Fusion.Controllers
         public ActionResult addArticle(SKKModels model)
         {
             model.saveArticle();
-            return View("~/SKK/Articles");
+            return Redirect("~/SKK/Articles");
         }
         [MyAuthorize(Roles = "FusionAdmin, SKK")]
         public ActionResult Positions()
