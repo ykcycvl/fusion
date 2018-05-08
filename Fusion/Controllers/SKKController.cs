@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Fusion.Models;
 using Jitbit.Utils;
+using Fusion.Models.SKK;
 
 namespace Fusion.Controllers
 {

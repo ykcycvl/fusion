@@ -91,6 +91,7 @@
         <AssociationConnector Association="FusionDBModels.FK_VegaPersonalSetting_VegaSetting" />
         <AssociationConnector Association="FusionDBModels.serverip" />
         <EntityTypeShape EntityType="FusionDBModels.Issue" Width="1.5" PointX="20.375" PointY="20.75" />
+        <EntityTypeShape EntityType="FusionDBModels.FabrikaNomenclature" Width="1.5" PointX="16.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

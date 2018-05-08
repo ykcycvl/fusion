@@ -1,0 +1,808 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SKKModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Act">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="restaurant_id" Type="int" />
+          <Property Name="auditor_id" Type="int" />
+          <Property Name="director_id" Type="int" />
+          <Property Name="chief_id" Type="int" />
+          <Property Name="suchief_id" Type="int" />
+          <Property Name="manager_id" Type="int" />
+          <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="ActData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="act_id" Type="int" />
+          <Property Name="article_id" Type="int" />
+          <Property Name="rating" Type="int" />
+          <Property Name="accord" Type="bit" />
+          <Property Name="comment" Type="text" />
+        </EntityType>
+        <EntityType Name="ActFile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="act_data_id" Type="int" />
+          <Property Name="filename" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" />
+          <Property Name="weight" Type="int" />
+          <Property Name="block_id" Type="int" />
+        </EntityType>
+        <EntityType Name="ArticleBlock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="domain_name" Type="varchar" MaxLength="50" />
+          <Property Name="full_name" Type="varchar" MaxLength="100" />
+          <Property Name="position_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="director_id" Type="int" />
+          <Property Name="chief_id" Type="int" />
+          <Property Name="manager_id" Type="int" />
+          <Property Name="suchief_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_Act_auditor_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="auditor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_chief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="chief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_director_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="director_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_manager_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_restaurant_id">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_suchief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="suchief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActData_act_id">
+          <End Role="Act" Type="Self.Act" Multiplicity="0..1" />
+          <End Role="ActData" Type="Self.ActData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Act">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActData">
+              <PropertyRef Name="act_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActData_article_id">
+          <End Role="Article" Type="Self.Article" Multiplicity="0..1" />
+          <End Role="ActData" Type="Self.ActData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActData">
+              <PropertyRef Name="article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActFile_act_data_id">
+          <End Role="ActData" Type="Self.ActData" Multiplicity="0..1" />
+          <End Role="ActFile" Type="Self.ActFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActData">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActFile">
+              <PropertyRef Name="act_data_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_block_id">
+          <End Role="ArticleBlock" Type="Self.ArticleBlock" Multiplicity="0..1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleBlock">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="block_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_position_id">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_chief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="chief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_director_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="director_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_manager_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_suchief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="suchief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SKKModelStoreContainer">
+          <EntitySet Name="Act" EntityType="Self.Act" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActData" EntityType="Self.ActData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActFile" EntityType="Self.ActFile" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Article" EntityType="Self.Article" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArticleBlock" EntityType="Self.ArticleBlock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Position" EntityType="Self.Position" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Act_auditor_id" Association="Self.FK_Act_auditor_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_chief_id" Association="Self.FK_Act_chief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_director_id" Association="Self.FK_Act_director_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_manager_id" Association="Self.FK_Act_manager_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_restaurant_id" Association="Self.FK_Act_restaurant_id">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_suchief_id" Association="Self.FK_Act_suchief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActData_act_id" Association="Self.FK_ActData_act_id">
+            <End Role="Act" EntitySet="Act" />
+            <End Role="ActData" EntitySet="ActData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActData_article_id" Association="Self.FK_ActData_article_id">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="ActData" EntitySet="ActData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActFile_act_data_id" Association="Self.FK_ActFile_act_data_id">
+            <End Role="ActData" EntitySet="ActData" />
+            <End Role="ActFile" EntitySet="ActFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_block_id" Association="Self.FK_Article_block_id">
+            <End Role="ArticleBlock" EntitySet="ArticleBlock" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_position_id" Association="Self.FK_Employee_position_id">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_chief_id" Association="Self.FK_Restaurant_chief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_director_id" Association="Self.FK_Restaurant_director_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_manager_id" Association="Self.FK_Restaurant_manager_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_suchief_id" Association="Self.FK_Restaurant_suchief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SKKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Act">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="restaurant_id" Type="Int32" />
+          <Property Name="auditor_id" Type="Int32" />
+          <Property Name="director_id" Type="Int32" />
+          <Property Name="chief_id" Type="Int32" />
+          <Property Name="suchief_id" Type="Int32" />
+          <Property Name="manager_id" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Act_auditor_id" FromRole="Act" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Act_chief_id" FromRole="Act" ToRole="Employee" />
+          <NavigationProperty Name="Employee2" Relationship="Self.FK_Act_director_id" FromRole="Act" ToRole="Employee" />
+          <NavigationProperty Name="Employee3" Relationship="Self.FK_Act_manager_id" FromRole="Act" ToRole="Employee" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Act_restaurant_id" FromRole="Act" ToRole="Restaurant" />
+          <NavigationProperty Name="Employee4" Relationship="Self.FK_Act_suchief_id" FromRole="Act" ToRole="Employee" />
+          <NavigationProperty Name="ActData" Relationship="Self.FK_ActData_act_id" FromRole="Act" ToRole="ActData" />
+        </EntityType>
+        <EntityType Name="ActData">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="act_id" Type="Int32" />
+          <Property Name="article_id" Type="Int32" />
+          <Property Name="rating" Type="Int32" />
+          <Property Name="accord" Type="Boolean" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Act" Relationship="Self.FK_ActData_act_id" FromRole="ActData" ToRole="Act" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_ActData_article_id" FromRole="ActData" ToRole="Article" />
+          <NavigationProperty Name="ActFile" Relationship="Self.FK_ActFile_act_data_id" FromRole="ActData" ToRole="ActFile" />
+        </EntityType>
+        <EntityType Name="ActFile">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="act_data_id" Type="Int32" />
+          <Property Name="filename" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ActData" Relationship="Self.FK_ActFile_act_data_id" FromRole="ActFile" ToRole="ActData" />
+        </EntityType>
+        <EntityType Name="Article">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="weight" Type="Int32" />
+          <Property Name="block_id" Type="Int32" />
+          <NavigationProperty Name="ActData" Relationship="Self.FK_ActData_article_id" FromRole="Article" ToRole="ActData" />
+          <NavigationProperty Name="ArticleBlock" Relationship="Self.FK_Article_block_id" FromRole="Article" ToRole="ArticleBlock" />
+        </EntityType>
+        <EntityType Name="ArticleBlock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Article" Relationship="Self.FK_Article_block_id" FromRole="ArticleBlock" ToRole="Article" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="domain_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="full_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="position_id" Type="Int32" />
+          <NavigationProperty Name="Act" Relationship="Self.FK_Act_auditor_id" FromRole="Employee" ToRole="Act" />
+          <NavigationProperty Name="Act1" Relationship="Self.FK_Act_chief_id" FromRole="Employee" ToRole="Act" />
+          <NavigationProperty Name="Act2" Relationship="Self.FK_Act_director_id" FromRole="Employee" ToRole="Act" />
+          <NavigationProperty Name="Act3" Relationship="Self.FK_Act_manager_id" FromRole="Employee" ToRole="Act" />
+          <NavigationProperty Name="Act4" Relationship="Self.FK_Act_suchief_id" FromRole="Employee" ToRole="Act" />
+          <NavigationProperty Name="Position" Relationship="Self.FK_Employee_position_id" FromRole="Employee" ToRole="Position" />
+          <NavigationProperty Name="Restaurant" Relationship="Self.FK_Restaurant_chief_id" FromRole="Employee" ToRole="Restaurant" />
+          <NavigationProperty Name="Restaurant1" Relationship="Self.FK_Restaurant_director_id" FromRole="Employee" ToRole="Restaurant" />
+          <NavigationProperty Name="Restaurant2" Relationship="Self.FK_Restaurant_manager_id" FromRole="Employee" ToRole="Restaurant" />
+          <NavigationProperty Name="Restaurant3" Relationship="Self.FK_Restaurant_suchief_id" FromRole="Employee" ToRole="Restaurant" />
+        </EntityType>
+        <EntityType Name="Position">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Employee_position_id" FromRole="Position" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="director_id" Type="Int32" />
+          <Property Name="chief_id" Type="Int32" />
+          <Property Name="manager_id" Type="Int32" />
+          <Property Name="suchief_id" Type="Int32" />
+          <NavigationProperty Name="Act" Relationship="Self.FK_Act_restaurant_id" FromRole="Restaurant" ToRole="Act" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Restaurant_chief_id" FromRole="Restaurant" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Restaurant_director_id" FromRole="Restaurant" ToRole="Employee" />
+          <NavigationProperty Name="Employee2" Relationship="Self.FK_Restaurant_manager_id" FromRole="Restaurant" ToRole="Employee" />
+          <NavigationProperty Name="Employee3" Relationship="Self.FK_Restaurant_suchief_id" FromRole="Restaurant" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK_Act_auditor_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="auditor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_chief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="chief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_director_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="director_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_manager_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_restaurant_id">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="restaurant_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Act_suchief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="suchief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActData_act_id">
+          <End Role="Act" Type="Self.Act" Multiplicity="0..1" />
+          <End Role="ActData" Type="Self.ActData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Act">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActData">
+              <PropertyRef Name="act_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActData_article_id">
+          <End Role="Article" Type="Self.Article" Multiplicity="0..1" />
+          <End Role="ActData" Type="Self.ActData" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Article">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActData">
+              <PropertyRef Name="article_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActFile_act_data_id">
+          <End Role="ActData" Type="Self.ActData" Multiplicity="0..1" />
+          <End Role="ActFile" Type="Self.ActFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActData">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActFile">
+              <PropertyRef Name="act_data_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Article_block_id">
+          <End Role="ArticleBlock" Type="Self.ArticleBlock" Multiplicity="0..1" />
+          <End Role="Article" Type="Self.Article" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleBlock">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Article">
+              <PropertyRef Name="block_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_position_id">
+          <End Role="Position" Type="Self.Position" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Position">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="position_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_chief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="chief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_director_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="director_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_manager_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="manager_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Restaurant_suchief_id">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Restaurant">
+              <PropertyRef Name="suchief_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SKKEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Act" EntityType="Self.Act" />
+          <EntitySet Name="ActData" EntityType="Self.ActData" />
+          <EntitySet Name="ActFile" EntityType="Self.ActFile" />
+          <EntitySet Name="Article" EntityType="Self.Article" />
+          <EntitySet Name="ArticleBlock" EntityType="Self.ArticleBlock" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="Position" EntityType="Self.Position" />
+          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" />
+          <AssociationSet Name="FK_Act_auditor_id" Association="Self.FK_Act_auditor_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_chief_id" Association="Self.FK_Act_chief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_director_id" Association="Self.FK_Act_director_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_manager_id" Association="Self.FK_Act_manager_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_restaurant_id" Association="Self.FK_Act_restaurant_id">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Act_suchief_id" Association="Self.FK_Act_suchief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActData_act_id" Association="Self.FK_ActData_act_id">
+            <End Role="Act" EntitySet="Act" />
+            <End Role="ActData" EntitySet="ActData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActData_article_id" Association="Self.FK_ActData_article_id">
+            <End Role="Article" EntitySet="Article" />
+            <End Role="ActData" EntitySet="ActData" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActFile_act_data_id" Association="Self.FK_ActFile_act_data_id">
+            <End Role="ActData" EntitySet="ActData" />
+            <End Role="ActFile" EntitySet="ActFile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Article_block_id" Association="Self.FK_Article_block_id">
+            <End Role="ArticleBlock" EntitySet="ArticleBlock" />
+            <End Role="Article" EntitySet="Article" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_position_id" Association="Self.FK_Employee_position_id">
+            <End Role="Position" EntitySet="Position" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_chief_id" Association="Self.FK_Restaurant_chief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_director_id" Association="Self.FK_Restaurant_director_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_manager_id" Association="Self.FK_Restaurant_manager_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurant_suchief_id" Association="Self.FK_Restaurant_suchief_id">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Restaurant" EntitySet="Restaurant" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SKKModelStoreContainer" CdmEntityContainer="SKKEntities">
+          <EntitySetMapping Name="Act">
+            <EntityTypeMapping TypeName="SKKModel.Act">
+              <MappingFragment StoreEntitySet="Act">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="restaurant_id" ColumnName="restaurant_id" />
+                <ScalarProperty Name="auditor_id" ColumnName="auditor_id" />
+                <ScalarProperty Name="director_id" ColumnName="director_id" />
+                <ScalarProperty Name="chief_id" ColumnName="chief_id" />
+                <ScalarProperty Name="suchief_id" ColumnName="suchief_id" />
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActData">
+            <EntityTypeMapping TypeName="SKKModel.ActData">
+              <MappingFragment StoreEntitySet="ActData">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="act_id" ColumnName="act_id" />
+                <ScalarProperty Name="article_id" ColumnName="article_id" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="accord" ColumnName="accord" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActFile">
+            <EntityTypeMapping TypeName="SKKModel.ActFile">
+              <MappingFragment StoreEntitySet="ActFile">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="act_data_id" ColumnName="act_data_id" />
+                <ScalarProperty Name="filename" ColumnName="filename" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Article">
+            <EntityTypeMapping TypeName="SKKModel.Article">
+              <MappingFragment StoreEntitySet="Article">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="block_id" ColumnName="block_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArticleBlock">
+            <EntityTypeMapping TypeName="SKKModel.ArticleBlock">
+              <MappingFragment StoreEntitySet="ArticleBlock">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="SKKModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="domain_name" ColumnName="domain_name" />
+                <ScalarProperty Name="full_name" ColumnName="full_name" />
+                <ScalarProperty Name="position_id" ColumnName="position_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Position">
+            <EntityTypeMapping TypeName="SKKModel.Position">
+              <MappingFragment StoreEntitySet="Position">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Restaurant">
+            <EntityTypeMapping TypeName="SKKModel.Restaurant">
+              <MappingFragment StoreEntitySet="Restaurant">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="director_id" ColumnName="director_id" />
+                <ScalarProperty Name="chief_id" ColumnName="chief_id" />
+                <ScalarProperty Name="manager_id" ColumnName="manager_id" />
+                <ScalarProperty Name="suchief_id" ColumnName="suchief_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

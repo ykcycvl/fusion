@@ -27,6 +27,8 @@ namespace Fusion.Models
             this.EmployeeWorkRole = new HashSet<EmployeeWorkRole>();
             this.Event = new HashSet<Event>();
             this.Interval = new HashSet<Interval>();
+            this.GuestVisit = new HashSet<GuestVisit>();
+            this.GuestVisit1 = new HashSet<GuestVisit>();
         }
     
         public System.Guid Id { get; set; }
@@ -68,5 +70,8 @@ namespace Fusion.Models
         public virtual ICollection<EmployeeWorkRole> EmployeeWorkRole { get; set; }
         public virtual ICollection<Event> Event { get; set; }
         public virtual ICollection<Interval> Interval { get; set; }
+        public virtual Guest Guest { get; set; }
+        public virtual ICollection<GuestVisit> GuestVisit { get; set; }
+        public virtual ICollection<GuestVisit> GuestVisit1 { get; set; }
     }
 }

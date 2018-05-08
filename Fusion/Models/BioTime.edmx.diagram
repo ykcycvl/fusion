@@ -217,6 +217,25 @@
         <AssociationConnector Association="BioTimeModel.FK_SecurityRoleReport_SecurityRole" ManuallyRouted="false" />
         <AssociationConnector Association="BioTimeModel.FK_SyncIterationChunk_SyncIteration" ManuallyRouted="false" />
         <AssociationConnector Association="BioTimeModel.FK_WorkRoleRate1_WorkRole" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BioTimeModel.DeviceEventLog" Width="1.5" PointX="28.75" PointY="33.75" />
+        <EntityTypeShape EntityType="BioTimeModel.DeviceEventLog_Deleted" Width="1.5" PointX="5.75" PointY="27.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGeoSettings" Width="1.5" PointX="30.75" PointY="33.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGeoSettings_Deleted" Width="1.5" PointX="32.75" PointY="33.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EventGeoData" Width="1.5" PointX="0.75" PointY="34.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EventGeoData_Deleted" Width="1.5" PointX="34.75" PointY="30.75" />
+        <EntityTypeShape EntityType="BioTimeModel.Guest" Width="1.5" PointX="6" PointY="59.625" />
+        <EntityTypeShape EntityType="BioTimeModel.Guest_Deleted" Width="1.5" PointX="34.75" PointY="33.75" />
+        <EntityTypeShape EntityType="BioTimeModel.GuestVisit" Width="1.5" PointX="11.25" PointY="46.25" />
+        <EntityTypeShape EntityType="BioTimeModel.GuestVisit_Deleted" Width="1.5" PointX="35.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BioTimeModel.DeviceEventLog_Stat" Width="1.5" PointX="35.75" PointY="6.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EntranceGeoSettings_Stat" Width="1.5" PointX="35.75" PointY="9.75" />
+        <EntityTypeShape EntityType="BioTimeModel.EventGeoData_Stat" Width="1.5" PointX="35.75" PointY="12.75" />
+        <EntityTypeShape EntityType="BioTimeModel.Guest_Stat" Width="1.5" PointX="35.75" PointY="15.75" />
+        <EntityTypeShape EntityType="BioTimeModel.GuestVisit_Stat" Width="1.5" PointX="15.75" PointY="35.75" />
+        <AssociationConnector Association="BioTimeModel.FK_Guest_Employee" />
+        <AssociationConnector Association="BioTimeModel.FK_GuestVisit_Employee" />
+        <AssociationConnector Association="BioTimeModel.FK_GuestVisit_Employee1" />
+        <AssociationConnector Association="BioTimeModel.FK_GuestVisit_Guest" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

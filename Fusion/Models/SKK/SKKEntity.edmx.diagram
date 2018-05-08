@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f16846ee026b4ea59e96051a87a0d880" Name="Diagram1">
+        <EntityTypeShape EntityType="SKKModel.Act" Width="1.5" PointX="7.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.ActData" Width="1.5" PointX="9.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.ActFile" Width="1.5" PointX="12" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.Article" Width="1.5" PointX="7.5" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.ArticleBlock" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.Employee" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.Position" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SKKModel.Restaurant" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
+        <AssociationConnector Association="SKKModel.FK_Act_auditor_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Act_chief_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Act_director_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Act_manager_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Act_restaurant_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Act_suchief_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_ActData_act_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_ActData_article_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_ActFile_act_data_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Article_block_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Employee_position_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Restaurant_chief_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Restaurant_director_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Restaurant_manager_id" ManuallyRouted="false" />
+        <AssociationConnector Association="SKKModel.FK_Restaurant_suchief_id" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using Fusion.Interfaces;
 
-namespace Fusion.Models
+namespace Fusion.Models.SKK
 {
     public class SKKModels
     {
+        /*
         public class Aticle : IArticle
         {
             public int Cost { get; set; }
@@ -158,32 +159,33 @@ namespace Fusion.Models
                 throw new NotImplementedException();
             }
         }
+        */
         public class ActDataMock
         {
             public int ArticleId { get; set; }
             public bool Accord { get; set; }
-            public Models.ActData ActData { get; set; }
+            public ActData ActData { get; set; }
         }
         public class PostedFiles
         {
             public int ArticleId { get; set; }
             public HttpPostedFileBase file { get; set; }
         }
-        public SKKEntities1 SKK = new SKKEntities1();
-        public Models.Act Act { get; set; }
-        public Models.ActData ActDataItem { get; set; }
-        public Models.Employee employee { get; set; }
-        public Models.Restaurant restaurant { get; set; }
-        public Models.ArticleBlock ArticleBlock { get; set; }
-        public Models.Article Article { get; set; }
-        public List<Models.Act> Acts { get; set; }
-        public List<Models.ActFile> ActFiles { get; set; }
-        public List<Models.ActData> ActData { get; set; }
-        public List<Models.Position> Positions { get; set; }
-        public List<Models.Employee> Employees { get; set; }
-        public List<Models.Restaurant> Restaurants { get; set; }
-        public List<Models.Article> Articles { get; set; }
-        public List<Models.ArticleBlock> ArticleBlocks { get; set; }
+        public SKKEntities SKK = new SKKEntities();
+        public Act Act { get; set; }
+        public ActData ActDataItem { get; set; }
+        public Employee employee { get; set; }
+        public Restaurant restaurant { get; set; }
+        public ArticleBlock ArticleBlock { get; set; }
+        public Article Article { get; set; }
+        public List<Act> Acts { get; set; }
+        public List<ActFile> ActFiles { get; set; }
+        public List<ActData> ActData { get; set; }
+        public List<Position> Positions { get; set; }
+        public List<Employee> Employees { get; set; }
+        public List<Restaurant> Restaurants { get; set; }
+        public List<Article> Articles { get; set; }
+        public List<ArticleBlock> ArticleBlocks { get; set; }
         public List<ActDataMock> actDataMock { get; set; }
         public List<Percents> PercentsList { get; set; }
         public List<PercentsBlock> percentsBlockList { get; set; }
@@ -323,7 +325,7 @@ namespace Fusion.Models
                 double? percent = (rating * 100) / weight;
                 double? percent_prev = (rating_prev * 100) / weight_prev;
                 double? percent_today = (rating_today * 100) / weight_today;
-                PercentsList.Add(new Percents { restaurantID = it.id, percent = percent, restaurantName = it.name, percent_prev = percent_prev, percent_today = percent_today, actDataList = new List<Models.ActData>() });
+                PercentsList.Add(new Percents { restaurantID = it.id, percent = percent, restaurantName = it.name, percent_prev = percent_prev, percent_today = percent_today, actDataList = new List<ActData>() });
                 foreach (var h in Acts.Where(j => j.restaurant_id == it.id && j.date.Value.Month == DateTime.Today.Month && j.date.Value.Year == DateTime.Now.Year))
                 {
                     foreach (var t in ActData.Where(m => m.act_id == h.id))
@@ -344,7 +346,7 @@ namespace Fusion.Models
         //create
         public void createActDataMock(int? actID)
         {
-            actDataMock = new List<SKKModels.ActDataMock>();
+            actDataMock = new List<ActDataMock>();
             if (ActData.Where(m => m.act_id == actID).Any())
             {
                 //getActDataById(actID);
@@ -354,11 +356,11 @@ namespace Fusion.Models
                     if (!ActData.Where(n => n.article_id == it.id && n.act_id == actID).Any())
                     {
                         ActData actdata = new ActData() { article_id = it.id, accord = true, comment = "", rating = 0, act_id = actID };
-                        actDataMock.Add(new SKKModels.ActDataMock { Accord = true, ArticleId = it.id, ActData = actdata });
+                        actDataMock.Add(new ActDataMock { Accord = true, ArticleId = it.id, ActData = actdata });
                     }
                     else
                     {
-                        actDataMock.Add(new SKKModels.ActDataMock { Accord = (bool)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
+                        actDataMock.Add(new ActDataMock { Accord = (bool)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
                     }
                 }
             }
@@ -368,7 +370,7 @@ namespace Fusion.Models
                 foreach (var it in Articles)
                 {
                     ActData actData = new ActData() { accord = true, rating = 0, comment = "", article_id = it.id, act_id = actID };
-                    actDataMock.Add(new SKKModels.ActDataMock { ArticleId = it.id, ActData = actData, Accord = true });
+                    actDataMock.Add(new ActDataMock { ArticleId = it.id, ActData = actData, Accord = true });
                 }
             }
         }
@@ -401,15 +403,15 @@ namespace Fusion.Models
         }
         public void createActData()
         {
-            ActDataItem = new Models.ActData();
+            ActDataItem = new ActData();
         }
         public void createRestaurant()
         {
-            restaurant = new Models.Restaurant();
+            restaurant = new Restaurant();
         }
         public void createEmployee()
         {
-            employee = new Models.Employee();
+            employee = new Employee();
         }
         public int saveAct()
         {
@@ -462,7 +464,7 @@ namespace Fusion.Models
                 }
                 else
                 {
-                    SKK.ActData.Add(new Models.ActData { act_id = actId, article_id = it.ArticleId, accord = it.Accord, comment = it.ActData.comment, rating = it.ActData.rating });
+                    SKK.ActData.Add(new ActData { act_id = actId, article_id = it.ArticleId, accord = it.Accord, comment = it.ActData.comment, rating = it.ActData.rating });
                 }
             }
             SKK.SaveChanges();

@@ -191,5 +191,20 @@ namespace Fusion.Models
         public virtual DbSet<WorkRoleRate1_Stat> WorkRoleRate1_Stat { get; set; }
         public virtual DbSet<WorkRoleSubstitution_Stat> WorkRoleSubstitution_Stat { get; set; }
         public virtual DbSet<YearSpecialDays_Stat> YearSpecialDays_Stat { get; set; }
+        public virtual DbSet<DeviceEventLog> DeviceEventLog { get; set; }
+        public virtual DbSet<DeviceEventLog_Deleted> DeviceEventLog_Deleted { get; set; }
+        public virtual DbSet<EntranceGeoSettings> EntranceGeoSettings { get; set; }
+        public virtual DbSet<EntranceGeoSettings_Deleted> EntranceGeoSettings_Deleted { get; set; }
+        public virtual DbSet<EventGeoData> EventGeoData { get; set; }
+        public virtual DbSet<EventGeoData_Deleted> EventGeoData_Deleted { get; set; }
+        public virtual DbSet<Guest> Guest { get; set; }
+        public virtual DbSet<Guest_Deleted> Guest_Deleted { get; set; }
+        public virtual DbSet<GuestVisit> GuestVisit { get; set; }
+        public virtual DbSet<GuestVisit_Deleted> GuestVisit_Deleted { get; set; }
+        public virtual DbSet<DeviceEventLog_Stat> DeviceEventLog_Stat { get; set; }
+        public virtual DbSet<EntranceGeoSettings_Stat> EntranceGeoSettings_Stat { get; set; }
+        public virtual DbSet<EventGeoData_Stat> EventGeoData_Stat { get; set; }
+        public virtual DbSet<Guest_Stat> Guest_Stat { get; set; }
+        public virtual DbSet<GuestVisit_Stat> GuestVisit_Stat { get; set; }
     }
 }

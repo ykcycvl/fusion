@@ -29,6 +29,7 @@ namespace Fusion.Models
         public System.DateTime Created { get; set; }
         public System.DateTime Modified { get; set; }
         public long SequenceValue { get; set; }
+        public bool UseInPlanning { get; set; }
     
         public virtual ICollection<DepartmentSchedule> DepartmentSchedule { get; set; }
         public virtual ICollection<OccupationSchedule> OccupationSchedule { get; set; }

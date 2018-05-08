@@ -12,20 +12,18 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class EmployeeWorkPlacePlan
+    public partial class EventGeoData
     {
         public System.Guid Id { get; set; }
+        public System.Guid EventId { get; set; }
+        public Nullable<decimal> GeoX { get; set; }
+        public Nullable<decimal> GeoY { get; set; }
+        public string Note { get; set; }
+        public string IMEI { get; set; }
+        public string Address { get; set; }
+        public byte[] Photo { get; set; }
         public System.DateTime Created { get; set; }
         public System.DateTime Modified { get; set; }
         public long SequenceValue { get; set; }
-        public System.DateTime ShiftStart { get; set; }
-        public System.DateTime ShiftEnd { get; set; }
-        public System.Guid EmployeeId { get; set; }
-        public System.Guid ScheduleId { get; set; }
-        public System.Guid WorkPlaceId { get; set; }
-        public System.Guid LocationId { get; set; }
-        public System.Guid DepartmentId { get; set; }
-        public bool Confirmed { get; set; }
-        public Nullable<System.Guid> PositionId { get; set; }
     }
 }

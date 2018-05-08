@@ -12,17 +12,9 @@ namespace Fusion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ScheduleWorkPlace
+    public partial class EntranceGeoSettings_Deleted
     {
-        public System.Guid Id { get; set; }
-        public System.Guid ScheduleId { get; set; }
-        public System.Guid WorkPlaceId { get; set; }
-        public System.Guid LocationId { get; set; }
-        public System.Guid DepartmentId { get; set; }
-        public int Quantity { get; set; }
-        public System.DateTime Created { get; set; }
-        public System.DateTime Modified { get; set; }
+        public System.Guid id { get; set; }
         public long SequenceValue { get; set; }
-        public string Name { get; set; }
     }
 }

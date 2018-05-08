@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BioTimeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BioTimeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessSchedule">
           <Key>
             <PropertyRef Name="Id" />
@@ -347,6 +347,38 @@ warning 6002: The table/view 'BioTime.dbo.DepartmentStaff_Stat' does not have a 
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="SequenceValue" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="DeviceEventLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EventDate" Type="datetime" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="SerialNumber" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="EventType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceEventLog_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BioTime.dbo.DeviceEventLog_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DeviceEventLog_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="Id" />
@@ -564,6 +596,8 @@ warning 6002: The table/view 'BioTime.dbo.EmployeeSecurityRole_Stat' does not ha
           <Property Name="WorkPlaceId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="LocationId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DepartmentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Confirmed" Type="bit" Nullable="false" />
+          <Property Name="PositionId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="EmployeeWorkPlacePlan_Deleted">
           <Key>
@@ -639,6 +673,39 @@ warning 6002: The table/view 'BioTime.dbo.EmployeeWorkRole_Stat' does not have a
         <!--Errors Found During Generation:
 warning 6002: The table/view 'BioTime.dbo.Entrance_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Entrance_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntranceGeoSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EntranceId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegistrationType" Type="bigint" Nullable="false" />
+          <Property Name="OrdinalNumber" Type="bigint" Nullable="false" />
+          <Property Name="Color" Type="bigint" Nullable="false" />
+          <Property Name="PointsJSON" Type="nvarchar" MaxLength="2048" />
+          <Property Name="NotUseInTimeAccounting" Type="bit" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntranceGeoSettings_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BioTime.dbo.EntranceGeoSettings_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EntranceGeoSettings_Stat">
           <Key>
             <PropertyRef Name="Modified" />
             <PropertyRef Name="SequenceValue" />
@@ -739,6 +806,106 @@ warning 6002: The table/view 'BioTime.dbo.EntranceRule_Stat' does not have a pri
         <!--Errors Found During Generation:
 warning 6002: The table/view 'BioTime.dbo.Event_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Event_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventGeoData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EventId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="GeoX" Type="decimal" Precision="18" Scale="9" />
+          <Property Name="GeoY" Type="decimal" Precision="18" Scale="9" />
+          <Property Name="Note" Type="nvarchar" MaxLength="2048" />
+          <Property Name="IMEI" Type="nvarchar" MaxLength="2048" />
+          <Property Name="Address" Type="nvarchar" MaxLength="2048" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventGeoData_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BioTime.dbo.EventGeoData_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EventGeoData_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="CardNumber" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BioTime.dbo.Guest_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Guest_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuestVisit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CardId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="VisitEnd" Type="datetime" Nullable="false" />
+          <Property Name="VisitStart" Type="datetime" Nullable="false" />
+          <Property Name="ReturnDate" Type="datetime" />
+          <Property Name="SequenceValue" Type="int" Nullable="false" />
+          <Property Name="EndEmployeeId" Type="uniqueidentifier" />
+          <Property Name="StartEmployeeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Modified" Type="datetime" Nullable="false" />
+          <Property Name="IdentityDocument" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="GuestVisit_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'BioTime.dbo.GuestVisit_Stat' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GuestVisit_Stat">
           <Key>
             <PropertyRef Name="Modified" />
             <PropertyRef Name="SequenceValue" />
@@ -1210,6 +1377,7 @@ warning 6002: The table/view 'BioTime.dbo.ReportOption_Stat' does not have a pri
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+          <Property Name="UseInPlanning" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Schedule_Deleted">
           <Key>
@@ -1242,6 +1410,7 @@ warning 6002: The table/view 'BioTime.dbo.Schedule_Stat' does not have a primary
           <Property Name="Created" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" Nullable="false" />
           <Property Name="SequenceValue" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ScheduleWorkPlace_Deleted">
           <Key>
@@ -2243,6 +2412,54 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Guest_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Guest" Type="Self.Guest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="GuestVisit" Type="Self.GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="StartEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Employee1">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="GuestVisit" Type="Self.GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="EndEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Guest">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="GuestVisit" Type="Self.GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Interval_Employee_EmployeeId">
           <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
           <End Role="Interval" Type="Self.Interval" Multiplicity="*" />
@@ -2382,6 +2599,8 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <EntitySet Name="DepartmentSmsAlertSettings_Deleted" EntityType="Self.DepartmentSmsAlertSettings_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartmentStaff" EntityType="Self.DepartmentStaff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DepartmentStaff_Deleted" EntityType="Self.DepartmentStaff_Deleted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceEventLog" EntityType="Self.DeviceEventLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeviceEventLog_Deleted" EntityType="Self.DeviceEventLog_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee_Deleted" EntityType="Self.Employee_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeDepartmentSecurityRole" EntityType="Self.EmployeeDepartmentSecurityRole" Schema="dbo" store:Type="Tables" />
@@ -2400,12 +2619,20 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <EntitySet Name="EmployeeWorkRole_Deleted" EntityType="Self.EmployeeWorkRole_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Entrance" EntityType="Self.Entrance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Entrance_Deleted" EntityType="Self.Entrance_Deleted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntranceGeoSettings" EntityType="Self.EntranceGeoSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EntranceGeoSettings_Deleted" EntityType="Self.EntranceGeoSettings_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntranceGroup" EntityType="Self.EntranceGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntranceGroup_Deleted" EntityType="Self.EntranceGroup_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntranceRule" EntityType="Self.EntranceRule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EntranceRule_Deleted" EntityType="Self.EntranceRule_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event_Deleted" EntityType="Self.Event_Deleted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventGeoData" EntityType="Self.EventGeoData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventGeoData_Deleted" EntityType="Self.EventGeoData_Deleted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guest_Deleted" EntityType="Self.Guest_Deleted" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuestVisit" EntityType="Self.GuestVisit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuestVisit_Deleted" EntityType="Self.GuestVisit_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HolidayShift" EntityType="Self.HolidayShift" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HolidayShift_Deleted" EntityType="Self.HolidayShift_Deleted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Interval" EntityType="Self.Interval" Schema="dbo" store:Type="Tables" />
@@ -2536,6 +2763,12 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
     [DepartmentStaff_Stat].[SequenceValue] AS [SequenceValue]
     FROM [dbo].[DepartmentStaff_Stat] AS [DepartmentStaff_Stat]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="DeviceEventLog_Stat" EntityType="Self.DeviceEventLog_Stat" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DeviceEventLog_Stat].[Modified] AS [Modified], 
+    [DeviceEventLog_Stat].[SequenceValue] AS [SequenceValue]
+    FROM [dbo].[DeviceEventLog_Stat] AS [DeviceEventLog_Stat]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="Employee_Stat" EntityType="Self.Employee_Stat" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Employee_Stat].[Modified] AS [Modified], 
@@ -2590,6 +2823,12 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
     [Entrance_Stat].[SequenceValue] AS [SequenceValue]
     FROM [dbo].[Entrance_Stat] AS [Entrance_Stat]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="EntranceGeoSettings_Stat" EntityType="Self.EntranceGeoSettings_Stat" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EntranceGeoSettings_Stat].[Modified] AS [Modified], 
+    [EntranceGeoSettings_Stat].[SequenceValue] AS [SequenceValue]
+    FROM [dbo].[EntranceGeoSettings_Stat] AS [EntranceGeoSettings_Stat]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="EntranceGroup_Stat" EntityType="Self.EntranceGroup_Stat" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [EntranceGroup_Stat].[Modified] AS [Modified], 
@@ -2607,6 +2846,24 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
     [Event_Stat].[Modified] AS [Modified], 
     [Event_Stat].[SequenceValue] AS [SequenceValue]
     FROM [dbo].[Event_Stat] AS [Event_Stat]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="EventGeoData_Stat" EntityType="Self.EventGeoData_Stat" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [EventGeoData_Stat].[Modified] AS [Modified], 
+    [EventGeoData_Stat].[SequenceValue] AS [SequenceValue]
+    FROM [dbo].[EventGeoData_Stat] AS [EventGeoData_Stat]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Guest_Stat" EntityType="Self.Guest_Stat" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Guest_Stat].[Modified] AS [Modified], 
+    [Guest_Stat].[SequenceValue] AS [SequenceValue]
+    FROM [dbo].[Guest_Stat] AS [Guest_Stat]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="GuestVisit_Stat" EntityType="Self.GuestVisit_Stat" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GuestVisit_Stat].[Modified] AS [Modified], 
+    [GuestVisit_Stat].[SequenceValue] AS [SequenceValue]
+    FROM [dbo].[GuestVisit_Stat] AS [GuestVisit_Stat]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="HolidayShift_Stat" EntityType="Self.HolidayShift_Stat" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -2959,6 +3216,22 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
             <End Role="Sender" EntitySet="Sender" />
             <End Role="Event" EntitySet="Event" />
           </AssociationSet>
+          <AssociationSet Name="FK_Guest_Employee" Association="Self.FK_Guest_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Guest" EntitySet="Guest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Employee" Association="Self.FK_GuestVisit_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Employee1" Association="Self.FK_GuestVisit_Employee1">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Guest" Association="Self.FK_GuestVisit_Guest">
+            <End Role="Guest" EntitySet="Guest" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
           <AssociationSet Name="FK_Interval_Employee_EmployeeId" Association="Self.FK_Interval_Employee_EmployeeId">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="Interval" EntitySet="Interval" />
@@ -2996,8 +3269,7 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
             <End Role="WorkRoleRate1" EntitySet="WorkRoleRate1" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BioTimeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3296,6 +3568,9 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <NavigationProperty Name="EmployeeWorkRole" Relationship="Self.FK_EmployeeWorkRole_Employee" FromRole="Employee" ToRole="EmployeeWorkRole" />
           <NavigationProperty Name="Event" Relationship="Self.FK_Event_Employee_EmployeeId" FromRole="Employee" ToRole="Event" />
           <NavigationProperty Name="Interval" Relationship="Self.FK_Interval_Employee_EmployeeId" FromRole="Employee" ToRole="Interval" />
+          <NavigationProperty Name="Guest" Relationship="BioTimeModel.FK_Guest_Employee" FromRole="Employee" ToRole="Guest" />
+          <NavigationProperty Name="GuestVisit" Relationship="BioTimeModel.FK_GuestVisit_Employee" FromRole="Employee" ToRole="GuestVisit" />
+          <NavigationProperty Name="GuestVisit1" Relationship="BioTimeModel.FK_GuestVisit_Employee1" FromRole="Employee" ToRole="GuestVisit" />
         </EntityType>
         <EntityType Name="Employee_Deleted">
           <Key>
@@ -3433,6 +3708,8 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <Property Name="WorkPlaceId" Type="Guid" Nullable="false" />
           <Property Name="LocationId" Type="Guid" Nullable="false" />
           <Property Name="DepartmentId" Type="Guid" Nullable="false" />
+          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PositionId" Type="Guid" />
         </EntityType>
         <EntityType Name="EmployeeWorkPlacePlan_Deleted">
           <Key>
@@ -3910,6 +4187,7 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <Property Name="SequenceValue" Type="Int64" Nullable="false" />
           <NavigationProperty Name="DepartmentSchedule" Relationship="Self.FK_DepartmentScheduleHistory_Schedule" FromRole="Schedule" ToRole="DepartmentSchedule" />
           <NavigationProperty Name="OccupationSchedule" Relationship="Self.FK_EmployeeOccupationScheduleHistory_Schedule" FromRole="Schedule" ToRole="OccupationSchedule" />
+          <Property Name="UseInPlanning" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Schedule_Deleted">
           <Key>
@@ -3932,6 +4210,7 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ScheduleWorkPlace_Deleted">
           <Key>
@@ -5686,7 +5965,246 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
             <End Role="WorkRole" EntitySet="WorkRole" />
             <End Role="WorkRoleRate1" EntitySet="WorkRoleRate1" />
           </AssociationSet>
+          <EntitySet Name="DeviceEventLog" EntityType="BioTimeModel.DeviceEventLog" />
+          <EntitySet Name="DeviceEventLog_Deleted" EntityType="BioTimeModel.DeviceEventLog_Deleted" />
+          <EntitySet Name="EntranceGeoSettings" EntityType="BioTimeModel.EntranceGeoSettings" />
+          <EntitySet Name="EntranceGeoSettings_Deleted" EntityType="BioTimeModel.EntranceGeoSettings_Deleted" />
+          <EntitySet Name="EventGeoData" EntityType="BioTimeModel.EventGeoData" />
+          <EntitySet Name="EventGeoData_Deleted" EntityType="BioTimeModel.EventGeoData_Deleted" />
+          <EntitySet Name="Guest" EntityType="BioTimeModel.Guest" />
+          <EntitySet Name="Guest_Deleted" EntityType="BioTimeModel.Guest_Deleted" />
+          <EntitySet Name="GuestVisit" EntityType="BioTimeModel.GuestVisit" />
+          <EntitySet Name="GuestVisit_Deleted" EntityType="BioTimeModel.GuestVisit_Deleted" />
+          <EntitySet Name="DeviceEventLog_Stat" EntityType="BioTimeModel.DeviceEventLog_Stat" />
+          <EntitySet Name="EntranceGeoSettings_Stat" EntityType="BioTimeModel.EntranceGeoSettings_Stat" />
+          <EntitySet Name="EventGeoData_Stat" EntityType="BioTimeModel.EventGeoData_Stat" />
+          <EntitySet Name="Guest_Stat" EntityType="BioTimeModel.Guest_Stat" />
+          <EntitySet Name="GuestVisit_Stat" EntityType="BioTimeModel.GuestVisit_Stat" />
+          <AssociationSet Name="FK_Guest_Employee" Association="BioTimeModel.FK_Guest_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Guest" EntitySet="Guest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Employee" Association="BioTimeModel.FK_GuestVisit_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Employee1" Association="BioTimeModel.FK_GuestVisit_Employee1">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestVisit_Guest" Association="BioTimeModel.FK_GuestVisit_Guest">
+            <End Role="Guest" EntitySet="Guest" />
+            <End Role="GuestVisit" EntitySet="GuestVisit" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DeviceEventLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" Nullable="false" />
+          <Property Name="EventDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SerialNumber" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EventType" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceEventLog_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntranceGeoSettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EntranceId" Type="Guid" Nullable="false" />
+          <Property Name="RegistrationType" Type="Int64" Nullable="false" />
+          <Property Name="OrdinalNumber" Type="Int64" Nullable="false" />
+          <Property Name="Color" Type="Int64" Nullable="false" />
+          <Property Name="PointsJSON" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="NotUseInTimeAccounting" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntranceGeoSettings_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventGeoData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="EventId" Type="Guid" Nullable="false" />
+          <Property Name="GeoX" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="GeoY" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="Note" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="IMEI" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventGeoData_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CardNumber" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="BioTimeModel.FK_Guest_Employee" FromRole="Guest" ToRole="Employee" />
+          <NavigationProperty Name="GuestVisit" Relationship="BioTimeModel.FK_GuestVisit_Guest" FromRole="Guest" ToRole="GuestVisit" />
+        </EntityType>
+        <EntityType Name="Guest_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuestVisit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CardId" Type="Guid" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="VisitEnd" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VisitStart" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ReturnDate" Type="DateTime" Precision="3" />
+          <Property Name="SequenceValue" Type="Int32" Nullable="false" />
+          <Property Name="EndEmployeeId" Type="Guid" />
+          <Property Name="StartEmployeeId" Type="Guid" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdentityDocument" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="BioTimeModel.FK_GuestVisit_Employee" FromRole="GuestVisit" ToRole="Employee" />
+          <NavigationProperty Name="Employee1" Relationship="BioTimeModel.FK_GuestVisit_Employee1" FromRole="GuestVisit" ToRole="Employee" />
+          <NavigationProperty Name="Guest" Relationship="BioTimeModel.FK_GuestVisit_Guest" FromRole="GuestVisit" ToRole="Guest" />
+        </EntityType>
+        <EntityType Name="GuestVisit_Deleted">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DeviceEventLog_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EntranceGeoSettings_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventGeoData_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GuestVisit_Stat">
+          <Key>
+            <PropertyRef Name="Modified" />
+            <PropertyRef Name="SequenceValue" />
+          </Key>
+          <Property Name="Modified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SequenceValue" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Guest_Employee">
+          <End Type="BioTimeModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="BioTimeModel.Guest" Role="Guest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Guest">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Employee">
+          <End Type="BioTimeModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="BioTimeModel.GuestVisit" Role="GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="StartEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Employee1">
+          <End Type="BioTimeModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="BioTimeModel.GuestVisit" Role="GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="EndEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestVisit_Guest">
+          <End Type="BioTimeModel.Guest" Role="Guest" Multiplicity="1" />
+          <End Type="BioTimeModel.GuestVisit" Role="GuestVisit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GuestVisit">
+              <PropertyRef Name="CardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6087,6 +6605,8 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <EntitySetMapping Name="EmployeeWorkPlacePlan">
             <EntityTypeMapping TypeName="BioTimeModel.EmployeeWorkPlacePlan">
               <MappingFragment StoreEntitySet="EmployeeWorkPlacePlan">
+                <ScalarProperty Name="PositionId" ColumnName="PositionId" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
@@ -6556,6 +7076,7 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <EntitySetMapping Name="Schedule">
             <EntityTypeMapping TypeName="BioTimeModel.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="UseInPlanning" ColumnName="UseInPlanning" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -6579,6 +7100,7 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
           <EntitySetMapping Name="ScheduleWorkPlace">
             <EntityTypeMapping TypeName="BioTimeModel.ScheduleWorkPlace">
               <MappingFragment StoreEntitySet="ScheduleWorkPlace">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
                 <ScalarProperty Name="WorkPlaceId" ColumnName="WorkPlaceId" />
@@ -7389,6 +7911,166 @@ warning 6002: The table/view 'BioTime.dbo.YearSpecialDays_Stat' does not have a 
               <MappingFragment StoreEntitySet="YearSpecialDays_Stat">
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
                 <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceEventLog">
+            <EntityTypeMapping TypeName="BioTimeModel.DeviceEventLog">
+              <MappingFragment StoreEntitySet="DeviceEventLog">
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="EventDate" ColumnName="EventDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceEventLog_Deleted">
+            <EntityTypeMapping TypeName="BioTimeModel.DeviceEventLog_Deleted">
+              <MappingFragment StoreEntitySet="DeviceEventLog_Deleted">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntranceGeoSettings">
+            <EntityTypeMapping TypeName="BioTimeModel.EntranceGeoSettings">
+              <MappingFragment StoreEntitySet="EntranceGeoSettings">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="NotUseInTimeAccounting" ColumnName="NotUseInTimeAccounting" />
+                <ScalarProperty Name="PointsJSON" ColumnName="PointsJSON" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="OrdinalNumber" ColumnName="OrdinalNumber" />
+                <ScalarProperty Name="RegistrationType" ColumnName="RegistrationType" />
+                <ScalarProperty Name="EntranceId" ColumnName="EntranceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntranceGeoSettings_Deleted">
+            <EntityTypeMapping TypeName="BioTimeModel.EntranceGeoSettings_Deleted">
+              <MappingFragment StoreEntitySet="EntranceGeoSettings_Deleted">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventGeoData">
+            <EntityTypeMapping TypeName="BioTimeModel.EventGeoData">
+              <MappingFragment StoreEntitySet="EventGeoData">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="IMEI" ColumnName="IMEI" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="GeoY" ColumnName="GeoY" />
+                <ScalarProperty Name="GeoX" ColumnName="GeoX" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventGeoData_Deleted">
+            <EntityTypeMapping TypeName="BioTimeModel.EventGeoData_Deleted">
+              <MappingFragment StoreEntitySet="EventGeoData_Deleted">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guest">
+            <EntityTypeMapping TypeName="BioTimeModel.Guest">
+              <MappingFragment StoreEntitySet="Guest">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guest_Deleted">
+            <EntityTypeMapping TypeName="BioTimeModel.Guest_Deleted">
+              <MappingFragment StoreEntitySet="Guest_Deleted">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestVisit">
+            <EntityTypeMapping TypeName="BioTimeModel.GuestVisit">
+              <MappingFragment StoreEntitySet="GuestVisit">
+                <ScalarProperty Name="IdentityDocument" ColumnName="IdentityDocument" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="StartEmployeeId" ColumnName="StartEmployeeId" />
+                <ScalarProperty Name="EndEmployeeId" ColumnName="EndEmployeeId" />
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="VisitStart" ColumnName="VisitStart" />
+                <ScalarProperty Name="VisitEnd" ColumnName="VisitEnd" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CardId" ColumnName="CardId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestVisit_Deleted">
+            <EntityTypeMapping TypeName="BioTimeModel.GuestVisit_Deleted">
+              <MappingFragment StoreEntitySet="GuestVisit_Deleted">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeviceEventLog_Stat">
+            <EntityTypeMapping TypeName="BioTimeModel.DeviceEventLog_Stat">
+              <MappingFragment StoreEntitySet="DeviceEventLog_Stat">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EntranceGeoSettings_Stat">
+            <EntityTypeMapping TypeName="BioTimeModel.EntranceGeoSettings_Stat">
+              <MappingFragment StoreEntitySet="EntranceGeoSettings_Stat">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventGeoData_Stat">
+            <EntityTypeMapping TypeName="BioTimeModel.EventGeoData_Stat">
+              <MappingFragment StoreEntitySet="EventGeoData_Stat">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guest_Stat">
+            <EntityTypeMapping TypeName="BioTimeModel.Guest_Stat">
+              <MappingFragment StoreEntitySet="Guest_Stat">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestVisit_Stat">
+            <EntityTypeMapping TypeName="BioTimeModel.GuestVisit_Stat">
+              <MappingFragment StoreEntitySet="GuestVisit_Stat">
+                <ScalarProperty Name="SequenceValue" ColumnName="SequenceValue" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
