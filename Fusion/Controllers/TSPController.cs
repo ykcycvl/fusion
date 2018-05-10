@@ -10,6 +10,7 @@ namespace Fusion.Controllers
     public class TSPController : Controller
     {
         // GET: TSP
+        [MyAuthorize(Roles = "FusionAdmin, TSP")]
         public ActionResult Index()
         {
             TSPModels model = new TSPModels();
@@ -17,6 +18,7 @@ namespace Fusion.Controllers
             return View(model);
         }
 
+        [MyAuthorize(Roles = "FusionAdmin, TSP")]
         public ActionResult Add()
         {
             TSPModels model = new TSPModels();
@@ -24,6 +26,7 @@ namespace Fusion.Controllers
             return View(model);
         }
 
+        [MyAuthorize(Roles = "FusionAdmin, TSP")]
         public ActionResult Edit(int id)
         {
             TSPModels model = new TSPModels(id, User.Identity.Name.ToLower());
@@ -31,6 +34,7 @@ namespace Fusion.Controllers
         }
 
         [HttpPost]
+        [MyAuthorize(Roles = "FusionAdmin, SKK")]
         public ContentResult Save(string data)
         {
             ContentResult cr = new ContentResult();
