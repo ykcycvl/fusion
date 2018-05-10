@@ -50,95 +50,95 @@
 
         @Html.HiddenFor(m => m.ActId)
         @foreach (var it in Model.ArticleBlocks)
-    {
-        int? rating = 0;
-        int? weight = 0;
+        {
+            int? rating = 0;
+            int? weight = 0;
 
-        <div class="col-md-8 col-md-push-2 col-xs-12">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        @it.name
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-bordered table-responsive my-table">
-                        <thead>
-                            <tr style="width:100%; min-width:100%; max-width:100%">
-                                <th style="width:10%; min-width:10%; max-width:10%">id</th>
-                                <th style="width: 40%; min-width:40%; max-width:40%">Статья</th>
-                                <th style="width:20%; min-width:20%; max-width:20%">Вес</th>
-                                <th style="width:20%; min-width:20%; max-width:20%">Соответствие да/нет</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var iy in Model.Articles.Where(g => g.block_id == it.id))
-                        {
-                            int i = Model.Articles.FindIndex(r => r.id == iy.id);
-                            rating += Model.actDataMock[i].ActData.rating;
-                            //weight += Model.actDataMock[i].ActData.Article.weight;
-                            weight += iy.weight;
-                            <tr class="row-main" id="@i">
-                                <td>
-                                    @iy.id
-                                    @Html.HiddenFor(m => Model.Articles[i].id)
-                                </td>
-                                <td>@iy.name</td>
-                                <td>@iy.weight</td>
-                                <td class="td-radio">
-                                    @Html.RadioButtonFor(m => m.actDataMock[i].Accord, true, new { @class = "form-control act-radio radio-true" })
-                                    @Html.RadioButtonFor(m => m.actDataMock[i].Accord, false, new { @class = "form-control act-radio radio-false" })
-                                    @Html.HiddenFor(m => m.actDataMock[i].ArticleId)
-                                </td>
-                            </tr>
-                            <tr class="additional-information @i">
-                                <td>@iy.id</td>
-                                <td>@Html.TextBoxFor(m => m.actDataMock[i].ActData.comment, new { @class = "form-control", @placeholder = "Комментарий" })</td>
-                                <td>@Html.TextBoxFor(m => m.actDataMock[i].ActData.rating, new { @class = "form-control", @placeholder = "Рейтинг" })</td>
-                                <td width="20%">
-                                    <!--<label class="btn btn-info my-button">
-                                    Загрузить файл
-
-                                </label>-->
-                                    <input type="file" multiple class="form-control" style="opacity: 100" name="@iy.id" />
-                                </td>
-                            </tr>
-                        if (Model.ActFiles.Any())
-                        {
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                    @foreach (var ij in Model.ActFiles)
+            <div class="col-md-8 col-md-push-2 col-xs-12">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            @it.name
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-responsive my-table">
+                            <thead>
+                                <tr style="width:100%; min-width:100%; max-width:100%">
+                                    <th style="width:10%; min-width:10%; max-width:10%">id</th>
+                                    <th style="width: 40%; min-width:40%; max-width:40%">Статья</th>
+                                    <th style="width:20%; min-width:20%; max-width:20%">Вес</th>
+                                    <th style="width:20%; min-width:20%; max-width:20%">Соответствие да/нет</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var iy in Model.Articles.Where(g => g.block_id == it.id))
                                 {
-                                    <img src="~/Files/@ij.filename" style="max-width: 200px; max-height: 200px" />
-                            }
-                                </td>
-                            </tr>
-                    }
+                                    int i = Model.Articles.FindIndex(r => r.id == iy.id);
+                                    rating += Model.actDataMock[i].ActData.rating;
+                                    //weight += Model.actDataMock[i].ActData.Article.weight;
+                                    weight += iy.weight;
+                                    <tr class="row-main" id="@i">
+                                        <td>
+                                            @iy.id
+                                            @Html.HiddenFor(m => Model.Articles[i].id)
+                                        </td>
+                                        <td>@iy.name</td>
+                                        <td>@iy.weight</td>
+                                        <td class="td-radio">
+                                            @Html.RadioButtonFor(m => m.actDataMock[i].Accord, true, new { @class = "form-control act-radio radio-true" })
+                                            @Html.RadioButtonFor(m => m.actDataMock[i].Accord, false, new { @class = "form-control act-radio radio-false" })
+                                            @Html.HiddenFor(m => m.actDataMock[i].ArticleId)
+                                        </td>
+                                    </tr>
+                                    <tr class="additional-information @i">
+                                        <td>@iy.id</td>
+                                        <td>@Html.TextBoxFor(m => m.actDataMock[i].ActData.comment, new { @class = "form-control", @placeholder = "Комментарий" })</td>
+                                        <td>@Html.TextBoxFor(m => m.actDataMock[i].ActData.rating, new { @class = "form-control", @placeholder = "Рейтинг" })</td>
+                                        <td width="20%">
+                                            <!--<label class="btn btn-info my-button">
+                                                Загрузить файл
+
+                                            </label>-->
+                                            <input type="file" multiple class="form-control" style="opacity: 100" name="@iy.id" />
+                                        </td>
+                                    </tr>
+                                    if (Model.ActFiles.Any())
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                @foreach (var ij in Model.ActFiles)
+                                                {
+                                                    <img src="~/Files/@ij.filename" style="max-width: 200px; max-height: 200px" />
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        @{
+                            double? percent = (rating * 100) / weight;
+                            rating_overall += percent;
+                        }
+                        Итог: @rating из @weight <br />
+                        Процент соответствия: @percent %
+                    </div>
+                </div>
+                @{
+                    rating_overall_finish = rating_overall / Model.ArticleBlocks.Count;
                 }
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-footer">
-                    @{
-                    double? percent = (rating * 100) / weight;
-                    rating_overall += percent;
-                    }
-                    Итог: @rating из @weight <br />
-                    Процент соответствия: @percent %
-                </div>
             </div>
-            @{
-            rating_overall_finish = rating_overall / Model.ArticleBlocks.Count;
-            }
-
-        </div>
-}
-        <div class="col-md-6">
-            <p class="">Итоговый процент соответствия: @rating_overall_finish %</p>
+        }
+        <div class="col-md-8 col-xs-12">
+            <p class="">Итоговый процент соответствия: @Math.Round((double)rating_overall_finish, 2)%</p>
         </div>
     </div>
 }

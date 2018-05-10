@@ -32,7 +32,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var it in Model.Articles)
+                        @foreach (var it in Model.Articles.OrderBy(n => n.block_id))
                         {
                             <tr>
                                 <td style="display: none">@it.id</td>
