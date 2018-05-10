@@ -1,0 +1,22 @@
+﻿@model Fusion.Models.Fabrika.TSPModels
+@{
+    ViewBag.Title = "Заявки на ТСП Фабрики";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Новая заявка", "Add", "TSP", new { @class = "btn btn-info btn-xs" })
+
+<h2>Заявки на ТСП Фабрики</h2>
+
+<div class="row">
+    <div class="container">
+        <div class="alert alert-info">
+            <ul class="list-unstyled">
+                @foreach (var r in Model.RequestList)
+            {
+                    <li>@Html.ActionLink("Заявка от " + @r.RequestDate.ToString("dd.MM.yyyy"), "Edit", new { @id = r.Id })</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

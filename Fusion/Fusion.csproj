@@ -242,6 +242,7 @@
     <Compile Include="Controllers\SH4Controller.cs" />
     <Compile Include="Controllers\SKKController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\TSPController.cs" />
     <Compile Include="Controllers\ZakupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1196,6 +1197,40 @@
     <Compile Include="Models\FabrikaNomenclature.cs">
       <DependentUpon>FusionDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Fabrika\Category.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\FabrikaEntities.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabrikaEntities.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\FabrikaEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\FabrikaEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FabrikaEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\Nomenclature.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\Request.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\RequestDetail.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\Restaurant.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\RestaurantAccess.cs">
+      <DependentUpon>FabrikaEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Fabrika\TSPModels.cs" />
     <Compile Include="Models\FIAS_ADDRESS_OBJECTS.cs">
       <DependentUpon>RKCRM.tt</DependentUpon>
     </Compile>
@@ -2828,6 +2863,7 @@
     <Content Include="Content\layouts\Popup\PopupLayout.html" />
     <Content Include="Content\layouts\Popup\PopupLayout.js" />
     <Content Include="Content\pivot.min.css" />
+    <Content Include="Content\Style.css" />
     <Content Include="data.js" />
     <Content Include="data\events.xml" />
     <Content Include="images\031c63cfe7b947ed94b884816ad98b5b.gif" />
@@ -2845,6 +2881,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>BioTime.edmx</DependentUpon>
       <LastGenOutput>BioTime.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Fabrika\FabrikaEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FabrikaEntities.edmx</DependentUpon>
+      <LastGenOutput>FabrikaEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Fabrika\FabrikaEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FabrikaEntities.edmx</DependentUpon>
+      <LastGenOutput>FabrikaEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Models\FusionDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -4387,6 +4433,13 @@
     </EntityDeploy>
     <Content Include="Models\SKK\SKKEntity.edmx.diagram">
       <DependentUpon>SKKEntity.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\Fabrika\FabrikaEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FabrikaEntities.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Fabrika\FabrikaEntities.edmx.diagram">
+      <DependentUpon>FabrikaEntities.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\dx.aspnet.mvc.js" />
@@ -5996,6 +6049,9 @@
     <Content Include="Views\SKK\Index.cshtml" />
     <Content Include="Views\SKK\Positions.cshtml" />
     <Content Include="Views\SKK\Restaurants.cshtml" />
+    <Content Include="Views\TSP\Index.cshtml" />
+    <Content Include="Views\TSP\Add.cshtml" />
+    <Content Include="Views\TSP\Edit.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
       <DependentUpon>Reference.map</DependentUpon>

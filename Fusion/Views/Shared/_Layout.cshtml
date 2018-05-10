@@ -52,6 +52,7 @@
             });
         });
     </script>
+    <link href="~/Content/Style.css" rel="stylesheet" />
 </head>
 <body>
     <div class="wrapper">
@@ -67,10 +68,10 @@
                         @Html.ActionLink("Vega", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                     </div>
                     <div class="navbar-collapse collapse">
-                        <img src="~/Content/Vega_48.png" style="float:left" />
+                        <img src="~/Content/Vega_48.png" style="float:left" />                        
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">CRM<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">БК<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Общая информация", "Index", "CRM")</li>
                                     <li>@Html.ActionLink("Участники Море Плюсов", "Persons", "CRM")</li>
@@ -85,32 +86,33 @@
                                     <li>@Html.ActionLink("Отчеты", "Index", "CallCenter")</li>
                                     <li>@Html.ActionLink("Интернет-заказы", "Index", "InternetOrders")</li>
                                     <li>@Html.ActionLink("Сбербанк", "Sberbank", "InternetOrders")</li>
-                                    <li>@Html.ActionLink("База знаний", "Index", "Issues")</li>
                                 </ul>
                             </li>
-                            <li>
-                                @Html.ActionLink("Обратная связь", "viewtable", "Callback")
-                            </li>
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Управляющим<span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Финансы<span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("ЗУП", "Index", "Salary")</li>
-                                    <li>@Html.ActionLink("Календарь управляющих", "Index", "Calendar")</li>
-                                    <li>@Html.ActionLink("Порц. коэф.", "MenuPortions", "RK7")</li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">СБ<span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li>@Html.ActionLink("Замечания по сети", "Problems", "SB_Problems")</li>
-                                    <li>@Html.ActionLink("Замечания топ", "Problem_top", "SB_Problems")</li>
+                                    <li>@Html.ActionLink("Фин. отчетность", "Index", "PIU")</li>
                                 </ul>
                             </li>
                             <li>
                                 @Html.ActionLink("ОЗ", "Index", "Zakup")
                             </li>
-                            <li>
-                                @Html.ActionLink("Фин. отчетность", "Index", "PIU")
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Прочее<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Обратная связь", "viewtable", "Callback")</li>
+                                    <li>@Html.ActionLink("Календарь управляющих", "Index", "Calendar")</li>
+                                    <li>@Html.ActionLink("Порц. коэф.", "MenuPortions", "RK7")</li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("База знаний", "Index", "Issues")</li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Замечания по сети", "Problems", "SB_Problems")</li>
+                                    <li>@Html.ActionLink("Замечания топ", "Problem_top", "SB_Problems")</li>
+                                    <li class="divider"></li>
+                                    <li>@Html.ActionLink("Заявки на ТСП Фабрики", "Index", "TSP")</li>
+
+                                </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">

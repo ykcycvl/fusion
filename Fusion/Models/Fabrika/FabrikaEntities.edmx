@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FabrikaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nomenclature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="Measurement" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="CategoryID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestDate" Type="datetime" Nullable="false" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequestDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="RequestID" Type="int" Nullable="false" />
+          <Property Name="RestaurantID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RestaurantAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Nomenclature_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Nomenclature" Type="Self.Nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nomenclature">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Nomenclature">
+          <End Role="Nomenclature" Type="Self.Nomenclature" Multiplicity="1" />
+          <End Role="RequestDetail" Type="Self.RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomenclature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="RequestDetail" Type="Self.RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Restaurant">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="RequestDetail" Type="Self.RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurantAccess_Restaurant">
+          <End Role="Restaurant" Type="Self.Restaurant" Multiplicity="1" />
+          <End Role="RestaurantAccess" Type="Self.RestaurantAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantAccess">
+              <PropertyRef Name="RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FabrikaModelStoreContainer">
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nomenclature" EntityType="Self.Nomenclature" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestDetail" EntityType="Self.RequestDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Restaurant" EntityType="Self.Restaurant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RestaurantAccess" EntityType="Self.RestaurantAccess" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Nomenclature_Category" Association="Self.FK_Nomenclature_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Nomenclature" EntitySet="Nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Nomenclature" Association="Self.FK_RequestDetail_Nomenclature">
+            <End Role="Nomenclature" EntitySet="Nomenclature" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Request" Association="Self.FK_RequestDetail_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Restaurant" Association="Self.FK_RequestDetail_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantAccess_Restaurant" Association="Self.FK_RestaurantAccess_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RestaurantAccess" EntitySet="RestaurantAccess" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FabrikaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FabrikaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="FabrikaModel.Category" />
+          <EntitySet Name="Nomenclature" EntityType="FabrikaModel.Nomenclature" />
+          <EntitySet Name="Request" EntityType="FabrikaModel.Request" />
+          <EntitySet Name="RequestDetail" EntityType="FabrikaModel.RequestDetail" />
+          <EntitySet Name="Restaurant" EntityType="FabrikaModel.Restaurant" />
+          <EntitySet Name="RestaurantAccess" EntityType="FabrikaModel.RestaurantAccess" />
+          <AssociationSet Name="FK_Nomenclature_Category" Association="FabrikaModel.FK_Nomenclature_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Nomenclature" EntitySet="Nomenclature" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Nomenclature" Association="FabrikaModel.FK_RequestDetail_Nomenclature">
+            <End Role="Nomenclature" EntitySet="Nomenclature" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Request" Association="FabrikaModel.FK_RequestDetail_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestDetail_Restaurant" Association="FabrikaModel.FK_RequestDetail_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RequestDetail" EntitySet="RequestDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantAccess_Restaurant" Association="FabrikaModel.FK_RestaurantAccess_Restaurant">
+            <End Role="Restaurant" EntitySet="Restaurant" />
+            <End Role="RestaurantAccess" EntitySet="RestaurantAccess" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Nomenclature" Relationship="FabrikaModel.FK_Nomenclature_Category" FromRole="Category" ToRole="Nomenclature" />
+        </EntityType>
+        <EntityType Name="Nomenclature">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="Measurement" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CategoryID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="FabrikaModel.FK_Nomenclature_Category" FromRole="Nomenclature" ToRole="Category" />
+          <NavigationProperty Name="RequestDetail" Relationship="FabrikaModel.FK_RequestDetail_Nomenclature" FromRole="Nomenclature" ToRole="RequestDetail" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Deleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RequestDetail" Relationship="FabrikaModel.FK_RequestDetail_Request" FromRole="Request" ToRole="RequestDetail" />
+        </EntityType>
+        <EntityType Name="RequestDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="RequestID" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Nomenclature" Relationship="FabrikaModel.FK_RequestDetail_Nomenclature" FromRole="RequestDetail" ToRole="Nomenclature" />
+          <NavigationProperty Name="Request" Relationship="FabrikaModel.FK_RequestDetail_Request" FromRole="RequestDetail" ToRole="Request" />
+          <NavigationProperty Name="Restaurant" Relationship="FabrikaModel.FK_RequestDetail_Restaurant" FromRole="RequestDetail" ToRole="Restaurant" />
+        </EntityType>
+        <EntityType Name="Restaurant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="RequestDetail" Relationship="FabrikaModel.FK_RequestDetail_Restaurant" FromRole="Restaurant" ToRole="RequestDetail" />
+          <NavigationProperty Name="RestaurantAccess" Relationship="FabrikaModel.FK_RestaurantAccess_Restaurant" FromRole="Restaurant" ToRole="RestaurantAccess" />
+        </EntityType>
+        <EntityType Name="RestaurantAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Restaurant" Relationship="FabrikaModel.FK_RestaurantAccess_Restaurant" FromRole="RestaurantAccess" ToRole="Restaurant" />
+        </EntityType>
+        <Association Name="FK_Nomenclature_Category">
+          <End Type="FabrikaModel.Category" Role="Category" Multiplicity="1" />
+          <End Type="FabrikaModel.Nomenclature" Role="Nomenclature" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nomenclature">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Nomenclature">
+          <End Type="FabrikaModel.Nomenclature" Role="Nomenclature" Multiplicity="1" />
+          <End Type="FabrikaModel.RequestDetail" Role="RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomenclature">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Request">
+          <End Type="FabrikaModel.Request" Role="Request" Multiplicity="1" />
+          <End Type="FabrikaModel.RequestDetail" Role="RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestDetail_Restaurant">
+          <End Type="FabrikaModel.Restaurant" Role="Restaurant" Multiplicity="1" />
+          <End Type="FabrikaModel.RequestDetail" Role="RequestDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestDetail">
+              <PropertyRef Name="RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RestaurantAccess_Restaurant">
+          <End Type="FabrikaModel.Restaurant" Role="Restaurant" Multiplicity="1" />
+          <End Type="FabrikaModel.RestaurantAccess" Role="RestaurantAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Restaurant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RestaurantAccess">
+              <PropertyRef Name="RestaurantID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FabrikaModelStoreContainer" CdmEntityContainer="FabrikaEntities">
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="FabrikaModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nomenclature">
+            <EntityTypeMapping TypeName="FabrikaModel.Nomenclature">
+              <MappingFragment StoreEntitySet="Nomenclature">
+                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Measurement" ColumnName="Measurement" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Request">
+            <EntityTypeMapping TypeName="FabrikaModel.Request">
+              <MappingFragment StoreEntitySet="Request">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="RequestDate" ColumnName="RequestDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestDetail">
+            <EntityTypeMapping TypeName="FabrikaModel.RequestDetail">
+              <MappingFragment StoreEntitySet="RequestDetail">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Restaurant">
+            <EntityTypeMapping TypeName="FabrikaModel.Restaurant">
+              <MappingFragment StoreEntitySet="Restaurant">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RestaurantAccess">
+            <EntityTypeMapping TypeName="FabrikaModel.RestaurantAccess">
+              <MappingFragment StoreEntitySet="RestaurantAccess">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,143 @@
+﻿@model Fusion.Models.Fabrika.TSPModels
+
+@{
+    ViewBag.Title = "Заявка от " + Model.TSPRequest.RequestDate.ToString("dd.MM.yyyy");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string columns = "";
+
+    foreach (var r in Model.Restaurants)
+    {
+        columns += "{ id: \"_r" + r.Id + "\", header: \"" + r.Name + "\", editor: \"text\" }, ";
+    }
+
+    string data = "";
+
+    foreach (var c in Model.Categories)
+    {
+        data += "{ RequestID: \"" + Model.TSPRequest.Id + "\", ProductId: \"cat_" + c.Id + "\", Name: \"" +
+            c.Name + "\", _cat:\"" + c.Id + "\"";
+
+        data += ", $css:\"subhighlight\" },\r\n";
+
+        foreach (var p in c.Nomenclature)
+        {
+            data += "{ RequestID: \"" + Model.TSPRequest.Id + "\", ProductId: \"" + p.Id + "\", Name: \"" +
+            p.Name + "\", Measurement: \"" + p.Measurement.Trim() + "\"";
+
+            foreach (var r in Model.Restaurants)
+            {
+                var t = Model.TSPRequest.RequestDetail.FirstOrDefault(x => x.ProductID == p.Id && x.RestaurantID == r.Id);
+
+                if (t != null) { data += ", _r" + r.Id + ": \"" + t.Quantity + "\""; }
+                else { data += ", _r" + r.Id + ": \"\""; }
+            }
+
+            data += "},\r\n";
+        }
+    }
+}
+
+<link href="~/Scripts/css/fixed_table_rc.css" rel="stylesheet" />
+<script src="~/Scripts/js/fixed_table_rc.js"></script>
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+
+<style>
+    .webix_ss_center_scroll {
+        cursor: cell !important;
+    }
+
+    .subhighlight {
+        background-color: #7cd572;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+    function Save() {
+        var bidform = $$("grid");
+
+        webix.message({ type: "default", text: "Сохранение документа..." });
+        $("#loader").show();
+        var serializedData = bidform.serialize();
+        webix.ajax().post("/TSP/Save", { data: serializedData }, function (result) {
+            $('#resultContainer').removeClass();
+            $('#resultContainer').addClass('hidden');
+            $("#loader").hide();
+            var response = JSON.parse(result)
+            webix.message({ type: response.result, text: response.message });
+
+            if (response.result == "error") {
+                $('#resultContainer').addClass('alert alert-danger');
+            }
+            else {
+                $('#resultContainer').addClass('alert alert-success');
+            }
+
+            $("#resultContainer")[0].innerHTML = response.message;
+        });
+
+        return false;
+    }
+
+    webix.ready(function () {
+        grid = webix.ui({
+            container: "bidform",
+            id: "grid",
+            view: "datatable",
+            leftSplit: 2,
+            rowHeight: 23,
+            padding: 5,
+            columns: [
+                { id: "RequestID", header: "RequestID", hidden: "true" },
+                { id: "ProductId", header: "ProductId", hidden: "true" },
+                { id: "Name", header: "Наименование", width: 250 },
+                { id: "Measurement", header: "" },
+                @Html.Raw(columns)
+            ],
+            spans: true,
+            data: {
+                data: [
+                    @Html.Raw(data)
+                ]
+            },
+            ready: function () {
+                this.validate();
+            },
+            on: {
+                onBeforeEditStart: function (id) {
+                    var item = this.getItem(id.row);
+
+                    if (typeof item._cat != 'undefined')
+                        return false;
+                }
+            },
+            editable: "true",
+            select: "cell",
+            multiselect: true,
+            blockselect: true,
+            clipboard: "block",
+            navigation: "true",
+            editaction: "dblclick",
+            height: 500,
+            math: true
+        });
+
+        webix.UIManager.addHotKey("any", function (view) {
+            var pos = view.getSelectedId();
+            view.edit(pos);
+        }, grid);
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<div id="resultContainer" class="hidden">
+</div>
+
+<button onclick="Save()" class="btn btn-circle btn-success" aria-label="Left Align" title="Сохранить">
+    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+</button>
+
+<div id="bidform"></div>

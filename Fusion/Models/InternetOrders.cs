@@ -1280,6 +1280,10 @@ ORDER BY bso.DATE_INSERT DESC", DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd HH
                                     ErrorMessage = "Завершен";
                                     payed = true;
                                     break;
+                                case 3:
+                                    ErrorMessage = "Отменен";
+                                    payed = true;
+                                    break;
                                 case 4:
                                     ErrorMessage = "Возврат";
                                     break;
