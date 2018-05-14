@@ -4,9 +4,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/ckeditor/config.js"></script>
 <script>
     $(function () {
-        CKEDITOR.replace('Content');
+        CKEDITOR.replace('Content').on('fileUploadResponse', function (evt) {
+            evt.stop();
+
+            // Get XHR and response.
+            var data = evt.data,
+                xhr = data.fileLoader.xhr,
+                response = xhr.responseText.split('|');
+
+            if (response[1]) {
+                // An error occurred during upload.
+                data.message = response[1];
+                evt.cancel();
+            } else {
+                var arr_from_json = JSON.parse(response[0]);
+                editor = CKEDITOR.instances.Content; //fck is just my instance name you will need to replace that with yours
+                var edata = editor.getData();
+                var replaced_text = edata.replace(/\"blob.*\"/, arr_from_json.url); // you could also use a regex in the replace 
+                editor.setData(replaced_text);
+            }
+        });
     });
 </script>
 

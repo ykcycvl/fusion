@@ -5,6 +5,7 @@
 }
 
 @Html.ActionLink("Новая заявка", "Add", "TSP", new { @class = "btn btn-info btn-xs" })
+@Html.ActionLink("Номенклатура", "Nomenclature", "TSP", new { @class = "btn btn-primary btn-xs" })
 
 <h2>Заявки на ТСП Фабрики</h2>
 
@@ -13,7 +14,7 @@
         <div class="alert alert-info">
             <ul class="list-unstyled">
                 @foreach (var r in Model.RequestList)
-            {
+                {
                     <li>@Html.ActionLink("Заявка от " + @r.RequestDate.ToString("dd.MM.yyyy"), "Edit", new { @id = r.Id })</li>
                 }
             </ul>

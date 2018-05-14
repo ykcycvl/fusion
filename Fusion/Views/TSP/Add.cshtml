@@ -21,6 +21,11 @@
 
         foreach (var p in c.Nomenclature)
         {
+            if (!p.Active)
+            {
+                continue;
+            }
+
             data += "{ RequestID: \"" + Model.TSPRequest.Id + "\", ProductId: \"" + p.Id + "\", Name: \"" +
             p.Name + "\", Measurement: \"" + p.Measurement.Trim() + "\"";
 
@@ -72,6 +77,7 @@
                 $('#resultContainer').addClass('alert alert-success');
             }
 
+            $('#resultContainer').removeClass('hidden');
             $("#resultContainer")[0].innerHTML = response.message;
         });
 

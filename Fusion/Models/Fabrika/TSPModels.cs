@@ -71,10 +71,57 @@ namespace Fusion.Models.Fabrika
             Products = db.Nomenclature.ToList();
         }
 
-        public bool Save(string JSON, string UserName)
+        public void SaveNomenclature(string JSONData)
         {
-            bool result = false;
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                var heapdata = serializer.DeserializeObject(JSONData);
 
+                foreach (var undata in (Array)heapdata)
+                {
+                    var r = (Dictionary<string, object>)undata;
+
+                    object productId = null;
+                    r.TryGetValue("ProductId", out productId);
+                    object categoryID = null;
+                    r.TryGetValue("CategoryID", out categoryID);
+                    object name = null;
+                    r.TryGetValue("Name", out name);
+                    object measurement = null;
+                    r.TryGetValue("Measurement", out measurement);
+                    object active = null;
+                    r.TryGetValue("Active", out active);
+
+                    int catId = Convert.ToInt32(categoryID);
+
+                    if (productId != null)
+                    {
+                        int prodId;
+                        Int32.TryParse(productId.ToString(), out prodId);
+
+                        if (prodId != 0)
+                        {
+                            var product = db.Nomenclature.FirstOrDefault(p => p.Id == prodId);
+                            product.Active = Convert.ToBoolean(active);
+                        }
+                    }
+                    else
+                    {
+                        db.Nomenclature.Add(new Nomenclature() { Active = true, CategoryID = catId, Created = DateTime.Now, Measurement = measurement.ToString().Trim(), Name = name.ToString() });
+                    }
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void Save(string JSON, string UserName)
+        {
             try
             {
                 var serializer = new JavaScriptSerializer();
@@ -115,14 +162,16 @@ namespace Fusion.Models.Fabrika
                 }
 
                 db.SaveChanges();
-                result = true;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
+        }
 
-            return result;
+        public void GetNomenclature()
+        {
+            Categories = db.Category.ToList();
         }
     }
 }
