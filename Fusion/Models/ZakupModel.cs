@@ -910,14 +910,17 @@ namespace Fusion.Models
             {
                 if (list.bd_nomenclature.Where(m => m.id == p.id).Count() != 0)
                 {
-                    if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id || items.FirstOrDefault(m => m.id == p.id).state != p.state_id)
+                    if(items.Where(m => m.id == p.id).Count() != 0 )
                     {
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).name = p.name;
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).Price = p.price;
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).vendor_id = p.vendor_id;
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).measurement_id = p.measurement_id;
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).category_id = p.category_id;
-                        list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).state = p.state_id;
+                        if (items.FirstOrDefault(m => m.id == p.id).name != p.name || items.FirstOrDefault(m => m.id == p.id).bd_vendor.name != p.vendor_name || items.FirstOrDefault(m => m.id == p.id).Price != p.price || items.FirstOrDefault(m => m.id == p.id).category_id != p.category_id || items.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id || items.FirstOrDefault(m => m.id == p.id).state != p.state_id)
+                        {
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).name = p.name;
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).Price = p.price;
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).vendor_id = p.vendor_id;
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).measurement_id = p.measurement_id;
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).category_id = p.category_id;
+                            list.bd_nomenclature.FirstOrDefault(m => m.id == p.id).state = p.state_id;
+                        }
                     }
                 }
                 else
