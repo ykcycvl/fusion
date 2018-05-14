@@ -70,6 +70,7 @@ namespace Fusion.Controllers
                 model.Period = DateTime.Today;
             else
                 model.Period = DateTime.Parse(period);
+            model.getMeasurements();
             model.getOrders();
             return View(model);
         }

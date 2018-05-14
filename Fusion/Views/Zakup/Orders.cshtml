@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
     string TableData = "";
     string selectState = "";
+    string selectMeasurement = "";
     decimal? sum = 0;
     if (LoginViewModel.IsMemberOf(Model.username, "ZakupAdmin"))
     {
@@ -23,7 +24,10 @@
             TableData += "}, \r\n";
         }
     }
-
+    foreach(var it in Model.MeasurementSelectList)
+    {
+        selectMeasurement += " \"" + it.Text + "\", ";
+    }
     foreach (var it in Model.stateSelectList)
     {
         selectState += " \"" + it.Text + "\", ";
@@ -123,7 +127,7 @@
                       { id: "category_name", header: ["Категория", { content: "textFilter" }], width: 100, sort: "string" },
                       { id: "nomenclature_name", header: ["Наименование", { content: "textFilter" }], width: 250, sort: "string" },
                       { id: "vendor_name", header: ["Поставщик", { content: "textFilter" }], width: 300, sort: "string" },
-                      { id: "measurement_name", header: "Ед. измерения", width: 100 },
+                      { id: "measurement_name", header: "Ед. измерения", editor: "select", options: [@Html.Raw(selectMeasurement)], width: 100 },
                       { id: "price", header: "Цена", width: 100 },
                       { id: "count", header: "Кол-во", width: 100, editor: "text" },
                       { id: "summ", header: "Сумма", width: 100 },

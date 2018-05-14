@@ -138,6 +138,7 @@ namespace Fusion.Models
             public string state { get; set; }
             public int state_id { get; set; }
             public decimal count { get; set; }
+            public int measurement_id { get; set; }
         }
         public class reclamation
         {
@@ -669,6 +670,10 @@ namespace Fusion.Models
             orders = list.bd_order.ToList();
             states = list.bd_states.ToList();
         }
+        public void getMeasurements()
+        {
+            maesurements = list.bd_measurement.ToList();
+        }
         public IEnumerable<SelectListItem> stateSelectList
         {
             get
@@ -828,6 +833,8 @@ namespace Fusion.Models
                 r.TryGetValue("comment", out comment);
                 object count = null;
                 r.TryGetValue("count", out count);
+                object measurement = null;
+                r.TryGetValue("measurement_name", out measurement);
 
                 order order = new order();
                 order.id = Int32.Parse(id.ToString());
@@ -843,17 +850,19 @@ namespace Fusion.Models
                 order.comment = comment.ToString();
                 order.count = Convert.ToDecimal(count.ToString());
                 order.state_id = states.FirstOrDefault(m => m.name == state.ToString()).id;
+                order.measurement_id = maesurements.FirstOrDefault(m => m.name == measurement.ToString()).id;
                 listOrders.Add(order);
             }
             foreach (var p in listOrders)
             {
-                if (orders.FirstOrDefault(m => m.id == p.id).state != p.state_id || orders.FirstOrDefault(m => m.id == p.id).comment != p.comment || orders.FirstOrDefault(m => m.id == p.id).date_end != p.date_end || orders.FirstOrDefault(m => m.id == p.id).count != p.count)
+                if (orders.FirstOrDefault(m => m.id == p.id).state != p.state_id || orders.FirstOrDefault(m => m.id == p.id).comment != p.comment || orders.FirstOrDefault(m => m.id == p.id).date_end != p.date_end || orders.FirstOrDefault(m => m.id == p.id).count != p.count || orders.FirstOrDefault(m => m.id == p.id).measurement_id != p.measurement_id)
                 {
                     list.bd_order.FirstOrDefault(m => m.id == p.id).state = p.state_id;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).comment = p.comment;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).date_end = p.date_end;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).date = p.date_start;
                     list.bd_order.FirstOrDefault(m => m.id == p.id).count = p.count;
+                    list.bd_order.FirstOrDefault(m => m.id == p.id).measurement_id = p.measurement_id;
                 }
             }
             list.SaveChanges();
