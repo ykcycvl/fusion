@@ -189,6 +189,7 @@ namespace Fusion.Models.SKK
         public List<ActDataMock> actDataMock { get; set; }
         public List<Percents> PercentsList { get; set; }
         public List<PercentsBlock> percentsBlockList { get; set; }
+        public List<Mock> blocksList { get; set; }
         public string DirectorName { get; set; }
         public string ManagerName { get; set; }
         public string ChiefName { get; set; }
@@ -209,11 +210,17 @@ namespace Fusion.Models.SKK
         }
         public class PercentsBlock
         {
+            public DateTime? date { get; set; }
             public string blockName { get; set; }
             public double? rating { get; set; }
             public string restaurantName { get; set; }
         }
-
+        public class Mock
+        {
+            public double? ratingPrev { get; set; }
+            public double? ratingNow { get; set; }
+            public string blockName { get; set; }
+        }
         //get
         public void getActs()
         {
@@ -326,7 +333,7 @@ namespace Fusion.Models.SKK
                 double? percent_prev = (rating_prev * 100) / weight_prev;
                 double? percent_today = (rating_today * 100) / weight_today;
                 PercentsList.Add(new Percents { restaurantID = it.id, percent = percent, restaurantName = it.name, percent_prev = percent_prev, percent_today = percent_today, actDataList = new List<ActData>() });
-                foreach (var h in Acts.Where(j => j.restaurant_id == it.id && j.date.Value.Month == DateTime.Today.Month && j.date.Value.Year == DateTime.Now.Year))
+                foreach (var h in Acts.Where(j => j.restaurant_id == it.id))
                 {
                     foreach (var t in ActData.Where(m => m.act_id == h.id))
                     {
@@ -334,14 +341,49 @@ namespace Fusion.Models.SKK
                     }
                 }
             }
-            foreach (var it in PercentsList)
+            foreach (var it in Acts)
             {
-                foreach (var ih in it.actDataList.GroupBy(m => m.Article.ArticleBlock.name).Select(n => new { n.Key, rating = n.Sum(j => j.rating), weight = n.Sum(k => k.Article.weight) }))
+                foreach (var ih in ActData.Where(t => t.act_id == it.id).GroupBy(y => y.Article.block_id).Select(r => new { r.Key, rating = r.Sum(h => h.rating) }))
                 {
-                    double? rating = (ih.rating * 100) / ih.weight;
-                    percentsBlockList.Add(new PercentsBlock { blockName = ih.Key, rating = rating, restaurantName = it.restaurantName });
+                    string blockName = ArticleBlocks.FirstOrDefault(g => g.id == ih.Key).name;
+                    percentsBlockList.Add(new PercentsBlock { blockName = blockName, date = it.date, rating = ih.rating, restaurantName = it.Restaurant.name });
                 }
             }
+            blocksList = new List<Mock>();
+            foreach(var it in percentsBlockList.Where(n => n.date.Value.Month == DateTime.Now.Month && n.date.Value.Year == DateTime.Now.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
+            {
+                blocksList.Add(new Mock() { blockName = it.Key, ratingNow = it.rating });
+            }
+            foreach (var it in percentsBlockList.Where(n => n.date.Value.Month == DateTime.Now.Month - 1 && n.date.Value.Year == DateTime.Now.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
+            {
+                blocksList.FirstOrDefault(m => m.blockName == it.Key).ratingPrev = it.rating;
+            }
+            /*foreach (var it in PercentsList)
+            {
+                foreach (var ih in it.actDataList.Where(g => g.Act.date.Value.Month == DateTime.Now.Month && g.Act.date.Value.Year == DateTime.Now.Year).GroupBy(m => m.Article.ArticleBlock.name).Select(n => new { n.Key, rating = n.Sum(j => j.rating), weight = n.Sum(k => k.Article.weight) }))
+                {
+                    double? weight_block = Articles.Where(n => n.block_id == ArticleBlocks.FirstOrDefault(j => j.name == ih.Key).id).Sum(h => h.weight);
+                    double? rating = (ih.rating * 100) / weight_block;
+                    percentsBlockList.Add(new PercentsBlock { blockName = ih.Key, rating = rating, restaurantName = it.restaurantName, date = DateTime.Now });
+                }
+            }*/
+            /*foreach (var it in PercentsList)
+            {
+                foreach (var ih in it.actDataList.Where(g => g.Act.date.Value.Month == DateTime.Now.Month - 1 && g.Act.date.Value.Year == DateTime.Now.Year).GroupBy(m => m.Article.ArticleBlock.name).Select(n => new { n.Key, rating = n.Sum(j => j.rating), weight = n.Sum(k => k.Article.weight) }))
+                {
+                    double? rating = (ih.rating * 100) / ih.weight;
+                    percentsBlockList.Add(new PercentsBlock { blockName = ih.Key, rating = rating, restaurantName = it.restaurantName, date = DateTime.Now.AddMonths(-1) });
+                }
+            }*/
+            /*blocksList = new List<Mock>();
+            foreach(var it in percentsBlockList.Where(n => n.date.Month == DateTime.Now.Month && n.date.Year == DateTime.Now.Year))
+            {
+                blocksList.Add(new Mock { blockName = it.blockName, ratingNow = it.rating });
+            }
+            foreach (var it in percentsBlockList.Where(n => n.date.Month == DateTime.Now.Month - 1 && n.date.Year == DateTime.Now.Year))
+            {
+                blocksList.FirstOrDefault(m => m.blockName == it.blockName).ratingPrev = it.rating;
+            }*/
         }
         //create
         public void createActDataMock(int? actID)
@@ -455,6 +497,11 @@ namespace Fusion.Models.SKK
                     it.ActData.accord = true;
                     it.ActData.rating = Articles.FirstOrDefault(m => m.id == it.ArticleId).weight;
                     it.ActData.comment = "";
+                }
+                else
+                {
+                    it.ActData.accord = false;
+                    it.ActData.rating = 0;
                 }
                 if (ActData.Where(m => m.act_id == actId && m.article_id == it.ArticleId).Any())
                 {
