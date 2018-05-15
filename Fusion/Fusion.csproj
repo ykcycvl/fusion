@@ -5968,6 +5968,7 @@
     <Content Include="Views\TSP\Add.cshtml" />
     <Content Include="Views\TSP\Edit.cshtml" />
     <Content Include="Views\TSP\Nomenclature.cshtml" />
+    <Content Include="Views\Issues\Edit.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
       <DependentUpon>Reference.map</DependentUpon>

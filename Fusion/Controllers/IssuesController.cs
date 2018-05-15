@@ -31,7 +31,7 @@ namespace Fusion.Controllers
             }
 
             //Получаем имя файла
-            var fileName = Path.GetFileName(upload.FileName);
+            var fileName = DateTime.Now.ToString("ddMMyyyyHHmmssff_") + Path.GetFileName(upload.FileName);
             var path = Path.Combine(Server.MapPath(string.Format("~/{0}", uploadFolder)), fileName);
 
             //Сохраняем файл

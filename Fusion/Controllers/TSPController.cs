@@ -65,7 +65,7 @@ namespace Fusion.Controllers
         }
 
         [HttpPost]
-        [MyAuthorize(Roles = "FusionAdmin, SKK")]
+        [MyAuthorize(Roles = "FusionAdmin, TSP")]
         public ContentResult Save(string data)
         {
             ContentResult cr = new ContentResult();

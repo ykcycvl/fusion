@@ -1,0 +1,69 @@
+﻿@model Fusion.Models.IssuesModels.IssueModel
+@{
+    ViewBag.Title = Model.Title + " редактирование";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+<script src="~/Scripts/ckeditor/config.js"></script>
+<script>
+    $(function () {
+        CKEDITOR.replace('Content').on('fileUploadResponse', function (evt) {
+            evt.stop();
+
+            // Get XHR and response.
+            var data = evt.data,
+                xhr = data.fileLoader.xhr,
+                response = xhr.responseText.split('|');
+
+            if (response[1]) {
+                // An error occurred during upload.
+                data.message = response[1];
+                evt.cancel();
+            } else {
+                var arr_from_json = JSON.parse(response[0]);
+                editor = CKEDITOR.instances.Content; //fck is just my instance name you will need to replace that with yours
+                var edata = editor.getData();
+                var replaced_text = edata.replace(/\"blob.*\"/, arr_from_json.url); // you could also use a regex in the replace
+                editor.setData(replaced_text);
+            }
+        });
+    });
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Edit", "Issues", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <div class="col-md-5">
+                        @Html.TextBoxFor(m => m.Author, new { @readonly = "readonly", @class = "form-control input-sm", @disabled = "true" })
+                    </div>
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(m => m.Tags, new { @class = "form-control input-sm", @placeholder = "Тэги" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-sm", @placeholder = "Тема" })
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Content)
+                        @Html.TextAreaFor(m => m.Content)
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <input type="submit" value="Сохранить" class="btn btn-default btn-xs" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

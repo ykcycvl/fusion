@@ -5,18 +5,31 @@
 }
 
 <h3>@Model.Title</h3>
-@Html.Raw(Model.Content)
+@if (LoginViewModel.IsMemberOf(User.Identity.Name, "GD") || LoginViewModel.IsMemberOf(User.Identity.Name, "FD"))
+{
+    <div>
+        @Html.ActionLink("Редактировать статью", "Edit", new { @id = Model.id }, new { @class= "btn btn-default btn-xs" })
+    </div>
+}
+
+<div class="row" style="margin-top: 20px; margin-bottom: 30px">
+    <div class="container" style="background-color: #e3ecff">
+        @Html.Raw(Model.Content)
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-md-5 alert alert-success">
-        <small>Автор: @Model.Author</small>
-        <br/>
-        <small>Создан: @Model.Created.ToString("dd.MM.yyyy")</small>
-    </div>
-    <div class="col-md-5 col-md-offset-2 alert alert-success">
-        <small>Последнее изменение: @Model.LastModified</small>
-        <br />
-        <small>Последний изменивший: @Model.LastEditor</small>
+    <div class="container">
+        <div class="col-md-5 alert alert-success">
+            <small>Автор: @Model.Author</small>
+            <br />
+            <small>Создан: @Model.Created.ToString("dd.MM.yyyy")</small>
+        </div>
+        <div class="col-md-5 col-md-offset-2 alert alert-success">
+            <small>Последнее изменение: @Model.LastModified</small>
+            <br />
+            <small>Последний изменивший: @Model.LastEditor</small>
+        </div>
     </div>
 </div>
 <div class="row">
