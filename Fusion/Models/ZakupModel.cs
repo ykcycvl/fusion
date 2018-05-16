@@ -1018,9 +1018,12 @@ namespace Fusion.Models
                 {
                     list.bd_reclamation.FirstOrDefault(m => m.id == reclamation_id).state_id = reclamation_item.state_id;
                     string body = string.Format("У рекламации за {0} изменился статус на {1}, поставщик - {2}",reclamation_item.date.ToShortDateString() ,states.FirstOrDefault(m => m.id == reclamation_item.state_id).name, vendorList.FirstOrDefault(m => m.id == reclamation_item.vendor_id).name);
-                    string to = string.Format("{0}@tokyo-bar.ru", usersList.FirstOrDefault(m => m.subdiv_id == reclamation_item.restaurant_id).domain_login);
                     string subject = "Изменение статуса рекламации";
-                    sendMail(to, body, subject);
+                    foreach (var it in usersList.Where(m => m.subdiv_id == reclamation_item.restaurant_id))
+                    {
+                        string to = string.Format("{0}@tokyo-bar.ru", it.domain_login);
+                        sendMail(to, body, subject);
+                    }
                 }
             }
             else
