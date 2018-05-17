@@ -4,11 +4,15 @@
     ViewBag.Title = "Заявка от " + Model.TSPRequest.RequestDate.ToString("dd.MM.yyyy");
     Layout = "~/Views/Shared/_Layout.cshtml";
     string columns = "";
+    string totalcolumn = "{ id: \"totalsum\", header: \"Итого\", width: 50, math: \"";
 
     foreach (var r in Model.Restaurants)
     {
         columns += "{ id: \"_r" + r.Id + "\", header: \"" + r.Name + "\", editor: \"text\" }, ";
+        totalcolumn += " + [$r,_r" + r.Id + "]";
     }
+
+    totalcolumn += "\" }";
 
     string data = "";
 
@@ -109,6 +113,7 @@
                 { id: "Name", header: "Наименование", width: 250 },
                 { id: "Measurement", header: "" },
                 @Html.Raw(columns)
+                @Html.Raw(totalcolumn)
             ],
             spans: true,
             data: {

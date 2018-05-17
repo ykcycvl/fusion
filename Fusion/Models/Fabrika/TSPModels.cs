@@ -124,6 +124,7 @@ namespace Fusion.Models.Fabrika
         {
             try
             {
+                List<int> rests = new List<int>();
                 var serializer = new JavaScriptSerializer();
                 var heapdata = serializer.DeserializeObject(JSON);
 
@@ -147,16 +148,30 @@ namespace Fusion.Models.Fabrika
                     {
                         if (el.Key.StartsWith("_r"))
                         {
+                            int productId = Convert.ToInt32(ProductId);
+                            int restId = Convert.ToInt32(el.Key.Substring(2));
+
+                            if (!rests.Contains(restId))
+                            {
+                                rests.Add(restId);
+                                List<RequestDetail> rds = db.RequestDetail.Where(p => p.RequestID == reqId && p.RestaurantID == restId).ToList();
+
+                                if(rds != null)
+                                    db.RequestDetail.RemoveRange(rds);
+                            }
+
                             if (el.Value.ToString() != "")
+                            {
                                 db.RequestDetail.Add(new RequestDetail()
                                 {
                                     Active = true,
-                                    ProductID = Convert.ToInt32(ProductId),
+                                    ProductID = productId,
                                     Quantity = Convert.ToDecimal(el.Value),
                                     RequestID = request.Id,
-                                    RestaurantID = Convert.ToInt32(el.Key.Substring(2)),
+                                    RestaurantID = restId,
                                     UserName = UserName
                                 });
+                            }
                         }
                     }
                 }

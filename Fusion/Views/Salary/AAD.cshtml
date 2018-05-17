@@ -444,6 +444,34 @@
         return false;
     }
 
+    function ExportToPDF() {
+        webix.message({ type: "default", text: "Подготовка данных..." });
+        webix.toPDF($$("grid"), {
+            orientation:"landscape",
+            autowidth:true,
+            filename:"Ведомость_@Model.DocNumber",
+            columns:{
+                subdiv:{ header: "Подразделение", width: 60 },
+                Position:{ header:"Должность", width:145 },
+                FullName:{ header:"Ф.И.О.", width:145 },
+                Rate:{ header:"Оклад", width:115 },
+                Hours:{ header:"Часы", width:35 },
+                totalaccsum:{ header:"Начислено", width:70 },
+                totaldetsum:{ header:"Удержано", width:70 },
+                aadsum:{ header:"Сумма к выдаче", width:70 },
+                Custom1:{
+                    width:50,
+                    header:"Подпись"
+                },
+            },
+            table:{
+                fontSize:7,
+                height:15,
+            }
+        });
+        return false;
+    }
+
     function IsNumber(value){
         if(typeof value == "undefined" || value == "")
             return true;
@@ -508,7 +536,8 @@
     <input type="button" value="Сохранить" onclick="Save()" class="btn btn-success" />
 }
 
-<input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger" style="float:right" />
+<input type="button" value="Скачать Excel" onclick="ExportToExcel()" class="btn btn-danger btn-xs" style="float:right" />
+<input type="button" value="Скачать PDF" onclick="ExportToPDF()" class="btn btn-info btn-xs" style="float:right" />
 
 <form action="ExportToExcel" method="post" target="_blank" id="excelForm">
     <input type="hidden" name="data" id="tableData" />
