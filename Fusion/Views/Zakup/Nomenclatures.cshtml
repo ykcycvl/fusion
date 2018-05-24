@@ -43,6 +43,7 @@
 <input type="button" onclick="Save()" class="btn btn-success" value="Сохранить" />
 <input type="button" class="btn btn-primary" value="Добавить строку" onclick="addRow()" />
 <script>
+    var addRowCounter = 0;
     webix.ready(function () {
         grid = webix.ui({
             container: "tabl",
@@ -113,8 +114,16 @@
         return false;
     }
     function addRow() {
+        addRowCounter++;
         var rowCount = $$("grid").count();
-        var row_id = $$("grid").add({ id: rowCount + 1 });
-        $$("grid").editRow(row_id);
+        var lastId = 0;
+        webix.ajax().get("/Zakup/getLastNomenclature", function (data) {
+            console.log(addRowCounter)
+            data *= 1;
+            lastId = data + addRowCounter;
+            console.log(lastId);
+            var row_id = $$("grid").add({ id: lastId });
+            $$("grid").editRow(row_id);
+        });
     }
 </script>

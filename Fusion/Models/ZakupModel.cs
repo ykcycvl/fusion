@@ -1100,5 +1100,10 @@ namespace Fusion.Models
             }
             list.SaveChanges();
         }
+        public int getLastNomenclature()
+        {
+            int id = list.bd_nomenclature.ToList().Last().id;
+            return id;
+        }
     }
 }

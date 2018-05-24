@@ -544,6 +544,11 @@ namespace Fusion.Controllers
         {
             return View();
         }
-       
+        public int getLastNomenclature()
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            return model.getLastNomenclature();
+        }
     }   
 }
