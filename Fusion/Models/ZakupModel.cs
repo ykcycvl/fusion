@@ -1030,7 +1030,7 @@ namespace Fusion.Models
             {
                     list.bd_reclamation.Add(new bd_reclamation { date = reclamation_item.date, problem_id = reclamation_item.problem_id, restaurant_id = usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.id, nomenclature_id = reclamation_item.nomenclature_id, vendor_id = reclamation_item.vendor_id, comment = reclamation_item.comment, state_id = 1 });
                     string to = "reclamations@tokyo-bar.ru";
-                    string body = String.Format("Пришла новая рекламация от {0} \r\nПоставщик - {1} \r\nРесторан - {2} \r\nПричина - {3}.", reclamation_item.date.Date, vendorList.FirstOrDefault(m => m.id == reclamation_item.vendor_id).name, usersList.FirstOrDefault(m => m.domain_login == username).bd_subdivision.name, reclamation_problems.FirstOrDefault(m => m.id == reclamation_item.problem_id).problem);
+                    string body = String.Format("Пришла новая рекламация от {0} \r\nПоставщик - {1} \r\nРесторан - {2} \r\nПричина - {3}.", reclamation_item.date.Date, vendorList.FirstOrDefault(m => m.id == reclamation_item.vendor_id).name, usersList.FirstOrDefault(m => m.domain_login.ToLower() == username.ToLower()).bd_subdivision.name, reclamation_problems.FirstOrDefault(m => m.id == reclamation_item.problem_id).problem);
                     string subject = "Новая рекламация";
                 sendMail(to, body, subject);
             }
