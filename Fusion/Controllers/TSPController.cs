@@ -456,5 +456,47 @@ namespace Fusion.Controllers
 
             return excelDoc;
         }
+        public ActionResult Restaurants()
+        {
+            TSPModels model = new TSPModels();
+            model.GetRestaurants();
+            return View(model);
+        }
+        public ActionResult Accesses()
+        {
+            TSPModels model = new TSPModels();
+            model.GetRestaurants();
+            model.GetAccesses();
+            return View(model);
+        }
+        public ActionResult EditAccess(int? id)
+        {
+            TSPModels model = new TSPModels();
+            model.GetRestaurants();
+            model.GetAccesses();
+            model.EditAccess(id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditAccess(TSPModels model)
+        {
+            model.GetRestaurants();
+            model.Access.RestaurantID = model.Restaurants.FirstOrDefault(m => m.Id.ToString() == model.RestaurantName).Id;
+            model.SaveAccess(model.Access);
+            return Redirect("~/TSP/Accesses");
+        }
+        public ActionResult EditRestaurant(int? id)
+        {
+            TSPModels model = new TSPModels();
+            model.GetRestaurants();
+            model.EditRestaurant(id);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditRestaurant(TSPModels model)
+        {
+            model.SaveRestaurant(model.Restaurant);
+            return Redirect("~/TSP/Restaurants");
+        }
     }
 }

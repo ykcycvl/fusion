@@ -1,0 +1,28 @@
+﻿@model Fusion.Models.Fabrika.TSPModels
+@{
+    ViewBag.Title = "Редактирование ресторана";
+    Layout = "~/Views/Shared/_LayoutWide.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Редактирование ресторана
+                </h3>
+            </div>
+            <div class="panel-body">
+                @using (Html.BeginForm("EditRestaurant", "TSP", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
+                {
+                <div class="form-group">
+                    <label for=@Model.Restaurant.Name>Название</label>
+                    @Html.TextBoxFor(m => m.Restaurant.Name, new { @class="form-control" })
+                    @Html.HiddenFor(m => m.Restaurant.Id)
+                    <input type="submit" class="btn btn-success" />
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

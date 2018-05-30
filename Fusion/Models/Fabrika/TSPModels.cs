@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
 namespace Fusion.Models.Fabrika
@@ -14,7 +15,11 @@ namespace Fusion.Models.Fabrika
         public List<Restaurant> Restaurants = new List<Restaurant>();
         public List<Category> Categories = new List<Category>();
         public Request TSPRequest = new Request();
-
+		public List<RestaurantAccess> Accesses = new List<RestaurantAccess>();
+        public RestaurantAccess Access { get; set; }
+        public Restaurant Restaurant { get; set; }
+        public string RestaurantName { get; set; }
+		
         public TSPModels()
         {
             
@@ -187,6 +192,76 @@ namespace Fusion.Models.Fabrika
         public void GetNomenclature()
         {
             Categories = db.Category.ToList();
+        }
+        public void GetRestaurants()
+        {
+            Restaurants = db.Restaurant.ToList();
+        }
+        public void GetAccesses()
+        {
+            Accesses = db.RestaurantAccess.ToList();
+        }
+        public void EditAccess(int? id)
+        {
+            if(id == null)
+            {
+                Access = new RestaurantAccess();
+            }
+            else
+            {
+                Access = db.RestaurantAccess.FirstOrDefault(m => m.Id == id);
+            }
+        }
+        public void EditRestaurant(int? id)
+        {
+            if (id == null)
+            {
+                Restaurant = new Restaurant();
+            }
+            else
+            {
+                Restaurant = db.Restaurant.FirstOrDefault(m => m.Id == id);
+            }
+        }
+        public void SaveAccess(RestaurantAccess Access)
+        {
+            if(db.RestaurantAccess.Where(m => m.Id == Access.Id).Any())
+            {
+                db.RestaurantAccess.FirstOrDefault(m => m.Id == Access.Id).UserName = Access.UserName;
+                db.RestaurantAccess.FirstOrDefault(m => m.Id == Access.Id).RestaurantID = Access.RestaurantID;
+            }
+            else
+            {
+                db.RestaurantAccess.Add(Access);
+            }
+            db.SaveChanges();
+        }
+        public void SaveRestaurant(Restaurant Restaurant)
+        {
+            if(db.Restaurant.Where(m => m.Id == Restaurant.Id).Any())
+            {
+                db.Restaurant.FirstOrDefault(m => m.Id == Restaurant.Id).Name = Restaurant.Name;
+            }
+            else
+            {
+                db.Restaurant.Add(Restaurant);
+            }
+            db.SaveChanges();
+        }
+        public IEnumerable<SelectListItem> RestaurantsSelectList
+        {
+            get
+            {
+                List<SelectListItem> restaurants = new List<SelectListItem>();
+                foreach (var it in Restaurants)
+                {
+                    restaurants.Add(new SelectListItem() { Text = it.Name, Value = it.Id.ToString() });
+                }
+                SelectListItem sli = restaurants.FirstOrDefault(p => p.Text == RestaurantName);
+                if (sli != null)
+                    sli.Selected = true;
+                return restaurants;
+            }
         }
     }
 }
