@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Fusion.Models;
+using Jitbit.Utils;
 
 namespace Fusion.Controllers
 {
@@ -27,6 +28,19 @@ namespace Fusion.Controllers
             RK7APIModels model = new RK7APIModels();
             model.getMenuItemsGeneratedProps();
             return View(model.Props);
+        }
+        [HttpPost]
+        public ActionResult MenuPortions(RK7APIModels model)
+        {
+            model.getMenuItemsGeneratedProps();
+            CsvExport export = new CsvExport();
+            foreach(var it in model.Props)
+            {
+                export.AddRow();
+                export["Название"] = it.name;
+                export["Коэффициент"] = it.coef.ToString();
+            }
+            return File(export.ExportToBytesWin(), "text/csv", "Порционные коэффициенты.csv");
         }
     }
 }
