@@ -116,7 +116,7 @@ namespace Fusion.Models
                 }
                 else
                 {
-                    if (Period.Year + Period.Month == it.date.Value.Month + it.date.Value.Year)
+                    if (Period.Month == it.date.Value.Month && Period.Year == it.date.Value.Year)
                     {
                         list.sb_problems.FirstOrDefault(m => m.id == it.id).solution = it.solution;
                         list.sb_problems.FirstOrDefault(m => m.id == it.id).problem = it.problem;

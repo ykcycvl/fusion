@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Analytics";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
-    string chartTitle = String.Format("'Результаты ресторанов в динамике {0}.{1}/{2}.{3}'", DateTime.Today.Month - 1, DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Year);
+    string chartTitle = String.Format("'Результаты ресторанов в динамике {0}.{1}/{2}.{3}'", Model.date_start.Value.Month, Model.date_start.Value.Year, Model.date_end.Value.Month, Model.date_end.Value.Year);
     string DataTable = "[";
     string DataTable2 = "[";
     foreach (var it in Model.PercentsList)
@@ -20,16 +20,20 @@
     }
     mediana = mediana / Model.PercentsList.Count;
     int i = 0;
-    foreach(var it in Model.blocksList)
+    foreach (var it in Model.blocksList)
     {
-        double? weight_now = Model.Articles.Where(g => g.ArticleBlock.name == it.blockName).Sum(r => r.weight) * Model.percentsBlockList.Where(b => b.blockName == it.blockName && b.date.Value.Month == DateTime.Now.Month && b.date.Value.Year == DateTime.Now.Year).Count();
-        double? weight_prev = Model.Articles.Where(g => g.ArticleBlock.name == it.blockName).Sum(r => r.weight) * Model.percentsBlockList.Where(b => b.blockName == it.blockName && b.date.Value.Month == DateTime.Now.Month - 1 && b.date.Value.Year == DateTime.Now.Year).Count();
+        double? weight_now = Model.Articles.Where(g => g.ArticleBlock.name == it.blockName).Sum(r => r.weight) * Model.percentsBlockList.Where(b => b.blockName == it.blockName && b.date.Value.Month == Model.date_end.Value.Month && b.date.Value.Year == Model.date_end.Value.Year).Count();
+        double? weight_prev = Model.Articles.Where(g => g.ArticleBlock.name == it.blockName).Sum(r => r.weight) * Model.percentsBlockList.Where(b => b.blockName == it.blockName && b.date.Value.Month == Model.date_start.Value.Month && b.date.Value.Year == Model.date_start.Value.Year).Count();
         double? rating_now = (it.ratingNow * 100) / weight_now;
         double? rating_prev = (it.ratingPrev * 100) / weight_prev;
         DataTable2 += "{";
         DataTable2 += String.Format("'arg':'{0}', 'val1': {1}, 'val2' : {2}", it.blockName, Math.Round((double)rating_prev, 2), Math.Round((double)rating_now, 2));
         DataTable2 += "},\r\n";
         medianaBlock += rating_now;
+        i++;
+    }
+    if(i == 0)
+    {
         i++;
     }
     medianaBlock = medianaBlock / i;
@@ -49,6 +53,7 @@
 <link href="~/Content/dx.common.css" rel="stylesheet" />
 <link href="~/Content/dx.light.compact.css" rel="stylesheet" />
 <script src="~/Scripts/dx.all.js"></script>
+
 <script>
     $(function () {
         var pivotGridChart = $("#pivotgrid-chart").dxChart({
@@ -115,14 +120,14 @@
                 maxPointCountSupported: 300
             },
             title: {
-                text: "Результаты ресторанов за текущий месяц"
+                text: @Html.Raw(String.Format("'Результаты ресторанов за {0}/{1}'", Model.date_end.Value.Month, Model.date_end.Value.Year))
             },
             adaptiveLayout: {
                 width: 450
             },
             valueAxis: [{
                 constantLines: [{
-                    value: @Html.Raw(mediana),
+                    value: @Html.Raw((double)mediana),
                     color: "#fc3535",
                     dashStyle: "dash",
                     width: 2,
@@ -149,7 +154,7 @@
                     { valueField: "val2" }
             ],
             size: {
-                height: 320
+                height: 420
             },
             tooltip: {
                 enabled: true
@@ -161,7 +166,7 @@
                 maxPointCountSupported: 300
             },
             title: {
-                text: @Html.Raw(String.Format("'Результаты ресторанов за {0}.{1} / {2}.{3} по блокам'", DateTime.Now.Month - 1, DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Year))
+                text: @Html.Raw(String.Format("'Результаты ресторанов за {0}.{1} / {2}.{3} по блокам'", Model.date_start.Value.Month, Model.date_start.Value.Year, Model.date_end.Value.Month, Model.date_end.Value.Year))
             },
             adaptiveLayout: {
                 width: 450
@@ -175,6 +180,12 @@
                     label: { visible: true }
                 }]
             }],
+            argumentAxis: [{
+                label: {
+                    displayMode: "rotate",
+                    rotationAngle: "50"
+                }
+            }],
             dataSource:
                 @Html.Raw(DataTable2),
         });
@@ -183,6 +194,15 @@
 </script>
 <div class="row">
     <div class="col-md-10 col-md-push-1">
+        <div class="form-group">
+            @using (Html.BeginForm("Analytics", "SKK", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
+            {
+                @Html.EditorFor(m => m.date_start, new { @type = "date" })
+                @Html.TextBoxFor(m => m.date_end, new { @type = "date" })
+                <input type="submit" value="Пересоздать отчет за выбранные даты" class="btn btn-sm btn-info" />
+            }
+
+        </div>
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <h3 class="panel-title">

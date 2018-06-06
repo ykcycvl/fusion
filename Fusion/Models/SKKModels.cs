@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -190,6 +191,9 @@ namespace Fusion.Models.SKK
         public List<Percents> PercentsList { get; set; }
         public List<PercentsBlock> percentsBlockList { get; set; }
         public List<Mock> blocksList { get; set; }
+        public List<ArticleBlockAccess> ArticleBlockAccesses { get; set; }
+        public ArticleBlockAccess ArticleBlockAccess { get; set; }
+        public List<BlockAccess> BlockAccessList { get; set; }
         public string DirectorName { get; set; }
         public string ManagerName { get; set; }
         public string ChiefName { get; set; }
@@ -199,6 +203,16 @@ namespace Fusion.Models.SKK
         public string BlockName { get; set; }
         public string RestaurantName { get; set; }
         public int ActId { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? date_start { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? date_end { get; set; }
+        public class BlockAccess
+        {
+            public int RestaurantId { get; set; }
+            public string RestaurantName { get; set; }
+            public bool isActive { get; set; }
+        }
         public class Percents
         {
             public int restaurantID { get; set; }
@@ -280,10 +294,11 @@ namespace Fusion.Models.SKK
         {
             ArticleBlock = SKK.ArticleBlock.FirstOrDefault(m => m.id == id);
         }
-        public void getAnalytics()
+        public void getAnalytics(DateTime? date_start, DateTime? date_end)
         {
             PercentsList = new List<Percents>();
             percentsBlockList = new List<PercentsBlock>();
+            getAccesses();
             foreach (var it in Restaurants)
             {
                 int? rating = 0;
@@ -297,24 +312,33 @@ namespace Fusion.Models.SKK
                 {
                     foreach (var iu in ActData.Where(j => j.act_id == iy.id))
                     {
-                        rating += iu.rating;
-                        weight += Articles.FirstOrDefault(k => k.id == iu.article_id).weight;
+                        if(ArticleBlockAccesses.Where(m => m.block_id == iu.Article.block_id && m.restaurant_id == it.id).Any())
+                        {
+                            rating += iu.rating;
+                            weight += Articles.FirstOrDefault(k => k.id == iu.article_id).weight;
+                        }
                     }
                 }
-                foreach(var h in Acts.Where(j => j.restaurant_id == it.id && j.date.Value.Month == DateTime.Today.Month && j.date.Value.Year == DateTime.Now.Year))
+                foreach(var h in Acts.Where(j => j.restaurant_id == it.id && j.date.Value.Month == date_end.Value.Month && j.date.Value.Year == date_end.Value.Year))
                 {
                     foreach(var t in ActData.Where(m => m.act_id == h.id))
                     {
-                        rating_today += t.rating;
-                        weight_today += Articles.FirstOrDefault(k => k.id == t.article_id).weight;
+                        if(ArticleBlockAccesses.Where(m => m.restaurant_id == it.id && m.block_id == t.Article.block_id).Any())
+                        {
+                            rating_today += t.rating;
+                            weight_today += Articles.FirstOrDefault(k => k.id == t.article_id).weight;
+                        }
                     }
                 }
-                foreach (var q in Acts.Where(f => f.restaurant_id == it.id && f.date.Value.Month == DateTime.Today.Month-1 && f.date.Value.Year == DateTime.Now.Year))
+                foreach (var q in Acts.Where(f => f.restaurant_id == it.id && f.date.Value.Month == date_start.Value.Month && f.date.Value.Year == date_start.Value.Year))
                 {
                     foreach (var r in ActData.Where(m => m.act_id == q.id))
                     {
-                        rating_prev += r.rating;
-                        weight_prev += Articles.FirstOrDefault(k => k.id == r.article_id).weight;
+                        if (ArticleBlockAccesses.Where(m => m.restaurant_id == it.id && m.block_id == r.Article.block_id).Any())
+                        {
+                            rating_prev += r.rating;
+                            weight_prev += Articles.FirstOrDefault(k => k.id == r.article_id).weight;
+                        }
                     }
                 }
                 if (weight == 0)
@@ -337,7 +361,10 @@ namespace Fusion.Models.SKK
                 {
                     foreach (var t in ActData.Where(m => m.act_id == h.id))
                     {
-                        PercentsList.FirstOrDefault(m => m.restaurantID == it.id).actDataList.Add(t);
+                        if (ArticleBlockAccesses.Where(m => m.restaurant_id == it.id && m.block_id == t.Article.block_id).Any())
+                        {
+                            PercentsList.FirstOrDefault(m => m.restaurantID == it.id).actDataList.Add(t);
+                        }
                     }
                 }
             }
@@ -350,13 +377,16 @@ namespace Fusion.Models.SKK
                 }
             }
             blocksList = new List<Mock>();
-            foreach(var it in percentsBlockList.Where(n => n.date.Value.Month == DateTime.Now.Month && n.date.Value.Year == DateTime.Now.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
+            foreach(var it in percentsBlockList.Where(n => n.date.Value.Month == date_end.Value.Month && n.date.Value.Year == date_end.Value.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
             {
                 blocksList.Add(new Mock() { blockName = it.Key, ratingNow = it.rating });
             }
-            foreach (var it in percentsBlockList.Where(n => n.date.Value.Month == DateTime.Now.Month - 1 && n.date.Value.Year == DateTime.Now.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
+            foreach (var it in percentsBlockList.Where(n => n.date.Value.Month == date_start.Value.Month && n.date.Value.Year == date_start.Value.Year).GroupBy(j => j.blockName).Select(t => new { t.Key, rating = t.Sum(r => r.rating) }))
             {
-                blocksList.FirstOrDefault(m => m.blockName == it.Key).ratingPrev = it.rating;
+                if(blocksList.Where(m => m.blockName == it.Key).Any())
+                {
+                    blocksList.FirstOrDefault(m => m.blockName == it.Key).ratingPrev = it.rating;
+                }
             }
             /*foreach (var it in PercentsList)
             {
@@ -386,23 +416,25 @@ namespace Fusion.Models.SKK
             }*/
         }
         //create
-        public void createActDataMock(int? actID)
+        public void createActDataMock(int? actID, int? restaurant_id)
         {
             actDataMock = new List<ActDataMock>();
+            getAccesses();
             if (ActData.Where(m => m.act_id == actID).Any())
             {
-                //getActDataById(actID);
-                //createActDataMock(actID);
                 foreach (var it in Articles)
                 {
-                    if (!ActData.Where(n => n.article_id == it.id && n.act_id == actID).Any())
+                    if(ArticleBlockAccesses.Where(m => m.block_id == it.block_id && m.restaurant_id == restaurant_id).Any())
                     {
-                        ActData actdata = new ActData() { article_id = it.id, accord = true, comment = "", rating = 0, act_id = actID };
-                        actDataMock.Add(new ActDataMock { Accord = true, ArticleId = it.id, ActData = actdata });
-                    }
-                    else
-                    {
-                        actDataMock.Add(new ActDataMock { Accord = (bool)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
+                        if (!ActData.Where(n => n.article_id == it.id && n.act_id == actID).Any())
+                        {
+                            ActData actdata = new ActData() { article_id = it.id, accord = true, comment = "", rating = 0, act_id = actID };
+                            actDataMock.Add(new ActDataMock { Accord = true, ArticleId = it.id, ActData = actdata });
+                        }
+                        else
+                        {
+                            actDataMock.Add(new ActDataMock { Accord = (bool)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
+                        }
                     }
                 }
             }
@@ -411,14 +443,31 @@ namespace Fusion.Models.SKK
                 createActData();
                 foreach (var it in Articles)
                 {
-                    ActData actData = new ActData() { accord = true, rating = 0, comment = "", article_id = it.id, act_id = actID };
-                    actDataMock.Add(new ActDataMock { ArticleId = it.id, ActData = actData, Accord = true });
+                    if (ArticleBlockAccesses.Where(m => m.restaurant_id == restaurant_id && m.block_id == it.block_id).Any())
+                    {
+                        ActData actData = new ActData() { accord = true, rating = 0, comment = "", article_id = it.id, act_id = actID };
+                        actDataMock.Add(new ActDataMock { ArticleId = it.id, ActData = actData, Accord = true });
+                    }  
                 }
             }
         }
         public void createBlock()
         {
             ArticleBlock = new ArticleBlock();
+        }
+        public void getAccesses()
+        {
+            ArticleBlockAccesses = SKK.ArticleBlockAccess.ToList();
+        }
+        public void createAccess()
+        {
+            ArticleBlockAccess = new ArticleBlockAccess();
+            Restaurants = SKK.Restaurant.ToList();
+            BlockAccessList = new List<BlockAccess>();
+            foreach(var it in Restaurants)
+            {
+                BlockAccessList.Add(new BlockAccess { RestaurantId = it.id, RestaurantName = it.name, isActive = false });
+            }
         }
         public void createArticle()
         {
@@ -484,6 +533,25 @@ namespace Fusion.Models.SKK
             else
             {
                 SKK.ArticleBlock.FirstOrDefault(m => m.id == ArticleBlock.id).name = ArticleBlock.name;
+            }
+            SKK.SaveChanges();
+            getAccesses();
+            foreach (var it in BlockAccessList)
+            {
+                if(ArticleBlockAccesses.Where(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId).Any())
+                {
+                    if(it.isActive == false)
+                    {
+                        SKK.ArticleBlockAccess.Remove(SKK.ArticleBlockAccess.FirstOrDefault(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId));
+                    }
+                }
+                else
+                {
+                    if(it.isActive == true)
+                    {
+                        SKK.ArticleBlockAccess.Add(new ArticleBlockAccess { restaurant_id = it.RestaurantId, block_id = ArticleBlock.id });
+                    }
+                }
             }
             SKK.SaveChanges();
         }

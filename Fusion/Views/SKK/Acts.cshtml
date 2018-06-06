@@ -30,7 +30,7 @@
                             <th>Дата</th>
                             <th>Аудитор</th>
                             <th>Редактировать</th>
-                            <th>Excel</th>
+                            <th>Просмотр</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,7 +43,7 @@
                                 <td>@it.date.Value.ToShortDateString()</td>
                                 <td>@it.Employee4.full_name</td>
                                 <td>@Html.ActionLink("Редактировать", "addActData", new { actId = it.id })</td>
-                                <td>@Html.ActionLink("Скачать", "ExportToExcel", new { actID = it.id }, new { @target="_blank" })</td>
+                                <td>@Html.ActionLink("Просмотр", "Act", new { id = it.id })</td>
                             </tr>
                         }
                     </tbody>

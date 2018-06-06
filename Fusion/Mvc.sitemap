@@ -51,5 +51,24 @@
     <mvcSiteMapNode title="Создать рекламацию" action="addReclamation" controller="Zakup"></mvcSiteMapNode>
     <mvcSiteMapNode title="Добавить поставщика" action="addVendor" controller="Zakup"></mvcSiteMapNode>
   </mvcSiteMapNode>
+    <mvcSiteMapNode title="СКК" controller="SKK" action="Index">
+      <mvcSiteMapNode title="Акты СКК" action="Acts" controller="SKK">
+        <mvcSiteMapNode title="Добавить акт" action="addAct" controller="SKK"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Просмотр акта" action="Act" controller="SKK" preservedRouteParameters="id"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Заполнение акта" action="addActData" controller="SKK"></mvcSiteMapNode>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Аналитика" action="Analytics" controller="SKK"></mvcSiteMapNode>
+      <mvcSiteMapNode title="Блоки СКК" action="ArticleBlocks" controller="SKK">
+        <mvcSiteMapNode title="Добавить блок" action="addBlock" controller="SKK"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Редактировать блок" action="addBlock" controller="SKK" preservedRouteParameters="id"></mvcSiteMapNode>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Статьи СКК" action="Articles" controller="SKK">
+        <mvcSiteMapNode title="Добавить статью" action="addArticle" controller="SKK"></mvcSiteMapNode>
+        <mvcSiteMapNode title="Редактировать статью" action="addArticle" controller="SKK" preservedRouteParameters="id"></mvcSiteMapNode>
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Рестораны" action="Restaurants" controller="SKK"></mvcSiteMapNode>
+      <mvcSiteMapNode title="Сотрудники" action="Employees" controller="SKK"></mvcSiteMapNode>
+      <mvcSiteMapNode title="Должности" action="Positions" controller="SKK"></mvcSiteMapNode>
+    </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>

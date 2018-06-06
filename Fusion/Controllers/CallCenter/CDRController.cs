@@ -77,5 +77,28 @@ namespace Fusion.Controllers.CallCenter
             model.GetRecordsList();
             return View(model);
         }
+        [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
+        public ActionResult CallReport(DateTime? date_start, DateTime? date_end)
+        {
+            if(date_start == null)
+            {
+                date_start = DateTime.Now.AddDays(-1);
+            }
+            if(date_end == null)
+            {
+                date_end = DateTime.Now;
+            }
+            Models.CallCenter.CDR model = new Models.CallCenter.CDR();
+            model.date_start = date_start;
+            model.date_end = date_end;
+            model.getCallList(date_start, date_end);
+            return View(model);
+        }
+        [MyAuthorize(Roles = "CallCenterReport,FusionAdmin")]
+        [HttpPost]
+        public ActionResult CallReport(Models.CallCenter.CDR model)
+        {
+            return RedirectToAction("CallReport", new { model.date_start, model.date_end });
+        }
     }
 }

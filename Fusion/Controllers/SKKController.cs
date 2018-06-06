@@ -93,6 +93,22 @@ namespace Fusion.Controllers
             {
                 model.createBlock();
             }
+            model.getAccesses();
+            model.createAccess();
+            if(model.ArticleBlockAccesses.Where(m => m.block_id == id).Any())
+            {
+                foreach(var it in model.BlockAccessList)
+                {
+                    if(model.ArticleBlockAccesses.Where(m => m.block_id == id && m.restaurant_id == it.RestaurantId).Any())
+                    {
+                        it.isActive = true;
+                    }
+                    else
+                    {
+                        it.isActive = false;
+                    }
+                }
+            }
             return View(model);
         }
         [HttpPost]
@@ -168,6 +184,19 @@ namespace Fusion.Controllers
             model.ActId = model.saveAct();
             return RedirectToAction("addActData", new { actId = model.ActId });
         }
+        public ActionResult Act(int id)
+        {
+            SKKModels model = new SKKModels();
+            model.getInfoList();
+            model.getBlocks();
+            model.getArticles();
+            model.getActs();
+            model.getActDataList();
+            model.getActFilesById(id);
+            model.getAccesses();
+            model.ActId = id;
+            return View(model);
+        }
         [MyAuthorize(Roles = "FusionAdmin, SKK")]
         public ActionResult addActData(int? actID)
         {
@@ -178,16 +207,17 @@ namespace Fusion.Controllers
             model.getActs();
             model.getActDataList();
             model.getActFilesById(actID);
+            int? restaurant_id = model.Acts.FirstOrDefault(m => m.id == actID).restaurant_id;
             model.actDataMock = new List<SKKModels.ActDataMock>();
             if (actID != null)
             {
-                model.createActDataMock(actID);
+                model.createActDataMock(actID, restaurant_id);
             }
             else
             {
                 return Redirect("~/SKK/Acts");
             }
-
+            model.ActId = (int)actID;
             return View(model);
         }
         [HttpPost]
@@ -231,7 +261,7 @@ namespace Fusion.Controllers
 
             return null;
         }
-        public ActionResult Analytics()
+        public ActionResult Analytics(DateTime? date_start, DateTime? date_end)
         {
             SKKModels model = new SKKModels();
             model.getActs();
@@ -239,8 +269,23 @@ namespace Fusion.Controllers
             model.getBlocks();
             model.getArticles();
             model.getInfoList();
-            model.getAnalytics();
+            if(date_start == null)
+            {
+                date_start = DateTime.Now.AddMonths(-1);
+            }
+            if(date_end == null)
+            {
+                date_end = DateTime.Now;
+            }
+            model.date_start = date_start;
+            model.date_end = date_end;
+            model.getAnalytics(date_start, date_end);
             return View(model);
+        }
+        [HttpPost]
+        public ActionResult Analytics(SKKModels model)
+        {
+            return RedirectToAction("Analytics", new { date_start = model.date_start, date_end = model.date_end });
         }
     }
 }

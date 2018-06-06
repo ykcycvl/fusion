@@ -149,6 +149,51 @@ namespace Fusion.Models.CallCenter
             public string dst { get; set; }
             public string recordingfile { get; set; }
         }
+        public class CallList
+        {
+            public DateTime Date { get; set; }
+            public string CallReason { get; set; }
+            public int Id { get; set; }
+            public string GuestNumber { get; set; }
+            public string OperatorName { get; set; }
+            public string Comment { get; set; }
+        }
+        public List<CallList> callList = new List<CallList>();
+        public List<string> callReasonList = new List<string>();
+        public DateTime? date_start { get; set; }
+        public DateTime? date_end { get; set; }
+        public void getCallList(DateTime? date_start, DateTime? date_end)
+        {
+            MySqlConnection con = GetQuasiConnection();
+            MySqlCommand com = new MySqlCommand(String.Format("SELECT c.id, c.reason, c.guestNumber, c.calldatetime, c.comment, o.DisplayName FROM callresult c LEFT JOIN operator o ON c.agentNumber = o.login WHERE STR_TO_DATE(c.calldatetime, '%d.%m.%Y %H:%i') BETWEEN STR_TO_DATE('{0}', '%d.%m.%Y %H:%i') AND STR_TO_DATE('{1}', '%d.%m.%Y %H:%i')", date_start, date_end), con);
+            MySqlDataReader rdr = com.ExecuteReader();
+            if (rdr.HasRows)
+            {
+                foreach (DbDataRecord record in rdr)
+                {
+                    CDR.CallList call = new CDR.CallList();
+                    call.Id = Convert.ToInt32(record["id"]);
+                    call.CallReason = record["reason"].ToString();
+                    call.Comment = record["comment"].ToString();
+                    call.GuestNumber = record["guestNumber"].ToString();
+                    call.Date = Convert.ToDateTime(record["calldatetime"]);
+                    call.OperatorName = record["DisplayName"].ToString();
+                    callList.Add(call);
+                }
+            }
+            rdr.Close();
+            MySqlCommand com1 = new MySqlCommand("SELECT * FROM call_reason", con);
+            MySqlDataReader rdr1 = com1.ExecuteReader();
+            if (rdr1.HasRows)
+            {
+                foreach (DbDataRecord rec in rdr1)
+                {
+                    callReasonList.Add(rdr1["reason"].ToString());
+                }
+            }
+            rdr1.Close();
+            con.Close();
+        }
         public class CDRInfo
         {
             public List<HHPstat> _overallHHPStat = new List<HHPstat>();
