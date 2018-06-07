@@ -22,7 +22,7 @@
                 <h3 class="panel-title">Отчет по звонкам за @Model.date_start.Value.ToShortDateString() / @Model.date_end.Value.ToShortDateString()</h3>
             </div>
             <div class="panel-body">
-                @foreach (var it in Model.callReasonList.OrderByDescending())
+                @foreach (var it in Model.callReasonList.OrderBy(n => n))
                 {
                     counter++;
                     <div class="panel panel-success">
