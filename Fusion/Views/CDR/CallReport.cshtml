@@ -8,6 +8,13 @@
     .counter {
         text-align: right;
     }
+    .report-title {
+        width: 50%;
+    }
+    .table {
+        margin-bottom: 0 !important;
+        border: none !important;
+    }
 </style>
 <div class="row">
     <div class="col-md-10 col-md-push-1">
@@ -27,10 +34,20 @@
                     counter++;
                     <div class="panel panel-success">
                         <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <a data-toggle="collapse" href="#@counter">@it.ToString()</a>
-                                <span class="counter">@Model.callList.Where(m => m.CallReason == it.ToString()).Count()</span>
-                            </h3>
+                            <div class="panel-title">
+                                <a data-toggle="collapse" href="#@counter">
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <td class="report-title">
+                                                @it.ToString()
+                                            </td>
+                                            <td class="report-title counter">
+                                                @Model.callList.Where(m => m.CallReason == it.ToString()).Count()
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
                         </div>
                         <div class="panel panel-collapse collapse" id="@counter">
                             <div class="panel-body">
