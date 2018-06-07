@@ -73,6 +73,8 @@ namespace Fusion.Models
                 public int productId { get; set; }
                 [Display(Name = "Цена")]
                 public Decimal Price { get; set; }
+                [Display(Name = "Скидка")]
+                public Decimal DiscountPrice { get; set; }
                 [Display(Name = "Валюта")]
                 public string CurrencyName { get; set; }
                 [Display(Name = "Количество")]
@@ -219,11 +221,11 @@ SELECT
   empLocked.LAST_NAME AS LockEmpLastName,
   empLocked.NAME AS LockEmpName,
   bso.DATE_LOCK AS DateLock,
-  bsd.NAME AS DeliveryName,
+  bsd.DELIVERY_NAME AS DeliveryName,
   bso.DISCOUNT_VALUE AS Discount
 FROM 
   b_sale_order bso
-  INNER JOIN b_sale_delivery bsd ON bso.DELIVERY_ID = bsd.ID
+  INNER JOIN b_sale_order_delivery bsd ON bso.DELIVERY_ID = bsd.ID
   LEFT JOIN b_user guest ON bso.USER_ID = guest.ID
   LEFT JOIN b_sale_pay_system bsps ON bso.PAY_SYSTEM_ID = bsps.ID
   LEFT JOIN b_user empLocked ON bso.LOCKED_BY = empLocked.ID
@@ -401,6 +403,7 @@ where bsb.ORDER_ID = {0}", id);
                         oii.id = Convert.ToInt32(rdr["id"]);
                         oii.productId = Convert.ToInt32(rdr["PRODUCT_ID"]);
                         oii.Price = Convert.ToDecimal(rdr["PRICE"]);
+                        oii.DiscountPrice = Convert.ToDecimal(rdr["DISCOUNT_PRICE"]);
                         oii.Quantity = Convert.ToDecimal(rdr["QUANTITY"]);
                         oii.ProductName = Convert.ToString(rdr["NAME"]);
 
@@ -728,10 +731,7 @@ where bsb.ORDER_ID = {0}", id);
                         f_name = nameParts[0].Trim();
 
                         if (nameParts.Length > 1)
-                        {
-                            l_name = nameParts[0].Trim();
-                            f_name = nameParts[1].Trim();
-                        }
+                            l_name = nameParts[1].Trim();
                     }
                 }
 
@@ -741,7 +741,7 @@ where bsb.ORDER_ID = {0}", id);
                 if (this.PaySystem.id == 5)
                     comment += "ТЕРМИНАЛ ";
 
-                if (propsDeliveryTime == null || propsDeliveryTime.Value.Trim() == "Ближайшее")
+                if (propsDeliveryTime == null || propsDeliveryTime.Value.Trim() == "Ближайшее" || propsDeliveryTime.Value.Trim() == "Ближайшее время")
                 {
                     if (orderType == 2)
                     {

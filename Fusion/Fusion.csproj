@@ -2508,7 +2508,7 @@
       <DependentUpon>BioTime.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>BioTime.tt</DependentUpon>
+      <DependentUpon>RK7.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\SystemSequence.cs">
       <DependentUpon>BioTime.tt</DependentUpon>
@@ -5969,6 +5969,10 @@
     <Content Include="Views\TSP\Edit.cshtml" />
     <Content Include="Views\TSP\Nomenclature.cshtml" />
     <Content Include="Views\Issues\Edit.cshtml" />
+    <Content Include="Views\TSP\Accesses.cshtml" />
+    <Content Include="Views\TSP\EditAccess.cshtml" />
+    <Content Include="Views\TSP\EditRestaurant.cshtml" />
+    <Content Include="Views\TSP\Restaurants.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
       <DependentUpon>Reference.map</DependentUpon>

@@ -139,7 +139,7 @@
                     </tr>
                     <tr id="summary_pay" style="display:table-row">
                         <td valign="top" class="adm-detail-content-cell-l">Сумма оплаты:</td>
-                        <td valign="middle" class="adm-detail-content-cell-r">@Model.Price руб.</td>
+                        <td valign="middle" class="adm-detail-content-cell-r">@Model.Price.ToString("0.00") руб.</td>
                     </tr>
                     @if (Model.Payed)
                     {
@@ -191,8 +191,16 @@
                                                 <td class="COLUMN_PROPS" style="text-align:center">@p.Quantity.ToString("0.00") шт.</td>
                                                 <td class="COLUMN_PRICE" nowrap="" style="text-align:right">
                                                     <div class="edit_price">
+                                                        @if (p.DiscountPrice > 0)
+                                                        {
+                                                            <span class="default_price_product">
+                                                                <span style="text-shadow: none;font-size: 15px !important; font-weight: bold; margin-right: 4px;color: #717171;text-decoration: line-through;">@((p.Price + p.DiscountPrice).ToString("0.00"))</span>
+                                                            </span>
+                                                            <span class="currency_price">руб.</span>
+                                                            <br />
+                                                        }
                                                         <span class="default_price_product">
-                                                            <span class="formated_price" style="font-size: 15px !important; font-weight: bold; margin-right: 4px;">@p.Price.ToString("0.00")</span>
+                                                            <span class="formated_price" style="font-size: 15px !important; font-weight: bold; margin-right: 4px;">@p.Price.ToString("0.00")</span>                                                            
                                                         </span>
                                                         <span class="currency_price">руб.</span>
                                                     </div>
@@ -200,7 +208,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="COLUMN_SUM" nowrap="" style="text-align:right">
-                                                    <div style="font-size: 15px !important;text-align: right !important;vertical-align: top;font-weight: bold;">@(p.Price * p.Quantity) <span style="color: #717171;font-size: 11px;font-weight: bold;">руб.</span></div>
+                                                    <div style="font-size: 15px !important;text-align: right !important;vertical-align: top;font-weight: bold;">@((p.Price * p.Quantity).ToString("0.00")) <span style="color: #717171;font-size: 11px;font-weight: bold;">руб.</span></div>
                                                 </td>
                                             </tr>
                                         }
@@ -217,32 +225,32 @@
                                         <tbody>
                                             <tr>
                                                 <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Общая стоимость товаров</td>
-                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@(Model.Price + Model.Discount) руб.</td>
+                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@((Model.Price + Model.Discount).ToString("0.00")) руб.</td>
                                             </tr>
                                             <tr class="price">
                                                 <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Стоимость товаров с учётом скидок и наценок</td>
-                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@(Model.Price + Model.Discount) руб.</td>
+                                                <td nowrap="" style="white-space:nowrap;padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@((Model.Price + Model.Discount).ToString("0.00")) руб.</td>
                                             </tr>
                                             <tr>
                                                 <td class="title" style="padding: 8px !important; background-color: #ecf2d3; border: none;">Доставка</td>
-                                                <td nowrap="" style="white-space:nowrap; padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@Model.PriceDelivery руб.</td>
+                                                <td nowrap="" style="white-space:nowrap; padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right">@Model.PriceDelivery.ToString("0.00") руб.</td>
                                             </tr>
                                             @if (Model.Discount > 0)
                                             {
                                                 <tr class="itog">
                                                     <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Скидка на заказ</div></td>
-                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Discount руб.</div></td>
+                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Discount.ToString("0.00") руб.</div></td>
                                                 </tr>
                                             }
                                             <tr class="itog">
                                                 <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Итого</div></td>
-                                                <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price руб.</div></td>
+                                                <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price.ToString("0.00") руб.</div></td>
                                             </tr>
                                             @if (Model.Payed)
                                             {
                                                 <tr class="itog">
                                                     <td class="ileft" style="padding: 8px !important; background-color: #ecf2d3; border: none;"><div style="white-space:nowrap;">Оплачено</div></td>
-                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price руб.</div></td>
+                                                    <td class="iright" nowrap="" style="padding: 8px !important; background-color: #ecf2d3; border: none;text-align:right"><div style="white-space:nowrap;">@Model.Price.ToString("0.00") руб.</div></td>
                                                 </tr>
                                             }
                                         </tbody>
