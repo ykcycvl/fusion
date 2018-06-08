@@ -14,6 +14,7 @@
         <div class="panel-body">
             @using (Html.BeginForm("addEmployee", "SKK", FormMethod.Post, new { id = "Form", enctype = "multipart/form-data" }))
             {
+                @Html.HiddenFor(m => m.employee.id)
                 <div class="form-group">
                     <label for="@Model.employee.domain_name">Доменное имя</label>
                     @Html.TextBoxFor(m => m.employee.domain_name, new { @class = "form-control" })

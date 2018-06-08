@@ -51,7 +51,7 @@ namespace Fusion.Controllers
         {
             model.saveEmployee();
             model.getInfoList();
-            return View(model);
+            return RedirectToAction("Employees");
         }
         [MyAuthorize(Roles = "FusionAdmin, SKK")]
         public ActionResult addRestaurant(int? id)
