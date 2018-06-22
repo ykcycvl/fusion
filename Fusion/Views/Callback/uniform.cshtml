@@ -73,6 +73,8 @@
                 case 'Инф. тех.':
                     document.getElementById("informid").selected = true;
                     break
+				case 'HR':
+					document.getElementById("hrid").selected = true;
             }
         }
         //ресторан
@@ -105,7 +107,7 @@
                 document.getElementById("hakhid").selected = true;
                 break
             case 'Находка2':
-                document.getElementById("hakhid2").selected = true;
+                document.getElementById("hakhid").selected = true;
                 break
             case 'Артем':
                 document.getElementById("artid").selected = true;
@@ -299,10 +301,11 @@
                     <option value="Доставка" id="gotoid">Доставка</option>
                     <option value="КЦ" id="ccid">КЦ</option>
                     <option value="БК" id="bcid">БК</option>
-                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>                                        
+                    <option value="Маркетинг/сайт" id="markid">Маркет.</option>
                     <option value="Закуп" id="zakupid">Отдел закупа</option>
                     <option value="Тех. служба" id="techid">Тех. служба</option>
                     <option value="Инф. тех." id="informid">Инф. тех.</option>
+                    <option value="HR" id="hrid">HR</option>
                 </select>
             </li>
             <li>
@@ -331,7 +334,6 @@
                     <option value="Каваи" id="kawaiid">Каваи</option>
                     <option value="Уссурийск" id="ussurid">Уссурийск</option>
                     <option value="Находка" id="hakhid">Находка</option>
-                    <option value="Находка2" id="hakhid2">Находка 2 эт.</option>
                     <option value="Артем" id="artid">Артем</option>
                     <option value="Чемпион" id="chempid">Чемпион</option>
                 </select>
@@ -400,7 +402,7 @@
                 </div>
             </li>
             <li>
-                <span style="margin-left: 40px;">Подробности проблемы:</span>
+                <span style="margin-left: 40px;">Суть обращения:</span>
                 <div class="input-group has-error has-feedback">
                     @Html.TextAreaFor(m => m.Problem, new { placeholder = "Подробности проблемы", @required = true, @class = "contact_form", @value = Model.Problem, @id = "oplata4" })
                     <span id="oplata_4" class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true"></span>
