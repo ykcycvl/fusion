@@ -501,4 +501,10 @@
         }
         <br />
     }
+    <br />
+    <span class="text text-danger"><strong>Отчет по источникам: </strong></span><br /><br />
+    @foreach (var it in Model.persons.GroupBy(h => h.Source).Select(f => new { key = f.Key, count = f.Count() }))
+    {
+        <span>@it.key - @it.count</span><br />
+    }
 </div>
