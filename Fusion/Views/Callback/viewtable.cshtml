@@ -21,7 +21,7 @@
             },
             close: function (event, ui) { },
             modal: true,
-            width: 450,
+            width: 600,
             height: 550,
             autoOpen: false,
             draggable: true,
@@ -117,7 +117,7 @@
                 <option value="БК">БК</option>
                 <option value="Почта">Почта</option>
                 <option value="Приложение">Приложение</option>
-            </select>            
+            </select>
 
             <script>
                 $(function () {
@@ -474,6 +474,32 @@
         Всего критичных отзывов: @sum3 <br />
         Всего ОТРАВЛЕНИЙ: @sum5 <br />
         Отзывов не обработано: @sum4
-    </span>
-    <span></span>
+    </span><br /><br />
+    <span class="text text-danger"><strong>Отчет по подразделениям: </strong></span><br /><br />
+    @foreach (var it in Model.persons.GroupBy(h => h.Unit).Select(g => new { key = g.Key }))
+    {
+        <span>@it.key - @Model.persons.Where(f => f.Unit == it.key && f.Rating == "Положительный").Count() (Положительные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Unit == it.key && f.Rating == "Отрицательный").Count() (Отрицательные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Unit == it.key && f.Rating == "Критичный").Count() (Критичные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Unit == it.key && f.Rating == "ОТРАВЛЕНИЕ").Count() (ОТРАВЛЕНИЕ)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Unit == it.key && f.Rating == "Нейтральный").Count() (нейтральные)</span><br /><br />
+    }
+    <span class="text text-danger"><strong>Отчет по ресторанам: </strong></span><br /><br />
+    @foreach (var it in Model.persons.GroupBy(h => h.Rest).Select(f => new { key = f.Key }))
+    {
+        <span>@it.key - @Model.persons.Where(f => f.Rest == it.key && f.Rating == "Положительный").Count() (Положительные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Rest == it.key && f.Rating == "Отрицательный").Count() (Отрицательные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Rest == it.key && f.Rating == "Критичный").Count() (Критичные)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Rest == it.key && f.Rating == "ОТРАВЛЕНИЕ").Count() (ОТРАВЛЕНИЕ)</span><br />
+        <span>@it.key - @Model.persons.Where(f => f.Rest == it.key && f.Rating == "Нейтральный").Count() (нейтральные)</span><br /><br />
+    }
+    <br />
+    @foreach (var it in Model.persons.GroupBy(g => g.Rest).Select(t => new { Key = t.Key }))
+    {
+        foreach (var iy in Model.persons.Where(f => f.Rest == it.Key).GroupBy(r => r.Type).Select(e => new { Key = e.Key, count = e.Count() }))
+        {
+            <span>@it.Key - @iy.Key - @iy.count</span><br />
+        }
+        <br />
+    }
 </div>
