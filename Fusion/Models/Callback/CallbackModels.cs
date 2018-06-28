@@ -274,6 +274,7 @@ namespace Fusion.Models.Callback
             public string Cost { get; set; }
             public string CostPoint { get; set; }
             public string CostSert { get; set; }
+            public string CostDiscount { get; set; }
             public string Type { get; set; }
 
             public string Source { get; set; }
@@ -324,11 +325,11 @@ namespace Fusion.Models.Callback
                         DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " 0" + (DateNEW2.Substring(11, 7));
                     }
                     DateNEW2 = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2));
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, CostDiscount, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
                 }
                 else
                 {
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer, CostDiscount FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
                 }
                 //command.Parameters.AddWithValue("id", );
 
@@ -380,6 +381,8 @@ namespace Fusion.Models.Callback
                             p.CostPoint = Convert.ToString(record["CostPoint"]);
                         if (Convert.ToString(record["CostSert"]) != "")
                             p.CostSert = Convert.ToString(record["CostSert"]);
+                        if (Convert.ToString(record["CostDiscount"]) != "")
+                            p.CostDiscount = Convert.ToString(record["CostDiscount"]);
 
                         if (Convert.ToString(record["Type"]) != "")
                             p.Type = Convert.ToString(record["Type"]);

@@ -130,6 +130,7 @@
             <input type="checkbox" id="nalid" value="0" />Наличные
             <input type="checkbox" id="bonusid" value="0" />Бонусы
             <input type="checkbox" id="sertid" value="0" />Сертификат
+            <input type="checkbox" id="discountid" value="0" />Скидка
             <select id="payer">
                 <option value="">---</option>
                 <option value="Cотрудник">Cотрудник</option>
@@ -218,9 +219,12 @@
                     int cost;
                     int costpoint;
                     int costsert;
+                    int costdisc;
                     cost = Convert.ToInt32(@attribute.Cost);
                     costpoint = Convert.ToInt32(@attribute.CostPoint);
                     costsert = Convert.ToInt32(@attribute.CostSert);
+                    costdisc = Convert.ToInt32(attribute.CostDiscount);
+
                     <tr id="@attribute.id" style="background:@rowColor" onclick="document.location='/Callback/uniform?updorins=@attribute.id'">
                         <td style="color: @textColor">@attribute.id</td>
                         <td>@Html.ActionLink(attribute.FIO, "uniform", new { @updorins = @attribute.id }, new { @style = "color:" + textColor })</td>
@@ -236,6 +240,7 @@
                         <td hidden id="costid">@cost</td>
                         <td hidden id="costpointid">@costpoint</td>
                         <td hidden id="costsertid">@costsert</td>
+                        <td hidden id="costdiscid">@costdisc</td>
                         <td hidden id="cldate">@attribute.DateClose</td>
                         <td hidden id="payerf">@attribute.Payer1</td>
 
@@ -303,6 +308,12 @@
                 }
             ),
             12: new filterTable.Filter([document.getElementById("sertid")],
+                function (value, filters, i) {
+                    if (false === filters[i].checked) return true;
+                    return filters[0].checked && filters[0].value !== value;
+                }
+            ),
+            13: new filterTable.Filter([document.getElementById("discountid")],
                 function (value, filters, i) {
                     if (false === filters[i].checked) return true;
                     return filters[0].checked && filters[0].value !== value;
@@ -420,6 +431,10 @@
         Наличные: @stafcompsumnal <br />
         Бонусы: @stafcompsumbonus<br />
         Сертификат: @stafcompsumsert<br />
+    </span>
+    <br />
+    <span>
+        Кол-во отзывов со скидкой: @Model.persons.Where(n => !String.IsNullOrEmpty(n.CostDiscount)).Count()
     </span>
     <br />
 
