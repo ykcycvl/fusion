@@ -8,7 +8,7 @@
 <script type="text/javascript">
     function exclamationSign() {
         var i;
-        for (i = 1; i <= 7; i++) {
+        for (i = 1; i <= 8; i++) {
             var a = document.getElementById("oplata" + i).value
             if (!a || a == " ") {
                 document.getElementById("oplata_" + i).className = "glyphicon glyphicon-exclamation-sign form-control-feedback";
@@ -114,6 +114,9 @@
                 break
             case 'Чемпион':
                 document.getElementById("chempid").selected = true;
+                break
+            case 'Мидия':
+                document.getElementById("midid").selected = true;
                 break
         }
         //источник
@@ -269,6 +272,7 @@
         <input hidden name="hidcost1" value="@Model.Cost" />
         <input hidden name="hidcost2" value="@Model.CostPoint" />
         <input hidden name="hidcost3" value="@Model.CostSert" />
+        <input hidden name="hidcost4" value="@Model.CostDiscount" />
         <input hidden name="hidpayer" value="@Model.Payer" />
         <ul>
             <li>
@@ -336,6 +340,7 @@
                     <option value="Находка" id="hakhid">Находка</option>
                     <option value="Артем" id="artid">Артем</option>
                     <option value="Чемпион" id="chempid">Чемпион</option>
+                    <option value="Мидия" id="midid">Мидия</option>
                 </select>
             </li>
             <li>
@@ -440,6 +445,13 @@
                     <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_7"></span>
                 </div>
                 @Html.ValidationMessageFor(m => m.CostSert)
+                <br />
+                <span style="margin-left: 40px;">Цена решения (скидка):</span>
+                <div class="input-group has-error has-feedback">
+                    @Html.TextBoxFor(m => m.CostDiscount, new { placeholder = "Цена решения (скидка)", @required = true, @id = "oplata8", @class = "contact_form", @value = Model.CostDiscount })
+                    <span class="glyphicon glyphicon-exclamation-sign form-control-feedback" aria-hidden="true" id="oplata_8"></span>
+                </div>
+                @Html.ValidationMessageFor(m => m.CostDiscount)
                 <br />
             </li>
             <li>

@@ -86,6 +86,7 @@ namespace Fusion.Controllers
                 string Cost = @"SELECT Cost FROM tblfeedback WHERE id='" + id + "'";
                 string CostPoint = @"SELECT CostPoint FROM tblfeedback WHERE id='" + id + "'";
                 string CostSert = @"SELECT CostSert FROM tblfeedback WHERE id='" + id + "'";
+                string CostDiscount = @"SELECT CostDiscount FROM tblfeedback WHERE id='" + id + "'";
                 string DateClose = @"SELECT DateClose FROM tblfeedback WHERE id='" + id + "'";
                 string Type = @"SELECT Type FROM tblfeedback WHERE id='" + id + "'";
                 string Guilty = @"SELECT Guilty FROM tblfeedback WHERE id='" + id + "'";
@@ -112,6 +113,7 @@ namespace Fusion.Controllers
                 MySqlCommand cmdType = new MySqlCommand(Type, conn);
                 MySqlCommand cmdGuilty = new MySqlCommand(Guilty, conn);
                 MySqlCommand cmdPayer = new MySqlCommand(Payer, conn);
+                MySqlCommand cmdCostDiscount = new MySqlCommand(CostDiscount, conn);
 
                 string resFIO = cmdFIO.ExecuteScalar().ToString();
                 model.UserName = resFIO;
@@ -156,6 +158,8 @@ namespace Fusion.Controllers
                 model.Guilty = resGuilty;
                 string resPayer = cmdPayer.ExecuteScalar().ToString();
                 model.Payer = resPayer;
+                string resCostDiscount = cmdCostDiscount.ExecuteScalar().ToString();
+                model.CostDiscount = resCostDiscount;
 
 
                 if (testCon)
@@ -541,6 +545,7 @@ namespace Fusion.Controllers
 
             string CostSert;
             CostSert = model.CostSert;
+            string CostDiscount = model.CostDiscount;
             //%%%%%%%
             //переменная для начального значения поля
             string CostSertmatching;
@@ -600,11 +605,11 @@ namespace Fusion.Controllers
             //idbridge
             if (id >= 0)
             {
-                dbSTR = @"UPDATE tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
+                dbSTR = @"UPDATE tblfeedback SET CostDiscount='"+ CostDiscount +"',FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'  WHERE id='" + id + "'";
             }
             else
             {
-                dbSTR = @"INSERT INTO tblfeedback SET FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
+                dbSTR = @"INSERT INTO tblfeedback SET CostDiscount = '"+ CostDiscount +"',FIO='" + UserName + "',Phone='" + phnumber + "',Email='" + email + "',Text='" + textkomm + "',Data='" + NewDate + "',Source='" + SelectedSource + "',Unit='" + SelectedUnit + "',Rest='" + SelectedRest + "',Rating='" + Rating + "',Rating2='" + SelectedRating2 + "',Sotrudnik='" + Staff + "',Problem='" + Problem + "',Mera='" + mera + "',AnswerForGuest='" + answer + "',Cost='" + Cost + "',CostPoint='" + CostPoint + "',CostSert='" + CostSert + "',DateClose='" + OldDate + "', Type='" + Type + "', Guilty='" + Guilty + "', Payer='" + SelectedPayer + "'";
                 ind = true;
             }
 

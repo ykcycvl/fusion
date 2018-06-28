@@ -506,6 +506,7 @@ namespace Fusion.Models.Callback
         public string Cost { get; set; }
         public string CostPoint { get; set; }
         public string CostSert { get; set; }
+        public string CostDiscount { get; set; }
 
         public string Type { get; set; }
 
