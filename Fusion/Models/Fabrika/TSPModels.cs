@@ -54,7 +54,7 @@ namespace Fusion.Models.Fabrika
 
         public void GetList()
         {
-            RequestList = db.Request.ToList();
+            RequestList = db.Request.OrderByDescending(p => p.RequestDate).ToList();
         }
 
         public void Initialize(string UserName)

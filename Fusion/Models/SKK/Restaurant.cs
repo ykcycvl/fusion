@@ -18,6 +18,7 @@ namespace Fusion.Models.SKK
         public Restaurant()
         {
             this.Act = new HashSet<Act>();
+            this.ArticleBlockAccess = new HashSet<ArticleBlockAccess>();
         }
     
         public int id { get; set; }
@@ -33,5 +34,7 @@ namespace Fusion.Models.SKK
         public virtual Employee Employee1 { get; set; }
         public virtual Employee Employee2 { get; set; }
         public virtual Employee Employee3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ArticleBlockAccess> ArticleBlockAccess { get; set; }
     }
 }

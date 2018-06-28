@@ -66,6 +66,10 @@
         <a href="/InternetOrders/CallToGuest?id=@Model.id.ToString()" target="_blank" title="Позвонить"><img src="~/images/phone-2-xxl.png" alt="Позвонить" style="width: 30px; border: 1px solid #f00; border-radius: 5px; padding: 5px;"/></a>
     </div>
     <div class=Section1>
+        <div style="font-size: 18px; font-weight: bold; color: #f00; font-family: Tahoma; border: 1px solid #f00; padding: 30px; border-radius: 5px; width: 30vw; position: absolute; top: 10px; left: 50vw; text-align: center;">
+            ЗАЙДИ В СОСТАВ ЗАКАЗА И НАЖМИ ЗЕЛЕНУЮ ГАЛОЧКУ!
+            <img src="~/images/0afa4b3ae12e0aacdc88f4c6ac764195.jpg" style="height: 40vh"/>
+        </div>
         <p>
             <b>ЗАКАЗЧИК: </b>
             @if (Model.Properties.FirstOrDefault(p => p.OrderPropsId == 15) != null)
@@ -142,25 +146,29 @@
                 <td nowrap align="center" style="border: 1pt solid #000000; border-right:none;">Цена, руб</td>
                 <td nowrap align="center" style="border: 1pt solid #000000;">Сумма, руб</td>
             </tr>
-            @for (int i = 0; i < Model.Items.Count; i++)
+
+            @if (Model.Items != null)
             {
-                <tr valign="top">
-                    <td bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
-                        @(i + 1)
-                    </td>
-                    <td bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
-                        [@Model.Items[i].productId] @Model.Items[i].ProductName
-                    </td>
-                    <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
-                        @Model.Items[i].Quantity.ToString("0.00")
-                    </td>
-                    <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
-                        @Model.Items[i].Price.ToString("0.00")
-                    </td>
-                    <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-top:none;">
-                        @(Model.Items[i].Price * Model.Items[i].Quantity)
-                    </td>
-                </tr>
+                for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <tr valign="top">
+                        <td bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
+                            @(i + 1)
+                        </td>
+                        <td bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
+                            [@Model.Items[i].productId] @Model.Items[i].ProductName
+                        </td>
+                        <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
+                            @Model.Items[i].Quantity.ToString("0.00")
+                        </td>
+                        <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-right:none; border-top:none;">
+                            @Model.Items[i].Price.ToString("0.00")
+                        </td>
+                        <td align="right" bgcolor="#ffffff" style="border: 1pt solid #000000; border-top:none;">
+                            @(Model.Items[i].Price * Model.Items[i].Quantity)
+                        </td>
+                    </tr>
+                }
             }
 
             @if (Model.Discount != 0 && Model.Properties.FirstOrDefault(p => p.OrderPropsId == 19) != null)

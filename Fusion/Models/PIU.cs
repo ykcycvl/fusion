@@ -697,7 +697,7 @@ namespace Fusion.Models
                 Organization = "";
 
             PiuWS.fsn_PIU model = new PiuWS.fsn_PIU();
-            model.Timeout = 300000;
+            model.Timeout = 900000;
             PiuWS.PIU t = model.GetPIUData2(UserName, Organization, DateTime.Parse(StartDate), DateTime.Parse(EndDate), "0");
 
             var r = t.Reconciliations.FirstOrDefault(p => p.UserName == UserName);

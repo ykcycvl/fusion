@@ -2387,6 +2387,9 @@
     <Compile Include="Models\SKK\ArticleBlock.cs">
       <DependentUpon>SKKEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SKK\ArticleBlockAccess.cs">
+      <DependentUpon>SKKEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SKK\Employee.cs">
       <DependentUpon>SKKEntity.tt</DependentUpon>
     </Compile>
@@ -2867,6 +2870,7 @@
     <Content Include="data.js" />
     <Content Include="data\events.xml" />
     <Content Include="images\031c63cfe7b947ed94b884816ad98b5b.gif" />
+    <Content Include="images\0afa4b3ae12e0aacdc88f4c6ac764195.jpg" />
     <Content Include="images\8pm76v.gif" />
     <Content Include="images\928e1aa5fc53b31897414d2ecf4cda5a.gif" />
     <Content Include="images\Ispug1.png" />
@@ -5973,6 +5977,8 @@
     <Content Include="Views\TSP\EditAccess.cshtml" />
     <Content Include="Views\TSP\EditRestaurant.cshtml" />
     <Content Include="Views\TSP\Restaurants.cshtml" />
+    <Content Include="Views\CDR\CallReport.cshtml" />
+    <Content Include="Views\SKK\Act.cshtml" />
     <None Include="Web References\PiuWS\fsn_PIU.wsdl" />
     <Content Include="Web References\PiuWS\Organization.datasource">
       <DependentUpon>Reference.map</DependentUpon>

@@ -28,6 +28,9 @@
         <AssociationConnector Association="SKKModel.FK_Restaurant_director_id" ManuallyRouted="false" />
         <AssociationConnector Association="SKKModel.FK_Restaurant_manager_id" ManuallyRouted="false" />
         <AssociationConnector Association="SKKModel.FK_Restaurant_suchief_id" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SKKModel.ArticleBlockAccess" Width="1.5" PointX="10.5" PointY="3.25" />
+        <AssociationConnector Association="SKKModel.FK_ArticleBlockAccess_block_id" />
+        <AssociationConnector Association="SKKModel.FK_ArticleBlockAccess_restaurant_id" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

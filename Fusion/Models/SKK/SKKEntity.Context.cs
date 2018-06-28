@@ -33,5 +33,6 @@ namespace Fusion.Models.SKK
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<Position> Position { get; set; }
         public virtual DbSet<Restaurant> Restaurant { get; set; }
+        public virtual DbSet<ArticleBlockAccess> ArticleBlockAccess { get; set; }
     }
 }
