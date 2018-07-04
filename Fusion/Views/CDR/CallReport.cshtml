@@ -3,14 +3,17 @@
     ViewBag.Title = "CallReport";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
     int counter = 0;
+    int counter2 = 0;
 }
 <style>
     .counter {
         text-align: right;
     }
+
     .report-title {
         width: 50%;
     }
+
     .table {
         margin-bottom: 0 !important;
         border: none !important;
@@ -26,60 +29,114 @@
         }
         <div class="panel panel-yellow">
             <div class="panel-heading">
-                <h3 class="panel-title">Отчет по звонкам за @Model.date_start.Value.ToShortDateString() / @Model.date_end.Value.ToShortDateString()</h3>
+                <a class="panel-title" data-toggle="collapse" href="#operator_report">
+                    Отчет по операторам
+                </a>
             </div>
-            <div class="panel-body">
-                @foreach (var it in Model.callReasonList.OrderBy(n => n))
-                {
-                    counter++;
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                <a data-toggle="collapse" href="#@counter">
-                                    <table class="table table-condensed">
-                                        <tr>
-                                            <td class="report-title">
-                                                @it.ToString()
-                                            </td>
-                                            <td class="report-title counter">
-                                                @Model.callList.Where(m => m.CallReason == it.ToString()).Count()
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="panel panel-collapse collapse" id="@counter">
-                            <div class="panel-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Дата</th>
-                                            <th>Причина звонка</th>
-                                            <th>Номер гостя</th>
-                                            <th>Комментарий</th>
-                                            <th>Оператор</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var iy in Model.callList.Where(m => m.CallReason == it.ToString()))
-                                        {
+            <div class="panel panel-collapse collapse" id="operator_report">
+                <div class="panel-body">
+                    @foreach(var it in Model.callList.GroupBy(j => j.OperatorName).Select(n => new { n.Key }))
+                    {
+                        counter2++;
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a data-toggle="collapse" href="#j_@counter2">
+                                        <table class="table table-condensed">
                                             <tr>
-                                                <td>@iy.Id</td>
-                                                <td>@iy.Date</td>
-                                                <td>@iy.CallReason</td>
-                                                <td>@iy.GuestNumber</td>
-                                                <td>@iy.Comment</td>
-                                                <td>@iy.OperatorName</td>
+                                                <td class="report-title">
+                                                    @it.Key
+                                                </td>
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                        </table>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="panel panel-collapse collapse" id="j_@counter2">
+                                <div class="panel-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Причина звонка</th>
+                                                <th>Кол-во</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(var iy in Model.callList.Where(g => g.OperatorName == it.Key).GroupBy(t => t.CallReason).Select(r => new { r.Key, count = r.Count() }))
+                                            {
+                                                <tr>
+                                                    <td>@iy.Key</td>
+                                                    <td>@iy.count</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <a data-toggle="collapse" href="#reason_report" class="panel-title">Отчет по звонкам за @Model.date_start.Value.ToShortDateString() / @Model.date_end.Value.ToShortDateString()</a>
+            </div>
+            <div class="panel panel-collapse collapse" id="reason_report">
+                <div class="panel-body">
+                    @foreach (var it in Model.callReasonList.OrderBy(n => n))
+                    {
+                        counter++;
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    <a data-toggle="collapse" href="#@counter">
+                                        <table class="table table-condensed">
+                                            <tr>
+                                                <td class="report-title">
+                                                    @it.ToString()
+                                                </td>
+                                                <td class="report-title counter">
+                                                    @Model.callList.Where(m => m.CallReason == it.ToString()).Count()
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="panel panel-collapse collapse" id="@counter">
+                                <div class="panel-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Дата</th>
+                                                <th>Причина звонка</th>
+                                                <th>Номер гостя</th>
+                                                <th>Комментарий</th>
+                                                <th>Оператор</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var iy in Model.callList.Where(m => m.CallReason == it.ToString()).OrderBy(n => n.Date))
+                                            {
+                                                <tr>
+                                                    <td>@iy.Id</td>
+                                                    <td>@iy.Date</td>
+                                                    <td>@iy.CallReason</td>
+                                                    <td>@iy.GuestNumber</td>
+                                                    <td>@iy.Comment</td>
+                                                    <td>@iy.OperatorName</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>

@@ -88,6 +88,10 @@ namespace Fusion.Controllers.CallCenter
             {
                 date_end = DateTime.Now;
             }
+            else
+            {
+                date_end = date_end.Value.AddHours(23);
+            }
             Models.CallCenter.CDR model = new Models.CallCenter.CDR();
             model.date_start = date_start;
             model.date_end = date_end;
