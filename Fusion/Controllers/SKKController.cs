@@ -266,7 +266,7 @@ namespace Fusion.Controllers
                 }
             }
             model.saveActData(model.ActId, files);
-            return Redirect("~/SKK/Acts");
+            return RedirectToAction("addActData", new { actID = model.ActId });
         }
         public ActionResult ExportToExcel(int actID)
         {
