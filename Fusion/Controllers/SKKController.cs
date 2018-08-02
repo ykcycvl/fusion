@@ -225,6 +225,7 @@ namespace Fusion.Controllers
             model.getActs();
             model.getActDataList();
             model.getActFilesById(actID);
+            model.getAccesses();
             int? restaurant_id = model.Acts.FirstOrDefault(m => m.id == actID).restaurant_id;
             model.actDataMock = new List<SKKModels.ActDataMock>();
             if (actID != null)
@@ -265,7 +266,7 @@ namespace Fusion.Controllers
                 }
             }
             model.saveActData(model.ActId, files);
-            return View(model);
+            return Redirect("~/SKK/Acts");
         }
         public ActionResult ExportToExcel(int actID)
         {

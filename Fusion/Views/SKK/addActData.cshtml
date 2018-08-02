@@ -13,7 +13,16 @@
     .radion-null {
         display: none;
     }
-
+    label {
+        font-size: 2em;
+        text-align: center;
+        top: 15px;
+        color: #3bd3ff;
+    }
+    textarea {
+        resize: none;
+        height: 200px;
+    }
     .td-radio {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -35,6 +44,10 @@
         position: fixed;
         z-index: 999;
     }
+    img {
+        max-width: 200px; 
+        max-height: 200px;
+    }
 
     @@media screen and (min-device-width: 321px) and (max-device-width: 600px) {
         .my-table {
@@ -52,6 +65,10 @@
 
         .input-file {
             width: 0px;
+        }
+        .my-table > img {
+            max-width: 100px;
+            max-height: 100px;
         }
     }
 </style>
@@ -112,13 +129,11 @@
                                             </tr>
                                             <tr class="additional-information @i">
                                                 <td>@iy.id</td>
-                                                <td>@Html.TextBoxFor(m => m.actDataMock[i].ActData.comment, new { @class = "form-control", @placeholder = "Комментарий" })</td>
+                                                <td>@Html.TextAreaFor(m => m.actDataMock[i].ActData.comment, new { @class = "form-control", @placeholder = "Комментарий" })</td>
                                                 <td width="40%">
-                                                    <!--<label class="btn btn-info my-button">
-                                                        Загрузить файл
-
-                                                    </label>-->
-                                                    <input type="file" multiple class="form-control" style="opacity: 100" name="@iy.id" />
+                                                    <label for="input-file-@iy.id" class="glyphicon glyphicon-upload">
+                                                        <input type="file" id="input-file-@iy.id" multiple class="form-control" style="opacity: 0" name="@iy.id" />
+                                                    </label>
                                                 </td>
                                             </tr>
                                             if (Model.ActFiles.Where(n => n.act_data_id == Model.actDataMock[i].ActData.id).Any())
@@ -128,7 +143,7 @@
                                                         @foreach (var ij in Model.ActFiles.Where(n => n.act_data_id == Model.actDataMock[i].ActData.id))
                                                         {
 
-                                                            <img src="~/Files/@ij.filename" style="max-width: 200px; max-height: 200px" />
+                                                            <img src="~/Files/@ij.filename"  />
 
                                                         }
                                                     </td>

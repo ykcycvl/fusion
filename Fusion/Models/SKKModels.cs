@@ -422,7 +422,6 @@ namespace Fusion.Models.SKK
         public void createActDataMock(int? actID, int? restaurant_id)
         {
             actDataMock = new List<ActDataMock>();
-            getAccesses();
             if (ActData.Where(m => m.act_id == actID).Any())
             {
                 foreach (var it in Articles)
@@ -571,7 +570,6 @@ namespace Fusion.Models.SKK
                 {
                     it.ActData.accord = true;
                     it.ActData.rating = Articles.FirstOrDefault(m => m.id == it.ArticleId).weight;
-                    it.ActData.comment = "";
                 }
                 else if (it.Accord == false)
                 {

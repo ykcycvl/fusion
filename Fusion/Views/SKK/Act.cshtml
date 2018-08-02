@@ -13,6 +13,13 @@
         font-size: 18px;
         text-align: center;
     }
+
+    .images {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(1fr, minmax(200px, 200px));
+    }
 </style>
 <div class="row">
     <div class="col-md-10 col-md-push-1">
@@ -41,17 +48,24 @@
                                     @foreach (var g in Model.ActData.Where(m => m.act_id == Model.ActId && m.Article.block_id == it.id))
                                     {
                                         <div class="row">
-                                            <div class="col-md-5">@g.Article.name</div>
+                                            <div class="col-md-3">@g.Article.name</div>
                                             @if ((bool)g.accord)
                                             {
-                                                <div class="glyphicon glyphicon-ok text-success text col-md-2"></div>
+                                                <div class="glyphicon glyphicon-ok text-success text col-md-1"></div>
                                             }
                                             else
                                             {
-                                                <div class="glyphicon glyphicon-remove text-danger text col-md-2"></div>
+                                                <div class="glyphicon glyphicon-remove text-danger text col-md-1"></div>
                                             }
                                             <div class="col-md-3">@g.comment</div>
-                                            <div class="col-md-2">@g.rating из @g.Article.weight</div>
+                                            <div class="col-md-5">
+                                                <div class="images">
+                                                    @foreach (var y in Model.ActFiles.Where(n => n.act_data_id == g.id))
+                                                    {
+                                                        <img src="~/Files/@y.filename" style="max-width: 200px; max-height: 200px" />
+                                                    }
+                                                </div>
+                                            </div>
                                         </div>
                                         <hr />
                                         rating += (int)g.rating;
@@ -70,7 +84,7 @@
                         </div>
                     }
                 }
-                @{ 
+                @{
                     rating_final = Math.Round((rating_final / counter), 2);
                 }
             </div>
