@@ -232,6 +232,21 @@ namespace Fusion.Models.SKK
             public double? rating { get; set; }
             public string restaurantName { get; set; }
         }
+        public class PercentsBlockByRest
+        {
+            public int? block_id { get; set; }
+            public int? restaurant_id { get; set; }
+            public double? rating { get; set; }
+            public double? weight { get; set; }
+            public double? percent { get; set; }
+        }
+        public class ChartPercents
+        {
+            public int? block_id { get; set; }
+            public string data { get; set; }
+        }
+        public List<ChartPercents> chartPercentsList { get; set; }
+        public List<PercentsBlockByRest> PercentsBlockByRestList { get; set; }
         public class Mock
         {
             public double? ratingPrev { get; set; }
@@ -301,6 +316,7 @@ namespace Fusion.Models.SKK
         {
             PercentsList = new List<Percents>();
             percentsBlockList = new List<PercentsBlock>();
+            PercentsBlockByRestList = new List<PercentsBlockByRest>();
             getAccesses();
             foreach (var it in Restaurants)
             {
@@ -417,6 +433,16 @@ namespace Fusion.Models.SKK
             {
                 blocksList.FirstOrDefault(m => m.blockName == it.blockName).ratingPrev = it.rating;
             }*/
+            var p = ActData.Where(n => n.Act.date.Value.Month == date_end.Value.Month).GroupBy(r => new { r.Article.block_id, r.Act.restaurant_id }).Select(f => new { f.Key.block_id, f.Key.restaurant_id, rating = f.Sum(y => y.rating), weight = f.Sum(t => t.Article.weight) }).ToList();
+            foreach(var it in p)
+            {
+                PercentsBlockByRestList.Add(new PercentsBlockByRest { block_id = it.block_id, restaurant_id = it.restaurant_id, rating = it.rating, weight = it.weight, percent = (double)(it.rating * 100) / (double)it.weight });
+            }
+            chartPercentsList = new List<ChartPercents>();
+            foreach(var it in ArticleBlocks)
+            {
+                chartPercentsList.Add(new ChartPercents { block_id = it.id, data = null });
+            }
         }
         //create
         public void createActDataMock(int? actID, int? restaurant_id)

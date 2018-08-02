@@ -1,5 +1,7 @@
 ﻿@model Fusion.Models.SKK.SKKModels
 @{
+    /**/
+
     ViewBag.Title = "Analytics";
     Layout = "~/Views/Shared/_LayoutWide.cshtml";
     string chartTitle = String.Format("'Результаты ресторанов в динамике {0}.{1}/{2}.{3}'", Model.date_start.Value.Month, Model.date_start.Value.Year, Model.date_end.Value.Month, Model.date_end.Value.Year);
@@ -32,12 +34,73 @@
         medianaBlock += rating_now;
         i++;
     }
-    if(i == 0)
+    foreach (var it in Model.chartPercentsList)
+    {
+        it.data = "[";
+        foreach (var ig in Model.PercentsBlockByRestList.Where(n => n.block_id == it.block_id))
+        {
+            it.data += "{";
+            it.data += String.Format("'arg':'{0}', 'val': {1}", Model.Restaurants.FirstOrDefault(n => n.id == ig.restaurant_id).name, Math.Round((double)ig.percent, 2));
+            it.data += "},\r\n";
+        }
+        it.data += "]";
+    }
+    if (i == 0)
     {
         i++;
     }
     medianaBlock = medianaBlock / i;
     DataTable2 += "]";
+    string s = "";
+    foreach (var it in Model.chartPercentsList)
+    {
+        try
+        {
+            s += String.Format(@"
+var pivotGridChart2 = $('#pivotgrid-{0}').dxChart({{
+commonSeriesSettings: {{
+argumentField: 'arg',
+type: 'bar',
+showInLegend: false,
+valueField: 'val',
+color: '#BA4D51'
+}},
+series: [
+    {{
+        label: {{
+            visible : true
+        }}
+    }}
+],
+size: {{
+height: 320
+}},
+tooltip: {{
+enabled: true
+}},
+animation: {{
+duration: 1000,
+easing: 'easeOutCubic',
+enabled: true,
+maxPointCountSupported: 300
+}},
+title: {{
+text: 'Результаты ресторанов за {1}/{2}, {3}'
+}},
+adaptiveLayout: {{
+width: 450
+}},
+dataSource:
+{4},
+}});
+", it.block_id, Model.date_end.Value.Month, Model.date_end.Value.Year, Model.ArticleBlocks.FirstOrDefault(n => n.id == it.block_id).name, Html.Raw(it.data));
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
+
 }
 
 <script src="~/Scripts/cldr.js"></script>
@@ -56,6 +119,7 @@
 
 <script>
     $(function () {
+        @Html.Raw(s)
         var pivotGridChart = $("#pivotgrid-chart").dxChart({
             commonSeriesSettings: {
                 argumentField: "arg",
@@ -206,7 +270,7 @@
         <div class="panel panel-yellow">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Итоговые результаты по сети
+                    @String.Format("Итоговые результаты по сети за {0}.{1} / {2}.{3}", Model.date_start.Value.Month, Model.date_start.Value.Year, Model.date_end.Value.Month, Model.date_end.Value.Year)
                 </h3>
             </div>
             <div class="panel-body">
@@ -215,7 +279,8 @@
                         <tr>
                             <th>id</th>
                             <th>Ресторан</th>
-                            <th>Общий процент</th>
+                            <th>@String.Format("{0}.{1}", Model.date_start.Value.Month, Model.date_start.Value.Year)</th>
+                            <th>@String.Format("{0}.{1}", Model.date_end.Value.Month, Model.date_end.Value.Year)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -224,7 +289,8 @@
                             <tr>
                                 <th>@it.restaurantID</th>
                                 <th>@it.restaurantName</th>
-                                <th>@it.percent%</th>
+                                <th>@it.percent_prev%</th>
+                                <th>@it.percent_today%</th>
                             </tr>
                         }
                     </tbody>
@@ -244,6 +310,12 @@
                         <div id="pivotgrid-chart3"></div>
                     </div>
                 </div>
+                @foreach (var it in Model.chartPercentsList)
+                {
+                    <div class="demo-container">
+                        <div id="pivotgrid-@it.block_id"></div>
+                    </div>
+                }
             </div>
         </div>
     </div>
