@@ -296,7 +296,7 @@ namespace Fusion.Models.CallCenter
                                             and
                                             wait_delivery_time <= '{1}'
                                             and
-                                            dlo.status IN (2, 3, 4, 5, 8)
+                                            dlo.status IN (2, 3, 4, 5, 7, 8)
                                         GROUP BY dlo.operator_name, 2
                                         order BY
                                         apply_time,

@@ -461,6 +461,7 @@ namespace Fusion.Controllers
             numberFormatInfo.NumberDecimalSeparator = ".";
 
             var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
             var heapdata = serializer.DeserializeObject(tableDataRUB);
 
             foreach (var undata in (Array)heapdata)
