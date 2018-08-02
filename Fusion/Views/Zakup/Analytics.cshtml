@@ -12,6 +12,7 @@
     .panel-info .panel-title a:hover {
         color: inherit;
     }
+
     .panel-yellow a:hover {
         color: white !important;
     }
@@ -61,7 +62,7 @@
         </div>
         <div class="panel-collapse collapse" id="orders">
             <div class="panel-body">
-                <div class="panel panel-info"">
+                <div class="panel panel-info">
                     <div class="panel-heading">
                         <a class="panel-title" data-toggle="collapse" href="#orders_by_restaurant">Количество заявок по ресторанам</a>
                     </div>
@@ -76,14 +77,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month == Model.analyticsDate.Month && c.date.Value.Year == Model.analyticsDate.Year).GroupBy(m => m.bd_employee.bd_subdivision.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
                                     {
                                         if (i != Model.orders.Count())
                                         {
                                             <tr>
                                                 <td>@it.name</td>
                                                 <td>@it.count</td>
-                                                <td>@it.summ</td>
+                                                <td>@Math.Round((double)it.summ, 2)</td>
                                             </tr>
                                             i++;
                                             vendCount += it.count;
@@ -105,7 +106,7 @@
                     </div>
                 </div>
 
-                <div class="panel panel-info"">
+                <div class="panel panel-info" ">
                     <div class="panel-heading">
                         <a class="panel-title" data-toggle="collapse" href="#orders_by_vendors">Кол-во заявок по постащикам</a>
                     </div>
@@ -120,7 +121,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month == Model.analyticsDate.Month && c.date.Value.Year == Model.analyticsDate.Year).GroupBy(m => m.bd_nomenclature.bd_vendor.name).Select(g => new { name = g.Key, count = g.Count(), summ = g.Sum(p => p.bd_nomenclature.Price * p.count) }))
                                     {
 
                                         <tr>
@@ -134,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-info"">
+                <div class="panel panel-info" ">
                     <div class="panel-heading">
                         <a class="panel-title" data-toggle="collapse" href="#orders_by_nomenclatures">По номенклатурам</a>
                     </div>
@@ -152,7 +153,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month + c.date.Value.Year == Model.analyticsDate.Year + Model.analyticsDate.Month).GroupBy(m => m.bd_nomenclature.name).Select(g => new { measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price), price = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_nomenclature.Price, countNom = g.FirstOrDefault(m => m.bd_nomenclature.name == g.Key).count }))
+                                    @foreach (var it in Model.orders.Where(c => c.date.Value.Month ==  Model.analyticsDate.Month && c.date.Value.Year == Model.analyticsDate.Year).GroupBy(m => m.bd_nomenclature.name).Select(g => new { measurement = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_measurement.name, name = g.Key, count = g.Count(), summ = g.Sum(p => p.count * p.bd_nomenclature.Price), price = g.FirstOrDefault(t => t.bd_nomenclature.name == g.Key).bd_nomenclature.Price, countNom = g.FirstOrDefault(m => m.bd_nomenclature.name == g.Key).count }))
                                     {
                                         <tr>
                                             <td>@it.name</td>
@@ -197,14 +198,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-info"">
+                <div class="panel panel-info" ">
                     <div class="panel-heading">
                         <a class="panel-title" data-toggle="collapse" href="#reclamations_vendors">Статистика по рекламациям (поставщики)</a>
                     </div>
                     <div class="panel-collapse collapse" id="reclamations_vendors">
                         <div class="panel-body">
                             <div>
-                                @foreach (var it in Model.reclamations.GroupBy(m => m.vendor_id).Select(g => new { count = Model.reclamations.Where(m => m.vendor_id == g.Key).Count(), Vendor = Model.vendorList.FirstOrDefault(m => m.id == g.Key).name }))
+                                @foreach (var it in Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year).GroupBy(m => m.vendor_id).Select(g => new { count = Model.reclamations.Where(m => m.vendor_id == g.Key).Count(), Vendor = Model.vendorList.FirstOrDefault(m => m.id == g.Key).name }))
                                 {
                                     <div class="col-md-12">@it.Vendor : @it.count</div>
                                 }
@@ -212,16 +213,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-info"">
+                <div class="panel panel-info" ">
                     <div class="panel-heading">
                         <a class="panel-title" data-toggle="collapse" href="#reclamations_nomenclatures">Статистика по рекламациям (номенклатуры)</a>
                     </div>
                     <div class="panel-collapse collapse" id="reclamations_nomenclatures">
                         <div class="panel-body">
                             <div>
-                                @foreach (var it in Model.reclamations.GroupBy(m => m.nomenclature_id).Select(g => new { count = Model.reclamations.Where(m => m.nomenclature_id == g.Key).Count(), Nomenclature = Model.items.FirstOrDefault(m => m.id == g.Key).name }))
+                                @foreach (var it in Model.reclamations.Where(m => m.date.Month == Model.analyticsDate.Month && m.date.Year == Model.analyticsDate.Year).GroupBy(n => n.nomenclature_id).Select(n => new { n.Key, count = n.Count() }))
                                 {
-                                    <div class="col-md-12">@it.Nomenclature : @it.count</div>
+                                    if(Model.items.Where(r => r.id == it.Key).Any())
+                                    {
+                                <div>@Model.items.FirstOrDefault(g => g.id == it.Key).name, @it.count</div>
+                                    }
                                 }
                             </div>
                         </div>

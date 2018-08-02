@@ -58,6 +58,7 @@ namespace Fusion.Controllers
         {
             SKKModels model = new SKKModels();
             model.getInfoList();
+            model.getBlocks();
             if (id == null)
             {
                 model.createRestaurant();
@@ -65,6 +66,22 @@ namespace Fusion.Controllers
             else
             {
                 model.getRestaurantById(id);
+            }
+            model.getAccesses();
+            model.createAccess();
+            if (model.ArticleBlockAccesses.Where(m => m.restaurant_id == id).Any())
+            {
+                foreach (var it in model.BlockAccessList)
+                {
+                    if (model.ArticleBlockAccesses.Where(m => m.block_id == it.BlockId && m.restaurant_id == id).Any())
+                    {
+                        it.isActive = true;
+                    }
+                    else
+                    {
+                        it.isActive = false;
+                    }
+                }
             }
             return View(model);
         }
@@ -93,7 +110,8 @@ namespace Fusion.Controllers
             {
                 model.createBlock();
             }
-            model.getAccesses();
+            model.getArticles();
+            /*model.getAccesses();
             model.createAccess();
             if(model.ArticleBlockAccesses.Where(m => m.block_id == id).Any())
             {
@@ -108,7 +126,7 @@ namespace Fusion.Controllers
                         it.isActive = false;
                     }
                 }
-            }
+            }*/
             return View(model);
         }
         [HttpPost]
@@ -247,7 +265,7 @@ namespace Fusion.Controllers
                 }
             }
             model.saveActData(model.ActId, files);
-            return Redirect("~/SKK/Acts");
+            return View(model);
         }
         public ActionResult ExportToExcel(int actID)
         {
@@ -286,6 +304,36 @@ namespace Fusion.Controllers
         public ActionResult Analytics(SKKModels model)
         {
             return RedirectToAction("Analytics", new { date_start = model.date_start, date_end = model.date_end });
+        }
+        public int getLastArticle()
+        {
+            SKKModels model = new SKKModels();
+            model.getArticles();
+            return model.GetLastArticle();
+        }
+        [HttpPost]
+        public ContentResult SaveArticlesAjax(string data, int block_id)
+        {
+            ContentResult result = new ContentResult();
+            result.ContentType = "json";
+            SKKModels model = new SKKModels();
+            model.getArticles();
+            try
+            {
+                if (model.SaveArticlesAjax(data, block_id))
+                {
+                    result.Content = @"{ ""result"": ""success"",""message"": ""Успешно сохранено"" }";
+                }
+                else
+                {
+                    result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+                }
+            }
+            catch(Exception ex)
+            {
+                result.Content = @"{ ""result"": ""error"",""message"": ""Ошибка"" }";
+            }
+            return result;
         }
     }
 }

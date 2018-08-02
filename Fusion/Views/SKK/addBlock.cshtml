@@ -6,8 +6,19 @@
     {
         Model.ArticleBlock.name = "";
     }
+    string TableData = "";
+    foreach (var it in Model.Articles.Where(n => n.block_id == Model.ArticleBlock.id))
+    {
+        TableData += "{id: \"" + it.id + "\", articleName: \"" + it.name + "\", articleWeight: \"" + it.weight + "\"";
+        TableData += "}, \r\n";
+    }
 }
-
+<script src="~/Scripts/codebase/webix.js"></script>
+<link href="~/Scripts/codebase/webix.css" rel="stylesheet" />
+<script src="~/Scripts/codebase/i18n/ru.js"></script>
+<div style="position:fixed; left: 0; top: 0; height: 100%; width: 100vw;background:#fff url('/images/1369408992_cat-3.gif') no-repeat center; display: none;z-index:9999;opacity:0.8;" id="loader">
+    <h3 style="display:block; margin: 20px auto">Пожалуйста подождите...</h3>
+</div>
 <div class="col-md-6 col-md-push-3">
     <div class="panel panel-yellow">
         <div class="panel-heading">
@@ -23,18 +34,98 @@
                     @Html.TextBoxFor(m => m.ArticleBlock.name, new { @class = "form-control" })
                     @Html.HiddenFor(m => m.ArticleBlock.id)
                 </div>
-                <div class="form-group">
-                    @for (int i = 0; i < Model.BlockAccessList.Count(); i++)
-                    {
-                        <p>
-                            @Html.CheckBoxFor(m => Model.BlockAccessList[i].isActive, new { @class = "form-group" })
-                            @Model.BlockAccessList[i].RestaurantName
-                            @Html.HiddenFor(m => Model.BlockAccessList[i].RestaurantId)
-                        </p>
-                    }
-                </div>
+                @*<div class="form-group">
+                        @for (int i = 0; i < Model.BlockAccessList.Count(); i++)
+                        {
+                            <p>
+                                @Html.CheckBoxFor(m => Model.BlockAccessList[i].isActive, new { @class = "form-group" })
+                                @Model.BlockAccessList[i].RestaurantName
+                                @Html.HiddenFor(m => Model.BlockAccessList[i].RestaurantId)
+                            </p>
+                        }
+                    </div>*@
                 <input type="submit" class="btn btn-primary" value="Сохранить" />
+            }
+            @if (Model.ArticleBlock.id != 0)
+            {
+                <div id="tabl"></div>
+                <div id="paging_here"></div>
+                <input type="button" onclick="Save(@Model.ArticleBlock.id)" class="btn btn-success" value="Сохранить" />
+                <input type="button" class="btn btn-primary" value="Добавить строку" onclick="addRow(1)" />
+                <input type="button" class="btn btn-primary" value="Добавить 5 строк" onclick="addRow(5)" />
             }
         </div>
     </div>
 </div>
+<script>
+    var addRowCounter = 0;
+    webix.ready(function () {
+        grid = webix.ui({
+            container: "tabl",
+            rows: [
+				{
+				    id: "grid",
+				    view: "datatable",
+				    padding: 1,
+				    resizeColumn: true,
+				    columns: [
+                      { id: "id", sort: "int", width: 40 },
+                      { id: "articleName", header: ["Наименование", { content: "textFilter" }], editor: "text", sort: "string", fillspace: true },
+                      { id: "articleWeight", header: ["Вес", { content: "textFilter" }], editor: "text", sort: "int", width: 50 },
+				    ],
+				    data: {
+				        data: [
+                        @Html.Raw(TableData)
+				        ]
+				    },
+				    editable: true,
+				    select: "cell",
+				    multiselect: true,
+				    blockselect: true,
+				    clipboard: "block",
+				    navigation: "true",
+				    editaction: "dblclick",
+				    autoheight: true,
+				    height: 500,
+				    math: true,
+				    yCount: 10, scrollY: false,
+				    pager: {
+				        template: "{common.first()} {common.prev()} {common.pages()} {common.next()} {common.last()}",
+				        container: "paging_here",
+				        size: 10,
+				        group: 10
+				    }
+				},
+            ]
+
+        });
+    });
+    function Save(id) {
+        var grid = $$("grid");
+        webix.message({ type: "default", text: "Сохранение статей..." });
+        $("#loader").show();
+        var grid = $$("grid");
+        var serializedData = grid.serialize();
+        webix.ajax().post("/SKK/SaveArticlesAjax", { data: serializedData, block_id: id }, function (result) {
+            $("#loader").hide();
+            var response = JSON.parse(result);
+            webix.message({ type: response.result, text: response.message });
+        });
+
+        return false;
+    }
+    function addRow(count) {
+        webix.ajax().get("/SKK/getLastArticle", function (data) {
+            for (t = 0; t < count; t++) {
+                addRowCounter++;
+                var rowCount = $$("grid").count();
+                var lastId = 0;
+                console.log(addRowCounter)
+                data *= 1;
+                lastId = data + addRowCounter;
+                console.log(lastId);
+                $$("grid").add({ id: lastId });
+            }
+        });
+    }
+</script>

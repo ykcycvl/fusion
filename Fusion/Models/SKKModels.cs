@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Fusion.Interfaces;
 
 namespace Fusion.Models.SKK
@@ -164,7 +165,7 @@ namespace Fusion.Models.SKK
         public class ActDataMock
         {
             public int ArticleId { get; set; }
-            public bool Accord { get; set; }
+            public bool? Accord { get; set; }
             public ActData ActData { get; set; }
         }
         public class PostedFiles
@@ -210,6 +211,8 @@ namespace Fusion.Models.SKK
         public class BlockAccess
         {
             public int RestaurantId { get; set; }
+            public int BlockId { get; set; }
+            public string BlockName { get; set; }
             public string RestaurantName { get; set; }
             public bool isActive { get; set; }
         }
@@ -250,7 +253,7 @@ namespace Fusion.Models.SKK
         }
         public void getActFilesById(int? ActDataId)
         {
-            ActFiles = SKK.ActFile.Where(m => m.act_data_id == ActDataId).ToList();
+            ActFiles = SKK.ActFile.ToList();
         }
         public void getBlocks()
         {
@@ -428,12 +431,12 @@ namespace Fusion.Models.SKK
                     {
                         if (!ActData.Where(n => n.article_id == it.id && n.act_id == actID).Any())
                         {
-                            ActData actdata = new ActData() { article_id = it.id, accord = true, comment = "", rating = 0, act_id = actID };
-                            actDataMock.Add(new ActDataMock { Accord = true, ArticleId = it.id, ActData = actdata });
+                            ActData actdata = new ActData() { article_id = it.id, accord = null, comment = "", rating = 0, act_id = actID };
+                            actDataMock.Add(new ActDataMock { Accord = null, ArticleId = it.id, ActData = actdata });
                         }
                         else
                         {
-                            actDataMock.Add(new ActDataMock { Accord = (bool)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
+                            actDataMock.Add(new ActDataMock { Accord = (bool?)ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID).accord, ActData = ActData.FirstOrDefault(n => n.article_id == it.id && n.act_id == actID), ArticleId = it.id });
                         }
                     }
                 }
@@ -445,8 +448,8 @@ namespace Fusion.Models.SKK
                 {
                     if (ArticleBlockAccesses.Where(m => m.restaurant_id == restaurant_id && m.block_id == it.block_id).Any())
                     {
-                        ActData actData = new ActData() { accord = true, rating = 0, comment = "", article_id = it.id, act_id = actID };
-                        actDataMock.Add(new ActDataMock { ArticleId = it.id, ActData = actData, Accord = true });
+                        ActData actData = new ActData() { accord = null, rating = 0, comment = "", article_id = it.id, act_id = actID };
+                        actDataMock.Add(new ActDataMock { ArticleId = it.id, ActData = actData, Accord = null });
                     }  
                 }
             }
@@ -464,9 +467,13 @@ namespace Fusion.Models.SKK
             ArticleBlockAccess = new ArticleBlockAccess();
             Restaurants = SKK.Restaurant.ToList();
             BlockAccessList = new List<BlockAccess>();
-            foreach(var it in Restaurants)
+            /*foreach(var it in Restaurants)
             {
                 BlockAccessList.Add(new BlockAccess { RestaurantId = it.id, RestaurantName = it.name, isActive = false });
+            }*/
+            foreach(var it in ArticleBlocks)
+            {
+                BlockAccessList.Add(new BlockAccess { BlockId = it.id, BlockName = it.name, isActive = false });
             }
         }
         public void createArticle()
@@ -535,25 +542,25 @@ namespace Fusion.Models.SKK
                 SKK.ArticleBlock.FirstOrDefault(m => m.id == ArticleBlock.id).name = ArticleBlock.name;
             }
             SKK.SaveChanges();
-            getAccesses();
-            foreach (var it in BlockAccessList)
-            {
-                if(ArticleBlockAccesses.Where(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId).Any())
-                {
-                    if(it.isActive == false)
-                    {
-                        SKK.ArticleBlockAccess.Remove(SKK.ArticleBlockAccess.FirstOrDefault(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId));
-                    }
-                }
-                else
-                {
-                    if(it.isActive == true)
-                    {
-                        SKK.ArticleBlockAccess.Add(new ArticleBlockAccess { restaurant_id = it.RestaurantId, block_id = ArticleBlock.id });
-                    }
-                }
-            }
-            SKK.SaveChanges();
+            //getAccesses();
+            //foreach (var it in BlockAccessList)
+            //{
+            //    if(ArticleBlockAccesses.Where(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId).Any())
+            //    {
+            //        if(it.isActive == false)
+            //        {
+            //            SKK.ArticleBlockAccess.Remove(SKK.ArticleBlockAccess.FirstOrDefault(m => m.block_id == ArticleBlock.id && m.restaurant_id == it.RestaurantId));
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if(it.isActive == true)
+            //        {
+            //            SKK.ArticleBlockAccess.Add(new ArticleBlockAccess { restaurant_id = it.RestaurantId, block_id = ArticleBlock.id });
+            //        }
+            //    }
+            //}
+            //SKK.SaveChanges();
         }
         public void saveActData(int actId, List<PostedFiles> files)
         {
@@ -566,11 +573,13 @@ namespace Fusion.Models.SKK
                     it.ActData.rating = Articles.FirstOrDefault(m => m.id == it.ArticleId).weight;
                     it.ActData.comment = "";
                 }
-                else
+                else if (it.Accord == false)
                 {
                     it.ActData.accord = false;
                     it.ActData.rating = 0;
                 }
+                else
+                    break;
                 if (ActData.Where(m => m.act_id == actId && m.article_id == it.ArticleId).Any())
                 {
                     ActData.FirstOrDefault(m => m.act_id == actId && m.article_id == it.ArticleId).comment = it.ActData.comment;
@@ -587,7 +596,10 @@ namespace Fusion.Models.SKK
             {
                 if (files.Where(n => n.ArticleId == it.article_id).Any())
                 {
-                    SKK.ActFile.Add(new ActFile { act_data_id = it.id, filename = files.FirstOrDefault(n => n.ArticleId == it.article_id).file.FileName });
+                    foreach(var p in files.Where(e => e.ArticleId == it.article_id))
+                    {
+                        SKK.ActFile.Add(new ActFile { act_data_id = it.id, filename = p.file.FileName });
+                    }
                 }
             }
             SKK.SaveChanges();
@@ -621,6 +633,67 @@ namespace Fusion.Models.SKK
                 SKK.Restaurant.FirstOrDefault(m => m.id == restaurant.id).name = restaurant.name;
             }
             SKK.SaveChanges();
+            getAccesses();
+            foreach(var it in BlockAccessList)
+            {
+                if(ArticleBlockAccesses.Where(n => n.block_id == it.BlockId && n.restaurant_id == restaurant.id).Any())
+                {
+                    if (it.isActive == false)
+                    {
+                        SKK.ArticleBlockAccess.Remove(SKK.ArticleBlockAccess.FirstOrDefault(m => m.block_id == it.BlockId && m.restaurant_id == restaurant.id));
+                    }
+                }
+                else
+                {
+                    if (it.isActive == true)
+                    {
+                        SKK.ArticleBlockAccess.Add(new ArticleBlockAccess { restaurant_id = restaurant.id, block_id = it.BlockId });
+                    }
+                }
+            }
+            SKK.SaveChanges();
+        }
+        public int GetLastArticle()
+        {
+            return SKK.Article.ToList().Last().id;
+        }
+        public bool SaveArticlesAjax(string JSONString, int block_id)
+        {
+            var serializer = new JavaScriptSerializer();
+            var heapdata = serializer.DeserializeObject(JSONString);
+            List<Article> articlesAjax = new List<Article>();
+            foreach (var undata in (Array)heapdata)
+            {
+                var r = (Dictionary<string, object>)undata;
+                object id = null;
+                r.TryGetValue("id", out id);
+                object articleName = null;
+                r.TryGetValue("articleName", out articleName);
+                object articleWeight = null;
+                r.TryGetValue("articleWeight", out articleWeight);
+                Article articleAjax = new Article()
+                {
+                    id = Int32.Parse(id.ToString()),
+                    name = articleName.ToString(),
+                    weight = Int32.Parse(articleWeight.ToString()),
+                    block_id = block_id
+                };
+                articlesAjax.Add(articleAjax);
+            }
+            foreach(var it in articlesAjax)
+            {
+                if(Articles.Where(n => n.id == it.id).Any())
+                {
+                    SKK.Article.FirstOrDefault(n => n.id == it.id).name = it.name;
+                    SKK.Article.FirstOrDefault(n => n.id == it.id).weight = it.weight;
+                }
+                else
+                {
+                    SKK.Article.Add(new Article { weight = it.weight, name=  it.name, block_id = it.block_id });
+                }
+            }
+            SKK.SaveChanges();
+            return true;
         }
         //селекты
 
