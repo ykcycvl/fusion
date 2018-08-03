@@ -495,12 +495,13 @@ namespace Fusion.Controllers
             model.getUsers();
             model.getOrders();
             
-                List<IGrouping<string, bd_order>> ordersDyn = new List<IGrouping<string, bd_order>>();
+                /*List<IGrouping<string, bd_order>> ordersDyn = new List<IGrouping<string, bd_order>>();
                 foreach (var it in model.orders.GroupBy(m => m.bd_employee.domain_login))
                 {
                     ordersDyn.Add(it);
-                }
-                return View(ordersDyn);
+                }*/
+
+                return View(model.orders.GroupBy(m => m.bd_employee.domain_login).ToList());
         }
         [MyAuthorize(Roles = "FusionAdmin, ZakupAdmin")]
         public ActionResult Remnants_rest(int restaurant_id = -1)
@@ -549,6 +550,34 @@ namespace Fusion.Controllers
             ZakupModel model = new ZakupModel();
             model.getVendors();
             return model.getLastNomenclature();
+        }
+        public ActionResult SendOrdersToVendors(string employee)
+        {
+            ZakupModel model = new ZakupModel();
+            model.getVendors();
+            model.getNomenclatures();
+            model.getUsers();
+            model.getOrders();
+
+
+            var p = model.orders.Where(n => n.bd_employee.domain_login == employee && n.state == 1).GroupBy(m => m.bd_nomenclature.vendor_id).ToList();
+
+            foreach(var ig in p)
+            {
+                CsvExport export = new CsvExport();
+                foreach (var it in model.orders.Where(m => m.employee == employee && m.bd_nomenclature.vendor_id == ig.Key))
+                {
+                    export.AddRow();
+                    export["Ресторан"] = model.usersList.FirstOrDefault(n => n.domain_login == employee).bd_subdivision.name;
+                    export["Наиименование"] = it.bd_nomenclature.name;
+                    export["Количество"] = it.count;
+                    export["Ед. Измерения"] = it.bd_measurement.name;
+                    export["Цена"] = it.bd_nomenclature.Price;
+                }
+                model.SendOrdersToVendors(employee, ig.Key, export.ExportToBytesWin());
+            }
+            model.updateOrders(employee);
+            return Redirect("~/Zakup/Orders_by_employees");
         }
     }   
 }

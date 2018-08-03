@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 using Sh4Ole;
 using System.Text;
 using System.Data.SqlClient;
+using System.IO;
 
 //using DevExtreme.AspNet;
 //using DevExtreme.AspNet.Mvc;
@@ -563,13 +564,13 @@ namespace Fusion.Models
                 }
             }
         }
-        public void sendMail(string to, string body, string subject)
+        public void sendMail(string to, string body, string subject, byte[] file = null)
         {
             using (SmtpClient smtp = new SmtpClient())
             {
                 MailMessage mail = new MailMessage();
                 string FROM = "noreply@tokyo-bar.ru";
-                mail.Body = body;
+                mail.Body = body;   
                 mail.From = new MailAddress(FROM);
                 mail.To.Add(new MailAddress(to));
                 mail.Subject = subject;
@@ -578,9 +579,22 @@ namespace Fusion.Models
                 smtp.EnableSsl = false;
                 smtp.Credentials = new NetworkCredential("noreply", "123456zZ");
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                if(file != null)
+                {
+                    MemoryStream ms = new MemoryStream(file);
+                    mail.Attachments.Add(new Attachment(ms, "Заявка Токио.csv", "text/csv"));
+                }
                 smtp.Send(mail);
                 mail.Dispose();
             }
+        }
+        public void updateOrders(string employee)
+        {
+            foreach(var it in orders.Where(n => n.employee == employee && n.state == 1))
+            {
+                list.bd_order.FirstOrDefault(m => m.id == it.id).state = 2;
+            }
+            list.SaveChanges();
         }
         public void getNomenclatures()
         {
@@ -820,7 +834,6 @@ namespace Fusion.Models
             foreach (var undata in (Array)heapdata)
             {
                 var r = (Dictionary<string, object>)undata;
-
                 object id = null;
                 r.TryGetValue("id", out id);
                 object date_start = null;
@@ -937,11 +950,11 @@ namespace Fusion.Models
             reclamation_problems = list.bd_reclamation_problems.ToList();
             reclamation_files = list.bd_reclamation_files.ToList();
             states = list.bd_states.ToList();
-            /*foreach(var it in reclamations)
-            {
-                ReclamationDataWebix += "{id: \"" + it.id + "\", Details: \"" + it.id + "\", Date: \"" + it.date.ToShortDateString() + "\", Restaurant: \"" + it.bd_subdivision.name + "\", Vendor: \"" + it.bd_vendor.name.Trim().Replace('"', '\'') + "\", Nomenclature: \"" + it.bd_nomenclature.name.Trim().Replace('"', '\'') + "\", Problem: \"" + it.bd_reclamation_problems.problem.Trim().Replace('"', '\'') + "\", State: \"" + it.bd_states.name + "\", Word: \"" + it.id + "\"";
-                ReclamationDataWebix += "}, \r\n";
-            }*/
+        }
+        public void SendOrdersToVendors(string employee, int vendor_id, byte[] file)
+        {
+            //string email = vendorList.FirstOrDefault(n => n.id == vendor_id).KPP;
+            sendMail("ag@tokyo-bar.ru", "Заявки от Токио за "+DateTime.Now.ToShortDateString(), "Заявки из Токио", file);
         }
         public IEnumerable<SelectListItem> reclamation_problemsSelectList
         {

@@ -695,14 +695,17 @@ namespace Fusion.Models.SKK
                 r.TryGetValue("articleName", out articleName);
                 object articleWeight = null;
                 r.TryGetValue("articleWeight", out articleWeight);
-                Article articleAjax = new Article()
+                if(articleName != null)
                 {
-                    id = Int32.Parse(id.ToString()),
-                    name = articleName.ToString(),
-                    weight = Int32.Parse(articleWeight.ToString()),
-                    block_id = block_id
-                };
-                articlesAjax.Add(articleAjax);
+                    Article articleAjax = new Article()
+                    {
+                        id = Int32.Parse(id.ToString()),
+                        name = articleName.ToString(),
+                        weight = Int32.Parse(articleWeight.ToString()),
+                        block_id = block_id
+                    };
+                    articlesAjax.Add(articleAjax);
+                }
             }
             foreach(var it in articlesAjax)
             {
