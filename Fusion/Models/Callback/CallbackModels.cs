@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.WebPages.Html;
+
 using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Data.Common;
@@ -13,6 +13,9 @@ using System.IO;
 using System.Web.Configuration;
 using System.ComponentModel;
 using System.Globalization;
+using System.Net;
+using System.Net.Mail;
+using System.Web.Mvc;
 
 namespace Fusion.Models.Callback
 {
@@ -279,6 +282,12 @@ namespace Fusion.Models.Callback
 
             public string Source { get; set; }
             public string Payer1 { get; set; }
+            public string Guilty { get; set; }
+            public string Employee { get; set; }
+            public string Text { get; set; }
+            public string Problem { get; set; }
+            public string Mera { get; set; }
+            public string Answer { get; set; }
         }
 
         public class TblsModelDown
@@ -325,11 +334,11 @@ namespace Fusion.Models.Callback
                         DateNEW2tosql = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2)) + " 0" + (DateNEW2.Substring(11, 7));
                     }
                     DateNEW2 = (DateNEW2.Substring(6, 4)) + "-" + (DateNEW2.Substring(3, 2)) + "-" + (DateNEW2.Substring(0, 2));
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, CostDiscount, Type, Source, Payer FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, CostDiscount, Type, Source, Payer, Sotrudnik, Guilty, Text, Problem, Mera, AnswerForGuest FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2tosql + "'", con);
                 }
                 else
                 {
-                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer, CostDiscount FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
+                    command = new MySqlCommand(@"SELECT id, FIO, Data, Phone, Unit, Rest, DateClose, Rating, Cost, CostPoint, CostSert, Type, Source, Payer, CostDiscount, Sotrudnik, Guilty, Text, Problem, Mera, AnswerForGuest FROM tblfeedback WHERE Data BETWEEN '" + DateNEW1 + "' AND '" + DateNEW2 + time + "'", con);
                 }
                 //command.Parameters.AddWithValue("id", );
 
@@ -391,6 +400,12 @@ namespace Fusion.Models.Callback
                             p.Source = Convert.ToString(record["Source"]);
                         if (Convert.ToString(record["Payer"]) != "")
                             p.Payer1 = Convert.ToString(record["Payer"]);
+                        p.Guilty = Convert.ToString(record["Guilty"]);
+                        p.Employee = Convert.ToString(record["Sotrudnik"]);
+                        p.Text = Convert.ToString(record["Text"]);
+                        p.Problem = Convert.ToString(record["Problem"]);
+                        p.Mera = Convert.ToString(record["Mera"]);
+                        p.Answer = Convert.ToString(record["AnswerForGuest"]);
 
                         persons.Add(p);
 
@@ -518,5 +533,100 @@ namespace Fusion.Models.Callback
         [StringLength(50, MinimumLength = 0, ErrorMessage = "Слишком длинные ФИО")]
         [Display(Name = "Guilty")]
         public string Guilty { get; set; }
+    }
+    public class FeedbackModel
+    {
+        feedbackEntities Entity = new feedbackEntities();
+        public List<tblfeedback> FeedbackList { get; set; }
+        public List<payer> PayerList { get; set; }
+        public List<type_reason> ReasonsList { get; set; }
+        public List<source> SourceList { get; set; }
+        public List<unit> UnitList { get; set; }
+        public List<restaurant> RestaurantsList { get; set; }
+        public List<rating> RatingList { get; set; }
+        public tblfeedback Feedback { get; set; }
+        public DateTime? Date_Start { get; set; }
+        public DateTime? Date_End { get; set; }
+        public string RatingName { get; set; }
+        public void SaveFeedback(tblfeedback feedback)
+        {
+            bool sendMail = false;
+            if(Entity.tblfeedback.Where(n => n.id == feedback.id).Any())
+            {
+                var gr = Entity.tblfeedback.FirstOrDefault(m => m.id == feedback.id);
+
+                if(gr != null && gr != feedback)
+                {
+                    gr = feedback;
+                }
+            }
+            else
+            {
+                Entity.tblfeedback.Add(feedback);
+                sendMail = true;
+            }
+            Entity.SaveChanges();
+            if(sendMail)
+            {
+                SendMail(feedback.id);
+            }
+        }
+        public void GetInfo()
+        {
+            PayerList = Entity.payer.ToList();
+            RestaurantsList = Entity.restaurant.ToList();
+            ReasonsList = Entity.type_reason.ToList();
+            SourceList = Entity.source.ToList();
+            UnitList = Entity.unit.ToList();
+            RatingList = Entity.rating.ToList();
+        }
+        public void GetFeedback(int? id)
+        {
+            Feedback = Entity.tblfeedback.FirstOrDefault(n => n.id == id);
+        }
+        public void CreateFeedback()
+        {
+            Feedback = new tblfeedback();
+        }
+        public void GetFeedbackList(DateTime? date_start, DateTime? date_end)
+        {
+            FeedbackList = Entity.tblfeedback.ToList().Where(n => Convert.ToDateTime(n.Data) > date_start && Convert.ToDateTime(n.Data) < date_end).ToList();
+        }
+        public void SendMail(int id)
+        {
+            GetFeedback(id);
+            using (SmtpClient client = new SmtpClient())
+            {
+                MailMessage mail = new MailMessage();
+                string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
+                string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
+                mail.Body = "Пришел новый отзыв от: " + Feedback.Data + ", от имени: " + Feedback.FIO + ". \r\nТекст отзыва:" + Feedback.Text + "\r\nОтзыв в Vega: http://vega/Callback/uniform?updorins=" + Feedback.id + "";
+                mail.From = new MailAddress(FROM);
+                mail.To.Add(new MailAddress(TO));
+                mail.Subject = "Новый отзыв";
+                client.Host = "srv-ex00.fg.local";
+                client.Port = 587;
+                client.EnableSsl = false;
+                client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Send(mail);
+                mail.Dispose();
+            }
+        }
+        public IEnumerable<SelectListItem> RatingSelectList
+        {
+            get
+            {
+                List<SelectListItem> rating = new List<SelectListItem>();
+                foreach (var it in RatingList)
+                {
+                    rating.Add(new SelectListItem() { Text = it.name, Value = it.id.ToString() });
+                }
+                SelectListItem sli = rating.FirstOrDefault(p => p.Text == RatingName);
+                if (sli != null)
+                    sli.Selected = true;
+                return rating;
+            }
+        }
     }
 }

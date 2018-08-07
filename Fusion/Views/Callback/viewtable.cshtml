@@ -359,78 +359,37 @@
 
 
 <div id="AddTransactionDialog" title="Отчет по отзывам">
-    <span>Всего пришло отзывов: @Model.persons.Count</span>
-    @{
-        int sum = 0;
-        int sumb = 0;
-        int sums = 0;
-    }
-    @foreach (var attribute in Model.persons)
+    @using (Html.BeginForm("Export", "Callback"))
     {
-        sum = sum + Convert.ToInt32(attribute.Cost);
-        sumb = sumb + Convert.ToInt32(attribute.CostPoint);
-        sums = sums + Convert.ToInt32(attribute.CostSert);
+        <input type="submit" class="btn btn-success btn-sm" value="Экспорт" />
     }
-    @{
-        int sumnal = 0;
-        int sumbonus = 0;
-        int sumsert = 0;
-    }
-    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Cотрудник"))
-    {
-        sumnal = sumnal + Convert.ToInt32(attribute.Cost);
-        sumbonus = sumbonus + Convert.ToInt32(attribute.CostPoint);
-        sumsert = sumsert + Convert.ToInt32(attribute.CostSert);
-    }
-    @{
-        int compsumnal = 0;
-        int compsumbonus = 0;
-        int compsumsert = 0;
-    }
-    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Компания"))
-    {
-        compsumnal = compsumnal + Convert.ToInt32(attribute.Cost);
-        compsumbonus = compsumbonus + Convert.ToInt32(attribute.CostPoint);
-        compsumsert = compsumsert + Convert.ToInt32(attribute.CostSert);
-    }
-    <br />
-    @{
-        int stafcompsumnal = 0;
-        int stafcompsumbonus = 0;
-        int stafcompsumsert = 0;
-    }
-    @foreach (var attribute in Model.persons.Where(p => p.Payer1 == "Cотрудник/Компания"))
-    {
-        stafcompsumnal = stafcompsumnal + Convert.ToInt32(attribute.Cost);
-        stafcompsumbonus = stafcompsumbonus + Convert.ToInt32(attribute.CostPoint);
-        stafcompsumsert = stafcompsumsert + Convert.ToInt32(attribute.CostSert);
-    }
+        <span>Всего пришло отзывов: @Model.persons.Count</span>
     <br />
     <span>
-        Все расходы(наличные): @sum руб.<br />
-        Все расходы(баллы): @sumb б.<br />
-        Все расходы(сертификаты): @sums руб.<br />
+        Все расходы(наличные): @Model.persons.Sum(n => Convert.ToInt32(n.Cost)) руб.<br />
+        Все расходы(баллы): @Model.persons.Sum(n => Convert.ToInt32(n.CostPoint)) б.<br />
+        Все расходы(сертификаты): @Model.persons.Sum(n => Convert.ToInt32(n.CostSert)) руб.<br />
     </span>
     <br />
     <span>
         Из них оплачено сотрудниками: <br />
-        Наличные: @sumnal <br />
-        Бонусы: @sumbonus<br />
-        Сертификат: @sumsert<br />
+        Наличные: @Model.persons.Where(r => r.Payer1 == "Cотрудник").Sum(n => Convert.ToInt32(n.Cost)) <br />
+        Бонусы: @Model.persons.Where(r => r.Payer1 == "Cотрудник").Sum(n => Convert.ToInt32(n.CostPoint))<br />
+        Сертификат: @Model.persons.Where(r => r.Payer1 == "Cотрудник").Sum(n => Convert.ToInt32(n.CostSert))<br />
     </span>
     <br />
     <span>
         Оплачено компанией: <br />
-        Наличные: @compsumnal <br />
-        Бонусы: @compsumbonus<br />
-        Сертификат: @compsumsert<br />
+        Наличные: @Model.persons.Where(r => r.Payer1 == "Компания").Sum(n => Convert.ToInt32(n.Cost)) <br />
+        Бонусы: @Model.persons.Where(r => r.Payer1 == "Компания").Sum(n => Convert.ToInt32(n.CostPoint))<br />
+        Сертификат: @Model.persons.Where(r => r.Payer1 == "Компания").Sum(n => Convert.ToInt32(n.CostSert))<br />
     </span>
     <br />
     <span>
         Оплачено 50/50: <br />
-        Наличные: @stafcompsumnal <br />
-        Бонусы: @stafcompsumbonus<br />
-        Сертификат: @stafcompsumsert<br />
+        Наличные: @Model.persons.Where(r => r.Payer1 == "Cотрудник/Компания").Sum(n => Convert.ToInt32(n.Cost)) <br />
+        Бонусы: @Model.persons.Where(r => r.Payer1 == "Cотрудник/Компания").Sum(n => Convert.ToInt32(n.CostPoint))<br />
+        Сертификат: @Model.persons.Where(r => r.Payer1 == "Cотрудник/Компания").Sum(n => Convert.ToInt32(n.CostSert))<br />
     </span>
     <br />
     <span>
@@ -482,12 +441,12 @@
 
     <br />
     <span>
-        Всего положительных отзывов: @sum1 <br />
-        Всего отрицательных отзывов: @sum2 <br />
-        Всего нейтральных отзывов: @sum6 <br />
-        Всего критичных отзывов: @sum3 <br />
-        Всего ОТРАВЛЕНИЙ: @sum5 <br />
-        Отзывов не обработано: @sum4
+        Всего положительных отзывов: @Model.persons.Where(n => n.Rating == "Положительный").Count() <br />
+        Всего отрицательных отзывов: @Model.persons.Where(n => n.Rating == "Отрицательный").Count() <br />
+        Всего нейтральных отзывов: @Model.persons.Where(n => n.Rating == "Нейтральный").Count() <br />
+        Всего критичных отзывов: @Model.persons.Where(n => n.Rating == "Критичный").Count() <br />
+        Всего ОТРАВЛЕНИЙ: @Model.persons.Where(n => n.Rating == "ОТРАВЛЕНИЕ").Count() <br />
+        Отзывов не обработано: @Model.persons.Where(n => String.IsNullOrEmpty(n.Rating) || n.Rating == "-").Count()
     </span><br /><br />
     <span class="text text-danger"><strong>Отчет по подразделениям: </strong></span><br /><br />
     @foreach (var it in Model.persons.GroupBy(h => h.Unit).Select(g => new { key = g.Key }))

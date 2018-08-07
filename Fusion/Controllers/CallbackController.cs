@@ -13,6 +13,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Web.Configuration;
+using Jitbit.Utils;
 
 
 namespace Fusion.Controllers
@@ -664,7 +665,6 @@ namespace Fusion.Controllers
         public ActionResult SendEmail(string MailBody)
         {
             //string message = System.Web.HttpUtility.HtmlDecode(MailBody);
-            /*Код отправки письма*/
             MailMessage mail = new MailMessage();
             string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
             string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
@@ -690,8 +690,77 @@ namespace Fusion.Controllers
                 throw new Exception("Упс! Письмо с отзывом не отправилось! Обратитесь к администратору почтового сервера",ex);
             }            
             mail.Dispose();
-            /*Конец кода*/
             return View();
+        }
+        /*public ActionResult Index(DateTime? date_start, DateTime? date_end)
+        {
+            FeedbackModel model = new FeedbackModel();
+            if (date_start == null)
+                date_start = DateTime.Today.AddDays(-5);
+            if (date_end == null)
+                date_end = DateTime.Today;
+            model.Date_Start = date_start;
+            model.Date_End = date_end;
+            model.GetInfo();
+            model.GetFeedbackList(date_start, date_end);
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult Index(FeedbackModel model)
+        {
+            return RedirectToAction("Index", new { date_start = model.Date_Start, date_end = model.Date_End });
+        }
+        public ActionResult EditFeedback(int? id)
+        {
+            FeedbackModel model = new FeedbackModel();
+            model.GetInfo();
+            if(id != null)
+            {
+                model.GetFeedback(id);
+            }
+            else
+            {
+                model.CreateFeedback();
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditFeedback(FeedbackModel model)
+        {
+            model.SaveFeedback(model.Feedback);
+            return RedirectToAction("Index");
+        }*/
+        [HttpPost]
+        public ActionResult Export()
+        {
+            TblViewModel.TblsModelDown model = new TblViewModel.TblsModelDown();
+            model.Search();
+            CsvExport export = new CsvExport();
+            foreach(var it in model.persons)
+            {
+                export.AddRow();
+                export["ФИО"] = it.FIO;
+                export["Телефон"] = it.Phone;
+                export["Подразделение"] = it.Unit;
+                export["Тип причины"] = it.Type;
+                export["Ресторан"] = it.Rest;
+                export["Виновный"] = it.Guilty;
+                export["Ответственный"] = it.Employee;
+                export["Источник"] = it.Source;
+                export["Дата создания"] = it.Data;
+                export["Дата закрытия"] = it.DateClose;
+                export["Текст отзыва"] = it.Text;
+                export["Суть"] = it.Problem;
+                export["Принятые меры"] = it.Mera;
+                export["Решение для гостя"] = it.Answer;
+                export["Компенсация"] = it.Cost;
+                export["Компенсация скидка"] = it.CostDiscount;
+                export["Компенсация баллы"] = it.CostPoint;
+                export["Компенсация сертификат"] = it.CostSert;
+            }
+            //return View();
+            string filename = String.Format("Отчет по ОС за {0} - {1}.csv", model.DateNEW1, model.DateNEW2);
+            return File(export.ExportToBytesWin(), "text/csv", filename);
         }
     }
 }
