@@ -741,8 +741,6 @@ namespace Fusion.Controllers
                 export.AddRow();
                 export["ФИО"] = it.FIO;
                 export["Телефон"] = it.Phone;
-                export["Подразделение"] = it.Unit;
-                export["Тип причины"] = it.Type;
                 export["Ресторан"] = it.Rest;
                 export["Виновный"] = it.Guilty;
                 export["Ответственный"] = it.Employee;
@@ -750,13 +748,8 @@ namespace Fusion.Controllers
                 export["Дата создания"] = it.Data;
                 export["Дата закрытия"] = it.DateClose;
                 export["Текст отзыва"] = it.Text;
-                export["Суть"] = it.Problem;
                 export["Принятые меры"] = it.Mera;
                 export["Решение для гостя"] = it.Answer;
-                export["Компенсация"] = it.Cost;
-                export["Компенсация скидка"] = it.CostDiscount;
-                export["Компенсация баллы"] = it.CostPoint;
-                export["Компенсация сертификат"] = it.CostSert;
             }
             //return View();
             string filename = String.Format("Отчет по ОС за {0} - {1}.csv", model.DateNEW1, model.DateNEW2);
