@@ -534,99 +534,99 @@ namespace Fusion.Models.Callback
         [Display(Name = "Guilty")]
         public string Guilty { get; set; }
     }
-    public class FeedbackModel
-    {
-        feedbackEntities Entity = new feedbackEntities();
-        public List<tblfeedback> FeedbackList { get; set; }
-        public List<payer> PayerList { get; set; }
-        public List<type_reason> ReasonsList { get; set; }
-        public List<source> SourceList { get; set; }
-        public List<unit> UnitList { get; set; }
-        public List<restaurant> RestaurantsList { get; set; }
-        public List<rating> RatingList { get; set; }
-        public tblfeedback Feedback { get; set; }
-        public DateTime? Date_Start { get; set; }
-        public DateTime? Date_End { get; set; }
-        public string RatingName { get; set; }
-        public void SaveFeedback(tblfeedback feedback)
-        {
-            bool sendMail = false;
-            if(Entity.tblfeedback.Where(n => n.id == feedback.id).Any())
-            {
-                var gr = Entity.tblfeedback.FirstOrDefault(m => m.id == feedback.id);
+    //public class FeedbackModel
+    //{
+    //    feedbackEntities Entity = new feedbackEntities();
+    //    public List<tblfeedback> FeedbackList { get; set; }
+    //    public List<payer> PayerList { get; set; }
+    //    public List<type_reason> ReasonsList { get; set; }
+    //    public List<source> SourceList { get; set; }
+    //    public List<unit> UnitList { get; set; }
+    //    public List<restaurant> RestaurantsList { get; set; }
+    //    public List<rating> RatingList { get; set; }
+    //    public tblfeedback Feedback { get; set; }
+    //    public DateTime? Date_Start { get; set; }
+    //    public DateTime? Date_End { get; set; }
+    //    public string RatingName { get; set; }
+    //    public void SaveFeedback(tblfeedback feedback)
+    //    {
+    //        bool sendMail = false;
+    //        if(Entity.tblfeedback.Where(n => n.id == feedback.id).Any())
+    //        {
+    //            var gr = Entity.tblfeedback.FirstOrDefault(m => m.id == feedback.id);
 
-                if(gr != null && gr != feedback)
-                {
-                    gr = feedback;
-                }
-            }
-            else
-            {
-                Entity.tblfeedback.Add(feedback);
-                sendMail = true;
-            }
-            Entity.SaveChanges();
-            if(sendMail)
-            {
-                SendMail(feedback.id);
-            }
-        }
-        public void GetInfo()
-        {
-            PayerList = Entity.payer.ToList();
-            RestaurantsList = Entity.restaurant.ToList();
-            ReasonsList = Entity.type_reason.ToList();
-            SourceList = Entity.source.ToList();
-            UnitList = Entity.unit.ToList();
-            RatingList = Entity.rating.ToList();
-        }
-        public void GetFeedback(int? id)
-        {
-            Feedback = Entity.tblfeedback.FirstOrDefault(n => n.id == id);
-        }
-        public void CreateFeedback()
-        {
-            Feedback = new tblfeedback();
-        }
-        public void GetFeedbackList(DateTime? date_start, DateTime? date_end)
-        {
-            FeedbackList = Entity.tblfeedback.ToList().Where(n => Convert.ToDateTime(n.Data) > date_start && Convert.ToDateTime(n.Data) < date_end).ToList();
-        }
-        public void SendMail(int id)
-        {
-            GetFeedback(id);
-            using (SmtpClient client = new SmtpClient())
-            {
-                MailMessage mail = new MailMessage();
-                string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
-                string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
-                mail.Body = "Пришел новый отзыв от: " + Feedback.Data + ", от имени: " + Feedback.FIO + ". \r\nТекст отзыва:" + Feedback.Text + "\r\nОтзыв в Vega: http://vega/Callback/uniform?updorins=" + Feedback.id + "";
-                mail.From = new MailAddress(FROM);
-                mail.To.Add(new MailAddress(TO));
-                mail.Subject = "Новый отзыв";
-                client.Host = "srv-ex00.fg.local";
-                client.Port = 587;
-                client.EnableSsl = false;
-                client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.Send(mail);
-                mail.Dispose();
-            }
-        }
-        public IEnumerable<SelectListItem> RatingSelectList
-        {
-            get
-            {
-                List<SelectListItem> rating = new List<SelectListItem>();
-                foreach (var it in RatingList)
-                {
-                    rating.Add(new SelectListItem() { Text = it.name, Value = it.id.ToString() });
-                }
-                SelectListItem sli = rating.FirstOrDefault(p => p.Text == RatingName);
-                if (sli != null)
-                    sli.Selected = true;
-                return rating;
-            }
-        }
-    }
+    //            if(gr != null && gr != feedback)
+    //            {
+    //                gr = feedback;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Entity.tblfeedback.Add(feedback);
+    //            sendMail = true;
+    //        }
+    //        Entity.SaveChanges();
+    //        if(sendMail)
+    //        {
+    //            SendMail(feedback.id);
+    //        }
+    //    }
+    //    public void GetInfo()
+    //    {
+    //        PayerList = Entity.payer.ToList();
+    //        RestaurantsList = Entity.restaurant.ToList();
+    //        ReasonsList = Entity.type_reason.ToList();
+    //        SourceList = Entity.source.ToList();
+    //        UnitList = Entity.unit.ToList();
+    //        RatingList = Entity.rating.ToList();
+    //    }
+    //    public void GetFeedback(int? id)
+    //    {
+    //        Feedback = Entity.tblfeedback.FirstOrDefault(n => n.id == id);
+    //    }
+    //    public void CreateFeedback()
+    //    {
+    //        Feedback = new tblfeedback();
+    //    }
+    //    public void GetFeedbackList(DateTime? date_start, DateTime? date_end)
+    //    {
+    //        FeedbackList = Entity.tblfeedback.ToList().Where(n => Convert.ToDateTime(n.Data) > date_start && Convert.ToDateTime(n.Data) < date_end).ToList();
+    //    }
+    //    public void SendMail(int id)
+    //    {
+    //        GetFeedback(id);
+    //        using (SmtpClient client = new SmtpClient())
+    //        {
+    //            MailMessage mail = new MailMessage();
+    //            string FROM = "feedback_vega_tokyo@tokyo-bar.ru";
+    //            string TO = "website_tokyo@tokyo-bar.ru"; //website_tokyo@tokyo-bar.ru
+    //            mail.Body = "Пришел новый отзыв от: " + Feedback.Data + ", от имени: " + Feedback.FIO + ". \r\nТекст отзыва:" + Feedback.Text + "\r\nОтзыв в Vega: http://vega/Callback/uniform?updorins=" + Feedback.id + "";
+    //            mail.From = new MailAddress(FROM);
+    //            mail.To.Add(new MailAddress(TO));
+    //            mail.Subject = "Новый отзыв";
+    //            client.Host = "srv-ex00.fg.local";
+    //            client.Port = 587;
+    //            client.EnableSsl = false;
+    //            client.Credentials = new NetworkCredential(FROM, "OhUjdkku37L");
+    //            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+    //            client.Send(mail);
+    //            mail.Dispose();
+    //        }
+    //    }
+    //    public IEnumerable<SelectListItem> RatingSelectList
+    //    {
+    //        get
+    //        {
+    //            List<SelectListItem> rating = new List<SelectListItem>();
+    //            foreach (var it in RatingList)
+    //            {
+    //                rating.Add(new SelectListItem() { Text = it.name, Value = it.id.ToString() });
+    //            }
+    //            SelectListItem sli = rating.FirstOrDefault(p => p.Text == RatingName);
+    //            if (sli != null)
+    //                sli.Selected = true;
+    //            return rating;
+    //        }
+    //    }
+    //}
 }

@@ -14,6 +14,10 @@ using System.Net.Mail;
 using System.Text;
 using System.Web.Configuration;
 using Jitbit.Utils;
+using System.Web.UI.WebControls;
+using System.Drawing;
+using System.IO;
+using System.Web.UI;
 
 
 namespace Fusion.Controllers
@@ -735,7 +739,7 @@ namespace Fusion.Controllers
         {
             TblViewModel.TblsModelDown model = new TblViewModel.TblsModelDown();
             model.Search();
-            CsvExport export = new CsvExport();
+            /*CsvExport export = new CsvExport();
             foreach(var it in model.persons)
             {
                 export.AddRow();
@@ -753,7 +757,55 @@ namespace Fusion.Controllers
             }
             //return View();
             string filename = String.Format("Отчет по ОС за {0} - {1}.csv", model.DateNEW1, model.DateNEW2);
-            return File(export.ExportToBytesWin(), "text/csv", filename);
+            return File(export.ExportToBytesWin(), "text/csv", filename);*/
+            var list = new System.Data.DataTable();
+            list.Columns.Add("ФИО", typeof(string));
+            list.Columns.Add("Телефон", typeof(string));
+            list.Columns.Add("Ресторан", typeof(string));
+            list.Columns.Add("Виновный", typeof(string));
+            list.Columns.Add("Ответственный", typeof(string));
+            list.Columns.Add("Источник", typeof(string));
+            list.Columns.Add("Дата создания", typeof(string));
+            list.Columns.Add("Дата закрытия", typeof(string));
+            list.Columns.Add("Текст отзыва", typeof(string));
+            list.Columns.Add("Принятые меры", typeof(string));
+            list.Columns.Add("Решение для гостя", typeof(string));
+            foreach (var it in model.persons)
+            {
+                System.Data.DataRow row;
+                row = list.NewRow();
+                row["ФИО"] = it.FIO;
+                row["Телефон"] = it.Phone;
+                row["Ресторан"] = it.Rest;
+                row["Виновный"] = it.Guilty;
+                row["Ответственный"] = it.Employee;
+                row["Источник"] = it.Source;
+                row["Дата создания"] = it.Data;
+                row["Дата закрытия"] = it.DateClose;
+                row["Текст отзыва"] = it.Text;
+                row["Принятые меры"] = it.Mera;
+                row["Решение для гостя"] = it.Answer;
+                list.Rows.Add(row);
+            }
+            var grid = new GridView();
+            grid.DataSource = list;
+            grid.DataBind();
+            grid.HeaderRow.BackColor = Color.FromArgb(221, 221, 221);
+            Response.ClearContent();
+            Response.Buffer = true;
+            string attachment = String.Format("attachment; filename=Отчет за {0} - {1}.xls", model.DateNEW1, model.DateNEW2);
+            Response.AddHeader("content-disposition", attachment);
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            grid.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+            return View();
         }
     }
 }
